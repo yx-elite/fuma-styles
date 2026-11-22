@@ -1,0 +1,16 @@
+[
+  { "term": "Cache", "definition": "A copy of data kept close to where it is used, so repeated reads are faster.", "href": "/docs/sample-notes/caching-basics", "label": "Caching basics" },
+  { "term": "Cache-aside", "definition": "The application reads the cache first and fills it from the origin on a miss.", "href": "/docs/sample-notes/caching-basics#strategies", "label": "Strategies" },
+  { "term": "CNAME", "definition": "A DNS record that points one name at another name. Not allowed at the top of a domain.", "href": "/docs/sample-notes/dns-basics#record-types", "label": "Record types" },
+  { "term": "Eviction", "definition": "Removing an entry from a full cache to make room, for example the least recently used one." },
+  { "term": "Hit", "definition": "A read that found the data in the cache." },
+  { "term": "Hit ratio", "definition": "Hits divided by all reads. Higher means the cache does more of the work." },
+  { "term": "Invalidation", "definition": "Removing or replacing a cached copy on purpose, before its TTL runs out." },
+  { "term": "Miss", "definition": "A read that did not find the data in the cache, so it came from the origin." },
+  { "term": "Origin", "definition": "Where the original data lives, behind the cache." },
+  { "term": "Resolver", "definition": "The DNS server that looks up names on behalf of a client, usually run by the internet provider.", "href": "/docs/sample-notes/dns-basics#how-a-lookup-works", "label": "How a lookup works" },
+  { "term": "Stale", "definition": "A cached copy whose original has changed, or whose TTL has run out." },
+  { "term": "TTL", "definition": "Time to live: how long a cached copy or DNS answer counts as fresh, in seconds.", "href": "/docs/sample-notes/dns-basics#ttl-and-propagation", "label": "TTL and propagation" },
+  { "term": "Write-back", "definition": "Writes go to the cache first and reach the origin later. Fast, but can lose data." },
+  { "term": "Write-through", "definition": "Every write goes to the cache and the origin together. Never stale, slower writes." }
+]
