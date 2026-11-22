@@ -40,6 +40,17 @@
 /* Keep the page from shifting when a scrollbar or dialog appears */
 html {
   scrollbar-gutter: stable;
+  /* taps are taps: no double-tap zoom and no tap delay on iPhone/iPad (pinch-zoom still works) */
+  touch-action: manipulation;
+}
+
+/* iOS zooms into any text field under 16px when it is focused: keep fields at 16px on touch screens */
+@media (pointer: coarse) {
+  input,
+  textarea,
+  select {
+    font-size: max(16px, 1em) !important;
+  }
 }
 
 html > body[data-scroll-locked] {
@@ -124,10 +135,24 @@ html > body[data-scroll-locked] {
   mask-composite: intersect;
 }
 
+/*
+ * Phones: docs pages drop the grid and the fixed glow (too much sits on top of
+ * them there); the home page keeps both, scaled down to the narrow screen.
+ */
 @media (max-width: 767px) {
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before,
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.fs-home-root))::before,
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.fs-home-root))::after {
     display: none;
+  }
+
+  #nd-notebook-layout:has(.fs-home-root)::before {
+    width: 40rem;
+    height: 40rem;
+  }
+
+  #nd-notebook-layout:has(.fs-home-root)::after {
+    width: 44rem;
+    height: 44rem;
   }
 }
 
@@ -868,18 +893,18 @@ html > body[data-scroll-locked] {
   --fs-home-width: 72rem;
 }
 
-#nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div {
+#nd-notebook-layout:has(.fs-home-root) #nd-subnav > div {
   padding-inline: max(1.5rem, calc((100% - var(--fs-home-width)) / 2));
 }
 
 @media (min-width: 768px) {
-  #nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div > button:has(kbd) {
+  #nd-notebook-layout:has(.fs-home-root) #nd-subnav > div > button:has(kbd) {
     order: 1;
     width: 15rem;
     max-width: 15rem;
   }
 
-  #nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div > div:last-child {
+  #nd-notebook-layout:has(.fs-home-root) #nd-subnav > div > div:last-child {
     order: 2;
     flex: 0 0 auto;
   }
@@ -930,7 +955,7 @@ html > body[data-scroll-locked] {
 
 @media (prefers-reduced-motion: no-preference) {
   /* The fixed top glow breathes slowly on the landing page */
-  #nd-notebook-layout:not(:has(#nd-sidebar))::before {
+  #nd-notebook-layout:has(.fs-home-root)::before {
     animation: fs-breathe 7s ease-in-out infinite alternate;
   }
 
