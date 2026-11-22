@@ -1,0 +1,22 @@
+/*
+ * @yx-elite/fuma-styles: the shared theme.
+ * Import it in app/global.css, right after Tailwind:
+ *   @import 'tailwindcss';
+ *   @import '@yx-elite/fuma-styles/theme.css';
+ */
+
+/* Fumadocs base: colour preset, then the Fumadocs UI preset */
+@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/preset.css';
+
+/* Keep the page from shifting when a scrollbar or dialog appears */
+html {
+  scrollbar-gutter: stable;
+}
+
+html > body[data-scroll-locked] {
+  margin-right: 0px !important;
+  --removed-body-scroll-bar-size: 0px !important;
+}
+
+:root { --color-fd-primary: red; }

@@ -2,6 +2,7 @@
   "name": "fuma-styles-workspace",
   "private": true,
   "workspaces": [
+    "packages/*",
     "playground"
   ],
   "scripts": {

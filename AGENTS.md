@@ -67,12 +67,13 @@ fuma-styles/
 ## Package rules
 
 - **Peer dependencies only** for `fumadocs-ui`, `fumadocs-core`, `fumadocs-mdx`, `next`, `react` and `react-dom`. Never move them to `dependencies`: two copies of fumadocs-ui break the provider, theme and search.
-- **Build with `tsc`, no bundler.** One output file per source file in `dist/`, so `"use client"` survives. `theme.css` is copied to `dist/` as part of the build.
+- **Build with `tsc`, no bundler.** One output file per source file in `dist/`, so `"use client"` survives.
+- **CSS is not built.** `exports["./theme.css"]` points at `./src/theme.css` and `files` includes it, so theme edits show in the playground on save. Never point it at `dist/`.
 - **`"use client"` goes on the first line** of any component that uses state, effects, browser APIs or event handlers. Keep everything else a server component.
 - **Every component is wired in three places** in the same change: exported from `src/index.ts`, added to `getMDXComponents()` in `src/mdx.tsx`, and shown on a playground page.
 - **Separate entry point for non-React code.** `next.config.mjs` in notes repos imports from `@yx-elite/fuma-styles/next`. That entry point must never import React or a `.css` file.
 - **`fumadocs-ui` may be an alias.** The scaffold installs `"fumadocs-ui": "npm:@fumadocs/base-ui@…"`. Always import from `fumadocs-ui/...`, never from `@fumadocs/base-ui`.
-- **Tailwind v4 skips `node_modules`.** `theme.css` keeps its `@source` line pointing at the compiled `dist/` files. Check this in the starter build, not only the playground.
+- **Tailwind v4 skips `node_modules`.** Once the package has components, `src/theme.css` needs an `@source "../dist";` line so a notes repo's Tailwind sees their classes. Check this in the starter build, not only the playground.
 - **Override Fumadocs tokens, don't fight its classes.** Change the `--color-fd-*` variables and fumadocs-ui's documented CSS first. Prefix custom CSS variables with `--fs-` and custom class names with `fs-`.
 - **Build on fumadocs-ui components where they exist** (`Callout`, `Steps`, `ImageZoom`, `Tabs`, `Accordion`) instead of rewriting them.
 - **Light and dark mode both work** for every token and component. Check both in the playground.
@@ -102,6 +103,8 @@ npm run build -w playground                   # static export of the playground
 npm run build -w starter                      # static export of the starter (the real consumer test)
 npm run build                                 # all of the above, in order
 ```
+
+**Stale dev cache.** Turbopack keeps its dev cache on disk in `playground/.next/`, across restarts, and doesn't notice packages appearing in `node_modules` (e.g. after `npm install` links a workspace). If the dev server keeps showing an error that a fresh `npm run build` doesn't, stop it, delete `playground/.next/` and start again. Don't add config to work around it.
 
 Before calling a change done, all of these must pass: the package build, `npm run typecheck`, and the static export of both the playground and the starter.
 
