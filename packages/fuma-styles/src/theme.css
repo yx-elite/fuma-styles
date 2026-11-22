@@ -3,11 +3,31 @@
  * Import it in app/global.css, right after Tailwind:
  *   @import 'tailwindcss';
  *   @import '@yx-elite/fuma-styles/theme.css';
+ *
+ * Change the accent for one site by setting --fs-accent after the import:
+ *   :root { --fs-accent: #16a34a; }   (light mode)
+ *   .dark { --fs-accent: #86efac; }   (dark mode)
+ * Links, active items and the background glow all follow it.
  */
 
 /* Fumadocs base: colour preset, then the Fumadocs UI preset */
-@import 'fumadocs-ui/css/neutral.css';
+@import 'fumadocs-ui/css/black.css';
 @import 'fumadocs-ui/css/preset.css';
+
+/* ── Accent ─────────────────────────────────────────────────────────── */
+
+:root {
+  --fs-accent: hsl(217, 100%, 58%);
+  --color-fd-primary: var(--fs-accent);
+  --color-fd-primary-foreground: hsl(0, 0%, 100%);
+}
+
+.dark {
+  --fs-accent: #a9ceff;
+  --color-fd-primary-foreground: hsl(0, 0%, 9%);
+}
+
+/* ── Base ───────────────────────────────────────────────────────────── */
 
 /* Keep the page from shifting when a scrollbar or dialog appears */
 html {
@@ -19,4 +39,76 @@ html > body[data-scroll-locked] {
   --removed-body-scroll-bar-size: 0px !important;
 }
 
-:root { --color-fd-primary: red; }
+/* ── Page background ────────────────────────────────────────────────── */
+/*
+ * Two layers centred on the top edge of the docs layout:
+ *   ::before  a soft glow in the accent colour
+ *   ::after   a grid of thin lines, 60px apart, skewed 20deg on both axes,
+ *             with a few faintly filled cells
+ * Both fade out from the top centre. Hidden on small screens.
+ *
+ * Tune:  --fs-glow-strength  how much accent the glow has (0% = off)
+ *        --fs-grid-opacity   strength of the grid
+ */
+
+:root {
+  --fs-glow-strength: 12%;
+  --fs-grid-opacity: 1;
+  --fs-grid-line: rgb(136 136 136 / 0.2);
+  --fs-grid-cells: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='black'%3E%3Crect x='60' y='0' width='60' height='60' opacity='.035'/%3E%3Crect x='240' y='60' width='60' height='60' opacity='.05'/%3E%3Crect x='120' y='120' width='60' height='60' opacity='.025'/%3E%3Crect x='300' y='180' width='60' height='60' opacity='.03'/%3E%3Crect x='0' y='240' width='60' height='60' opacity='.04'/%3E%3Crect x='180' y='300' width='60' height='60' opacity='.025'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+.dark {
+  --fs-glow-strength: 15%;
+  --fs-grid-opacity: 0.8;
+  --fs-grid-line: rgb(136 136 136 / 0.27);
+  --fs-grid-cells: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
+}
+
+#nd-docs-layout {
+  position: relative;
+  isolation: isolate;
+  overflow-x: clip; /* the skewed grid must never cause sideways scrolling */
+}
+
+#nd-docs-layout::before,
+#nd-docs-layout::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 50%;
+  z-index: -1;
+  width: 64rem;
+  height: 64rem;
+  translate: -50% -50%;
+  pointer-events: none;
+}
+
+/* Glow in the accent colour */
+#nd-docs-layout::before {
+  border-radius: 9999px;
+  background-color: color-mix(in oklab, var(--fs-accent) var(--fs-glow-strength), transparent);
+  mask-image: radial-gradient(circle at center, black, transparent 69%);
+}
+
+/* Skewed grid with a few filled cells */
+#nd-docs-layout::after {
+  background-image:
+    var(--fs-grid-cells),
+    linear-gradient(90deg, var(--fs-grid-line) 1px, transparent 0),
+    linear-gradient(var(--fs-grid-line) 1px, transparent 0);
+  background-size:
+    360px 360px,
+    60px 60px,
+    60px 60px;
+  opacity: var(--fs-grid-opacity);
+  transform: skewX(-20deg) skewY(-20deg);
+  mask-image: radial-gradient(circle at 50% 0%, black, transparent);
+}
+
+@media (max-width: 767px) {
+  #nd-docs-layout::before,
+  #nd-docs-layout::after {
+    display: none;
+  }
+}
