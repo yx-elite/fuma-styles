@@ -14,6 +14,14 @@
 @import 'fumadocs-ui/css/black.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* ── Fonts ──────────────────────────────────────────────────────────── */
+/* Geist for text, JetBrains Mono for code, as on fumadocs.dev. The site loads them
+   (next/font in app/layout.tsx) as --font-sans and --font-mono. */
+@theme inline {
+  --default-font-family: var(--font-sans, ui-sans-serif, system-ui, sans-serif);
+  --default-mono-font-family: var(--font-mono, ui-monospace, SFMono-Regular, Menlo, monospace);
+}
+
 /* ── Accent ─────────────────────────────────────────────────────────── */
 
 :root {
@@ -41,40 +49,50 @@ html > body[data-scroll-locked] {
 
 /* ── Page background ────────────────────────────────────────────────── */
 /*
- * Two layers centred on the top edge of the docs layout:
- *   ::before  a soft glow in the accent colour
- *   ::after   a grid of thin lines, 60px apart, skewed 20deg on both axes,
- *             with a few faintly filled cells
- * Both fade out from the top centre. Hidden on small screens.
+ * Three layers centred on the top edge of the docs layout (default or Notebook):
+ *   background  a glow in the accent colour that scrolls away with the page
+ *   ::before    a fainter accent glow fixed to the top of the window, so the
+ *               accent still shows behind the see-through header when scrolled
+ *   ::after     a grid of thin lines, 60px apart, skewed 20deg on both axes,
+ *               with a few faintly filled cells
+ * All fade out from the top centre. The fixed glow and grid hide on small screens.
  *
- * Tune:  --fs-glow-strength  how much accent the glow has (0% = off)
- *        --fs-grid-opacity   strength of the grid
+ * Tune:  --fs-glow-strength        scrolling glow (0% = off)
+ *        --fs-glow-fixed-strength  fixed glow (0% = off)
+ *        --fs-grid-opacity         strength of the grid
  */
 
 :root {
-  --fs-glow-strength: 12%;
+  --fs-glow-strength: 14%;
+  --fs-glow-fixed-strength: 5%;
   --fs-grid-opacity: 1;
-  --fs-grid-line: rgb(136 136 136 / 0.2);
-  --fs-grid-cells: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='black'%3E%3Crect x='60' y='0' width='60' height='60' opacity='.035'/%3E%3Crect x='240' y='60' width='60' height='60' opacity='.05'/%3E%3Crect x='120' y='120' width='60' height='60' opacity='.025'/%3E%3Crect x='300' y='180' width='60' height='60' opacity='.03'/%3E%3Crect x='0' y='240' width='60' height='60' opacity='.04'/%3E%3Crect x='180' y='300' width='60' height='60' opacity='.025'/%3E%3C/g%3E%3C/svg%3E");
+  /* Pre-skewed grid (lines + a few filled cells) as one SVG pattern: Safari animates it far
+     more smoothly than a CSS-skewed element. Regenerate with the script noted in AGENTS.md. */
+  --fs-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='black'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.025'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.025'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
 }
 
 .dark {
-  --fs-glow-strength: 15%;
+  --fs-glow-strength: 14%;
+  --fs-glow-fixed-strength: 7%;
   --fs-grid-opacity: 0.8;
-  --fs-grid-line: rgb(136 136 136 / 0.27);
-  --fs-grid-cells: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='360' height='360'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' opacity='.03'/%3E%3C/g%3E%3C/svg%3E");
+  --fs-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.03'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.27'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
 }
 
-#nd-docs-layout {
+:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout) {
   position: relative;
   isolation: isolate;
   overflow-x: clip; /* the skewed grid must never cause sideways scrolling */
+  background-image: radial-gradient(
+    ellipse 46rem 36rem at 50% 0%,
+    color-mix(in oklab, var(--fs-accent) var(--fs-glow-strength), transparent),
+    transparent 80%
+  );
+  background-repeat: no-repeat;
 }
 
-#nd-docs-layout::before,
-#nd-docs-layout::after {
+:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before,
+:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
   content: '';
-  position: absolute;
   top: 0;
   left: 50%;
   z-index: -1;
@@ -84,31 +102,854 @@ html > body[data-scroll-locked] {
   pointer-events: none;
 }
 
-/* Glow in the accent colour */
-#nd-docs-layout::before {
+/* Fixed glow: stays at the top of the window while the page scrolls */
+:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before {
+  position: fixed;
   border-radius: 9999px;
-  background-color: color-mix(in oklab, var(--fs-accent) var(--fs-glow-strength), transparent);
+  background-color: color-mix(in oklab, var(--fs-accent) var(--fs-glow-fixed-strength), transparent);
   mask-image: radial-gradient(circle at center, black, transparent 69%);
 }
 
 /* Skewed grid with a few filled cells */
-#nd-docs-layout::after {
-  background-image:
-    var(--fs-grid-cells),
-    linear-gradient(90deg, var(--fs-grid-line) 1px, transparent 0),
-    linear-gradient(var(--fs-grid-line) 1px, transparent 0);
-  background-size:
-    360px 360px,
-    60px 60px,
-    60px 60px;
+:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
+  position: absolute;
+  background-image: var(--fs-grid-image); /* already skewed 20deg on both axes */
+  background-size: 100% 100%;
   opacity: var(--fs-grid-opacity);
-  transform: skewX(-20deg) skewY(-20deg);
-  mask-image: radial-gradient(circle at 50% 0%, black, transparent);
+  /* starts below the header (fades in over 6rem), then fades out from the top centre */
+  top: 3.5rem;
+  mask-image:
+    linear-gradient(to bottom, transparent 50%, black calc(50% + 6rem)),
+    radial-gradient(circle at 50% 0%, black, transparent);
+  mask-composite: intersect;
 }
 
 @media (max-width: 767px) {
-  #nd-docs-layout::before,
-  #nd-docs-layout::after {
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before,
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
     display: none;
   }
+}
+
+/* ── Layout ─────────────────────────────────────────────────────────── */
+/*
+ * Full width: sidebar against the left edge, "On this page" against the right,
+ * the page content in a centred column between them.
+ * Tune: --fs-content-width (reading column)
+ */
+
+:root {
+  --fd-layout-width: 100vw;
+  --fs-content-width: 768px;
+}
+
+#nd-notebook-layout #nd-page > * {
+  width: 100%;
+  max-width: var(--fs-content-width);
+  margin-inline: auto;
+}
+
+/* Breathing room after the previous/next buttons at the end of each note */
+#nd-notebook-layout #nd-page {
+  padding-bottom: 6rem;
+}
+
+.fs-last-updated {
+  margin-top: 1.5rem;
+  padding-top: 1.25rem;
+  border-top: 1px solid var(--color-fd-border);
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+/*
+ * Header: fully transparent at the top of the page, so the glow runs straight
+ * through it; frosted (Fumadocs' 80% background) once the page scrolls.
+ * Needs nav.transparentMode: 'top' in the layout options.
+ */
+:is(#nd-subnav, #nd-nav) {
+  z-index: 40; /* above the sticky sidebar (z-20), also during over-scroll bounce */
+  backdrop-filter: blur(12px);
+  view-transition-name: fs-header; /* stays in place while the page changes */
+}
+
+/* Once scrolled: a light tint, so the page stays visible (blurred) behind the header */
+:is(#nd-subnav, #nd-nav)[data-transparent='false'] {
+  background-color: color-mix(in oklab, var(--color-fd-background) var(--fs-header-tint), transparent);
+}
+
+:root {
+  --fs-header-tint: 45%;
+}
+
+/* GitHub icon at the far right, after the theme switch */
+:is(#nd-subnav, #nd-nav) a[href*='github.com'] {
+  order: 1;
+  margin-inline-start: 0.5rem;
+}
+
+:is(#nd-subnav, #nd-nav),
+:is(#nd-subnav, #nd-nav) * {
+  border-color: color-mix(in oklab, var(--color-fd-foreground) 7%, transparent);
+}
+
+/* Search box and theme switch: see-through like the header */
+:is(#nd-subnav, #nd-nav) button:has(kbd),
+:is(#nd-subnav, #nd-nav) [data-theme-toggle] {
+  background-color: rgb(255 255 255 / 0.3);
+}
+
+.dark :is(#nd-subnav, #nd-nav) button:has(kbd),
+.dark :is(#nd-subnav, #nd-nav) [data-theme-toggle] {
+  background-color: rgb(0 0 0 / 0.3);
+}
+
+/* Sidebar and "On this page" widths (Fumadocs default 268px each) */
+@media (min-width: 1024px) {
+  #nd-notebook-layout#nd-notebook-layout:has(#nd-sidebar) {
+    --fd-sidebar-width: var(--fs-sidebar-width);
+  }
+}
+
+/*
+ * Tablets in portrait (768–1023px, e.g. iPads): no sidebar column. The sidebar
+ * collapses into the slide-in menu (as on phones), opened from the menu button
+ * at the right end of the header. Fumadocs switches at 768px; we move it to 1024px.
+ */
+@media (min-width: 768px) and (max-width: 1023px) {
+  #nd-notebook-layout#nd-notebook-layout:has(#nd-sidebar) {
+    --fd-sidebar-width: 0px;
+  }
+
+  /* the sidebar becomes a panel off the right edge, slid in by <TabletMenu /> */
+  #nd-notebook-layout > div:has(> #nd-sidebar) {
+    --fd-sidebar-width: min(22rem, 85vw);
+    position: fixed;
+    inset: 0 0 0 auto;
+    z-index: 50;
+    width: var(--fd-sidebar-width);
+    height: 100dvh;
+    pointer-events: auto;
+    background: var(--color-fd-background);
+    border-inline-start: 1px solid var(--color-fd-border);
+    box-shadow: -24px 0 48px -16px rgb(0 0 0 / 0.5);
+    transform: translateX(100%);
+    visibility: hidden;
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s ease,
+      visibility 0s 0.4s;
+  }
+
+  html[data-fs-menu='open'] #nd-notebook-layout > div:has(> #nd-sidebar) {
+    transform: none;
+    visibility: visible;
+    /* the huge second shadow dims the whole page behind the panel (and stays behind it) */
+    box-shadow:
+      -24px 0 48px -16px rgb(0 0 0 / 0.5),
+      0 0 0 100vmax rgb(0 0 0 / 0.4);
+    transition:
+      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
+      box-shadow 0.4s ease;
+  }
+
+  /* show the menu button, but not the phone-only search icon (the full search box is visible) */
+  #nd-subnav div:has(> button[aria-label='Open Sidebar']) {
+    display: flex;
+  }
+
+  #nd-subnav div:has(> button[aria-label='Open Sidebar']) > button:not([aria-label='Open Sidebar']) {
+    display: none;
+  }
+}
+
+/* Reserved on every docs page, even without "On this page" (e.g. the glossary),
+   so the content column never shifts between pages. Not on the home page. */
+@media (min-width: 1280px) {
+  #nd-notebook-layout#nd-notebook-layout:has(#nd-sidebar) {
+    --fd-toc-width: var(--fs-sidebar-width);
+  }
+}
+
+:root {
+  --fs-sidebar-width: 286px;
+}
+
+/*
+ * Sidebar items: grey on hover (Fumadocs default), and the current page only
+ * changes its text colour, no background. It also sticks to the top of the
+ * sidebar while the list scrolls, with a light frosted background.
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active='true'] {
+  position: sticky;
+  top: -1rem; /* the list has 1rem padding: stick flush to its top edge */
+  z-index: 10;
+  /* frosted: items behind show faintly, blurred */
+  background-color: color-mix(in oklab, var(--color-fd-background) 60%, transparent);
+  backdrop-filter: blur(10px) saturate(1.2);
+}
+
+/*
+ * Section titles in the page list ("---Markdown---" in meta.json): small muted
+ * labels with room above, like fumadocs.dev, so each group reads as its own section.
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] p {
+  margin-top: 2rem;
+  margin-bottom: 0.375rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  letter-spacing: 0.01em;
+  color: var(--color-fd-muted-foreground);
+}
+
+:is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] p:first-child {
+  margin-top: 0;
+}
+
+/*
+ * No fade mask on the page list (Fumadocs fades both ends): a mask stops the
+ * browser from blurring behind the pinned page, and the pinned page sits at the top.
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] {
+  mask-image: none;
+}
+
+/* Solid sidebar: the page grid stays behind the content, never under the sidebar */
+#nd-notebook-layout #nd-sidebar {
+  background-color: var(--color-fd-background);
+}
+
+:is(#nd-sidebar, #nd-sidebar-mobile) a[data-active='true']::before {
+  content: none;
+}
+
+/* Separator line between the sidebar and the page */
+#nd-notebook-layout #nd-sidebar {
+  border-inline-end: 1px solid var(--color-fd-border);
+}
+
+/* ── Header title ───────────────────────────────────────────────────── */
+/* Used as nav.title: <span.fs-nav-mark><Icon/></span><span.fs-nav-name/> */
+
+.fs-nav-mark {
+  display: inline-grid;
+  place-items: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: 0.5rem;
+  color: var(--fs-accent);
+  background: color-mix(in oklab, var(--fs-accent) 14%, transparent);
+  border: 1px solid color-mix(in oklab, var(--fs-accent) 30%, transparent);
+}
+
+.fs-nav-mark svg {
+  width: 1rem;
+  height: 1rem;
+}
+
+.fs-nav-name {
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  white-space: nowrap;
+}
+
+
+/* ── Sidebar banner ─────────────────────────────────────────────────── */
+/*
+ * The box at the top of the sidebar: subject name, tag, one-line description, link.
+ * Accent gradient, dashed accent border, dotted pattern fading in from the top left.
+ * Tune: --fs-banner-from / --fs-banner-to (gradient strength)
+ */
+
+:root {
+  --fs-banner-from: color-mix(in oklab, var(--fs-accent) 14%, transparent);
+  --fs-banner-to: color-mix(in oklab, color-mix(in oklab, var(--fs-accent) 70%, white) 40%, transparent);
+  --fs-banner-dot: rgb(0 0 0 / 0.45);
+}
+
+.dark {
+  --fs-banner-from: color-mix(in oklab, var(--fs-accent) 20%, transparent);
+  --fs-banner-to: color-mix(in oklab, color-mix(in oklab, var(--fs-accent) 70%, white) 50%, transparent);
+  --fs-banner-dot: rgb(255 255 255 / 0.85);
+}
+
+.fs-banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  overflow: hidden;
+  /* run edge to edge: cancel the sidebar's 1rem padding on top and sides */
+  margin: -1rem -1rem 0.5rem;
+  padding: 1rem;
+  border-bottom: 1px dashed color-mix(in oklab, var(--fs-accent) 35%, transparent);
+  background-color: var(--color-fd-background); /* solid base: the page grid must not show through */
+  background-image: linear-gradient(to bottom, var(--fs-banner-from), var(--fs-banner-to));
+  backdrop-filter: blur(8px);
+}
+
+.fs-banner-dots {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  opacity: 0.5;
+  background-image: radial-gradient(circle at center, var(--fs-banner-dot) 1px, transparent 1.5px);
+  background-size: 10px 10px;
+  mask-image: radial-gradient(ellipse at top left, transparent 50%, black);
+}
+
+.fs-banner-title {
+  position: relative;
+  display: flex;
+  align-items: baseline;
+  gap: 0.5rem;
+  font-size: 1.0625rem;
+  font-weight: 700;
+  line-height: 1.3;
+  color: var(--color-fd-foreground);
+}
+
+.fs-banner-tag {
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  opacity: 0.55;
+}
+
+.fs-banner-text {
+  position: relative;
+  font-size: 0.8125rem;
+  line-height: 1.5;
+  color: color-mix(in oklab, var(--color-fd-foreground) 65%, transparent);
+}
+
+.fs-banner-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  width: fit-content;
+  margin-top: 0.25rem;
+  padding: 0.375rem 0.625rem;
+  border-radius: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-fd-background);
+  background: var(--color-fd-foreground);
+  transition: opacity 0.2s;
+}
+
+.fs-banner-link:hover {
+  opacity: 0.7;
+}
+
+.fs-banner-link svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── Sidebar quick links ────────────────────────────────────────────── */
+/* Fixed under the banner (Home, Glossary…), styled like sidebar items. */
+
+.fs-links {
+  display: flex;
+  flex-direction: column;
+  gap: 0.125rem;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-fd-border);
+}
+
+.fs-link {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.5rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--color-fd-muted-foreground);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.fs-link:hover {
+  background-color: color-mix(in oklab, var(--color-fd-accent) 50%, transparent);
+  color: color-mix(in oklab, var(--color-fd-accent-foreground) 80%, transparent);
+  transition: none;
+}
+
+.fs-link[data-active='true'] {
+  color: var(--color-fd-primary);
+}
+
+.fs-link svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+/* ── Page transitions (home ⇄ docs) ─────────────────────────────────── */
+/*
+ * Driven by <PageTransitions /> (View Transitions API).
+ * - The background never changes, so it does not animate at all.
+ * - Header pieces glide between their home and docs positions (title left,
+ *   icons right, search to the centre), each as its own element.
+ * - The home content fades and rises away; the docs flow up into place
+ *   (sidebar from the left, "On this page" from the right). Reverse going home.
+ * Only opacity and transform are animated, so the GPU does the work.
+ */
+
+#nd-notebook-layout #nd-sidebar { view-transition-name: fs-sidebar; }
+#nd-notebook-layout #nd-toc { view-transition-name: fs-toc; }
+#nd-notebook-layout #nd-page { view-transition-name: fs-page; }
+.fs-home-root { view-transition-name: fs-home; }
+#nd-subnav a:has(.fs-nav-name) { view-transition-name: fs-nav-title; }
+#nd-subnav button:has(kbd) { view-transition-name: fs-nav-search; }
+#nd-subnav [data-theme-toggle] { view-transition-name: fs-nav-theme; }
+#nd-subnav a[href*='github.com'] { view-transition-name: fs-nav-github; }
+
+@media (prefers-reduced-motion: no-preference) {
+  :root {
+    --fs-ease: cubic-bezier(0.16, 1, 0.3, 1); /* soft ease-out */
+    --fs-ease-move: cubic-bezier(0.65, 0, 0.35, 1); /* smooth in-out, for gliding */
+    --fs-ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* quick exit: old content clears before the new arrives */
+  }
+
+  /* Background and header bar: identical on both pages, swap instantly */
+  ::view-transition-old(root),
+  ::view-transition-old(fs-header) { display: none; }
+  ::view-transition-new(root),
+  ::view-transition-new(fs-header),
+  ::view-transition-group(root),
+  ::view-transition-group(fs-header) { animation: none; }
+
+  /* Header pieces glide to their new place */
+  ::view-transition-group(fs-nav-title),
+  ::view-transition-group(fs-nav-search),
+  ::view-transition-group(fs-nav-theme),
+  ::view-transition-group(fs-nav-github) {
+    animation-duration: 0.75s;
+    animation-timing-function: var(--fs-ease-move);
+  }
+
+  /* The search box changes width: show it unstretched, cross-fading */
+  ::view-transition-old(fs-nav-search),
+  ::view-transition-new(fs-nav-search) {
+    height: 100%;
+    object-fit: none;
+    object-position: left center;
+  }
+
+  /* Into the docs */
+  ::view-transition-old(fs-home):only-child { animation: fs-flow-out-up 0.28s var(--fs-ease-out) both; }
+  ::view-transition-new(fs-page):only-child { animation: fs-flow-in-up 0.7s 0.24s var(--fs-ease) both; }
+  ::view-transition-new(fs-sidebar):only-child { animation: fs-slide-in-left 0.7s 0.18s var(--fs-ease) both; }
+  ::view-transition-new(fs-toc):only-child { animation: fs-slide-in-right 0.7s 0.3s var(--fs-ease) both; }
+
+  /* Back home */
+  ::view-transition-old(fs-page):only-child { animation: fs-flow-out-down 0.28s var(--fs-ease-out) both; }
+  ::view-transition-old(fs-sidebar):only-child { animation: fs-slide-out-left 0.3s var(--fs-ease-out) both; }
+  ::view-transition-old(fs-toc):only-child { animation: fs-slide-out-right 0.28s var(--fs-ease-out) both; }
+  ::view-transition-new(fs-home):only-child { animation: fs-flow-in-down 0.7s 0.24s var(--fs-ease) both; }
+}
+
+@keyframes fs-flow-out-up { to { opacity: 0; transform: translateY(-2.5rem) scale(0.98); } }
+@keyframes fs-flow-in-up { from { opacity: 0; transform: translateY(3rem); } }
+@keyframes fs-flow-out-down { to { opacity: 0; transform: translateY(2.5rem); } }
+@keyframes fs-flow-in-down { from { opacity: 0; transform: translateY(-2rem) scale(0.98); } }
+@keyframes fs-slide-in-left { from { opacity: 0; transform: translateX(-3rem); } }
+@keyframes fs-slide-out-left { to { opacity: 0; transform: translateX(-3rem); } }
+@keyframes fs-slide-in-right { from { opacity: 0; transform: translateX(3rem); } }
+@keyframes fs-slide-out-right { to { opacity: 0; transform: translateX(3rem); } }
+
+/* ── Home page ──────────────────────────────────────────────────────── */
+/* Default landing page from <NotesHome />: centred hero, like nextjs.org */
+
+.fs-home-root {
+  grid-area: main;
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  min-height: calc(100dvh - 3.5rem);
+}
+
+.fs-home {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 1.5rem 8rem;
+}
+
+.fs-home-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.5rem;
+  max-width: 48rem;
+  text-align: center;
+}
+
+.fs-home-badge {
+  padding: 0.25rem 0.75rem;
+  border-radius: 9999px;
+  border: 1px solid color-mix(in oklab, var(--fs-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--fs-accent) 10%, transparent);
+  color: var(--fs-accent);
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+}
+
+.fs-home-title {
+  font-size: clamp(2.5rem, 7vw, 4.5rem);
+  font-weight: 700;
+  line-height: 1.15;
+  padding-bottom: 0.1em; /* room for descenders: the gradient text is clipped to this box */
+  letter-spacing: -0.04em;
+  background: linear-gradient(to bottom, var(--color-fd-foreground) 40%, color-mix(in oklab, var(--color-fd-foreground) 55%, transparent));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.fs-home-text {
+  max-width: 36rem;
+  font-size: clamp(1rem, 2.2vw, 1.25rem);
+  line-height: 1.6;
+  color: var(--color-fd-muted-foreground);
+}
+
+.fs-home-actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.75rem;
+  margin-top: 0.5rem;
+}
+
+.fs-button {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  height: 2.75rem;
+  padding: 0 1.25rem;
+  border-radius: 0.625rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  transition: opacity 0.2s, background-color 0.2s;
+}
+
+.fs-button svg {
+  width: 1rem;
+  height: 1rem;
+  transition: transform 0.2s;
+}
+
+.fs-button:hover svg {
+  transform: translateX(2px);
+}
+
+.fs-button-primary {
+  background: var(--color-fd-foreground);
+  color: var(--color-fd-background);
+}
+
+.fs-button-primary:hover {
+  opacity: 0.85;
+}
+
+.fs-button-secondary {
+  border: 1px solid var(--color-fd-border);
+  background: color-mix(in oklab, var(--color-fd-background) 50%, transparent);
+  color: var(--color-fd-foreground);
+}
+
+.fs-button-secondary:hover {
+  background: color-mix(in oklab, var(--color-fd-accent) 60%, transparent);
+}
+
+.fs-home-author {
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+/* ── Glossary ───────────────────────────────────────────────────────── */
+/* <Glossary terms={…} />: sticky A–Z bar + filter, terms grouped by letter */
+
+.fs-glossary {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  margin-top: 0.5rem;
+}
+
+.fs-glossary-bar {
+  position: sticky;
+  top: 3.5rem; /* below the header */
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  margin-inline: -0.75rem;
+  padding: 0.75rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 0.875rem;
+  /* nearly solid: terms scrolling underneath must not show through the letters */
+  background: color-mix(in oklab, var(--color-fd-background) 94%, transparent);
+  backdrop-filter: blur(16px);
+  box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5);
+}
+
+.fs-glossary-filter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0 0.75rem;
+  height: 2.5rem;
+  border-radius: 0.5rem;
+  border: 1px solid var(--color-fd-border);
+  background: color-mix(in oklab, var(--color-fd-secondary) 50%, transparent);
+  color: var(--color-fd-muted-foreground);
+}
+
+.fs-glossary-filter:focus-within {
+  border-color: color-mix(in oklab, var(--fs-accent) 60%, transparent);
+}
+
+.fs-glossary-filter svg {
+  width: 1rem;
+  height: 1rem;
+  flex-shrink: 0;
+}
+
+.fs-glossary-filter input {
+  flex: 1;
+  min-width: 0;
+  background: transparent;
+  outline: none;
+  font-size: 0.9375rem;
+  color: var(--color-fd-foreground);
+}
+
+.fs-glossary-count {
+  font-size: 0.75rem;
+  white-space: nowrap;
+}
+
+.fs-glossary-letters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.fs-glossary-letters button {
+  display: grid;
+  place-items: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  border-radius: 0.375rem;
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--color-fd-foreground);
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.fs-glossary-letters button:hover:not(:disabled) {
+  background: color-mix(in oklab, var(--color-fd-accent) 70%, transparent);
+}
+
+.fs-glossary-letters button[data-active='true'] {
+  background: color-mix(in oklab, var(--fs-accent) 16%, transparent);
+  color: var(--fs-accent);
+}
+
+.fs-glossary-letters button:disabled {
+  color: color-mix(in oklab, var(--color-fd-muted-foreground) 35%, transparent);
+  cursor: default;
+}
+
+.fs-glossary-section {
+  display: grid;
+  grid-template-columns: 3rem 1fr;
+  gap: 1rem;
+  scroll-margin-top: 13rem; /* header + sticky letter bar */
+}
+
+.fs-glossary-letter {
+  position: sticky;
+  top: 13rem;
+  align-self: start;
+  font-size: 2rem;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--fs-accent);
+}
+
+.fs-glossary-terms {
+  display: flex;
+  flex-direction: column;
+  border-top: 1px solid var(--color-fd-border);
+}
+
+.fs-glossary-term {
+  display: grid;
+  grid-template-columns: minmax(8rem, 11rem) 1fr;
+  gap: 0.25rem 1.5rem;
+  padding: 1rem 0;
+  border-bottom: 1px solid var(--color-fd-border);
+  scroll-margin-top: 13rem;
+}
+
+.fs-glossary-term dt {
+  font-weight: 600;
+  color: var(--color-fd-foreground);
+}
+
+.fs-glossary-term dd {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.375rem;
+  line-height: 1.6;
+  color: var(--color-fd-muted-foreground);
+}
+
+.fs-glossary-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--fs-accent);
+}
+
+.fs-glossary-link svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform 0.15s;
+}
+
+.fs-glossary-link:hover svg {
+  transform: translateX(2px);
+}
+
+.fs-glossary-empty {
+  padding: 2rem 0;
+  text-align: center;
+  color: var(--color-fd-muted-foreground);
+}
+
+@media (max-width: 639px) {
+  .fs-glossary-section {
+    grid-template-columns: 1fr;
+    gap: 0.5rem;
+  }
+
+  .fs-glossary-letter {
+    position: static;
+    font-size: 1.5rem;
+  }
+
+  .fs-glossary-term {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ── Home header ────────────────────────────────────────────────────── */
+/*
+ * On the home page (no sidebar) the header content sits in a centred
+ * container, with the search box on the right next to the icons. In the
+ * docs it spreads full width with the search in the middle; the page
+ * transition glides each piece between the two.
+ */
+
+:root {
+  --fs-home-width: 72rem;
+}
+
+#nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div {
+  padding-inline: max(1.5rem, calc((100% - var(--fs-home-width)) / 2));
+}
+
+@media (min-width: 768px) {
+  #nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div > button:has(kbd) {
+    order: 1;
+    width: 15rem;
+    max-width: 15rem;
+  }
+
+  #nd-notebook-layout:not(:has(#nd-sidebar)) #nd-subnav > div > div:last-child {
+    order: 2;
+    flex: 0 0 auto;
+  }
+}
+
+/* ── Landing interactions ───────────────────────────────────────────── */
+
+/* Cursor spotlight (<Spotlight />): accent glow + a dot matrix revealed around the cursor */
+.fs-spotlight {
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 0.6s ease;
+  --fs-x: 50%;
+  --fs-y: 30%;
+  --fs-dot: rgb(0 0 0 / 0.35);
+}
+
+.dark .fs-spotlight {
+  --fs-dot: rgb(255 255 255 / 0.35);
+}
+
+.fs-spotlight[data-active='true'] {
+  opacity: 1;
+}
+
+.fs-spotlight-glow,
+.fs-spotlight-dots {
+  position: absolute;
+  inset: 0;
+}
+
+.fs-spotlight-glow {
+  background: radial-gradient(
+    34rem circle at var(--fs-x) var(--fs-y),
+    color-mix(in oklab, var(--fs-accent) 13%, transparent),
+    transparent 70%
+  );
+}
+
+.fs-spotlight-dots {
+  background-image: radial-gradient(circle at center, var(--fs-dot) 1px, transparent 1.6px);
+  background-size: 22px 22px;
+  mask-image: radial-gradient(15rem circle at var(--fs-x) var(--fs-y), black, transparent 75%);
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  /* The fixed top glow breathes slowly on the landing page */
+  #nd-notebook-layout:not(:has(#nd-sidebar))::before {
+    animation: fs-breathe 7s ease-in-out infinite alternate;
+  }
+
+  /* Hero enters in a short stagger */
+  .fs-home-hero > * {
+    animation: fs-rise 0.9s var(--fs-ease, ease-out) both;
+  }
+
+  .fs-home-hero > :nth-child(2) { animation-delay: 0.08s; }
+  .fs-home-hero > :nth-child(3) { animation-delay: 0.16s; }
+  .fs-home-hero > :nth-child(4) { animation-delay: 0.24s; }
+  .fs-home-hero > :nth-child(5) { animation-delay: 0.32s; }
+}
+
+@keyframes fs-breathe {
+  from { opacity: 0.7; scale: 1; }
+  to { opacity: 1; scale: 1.15; }
+}
+
+@keyframes fs-rise {
+  from { opacity: 0; transform: translateY(1rem); }
 }
