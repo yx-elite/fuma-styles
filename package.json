@@ -1,0 +1,14 @@
+{
+  "name": "fuma-styles-workspace",
+  "private": true,
+  "workspaces": [
+    "playground"
+  ],
+  "scripts": {
+    "dev": "npm run dev -w playground",
+    "build": "npm run build -w playground"
+  },
+  "allowScripts": {
+    "esbuild@0.28.2": true
+  }
+}
