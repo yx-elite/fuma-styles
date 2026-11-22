@@ -1,11 +1,11 @@
 import { source } from '@/lib/source';
-import { DocsLayout } from 'fumadocs-ui/layouts/docs';
-import { baseOptions } from '@/lib/layout.shared';
+import { NotesLayout } from '@/kit/layout';
+import site from '@/site.config';
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {
   return (
-    <DocsLayout tree={source.getPageTree()} {...baseOptions()}>
+    <NotesLayout site={site} tree={source.getPageTree()}>
       {children}
-    </DocsLayout>
+    </NotesLayout>
   );
 }

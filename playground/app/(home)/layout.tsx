@@ -1,6 +1,11 @@
-import { HomeLayout } from 'fumadocs-ui/layouts/home';
-import { baseOptions } from '@/lib/layout.shared';
+import { source } from '@/lib/source';
+import { NotesHomeLayout } from '@/kit/home-layout';
+import site from '@/site.config';
 
 export default function Layout({ children }: LayoutProps<'/'>) {
-  return <HomeLayout {...baseOptions()}>{children}</HomeLayout>;
+  return (
+    <NotesHomeLayout site={site} tree={source.getPageTree()}>
+      {children}
+    </NotesHomeLayout>
+  );
 }

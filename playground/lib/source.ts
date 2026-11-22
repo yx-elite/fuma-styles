@@ -2,11 +2,14 @@ import { llms, loader } from 'fumadocs-core/source';
 import { docsRoute } from './shared';
 import { defineDocs } from 'fumadocs-mdx/macro';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
+import { notesSourcePlugins } from '@/kit/source';
 
 const docs = defineDocs({
   dir: 'content/docs',
   docs: {
     schema: pageSchema,
+    // Last-updated date from each file's latest git commit
+    lastModified: true,
     postprocess: {
       includeProcessedMarkdown: true,
     },
@@ -20,7 +23,7 @@ const docs = defineDocs({
 export const source = loader({
   baseUrl: docsRoute,
   source: docs.toFumadocsSource(),
-  plugins: [],
+  plugins: notesSourcePlugins,
 });
 
 export const docsLlms = llms(source, {

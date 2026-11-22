@@ -1,15 +1,12 @@
 import { createGetUrl } from 'fumadocs-core/source';
+import site from '@/site.config';
 
-export const appName = 'My App';
+export const appName = site.name;
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 
-// fill this with your actual GitHub info, for example:
-export const gitConfig = {
-  user: 'fuma-nama',
-  repo: 'fumadocs',
-  branch: 'main',
-};
+const [user, repo] = site.repo.split('/');
+export const gitConfig = { user, repo, branch: site.branch ?? 'main' };
 
 const getImageUrl = createGetUrl(docsImageRoute);
 
