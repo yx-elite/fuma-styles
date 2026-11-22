@@ -1,0 +1,41 @@
+---
+title: Cards
+description: Card grids for linking to other pages, with and without descriptions.
+---
+
+Cards work as a visual index: the topic pages and the home page use them to point to the next thing to read.
+
+## Cards with descriptions
+
+<Cards>
+  <Card title="Caching basics" href="/docs/sample-notes/caching-basics" description="Hits, misses, TTLs and the common caching strategies." />
+  <Card title="DNS basics" href="/docs/sample-notes/dns-basics" description="How a name becomes an address, and where answers are cached." />
+</Cards>
+
+## Cards without descriptions
+
+<Cards>
+  <Card title="Typography" href="/docs/markdown/typography" />
+  <Card title="Lists" href="/docs/markdown/lists" />
+  <Card title="Code" href="/docs/markdown/code" />
+  <Card title="Tables" href="/docs/markdown/tables" />
+</Cards>
+
+## External link cards
+
+<Cards>
+  <Card title="Fumadocs" href="https://fumadocs.dev" description="The documentation framework these sites are built on." />
+  <Card title="Tailwind CSS" href="https://tailwindcss.com" description="The CSS framework behind the theme." />
+</Cards>
+
+## Card with no link
+
+<Cards>
+  <Card title="Not a link">A card with body text and no link. It should not look clickable.</Card>
+</Cards>
+
+## Single card
+
+<Cards>
+  <Card title="Read next: Tabs and steps" href="/docs/components/tabs-and-steps" description="One card on its own, as at the end of a note." />
+</Cards>

@@ -1,0 +1,5 @@
+{
+  "title": "Sample notes",
+  "defaultOpen": true,
+  "pages": ["caching-basics", "dns-basics"]
+}

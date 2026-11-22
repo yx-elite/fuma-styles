@@ -1,0 +1,17 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="720" height="260" viewBox="0 0 720 260" font-family="ui-sans-serif, system-ui, sans-serif" font-size="15">
+  <rect width="720" height="260" rx="16" fill="#8881"/>
+  <g fill="none" stroke="#888" stroke-width="2">
+    <rect x="40" y="90" width="160" height="80" rx="10"/>
+    <rect x="280" y="90" width="160" height="80" rx="10"/>
+    <rect x="520" y="90" width="160" height="80" rx="10"/>
+    <path d="M200 130h72M440 130h72"/>
+    <path d="M264 124l8 6-8 6M504 124l8 6-8 6"/>
+  </g>
+  <g fill="#888" text-anchor="middle">
+    <text x="120" y="135">Client</text>
+    <text x="360" y="135">Cache</text>
+    <text x="600" y="135">Origin</text>
+    <text x="236" y="118" font-size="12">request</text>
+    <text x="476" y="118" font-size="12">miss</text>
+  </g>
+</svg>

@@ -1,0 +1,51 @@
+---
+title: Links and images
+description: Internal and external links, autolinks, footnotes, images, captions and zoom.
+---
+
+Links connect notes to each other and to sources. Images and diagrams explain what text cannot.
+
+## Links
+
+- An internal link to [Lists](/docs/markdown/lists).
+- A relative link to the [Code page](./code).
+- A link to a heading on another page: [term and meaning lists](/docs/markdown/lists#term-and-meaning-lists).
+- A link to a heading on this page: [Images](#images).
+- An external link to [the Fumadocs documentation](https://fumadocs.dev).
+- An autolink: https://example.com
+- A link with a title on hover: [Example](https://example.com "Example domain").
+
+Links inside a paragraph should be easy to spot without shouting: the [origin](/docs/sample-notes/caching-basics) is where the real data lives, and [DNS](/docs/sample-notes/dns-basics) turns names into addresses. A **[bold link](/docs/markdown/typography)** and a link with `[inline code](/docs/markdown/code)` look like [`this`](/docs/markdown/code).
+
+## Footnotes
+
+Caches trade freshness for speed[^1]. DNS answers are cached at several levels[^dns], each with its own expiry.
+
+[^1]: A stale entry is one whose original has changed since it was cached.
+
+[^dns]: The browser, the operating system and the resolver can all hold a copy.
+
+## Images
+
+A plain image (click it to zoom):
+
+![A client asks a cache, which asks the origin on a miss](/sample-diagram.svg)
+
+## Image with a caption
+
+<figure>
+
+![A client asks a cache, which asks the origin on a miss](/sample-diagram.svg)
+
+<figcaption>On a miss, the cache fetches from the origin and keeps a copy.</figcaption>
+
+</figure>
+
+## Image inside a list
+
+1. The client sends a request.
+2. The cache answers or forwards it:
+
+   ![A client asks a cache, which asks the origin on a miss](/sample-diagram.svg)
+
+3. The client gets its answer.

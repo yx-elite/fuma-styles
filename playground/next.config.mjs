@@ -6,6 +6,8 @@ const withMDX = createMDX();
 const config = {
   output: 'export',
   reactStrictMode: true,
+  // Static export has no image server, so images are served as-is
+  images: { unoptimized: true },
 };
 
 export default withMDX(config);

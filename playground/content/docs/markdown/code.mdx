@@ -1,0 +1,152 @@
+---
+title: Code
+description: Inline code, code blocks in several languages, titles, line numbers, highlights, diffs, focus, long lines and code tabs.
+---
+
+Code blocks appear in labs and reference notes. They need a clear frame, readable colours in both modes, and a copy button.
+
+## Inline code
+
+Run `npm install` from the repo root, then open `http://localhost:3000`.
+
+## Plain code block
+
+```
+No language set, so no colours.
+Just monospaced text in a box.
+```
+
+## Languages
+
+```bash
+# Look up a domain and show only the answer
+dig +short example.com
+aws s3 ls s3://example-bucket --region ap-southeast-1
+```
+
+```ts
+type CacheEntry<T> = {
+  value: T;
+  expiresAt: number;
+};
+
+export function isFresh<T>(entry: CacheEntry<T>, now = Date.now()): boolean {
+  return entry.expiresAt > now;
+}
+```
+
+```tsx
+export function Badge({ label }: { label: string }) {
+  return <span className="rounded-md border px-2 py-0.5 text-sm">{label}</span>;
+}
+```
+
+```json
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::example-bucket/*"
+    }
+  ]
+}
+```
+
+```yaml
+name: deploy
+on:
+  push:
+    branches: [main]
+jobs:
+  build:
+    runs-on: ubuntu-latest
+```
+
+```css
+:root {
+  --fs-accent: hsl(217, 100%, 58%);
+}
+```
+
+```python
+def is_fresh(expires_at: float, now: float) -> bool:
+    return expires_at > now
+```
+
+## Title
+
+```ts title="lib/cache.ts"
+export const DEFAULT_TTL_SECONDS = 300;
+```
+
+## Line numbers
+
+```ts lineNumbers
+const a = 1;
+const b = 2;
+const c = a + b;
+console.log(c);
+```
+
+## Highlighted lines
+
+```ts
+const ttl = 300;
+const maxAge = ttl * 2; // [!code highlight]
+const staleWhileRevalidate = 60;
+```
+
+## Highlighted word
+
+```ts
+// [!code word:ttl]
+const ttl = 300;
+setCache('key', value, { ttl });
+```
+
+## Diff
+
+```ts
+function getTtl() {
+  return 60; // [!code --]
+  return 300; // [!code ++]
+}
+```
+
+## Focus
+
+```ts
+const config = {
+  region: 'ap-southeast-1',
+  ttl: 300, // [!code focus]
+  retries: 3,
+};
+```
+
+## Long lines
+
+```bash
+aws cloudfront create-invalidation --distribution-id EXAMPLE123456 --paths "/docs/*" "/index.html" "/assets/*" --output json
+```
+
+## Code tabs
+
+```ts tab="TypeScript"
+const ttl: number = 300;
+```
+
+```js tab="JavaScript"
+const ttl = 300;
+```
+
+```python tab="Python"
+ttl = 300
+```
+
+## Package manager tabs
+
+```npm
+npm install @yx-elite/fuma-styles
+```

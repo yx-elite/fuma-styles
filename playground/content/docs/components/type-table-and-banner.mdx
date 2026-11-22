@@ -1,0 +1,39 @@
+---
+title: Type table and banner
+description: A property reference table, and banners for page-level notices.
+---
+
+Type tables list the options of something, with their types and defaults. Banners show a notice across the top of a page.
+
+## Type table
+
+<TypeTable
+  type={{
+    title: {
+      description: 'The site name, shown in the sidebar and browser tab.',
+      type: 'string',
+      required: true,
+    },
+    subdomain: {
+      description: 'Where the site is hosted, e.g. saa for saa.example.com.',
+      type: 'string',
+      required: true,
+    },
+    accent: {
+      description: 'The accent colour for links, active items and the page glow.',
+      type: 'string',
+      default: "'hsl(217, 100%, 58%)'",
+    },
+    showGrid: {
+      description: 'Whether the decorative grid is drawn behind the top of each page.',
+      type: 'boolean',
+      default: 'true',
+    },
+  }}
+/>
+
+## Banner
+
+<Banner>A banner for a page-wide notice, such as notes that are still in progress.</Banner>
+
+<Banner variant="rainbow">The rainbow variant of the banner.</Banner>
