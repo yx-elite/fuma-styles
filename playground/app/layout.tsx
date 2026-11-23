@@ -1,5 +1,6 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import { Provider } from '@/components/provider';
+import { AccentPicker, AccentPickerScript } from '@/kit/accent-picker';
 import { SiteStyle } from '@/kit/site';
 import { PageTransitions } from '@/kit/transitions';
 import site from '@/site.config';
@@ -13,10 +14,13 @@ export default function Layout({ children }: LayoutProps<'/'>) {
   return (
     <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
+        <AccentPickerScript />
         <SiteStyle site={site} />
         <Provider>
           <PageTransitions />
           {children}
+          {/* demo only: lets visitors try other accents; notes sites leave this out */}
+          <AccentPicker />
         </Provider>
       </body>
     </html>
