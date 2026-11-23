@@ -67,5 +67,5 @@ export function TabletMenu() {
     };
   }, []);
 
-  return null;
+  return <div className="ns-menu-dim" aria-hidden="true" />;
 }

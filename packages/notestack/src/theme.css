@@ -338,9 +338,29 @@ div[style*='--callout-color']:has(> [role='none']) > div:last-child > div {
   color: color-mix(in oklab, var(--color-fd-foreground) 82%, transparent);
 }
 
-/* Images in notes: rounded like code blocks and cards (Obsidian-style diagrams have square corners) */
+/*
+ * Images in notes: rounded like code blocks and cards, and centred in the space they
+ * have (inside a list, that's the item's text column, so they line up with the item).
+ */
 .prose img {
   border-radius: 0.75rem;
+  margin-inline: auto;
+}
+
+/* Image captions, centred under the image (code-block file names are figcaptions too: left alone) */
+.prose figure:has(img) > figcaption {
+  text-align: center;
+}
+
+/*
+ * Light and dark versions of one image: name them name.light.svg and name.dark.svg
+ * and place both, one after the other. Only the one for the current mode shows.
+ * (An <img> can't see the page's dark mode itself.) The zoom wrapper Fumadocs puts
+ * around each image is hidden with it, so no empty gap is left.
+ */
+html.dark :is(img[src*='.light.'], span:has(img[src*='.light.']):not(:has(img[src*='.dark.']))),
+html:not(.dark) :is(img[src*='.dark.'], span:has(img[src*='.dark.']):not(:has(img[src*='.light.']))) {
+  display: none;
 }
 
 /*
@@ -470,7 +490,6 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
 :is(#nd-subnav, #nd-nav) {
   z-index: 40; /* above the sticky sidebar (z-20), also during over-scroll bounce */
   backdrop-filter: blur(12px);
-  view-transition-name: ns-header; /* stays in place while the page changes */
 }
 
 /* Once scrolled: a light tint, so the page stays visible (blurred) behind the header */
@@ -573,6 +592,11 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
   }
 }
 
+/* Tablet menu's dim layer: only used at tablet width (below) */
+.ns-menu-dim {
+  display: none;
+}
+
 /*
  * Tablets in portrait (768–1023px, e.g. iPads): no sidebar column. The sidebar
  * collapses into the slide-in menu (as on phones), opened from the menu button
@@ -599,20 +623,40 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
     visibility: hidden;
     transition:
       transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s ease,
       visibility 0s 0.4s;
   }
 
   html[data-ns-menu='open'] #nd-notebook-layout > div:has(> #nd-sidebar) {
     transform: none;
     visibility: visible;
-    /* the huge second shadow dims the whole page behind the panel (and stays behind it) */
-    box-shadow:
-      -24px 0 48px -16px rgb(0 0 0 / 0.5),
-      0 0 0 100vmax rgb(0 0 0 / 0.4);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  }
+
+  /*
+   * The dimmed page behind the panel: its own still layer that only fades, like
+   * Fumadocs' phone menu. (Drawn as a huge shadow on the panel before, it moved with
+   * the panel and its edge swept across the screen as the menu opened.)
+   * Rendered by <TabletMenu />; just under the panel, over the header.
+   */
+  .ns-menu-dim {
+    display: block;
+    position: fixed;
+    inset: 0;
+    z-index: 49;
+    background: rgb(0 0 0 / 0.4);
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
     transition:
-      transform 0.4s cubic-bezier(0.16, 1, 0.3, 1),
-      box-shadow 0.4s ease;
+      opacity 0.3s ease,
+      visibility 0s 0.3s;
+  }
+
+  html[data-ns-menu='open'] .ns-menu-dim {
+    opacity: 1;
+    visibility: visible;
+    pointer-events: auto;
+    transition: opacity 0.3s ease;
   }
 
   /* show the menu button, but not the phone-only search icon (the full search box is visible).
@@ -851,14 +895,21 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
  * Only opacity and transform are animated, so the GPU does the work.
  */
 
-#nd-notebook-layout #nd-sidebar { view-transition-name: ns-sidebar; }
-#nd-notebook-layout #nd-toc { view-transition-name: ns-toc; }
-#nd-notebook-layout #nd-page { view-transition-name: ns-page; }
-.ns-home-root { view-transition-name: ns-home; }
-#nd-subnav a:has(.ns-nav-name) { view-transition-name: ns-nav-title; }
-#nd-subnav button:has(kbd) { view-transition-name: ns-nav-search; }
-#nd-subnav [data-theme-toggle] { view-transition-name: ns-nav-theme; }
-#nd-subnav a[href*='github.com'] { view-transition-name: ns-nav-github; }
+/*
+ * Names only while <PageTransitions /> runs (it sets data-ns-transition on <html>).
+ * Fumadocs' theme button uses a view transition too; named elements are lifted
+ * above the rest of the page during one, so a permanent name made the page and
+ * its cards cover the open phone menu for a moment on every theme switch.
+ */
+html[data-ns-transition] :is(#nd-subnav, #nd-nav) { view-transition-name: ns-header; }
+html[data-ns-transition] #nd-notebook-layout #nd-sidebar { view-transition-name: ns-sidebar; }
+html[data-ns-transition] #nd-notebook-layout #nd-toc { view-transition-name: ns-toc; }
+html[data-ns-transition] #nd-notebook-layout #nd-page { view-transition-name: ns-page; }
+html[data-ns-transition] .ns-home-root { view-transition-name: ns-home; }
+html[data-ns-transition] #nd-subnav a:has(.ns-nav-name) { view-transition-name: ns-nav-title; }
+html[data-ns-transition] #nd-subnav button:has(kbd) { view-transition-name: ns-nav-search; }
+html[data-ns-transition] #nd-subnav [data-theme-toggle] { view-transition-name: ns-nav-theme; }
+html[data-ns-transition] #nd-subnav a[href*='github.com'] { view-transition-name: ns-nav-github; }
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
@@ -868,11 +919,12 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
   }
 
   /* Background and header bar: identical on both pages, swap instantly */
-  ::view-transition-old(root),
+  /* (root only for page changes: the theme switch keeps Fumadocs' cross-fade) */
+  :root[data-ns-transition]::view-transition-old(root),
   ::view-transition-old(ns-header) { display: none; }
-  ::view-transition-new(root),
+  :root[data-ns-transition]::view-transition-new(root),
   ::view-transition-new(ns-header),
-  ::view-transition-group(root),
+  :root[data-ns-transition]::view-transition-group(root),
   ::view-transition-group(ns-header) { animation: none; }
 
   /* Header pieces glide to their new place */

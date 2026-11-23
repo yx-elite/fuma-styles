@@ -19,6 +19,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 - `LanguageRedirect` for the page at `/`: it sends readers to the language they read last, else their browser's language, else the default. `RememberLanguage` stores the language being read.
 - Links written as `/docs/…` in notes, cards, quick links, the banner and the glossary get the page's language added (`localizeHref`). `PageTransitions` takes `languages`, and the header logo goes to the current language's home page.
 - `withoutLanguageFolder(path, site)`: on a site with `languages`, pass `{ ...page, path: withoutLanguageFolder(page.path, site) }` to Fumadocs' `createRelativeLink`, so links between notes by file path (`./other.mdx`) resolve. Fumadocs looks pages up without their language folder but keeps it in `page.path`.
+- Light and dark images: name two versions `name.light.svg` and `name.dark.svg`, place both, and only the one for the reader's mode shows (also `.png`, `.jpg`).
 
 ### Changed
 
@@ -26,7 +27,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 - Callouts: the whole box is tinted in its colour with a coloured border; the title is a small uppercase label in that colour, followed by a fading rule.
 - Cards: a soft grey gradient, lifting slightly on hover.
 - Steps: numbers in accent-tinted rings on a line that fades out towards the last step.
-- Images in notes have rounded corners.
+- Images in notes have rounded corners and are centred (inside a list, in the item's text column). Image captions are centred under them.
 - Glossary: each letter is a large serif capital over a thin line, and each entry is a full-width split row: the serif headword on the left, its definition and link on the right, lighting up with the accent on hover (stacked on phones). The sticky filter bar is solid, has a light accent wash and keeps a gap below the header.
 - Notes read like Clerk's docs: body text is a paler grey and headings are plain white with more space above them, so headings, bold words and links stand out by contrast alone.
 - Header: the language button sits between the theme switch and GitHub; both are plain icons (GitHub larger). The language menu is frosted glass with an accent wash; its items look like sidebar links (current one in the accent colour). The search box has the same rounding as the search dialog.
@@ -41,3 +42,6 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 - Glossary: terms that don't start with A–Z (digits, Chinese and other scripts) get a `#` button in the letter bar, and every term gets its own anchor. Before, they had no button, and non-Latin terms all shared the anchor `#term-`. Accented terms now file under their letter (*É* under E).
 - Tablet menu: finds and shows Fumadocs' menu button by `aria-controls` (in `TabletMenu` and in `theme.css`), so the button stays visible and working when its label is translated.
+- Switching between light and dark mode with the phone menu open no longer flashes the page and its cards over the menu. The page-transition names are now set only while a home ⇄ docs transition runs, not during Fumadocs' theme switch.
+- The package build clears `dist/` first, so compiled files of deleted sources are never published. The package now ships `src/` (so editors' *go to definition* opens the source) and its `LICENSE`.
+- Tablets in portrait (iPad): opening the menu fades the page dim in, instead of its edge sweeping across the screen. The dim is now its own still layer, rendered by `TabletMenu`, rather than a huge shadow on the sliding panel.
