@@ -1,5 +1,7 @@
 'use client';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
+import { FullSearchTrigger } from 'fumadocs-ui/layouts/shared/slots/search-trigger';
+import { PhoneSearchTrigger } from './phone-search.js';
 import { SidebarProvider, useSidebar } from 'fumadocs-ui/layouts/notebook/slots/sidebar';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
@@ -37,7 +39,7 @@ export function NotesHomeLayout({
       nav={{ title: <NavTitle site={site} />, url: localizeHref('/', site), transparentMode: 'top', mode: 'top' }}
       themeSwitch={{ mode: 'light-dark-system' }}
       githubUrl={repoUrl(site)}
-      slots={{ sidebar: homeSidebarSlots }}
+      slots={{ sidebar: homeSidebarSlots, searchTrigger: { sm: PhoneSearchTrigger, full: FullSearchTrigger } }}
     >
       {/* One wrapper for any home content, so the page transition always works */}
       <div className="ns-home-root">
