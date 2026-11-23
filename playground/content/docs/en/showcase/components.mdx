@@ -1,0 +1,199 @@
+---
+title: Components
+description: "Every component a note can use: cards, tabs, steps, accordions, files and type tables."
+icon: Blocks
+---
+
+## Cards
+
+Cards work as a visual index: the topic pages and the home page use them to point to the next thing to read.
+
+### Cards with descriptions
+
+<Cards>
+  <Card title="Installation" href="/docs/installation" description="Add the theme to a new Fumadocs app in four steps." />
+  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
+</Cards>
+
+### Cards without descriptions
+
+<Cards>
+  <Card title="Typography" href="/docs/showcase/markdown#typography" />
+  <Card title="Lists" href="/docs/showcase/markdown#lists" />
+  <Card title="Code" href="/docs/showcase/markdown#code" />
+  <Card title="Tables" href="/docs/showcase/markdown#tables" />
+</Cards>
+
+### External link cards
+
+<Cards>
+  <Card title="Fumadocs" href="https://fumadocs.dev" description="The documentation framework these sites are built on." />
+  <Card title="Tailwind CSS" href="https://tailwindcss.com" description="The CSS framework behind the theme." />
+</Cards>
+
+### Card with no link
+
+<Cards>
+  <Card title="Not a link">A card with body text and no link. It should not look clickable.</Card>
+</Cards>
+
+### Single card
+
+<Cards>
+  <Card title="Read next: Tabs and steps" href="/docs/showcase/components#tabs-and-steps" description="One card on its own, as at the end of a note." />
+</Cards>
+
+## Tabs and steps
+
+Tabs show alternatives side by side. Steps guide a reader through a process in order.
+
+### Tabs
+
+<Tabs items={['Console', 'CLI', 'Terraform']}>
+  <Tab value="Console">
+    Open the **S3** page, choose **Create bucket**, enter a name and keep the default settings.
+  </Tab>
+  <Tab value="CLI">
+    ```bash
+    aws s3 mb s3://example-bucket --region ap-southeast-1
+    ```
+  </Tab>
+  <Tab value="Terraform">
+    ```hcl
+    resource "aws_s3_bucket" "example" {
+      bucket = "example-bucket"
+    }
+    ```
+  </Tab>
+</Tabs>
+
+### Tabs with longer content
+
+<Tabs items={['Strengths', 'Weaknesses']}>
+  <Tab value="Strengths">
+    - Fast reads for repeated requests
+    - Less load on the origin
+    - Lower cost per request
+
+    A cache pays off most when the same data is read many times.
+  </Tab>
+  <Tab value="Weaknesses">
+    - Stale data until the copy expires
+    - Extra moving parts to monitor
+    - Cold start after a restart
+  </Tab>
+</Tabs>
+
+### Steps
+
+<Steps>
+  <Step>
+    ### Create the bucket
+
+    Pick a name that is unique across all accounts, and the Region closest to users.
+  </Step>
+  <Step>
+    ### Upload the site
+
+    Upload the static files, keeping the folder structure:
+
+    ```bash
+    aws s3 sync out/ s3://example-bucket --delete
+    ```
+  </Step>
+  <Step>
+    ### Point the domain at it
+
+    Add a DNS record for the domain. The change can take a few minutes to reach every resolver.
+  </Step>
+  <Step>
+    ### Check it works
+
+    Open the site in a private window, so no old copy from the browser cache is shown.
+  </Step>
+</Steps>
+
+## Accordions and files
+
+Accordions hide detail until it is needed, which suits practice questions. File trees show how a project is laid out.
+
+### Accordions
+
+<Accordions type="single">
+  <Accordion title="What is a cache hit?">
+    The requested data was found in the cache, so the origin was not asked.
+  </Accordion>
+  <Accordion title="Why can a cache return old data?">
+    Because the cached copy stays valid until its TTL runs out, even if the original has changed.
+  </Accordion>
+  <Accordion title="How can stale data be avoided?">
+    - Use a shorter TTL
+    - Clear the cached copy when the original changes
+    - Version file names, so new content gets a new URL
+  </Accordion>
+</Accordions>
+
+### Accordions open together
+
+<Accordions type="multiple">
+  <Accordion title="Question 1">Several panels can be open at the same time.</Accordion>
+  <Accordion title="Question 2">
+    An answer with code:
+
+    ```bash
+    curl -I https://example.com
+    ```
+  </Accordion>
+</Accordions>
+
+### File tree
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <File name="layout.tsx" />
+    <File name="global.css" />
+    <Folder name="docs" defaultOpen>
+      <File name="layout.tsx" />
+      <Folder name="[[...slug]]">
+        <File name="page.tsx" />
+      </Folder>
+    </Folder>
+  </Folder>
+  <Folder name="content" defaultOpen>
+    <Folder name="docs">
+      <File name="index.mdx" />
+      <File name="meta.json" />
+    </Folder>
+  </Folder>
+  <File name="package.json" />
+  <File name="site.config.ts" />
+</Files>
+
+## Type table
+
+Type tables list the options of something, with their types and defaults.
+
+<TypeTable
+  type={{
+    title: {
+      description: 'The site name, shown in the sidebar and browser tab.',
+      type: 'string',
+      required: true,
+    },
+    subdomain: {
+      description: 'Where the site is hosted, e.g. saa for saa.example.com.',
+      type: 'string',
+      required: true,
+    },
+    accent: {
+      description: 'The accent colour for links, active items and the page glow.',
+      type: 'string',
+      default: "'hsl(217, 100%, 58%)'",
+    },
+    showGrid: {
+      description: 'Whether the decorative grid is drawn behind the top of each page.',
+      type: 'boolean',
+      default: 'true',
+    },
+  }}
+/>

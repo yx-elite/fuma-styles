@@ -1,12 +1,12 @@
 [
   {"term": "Accent", "definition": "The one colour that drives the theme: links, active items, glow, banner and logo.", "href": "/docs/theme#accent-colour", "label": "Theme and accent"},
-  {"term": "Callout", "definition": "A highlighted box for a tip, warning or other aside.", "href": "/docs/showcase/quotes-and-callouts", "label": "Quotes and callouts"},
+  {"term": "Callout", "definition": "A highlighted box for a tip, warning or other aside.", "href": "/docs/showcase/markdown#quotes-and-callouts", "label": "Quotes and callouts"},
   {"term": "Frontmatter", "definition": "The block between --- lines at the top of a page, holding its title, description and icon.", "href": "/docs/writing-notes#mdx-pages", "label": "Writing notes"},
   {"term": "Fumadocs", "definition": "The documentation framework this theme is built on.", "href": "https://fumadocs.dev", "label": "fumadocs.dev"},
   {"term": "MDX", "definition": "Markdown that can also use components, such as tabs and steps.", "href": "/docs/writing-notes#mdx-pages", "label": "Writing notes"},
   {"term": "Notes site", "definition": "A site made from one subject's notes, built with Fumadocs and this theme.", "href": "/docs", "label": "Introduction"},
   {"term": "Quick links", "definition": "Fixed links under the sidebar banner, set in site.config.ts.", "href": "/docs/configuration#quick-links", "label": "Configuration"},
-  {"term": "Showcase", "definition": "The pages of this site that show every element as the theme styles it.", "href": "/docs/showcase/typography", "label": "Showcase"},
+  {"term": "Showcase", "definition": "The pages of this site that show every element as the theme styles it.", "href": "/docs/showcase/markdown#typography", "label": "Showcase"},
   {"term": "Site config", "definition": "site.config.ts: the one file each notes site edits.", "href": "/docs/configuration", "label": "Configuration"},
   {"term": "Static export", "definition": "A build made of plain files that needs no server to host.", "href": "/docs/deployment", "label": "Deployment"}
 ]

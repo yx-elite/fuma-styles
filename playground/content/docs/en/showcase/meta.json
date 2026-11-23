@@ -1,18 +1,7 @@
 {
   "title": "Showcase",
   "pages": [
-    "---Markdown---",
-    "typography",
-    "lists",
-    "links-and-images",
-    "code",
-    "tables",
-    "quotes-and-callouts",
-    "---Components---",
-    "cards",
-    "tabs-and-steps",
-    "accordions-and-files",
-    "type-table",
-    "glossary"
+    "markdown",
+    "components"
   ]
 }
