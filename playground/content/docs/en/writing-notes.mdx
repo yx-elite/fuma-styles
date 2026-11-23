@@ -39,6 +39,23 @@ To learn the syntax, see the Fumadocs guide to [writing pages](https://fumadocs.
 Commit and push to publish. Every change is kept in the history, any computer gets the notes with `git pull`, and the *Last updated* date of each page comes from its latest commit.
 </Callout>
 
+## Images and diagrams
+
+Put images in `public/` and link them from the root:
+
+```md
+![The request path](/diagrams/request-path.svg)
+```
+
+An image with a transparent background can look wrong in one of the two modes, for example dark lines on the dark page. Make two versions and name them `name.light.svg` and `name.dark.svg`. Place both, one after the other. The theme shows only the one that matches the reader's mode:
+
+```md
+![The request path](/diagrams/request-path.light.svg)
+![The request path](/diagrams/request-path.dark.svg)
+```
+
+The same works for `.png` and `.jpg` files. See it on the [Showcase](/docs/showcase/markdown#images).
+
 ## Glossary
 
 The glossary page reads a list of terms from `content/glossary.json`:
