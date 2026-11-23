@@ -23,6 +23,19 @@ export interface SiteConfig {
    * `icon` is a Lucide icon name, e.g. "House" or "BookA".
    */
   links?: { text: string; url: string; icon?: string }[];
+  /**
+   * "Get started" on the landing page: numbered steps beside a terminal that types the commands.
+   * Leave it out to show how to run this repo (clone, install, run); `false` hides the section.
+   */
+  start?: false | StartSection;
+}
+
+export interface StartSection {
+  title: string;
+  text: string;
+  steps: { title: string; text: string; command: string }[];
+  /** Last terminal line, after the commands. Default: "Ready on http://localhost:3000" */
+  done?: string;
 }
 
 export function defineSiteConfig(config: SiteConfig): SiteConfig {
