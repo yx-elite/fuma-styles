@@ -309,12 +309,13 @@ html > body[data-scroll-locked] {
       box-shadow 0.4s ease;
   }
 
-  /* show the menu button, but not the phone-only search icon (the full search box is visible) */
-  #nd-subnav div:has(> button[aria-label='Open Sidebar']) {
+  /* show the menu button, but not the phone-only search icon (the full search box is visible).
+     Matched by what it controls, not its aria-label: the label is translated on non-English sites. */
+  #nd-subnav div:has(> button[aria-controls='nd-sidebar-mobile']) {
     display: flex;
   }
 
-  #nd-subnav div:has(> button[aria-label='Open Sidebar']) > button:not([aria-label='Open Sidebar']) {
+  #nd-subnav div:has(> button[aria-controls='nd-sidebar-mobile']) > button:not([aria-controls='nd-sidebar-mobile']) {
     display: none;
   }
 }

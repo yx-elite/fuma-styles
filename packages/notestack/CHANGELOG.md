@@ -22,4 +22,4 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 ### Fixed
 
 - Glossary: terms that don't start with A–Z (digits, Chinese and other scripts) get a `#` button in the letter bar, and every term gets its own anchor. Before, they had no button, and non-Latin terms all shared the anchor `#term-`. Accented terms now file under their letter (*É* under E).
-- Tablet menu: finds Fumadocs' menu button by `aria-controls`, so it keeps working when the button's label is translated.
+- Tablet menu: finds and shows Fumadocs' menu button by `aria-controls` (in `TabletMenu` and in `theme.css`), so the button stays visible and working when its label is translated.
