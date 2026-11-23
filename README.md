@@ -14,8 +14,8 @@ A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.
 Three parts, each with one job:
 
 - **Package** → `packages/notestack/`: the theme CSS, MDX components, layouts, search and config helpers. Published to npm.
-- **Playground** → `playground/`: a full Fumadocs site that shows every component, for testing the package. Never published.
-- **Starter** → `starter/`: the small shell a new notes repo is copied from. Every file in it is a few lines that call the package.
+- **Docs site** → `playground/`: the theme's own docs, with setup guides and a showcase of every element. Deployed publicly, and used to test the package.
+- **Starter** → `starter/`: the small shell that `npm create notestack` copies into a new site. Every file in it is a few lines that call the package.
 
 All the logic lives in the package, so a notes site picks up new styles and fixes with a normal dependency update. The starter is copied only once, when a site is created.
 
@@ -28,8 +28,8 @@ notestack/
 ├── AGENTS.md                 ← working rules for this repo
 ├── CLAUDE.md
 ├── package.json              ← npm workspaces root (private)
-├── playground/               ← test site
-├── packages/notestack/       ← the npm package (coming next)
+├── playground/               ← docs site and test site
+├── packages/notestack/       ← the npm package (theme.css so far)
 └── starter/                  ← template for new notes sites (planned)
 ```
 
@@ -48,9 +48,9 @@ npm run build      # static export of the playground into playground/out/
 Planned, once the starter and the first npm release exist:
 
 ```bash
-npx giget@latest gh:yx-elite/notestack/starter my-notes
+npm create notestack@latest my-notes
 cd my-notes
-npm install
+npm run dev
 ```
 
 Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export, hosted on S3 behind Cloudflare.
@@ -58,11 +58,12 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 ## Roadmap
 
 1. **Scaffold** → workspace and playground. ✅
-2. **Package skeleton** → `@yx-elite/notestack` wired into the playground.
-3. **Starter** → the thin template for notes sites.
-4. **CI and first release** → `0.1.0` on npm.
-5. **First real site** → the AWS SAA handbook.
-6. **Styling** → the actual look.
+2. **Design** → the look, layout and landing page, prototyped in the playground. ✅ (mostly)
+3. **Package** → move the prototype code into `@yx-elite/notestack`.
+4. **Languages** → optional translations, English only by default.
+5. **Starter and `npm create notestack`** → a new site in one command.
+6. **CI and first release** → `0.1.0` on npm, docs site deployed.
+7. **First real site** → the AWS SAA handbook.
 
 ## License
 

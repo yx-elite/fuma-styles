@@ -11,8 +11,11 @@ It has three parts, and each has one job:
 | Part | Path | Job | Published? |
 | --- | --- | --- | --- |
 | Package | `packages/notestack/` | All styling and all logic: theme CSS, MDX components, layouts, page factories, static search, config helpers | Yes, to npm |
-| Playground | `playground/` | A full Fumadocs site that shows every component and edge case, for testing the package | No |
-| Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied with `giget`) |
+| Docs site | `playground/` | The theme's public docs: setup and migration guides, plus a showcase of every component and edge case. Also the test site for the package | Deployed, not on npm |
+| Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
+| Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
+
+Status: only `packages/notestack/src/theme.css` and `playground/` exist so far. The rest is planned; see `PRD.md`.
 
 ## Fumadocs docs
 
@@ -47,22 +50,25 @@ notestack/
 ├── package.json              ← private npm workspaces root
 ├── AGENTS.md · CLAUDE.md · README.md · LICENSE
 ├── PRD.md                    ← local only, not committed
-├── .github/workflows/
+├── .github/workflows/        ← (planned)
 │   ├── ci.yml                ← builds package, playground and starter on every push
 │   └── deploy-s3.yml         ← reusable deploy workflow that notes repos call
+├── packages/create-notestack/ ← (planned) the `npm create notestack` command
 ├── packages/notestack/       ← @yx-elite/notestack
 │   ├── package.json · tsconfig.json · README.md · CHANGELOG.md
 │   └── src/
 │       ├── theme.css         ← tokens, fonts, numbered headings, @source for Tailwind
-│       ├── components/       ← Box, Step, Figure, KeyIdea, Calc, Checklist, Term
-│       ├── layouts/          ← header/footer/sidebar options, HomePage, GlossaryPage
+│       ├── components/       ← Glossary and other MDX components
+│       ├── layouts/          ← notes layout, home layout, landing page, banner, links
 │       ├── pages/            ← docs page factory (page, metadata, static params)
+│       ├── source/           ← source plugins, last-updated dates, Obsidian vault slugs
 │       ├── search/           ← static search route + client options
 │       ├── config/           ← defineSiteConfig, Next.js config helper
 │       ├── mdx.tsx           ← getMDXComponents(): every component for MDX
 │       └── index.ts          ← public exports
-├── playground/               ← Fumadocs site that consumes the package via the workspace
-└── starter/                  ← thin shell for new notes repos
+├── playground/               ← docs site; consumes the package via the workspace
+│   └── kit/                  ← design-phase prototypes, moving into packages/notestack/src/
+└── starter/                  ← (planned) thin shell for new notes repos
 ```
 
 ## Package rules
@@ -97,18 +103,27 @@ The maintainer runs installs, builds and publishes themselves. Give the exact co
 
 All commands run from the repo root (npm workspaces):
 
+Today:
+
 ```bash
 npm install                                   # install every workspace
-npm run build -w @yx-elite/notestack        # compile the package to dist/
-npm run dev -w playground                     # playground at localhost:3000
-npm run build -w playground                   # static export of the playground
+npm run dev                                   # playground at localhost:3000
+npm run build                                 # static export of the playground
+npm run types:check -w playground             # type-check the playground
+```
+
+Once the package has a build and the starter exists, add these root scripts:
+
+```bash
+npm run build -w @yx-elite/notestack          # compile the package to dist/
 npm run build -w starter                      # static export of the starter (the real consumer test)
-npm run build                                 # all of the above, in order
+npm run typecheck                             # type-check every workspace
+npm run build                                 # package, then playground, then starter
 ```
 
 **Stale dev cache.** Turbopack keeps its dev cache on disk in `playground/.next/`, across restarts, and doesn't notice packages appearing in `node_modules` (e.g. after `npm install` links a workspace). If the dev server keeps showing an error that a fresh `npm run build` doesn't, stop it, delete `playground/.next/` and start again. Don't add config to work around it.
 
-Before calling a change done, all of these must pass: the package build, `npm run typecheck`, and the static export of both the playground and the starter.
+Before calling a change done, everything that exists from this list must pass: the package build, the type check, and the static export of the playground and the starter.
 
 ## Versions and publishing
 

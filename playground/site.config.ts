@@ -18,12 +18,10 @@ export default defineSiteConfig({
   // This playground is the theme's demo, so it shows how to install the theme
   start: {
     title: 'Turn your notes into a site like this',
-    text: 'Start from a plain Fumadocs app, add the theme, and let it set up the files. Your notes stay plain Markdown.',
+    text: 'One command makes a Fumadocs site with the theme already set up. Your notes stay plain Markdown.',
     steps: [
-      { title: 'Create a Fumadocs app', text: 'Pick Next.js and Fumadocs MDX when asked.', command: 'npm create fumadocs-app@latest my-notes' },
-      { title: 'Add the theme', text: 'Installs @yx-elite/notestack from npm.', command: 'cd my-notes && npm install @yx-elite/notestack' },
-      { title: 'Apply it', text: 'Writes site.config.ts and points the app files at the theme.', command: 'npx notestack init' },
-      { title: 'Start writing', text: 'Open localhost:3000. Edit site.config.ts for your name, links and accent.', command: 'npm run dev' },
+      { title: 'Create the site', text: 'Makes my-notes/ and installs @yx-elite/notestack.', command: 'npm create notestack@latest my-notes' },
+      { title: 'Start writing', text: 'Open localhost:3000. Edit site.config.ts for your name, links and accent.', command: 'cd my-notes && npm run dev' },
     ],
   },
 });
