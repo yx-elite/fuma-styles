@@ -15,11 +15,11 @@ const normalize = (path: string) => (path.length > 1 ? path.replace(/\/$/, '') :
  * Fixed links under the sidebar banner (e.g. Home, Glossary). They sit outside
  * the scrolling page list, so the pinned current page never slides over them.
  */
-export function SidebarLinks({ items }: { items: SidebarLinkItem[] }) {
+export function SidebarLinks({ items, label = 'Quick links' }: { items: SidebarLinkItem[]; label?: string }) {
   const pathname = normalize(usePathname());
 
   return (
-    <nav className="ns-links" aria-label="Quick links">
+    <nav className="ns-links" aria-label={label}>
       {items.map((item) => (
         <Link
           key={item.url}

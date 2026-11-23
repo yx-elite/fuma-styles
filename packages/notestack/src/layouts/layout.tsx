@@ -8,6 +8,7 @@ import { SidebarBanner } from './sidebar-banner.js';
 import { SidebarLinks } from './sidebar-links.js';
 import { TabletMenu } from './tablet-menu.js';
 import { repoUrl, type SiteConfig } from '../config/site.js';
+import { notesText } from '../i18n/index.js';
 
 /** Shared header options: the same header on the home page and in the docs */
 export function baseOptions(site: SiteConfig): BaseLayoutProps {
@@ -51,7 +52,7 @@ export function NotesLayout({
         banner: (
           <>
             <SidebarBanner site={site} />
-            {links.length > 0 && <SidebarLinks items={links} />}
+            {links.length > 0 && <SidebarLinks items={links} label={notesText(site).quickLinks} />}
           </>
         ),
       }}

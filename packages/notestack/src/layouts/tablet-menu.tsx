@@ -3,7 +3,9 @@ import { usePathname } from 'fumadocs-core/framework';
 import { useEffect } from 'react';
 
 const TABLET = '(min-width: 768px) and (max-width: 1023px)';
-const TRIGGER = '#nd-subnav button[aria-label="Open Sidebar"]';
+// Fumadocs' menu button. Found by what it controls, not its aria-label: the label is
+// translated ("打开侧边栏" on a Chinese site) and switches to "Close Sidebar" when open.
+const TRIGGER = '#nd-subnav button[aria-controls="nd-sidebar-mobile"]';
 
 /**
  * Tablets in portrait (768–1023px, e.g. iPads): the sidebar becomes a panel that

@@ -5,6 +5,8 @@ import type { HomeGroup } from './home.js';
 import { lucideIcon } from './layout.js';
 import { NotesLogo } from './logo.js';
 import type { SiteConfig } from '../config/site.js';
+import { en, type NotesText } from '../i18n/text.js';
+import { fill } from '../i18n/index.js';
 
 const MAX_SIDEBAR_ROWS = 14;
 const width = (w: number) => ({ '--w': `${w}%` }) as CSSProperties;
@@ -16,7 +18,17 @@ const width = (w: number) => ({ '--w': `${w}%` }) as CSSProperties;
  * with no screenshot to keep up to date. The whole frame links to the first page.
  * <HomeEffects /> tilts it back as it scrolls into view; a light runs around its border.
  */
-export function DocsPreview({ site, groups, href }: { site: SiteConfig; groups: HomeGroup[]; href: string }) {
+export function DocsPreview({
+  site,
+  groups,
+  href,
+  text = en,
+}: {
+  site: SiteConfig;
+  groups: HomeGroup[];
+  href: string;
+  text?: Pick<NotesText, 'openDocs' | 'onThisPage'>;
+}) {
   const first = groups[0]?.pages[0];
   const path = href.replace(/\/$/, '') + '/';
 
@@ -28,7 +40,7 @@ export function DocsPreview({ site, groups, href }: { site: SiteConfig; groups: 
   }
 
   return (
-    <Link href={href} className="ns-preview" aria-label={`Open the docs: ${site.name}`}>
+    <Link href={href} className="ns-preview" aria-label={fill(text.openDocs, { name: site.name })}>
       {/* a light that runs around the border (theme.css: .ns-preview-beam) */}
       <span className="ns-preview-beam" aria-hidden />
       <div className="ns-preview-screen" aria-hidden>
@@ -124,7 +136,7 @@ export function DocsPreview({ site, groups, href }: { site: SiteConfig; groups: 
           </div>
 
           <div className="ns-preview-toc">
-            <span className="ns-preview-toc-title">On this page</span>
+            <span className="ns-preview-toc-title">{text.onThisPage}</span>
             <span className="ns-preview-toc-items">
               <span className="ns-preview-line" data-active style={width(70)} />
               <span className="ns-preview-line" style={width(85)} />

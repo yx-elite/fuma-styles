@@ -3,7 +3,15 @@ import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 /** Copies `text` to the clipboard and shows a tick for a moment. */
-export function CopyButton({ text, label = 'Copy' }: { text: string; label?: string }) {
+export function CopyButton({
+  text,
+  label = 'Copy',
+  copiedLabel = 'Copied',
+}: {
+  text: string;
+  label?: string;
+  copiedLabel?: string;
+}) {
   const [copied, setCopied] = useState(false);
 
   useEffect(() => {
@@ -16,7 +24,7 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
     <button
       type="button"
       className="ns-copy"
-      aria-label={copied ? 'Copied' : label}
+      aria-label={copied ? copiedLabel : label}
       data-copied={copied}
       onClick={() => {
         // The clipboard only works on https or localhost; elsewhere the button just does nothing

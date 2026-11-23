@@ -1,6 +1,8 @@
-import { getMDXComponents } from '@yx-elite/notestack/mdx';
+import { getMDXComponents as notesMDXComponents } from '@yx-elite/notestack/mdx';
+import type { MDXComponents } from 'mdx/types';
+import site from '@/site.config';
 
-export { getMDXComponents };
+export const getMDXComponents = (components?: MDXComponents) => notesMDXComponents(components, { site });
 export const useMDXComponents = getMDXComponents;
 
 declare global {

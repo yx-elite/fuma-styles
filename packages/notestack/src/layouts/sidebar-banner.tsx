@@ -1,9 +1,10 @@
 import { BookOpen } from 'lucide-react';
 import { repoUrl, type SiteConfig } from '../config/site.js';
+import { notesText } from '../i18n/index.js';
 
 /** Top-left box in the sidebar: the subject, its one-line description and a link */
 export function SidebarBanner({ site }: { site: SiteConfig }) {
-  const link = site.bannerLink ?? { label: 'View on GitHub', href: repoUrl(site) };
+  const link = site.bannerLink ?? { label: notesText(site).viewOnGitHub, href: repoUrl(site) };
   const external = /^https?:\/\//.test(link.href);
 
   return (

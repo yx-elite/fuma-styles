@@ -15,10 +15,14 @@ export { notesStack } from './layouts/stack.js';
 export type { StackItem } from './layouts/stack.js';
 
 export { AccentPicker, AccentPickerScript, accentSwatches } from './components/accent-picker.js';
-export type { AccentSwatch } from './components/accent-picker.js';
+export type { AccentSwatch, AccentPickerText } from './components/accent-picker.js';
 export { CopyButton } from './components/copy-button.js';
 export { Glossary } from './components/glossary.js';
-export type { GlossaryTerm } from './components/glossary.js';
+export type { GlossaryTerm, GlossaryText } from './components/glossary.js';
 export { SearchButton } from './components/search-button.js';
 
 export { LastUpdated, notesPageProps } from './pages/page.js';
+
+export { notesText, fill, fillNodes, plural, formatDate } from './i18n/index.js';
+export type { NotesText, Plural, LanguageConfig } from './i18n/index.js';
+export { notesI18n } from './i18n/fumadocs.js';

@@ -1,6 +1,6 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import { Provider } from '@/components/provider';
-import { AccentPicker, AccentPickerScript, PageTransitions, SiteStyle } from '@yx-elite/notestack';
+import { AccentPicker, AccentPickerScript, notesI18n, notesText, PageTransitions, SiteStyle } from '@yx-elite/notestack';
 import site from '@/site.config';
 import './global.css';
 
@@ -10,15 +10,15 @@ const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
 
 export default function Layout({ children }: LayoutProps<'/'>) {
   return (
-    <html lang="en" className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
+    <html lang={site.language ?? 'en'} className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
       <body className="flex flex-col min-h-screen">
         <AccentPickerScript />
         <SiteStyle site={site} />
-        <Provider>
+        <Provider i18n={notesI18n(site)}>
           <PageTransitions />
           {children}
           {/* demo only: lets visitors try other accents; notes sites leave this out */}
-          <AccentPicker />
+          <AccentPicker text={notesText(site)} />
         </Provider>
       </body>
     </html>

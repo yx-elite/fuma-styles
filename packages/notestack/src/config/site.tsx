@@ -1,3 +1,5 @@
+import type { NotesText } from '../i18n/text.js';
+
 /** Everything that differs between notes sites. Lives in each repo's site.config.ts. */
 export interface SiteConfig {
   /** Notes name, shown in the header and the sidebar banner, e.g. "AWS SAA-C03 Handbook" */
@@ -26,6 +28,15 @@ export interface SiteConfig {
    * Leave it out to show how to run this repo (clone, install, run); `false` hides the section.
    */
   start?: false | StartSection;
+  /**
+   * The language the notes are written in, as a BCP 47 tag: "en" (default), "zh-CN"…
+   * Sets <html lang>, date formats, Fumadocs' text and Notestack's text.
+   * Notestack's text ships in English and Simplified Chinese; other languages show
+   * English unless you fill in `text`.
+   */
+  language?: string;
+  /** Change any of Notestack's text, e.g. { startReading: 'Read the notes' } */
+  text?: Partial<NotesText>;
 }
 
 export interface StartSection {

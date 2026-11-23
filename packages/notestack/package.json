@@ -44,6 +44,7 @@
     "dev": "tsc --watch"
   },
   "dependencies": {
+    "@fumadocs/language": "^0.2.21",
     "lucide-react": "^1.71.0"
   },
   "peerDependencies": {

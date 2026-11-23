@@ -15,6 +15,7 @@ import * as ObsidianComponents from 'fumadocs-obsidian/ui';
 import { getPageImageUrl, gitConfig } from '@/lib/shared';
 import { notesPageProps } from '@yx-elite/notestack';
 import { pageLastModified } from '@yx-elite/notestack/source';
+import site from '@/site.config';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;
@@ -48,7 +49,7 @@ export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const markdownUrl = `/llms.mdx${page.url}.md`;
 
   return (
-    <DocsPage full={full} {...notesPageProps({ toc, lastModified: pageLastModified(page) })}>
+    <DocsPage full={full} {...notesPageProps({ toc, lastModified: pageLastModified(page), site })}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">

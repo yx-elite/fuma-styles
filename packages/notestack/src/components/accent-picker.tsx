@@ -1,6 +1,7 @@
 'use client';
 import { Check, Palette, RotateCcw } from 'lucide-react';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import { en, type NotesText } from '../i18n/text.js';
 
 export interface AccentSwatch {
   name: string;
@@ -71,7 +72,19 @@ export function AccentPickerScript() {
  * kept in this browser only (localStorage); "Reset" goes back to the
  * site's own accent. Opt-in: notes sites leave it out.
  */
-export function AccentPicker({ swatches = accentSwatches }: { swatches?: AccentSwatch[] }) {
+export type AccentPickerText = Pick<
+  NotesText,
+  'accent' | 'accentPanel' | 'accentOpen' | 'accentReset' | 'accentCustom' | 'accentNote'
+>;
+
+export function AccentPicker({
+  swatches = accentSwatches,
+  text = en,
+}: {
+  swatches?: AccentSwatch[];
+  /** Labels; pass notesText(site) for the site's language */
+  text?: AccentPickerText;
+}) {
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState<Picked | null>(null);
   const root = useRef<HTMLDivElement>(null);
@@ -107,12 +120,12 @@ export function AccentPicker({ swatches = accentSwatches }: { swatches?: AccentS
   return (
     <div ref={root} className="ns-picker" data-open={open}>
       {open && (
-        <div className="ns-picker-panel" role="dialog" aria-label="Accent colour">
+        <div className="ns-picker-panel" role="dialog" aria-label={text.accentPanel}>
           <div className="ns-picker-head">
-            <span>Accent</span>
+            <span>{text.accent}</span>
             <button type="button" className="ns-picker-reset" onClick={() => choose(null)} disabled={!picked}>
               <RotateCcw />
-              Reset
+              {text.accentReset}
             </button>
           </div>
           <div className="ns-picker-swatches">
@@ -136,15 +149,15 @@ export function AccentPicker({ swatches = accentSwatches }: { swatches?: AccentS
           </div>
           <label className="ns-picker-custom">
             <input type="color" defaultValue={picked?.light ?? '#0092b3'} onChange={(e) => custom(e.target.value)} />
-            Custom colour
+            {text.accentCustom}
           </label>
-          <p className="ns-picker-note">Only changes this browser. The site&apos;s own accent comes from site.config.ts.</p>
+          <p className="ns-picker-note">{text.accentNote}</p>
         </div>
       )}
       <button
         type="button"
         className="ns-picker-button"
-        aria-label="Change the accent colour"
+        aria-label={text.accentOpen}
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}
       >

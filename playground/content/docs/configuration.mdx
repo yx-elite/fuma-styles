@@ -73,12 +73,49 @@ export default defineSiteConfig({
       description: 'The "Get started" section of the landing page. Leave it out to show how to run the repo; false hides it.',
       type: 'false | StartSection',
     },
+    language: {
+      description: 'The language your notes are written in, such as en or zh-CN. Sets the page language, date formats and all of the theme\'s text.',
+      type: 'string',
+      default: "'en'",
+    },
+    text: {
+      description: 'Change any of the theme\'s own text, such as the landing page buttons. Keys and English values are listed in the package\'s NotesText type.',
+      type: 'Partial<NotesText>',
+    },
   }}
 />
 
 ## Accent colours
 
 Pick a deeper shade for light mode and a lighter one for dark mode, so text in the accent colour stays readable on both backgrounds. The theme makes a second tone from it for gradients. Try colours live with the palette button in the corner of this site, then copy the pair you like. More in [Theme and accent](/docs/theme).
+
+## Language
+
+Set `language` to the language your notes are written in. The page's `lang`, dates and every piece of text the theme shows follow it, including Fumadocs' search box, *On this page* and page buttons.
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  // …
+  language: 'zh-CN',
+});
+```
+
+The theme's own text ships in English and Simplified Chinese. Fumadocs' text also comes in Traditional Chinese and Japanese. For any other language, or to change a single phrase, fill in `text`. Anything you leave out stays in English:
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  // …
+  language: 'ms',
+  text: {
+    startReading: 'Mula membaca',
+    pageCount: { other: '{n} halaman' },
+  },
+});
+```
+
+`{n}`, `{date}` and other words in braces are filled in by the theme. A text that depends on a count takes one form per plural category of your language. English uses `one` and `other`, Chinese only `other`.
+
+One site is one language. Sites with several languages and a language switch are planned.
 
 ## Quick links
 
