@@ -1,4 +1,4 @@
-import { NotesHome } from '@/kit/home';
+import { NotesHome } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 

@@ -1,5 +1,4 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { usePathname } from 'fumadocs-core/framework';
 import type { ReactNode } from 'react';

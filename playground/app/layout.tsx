@@ -1,8 +1,6 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import { Provider } from '@/components/provider';
-import { AccentPicker, AccentPickerScript } from '@/kit/accent-picker';
-import { SiteStyle } from '@/kit/site';
-import { PageTransitions } from '@/kit/transitions';
+import { AccentPicker, AccentPickerScript, PageTransitions, SiteStyle } from '@yx-elite/notestack';
 import site from '@/site.config';
 import './global.css';
 

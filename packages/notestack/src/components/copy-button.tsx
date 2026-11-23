@@ -1,5 +1,4 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 

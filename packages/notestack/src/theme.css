@@ -14,6 +14,10 @@
 @import 'fumadocs-ui/css/black.css';
 @import 'fumadocs-ui/css/preset.css';
 
+/* Tailwind skips node_modules, so point it at the package's compiled components
+   to generate the classes they use. Relative to this file: packages/notestack/dist. */
+@source "../dist";
+
 /* ── Fonts ──────────────────────────────────────────────────────────── */
 /* Geist for text, JetBrains Mono for code, as on fumadocs.dev. The site loads them
    (next/font in app/layout.tsx) as --font-sans and --font-mono. */

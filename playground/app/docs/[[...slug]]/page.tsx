@@ -13,8 +13,8 @@ import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import * as ObsidianComponents from 'fumadocs-obsidian/ui';
 import { getPageImageUrl, gitConfig } from '@/lib/shared';
-import { notesPageProps } from '@/kit/page';
-import { pageLastModified } from '@/kit/source';
+import { notesPageProps } from '@yx-elite/notestack';
+import { pageLastModified } from '@yx-elite/notestack/source';
 
 export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
   const params = await props.params;

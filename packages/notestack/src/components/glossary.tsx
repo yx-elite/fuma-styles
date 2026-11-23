@@ -1,5 +1,4 @@
 'use client';
-// PROTOTYPE of the package's components/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { ArrowRight, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';

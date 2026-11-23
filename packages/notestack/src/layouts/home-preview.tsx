@@ -1,11 +1,10 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { Search } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
-import type { HomeGroup } from './home';
-import { lucideIcon } from './layout';
-import { NotesLogo } from './logo';
-import type { SiteConfig } from './site';
+import type { HomeGroup } from './home.js';
+import { lucideIcon } from './layout.js';
+import { NotesLogo } from './logo.js';
+import type { SiteConfig } from '../config/site.js';
 
 const MAX_SIDEBAR_ROWS = 14;
 const width = (w: number) => ({ '--w': `${w}%` }) as CSSProperties;

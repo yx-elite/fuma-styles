@@ -3,7 +3,7 @@ import { docsRoute } from './shared';
 import { defineDocs } from 'fumadocs-mdx/macro';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
 import { obsidian } from 'fumadocs-obsidian';
-import { notesSourcePlugins, urlSlugs } from '@/kit/source';
+import { notesSourcePlugins, urlSlugs } from '@yx-elite/notestack/source';
 
 const docs = defineDocs({
   dir: 'content/docs',

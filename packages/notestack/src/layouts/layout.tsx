@@ -1,14 +1,13 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { icons } from 'lucide-react';
 import { createElement, type ReactNode } from 'react';
-import { NavTitle } from './nav-title';
-import { SidebarBanner } from './sidebar-banner';
-import { SidebarLinks } from './sidebar-links';
-import { TabletMenu } from './tablet-menu';
-import { repoUrl, type SiteConfig } from './site';
+import { NavTitle } from './nav-title.js';
+import { SidebarBanner } from './sidebar-banner.js';
+import { SidebarLinks } from './sidebar-links.js';
+import { TabletMenu } from './tablet-menu.js';
+import { repoUrl, type SiteConfig } from '../config/site.js';
 
 /** Shared header options: the same header on the home page and in the docs */
 export function baseOptions(site: SiteConfig): BaseLayoutProps {

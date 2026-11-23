@@ -1,6 +1,5 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { BookOpen } from 'lucide-react';
-import { repoUrl, type SiteConfig } from './site';
+import { repoUrl, type SiteConfig } from '../config/site.js';
 
 /** Top-left box in the sidebar: the subject, its one-line description and a link */
 export function SidebarBanner({ site }: { site: SiteConfig }) {

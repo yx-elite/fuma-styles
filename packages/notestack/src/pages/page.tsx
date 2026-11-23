@@ -1,4 +1,3 @@
-// PROTOTYPE of the package's pages/ entry. Moves to packages/notestack/src/ at migration.
 import type { TOCItemType } from 'fumadocs-core/toc';
 
 /** "Last updated on 23 November 2026", shown below the previous/next buttons */

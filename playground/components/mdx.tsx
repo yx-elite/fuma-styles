@@ -1,4 +1,4 @@
-import { getMDXComponents } from '@/kit/mdx';
+import { getMDXComponents } from '@yx-elite/notestack/mdx';
 
 export { getMDXComponents };
 export const useMDXComponents = getMDXComponents;

@@ -1,5 +1,4 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { useEffect } from 'react';
 
 const ease = (t: number) => 1 - (1 - t) ** 3;

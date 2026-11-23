@@ -1,5 +1,3 @@
-// PROTOTYPE of the package's config/ entry. Moves to packages/notestack/src/ at migration.
-
 /** Everything that differs between notes sites. Lives in each repo's site.config.ts. */
 export interface SiteConfig {
   /** Notes name, shown in the header and the sidebar banner, e.g. "AWS SAA-C03 Handbook" */

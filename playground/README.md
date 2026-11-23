@@ -6,7 +6,7 @@ It is also where the theme is tested. It uses the package the same way a notes s
 
 - `content/docs/`: the docs pages (MDX).
 - `public/vault/`: a small Obsidian vault, shown under *Showcase*.
-- `kit/`: React code that is still being designed. It moves into the package; see `PRD.md` (*Design phase*).
+- `app/`, `lib/`, `components/`: thin files that import from the package, the same shape a notes site will have.
 - `site.config.ts`: the site's settings, the same file every notes site has.
 
 Run it from the **repo root**, not from this folder:

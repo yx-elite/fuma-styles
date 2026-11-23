@@ -1,4 +1,3 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { useId } from 'react';
 
 const SIDE = 13.4; // each layer: a rounded square, turned 45° and flattened to half height

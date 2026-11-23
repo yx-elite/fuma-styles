@@ -15,7 +15,7 @@ It has three parts, and each has one job:
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: only `packages/notestack/src/theme.css` and `playground/` exist so far. The rest is planned; see `PRD.md`.
+Status: the package and `playground/` exist; `starter/`, `create-notestack` and CI are planned. The rest is planned; see `PRD.md`.
 
 ## Fumadocs docs
 
@@ -61,13 +61,12 @@ notestack/
 │       ├── components/       ← Glossary and other MDX components
 │       ├── layouts/          ← notes layout, home layout, landing page, banner, links
 │       ├── pages/            ← docs page factory (page, metadata, static params)
-│       ├── source/           ← source plugins, last-updated dates, Obsidian vault slugs
-│       ├── search/           ← static search route + client options
-│       ├── config/           ← defineSiteConfig, Next.js config helper
-│       ├── mdx.tsx           ← getMDXComponents(): every component for MDX
-│       └── index.ts          ← public exports
+│       ├── source/           ← source plugins, last-updated dates, vault slugs  (@yx-elite/notestack/source, server only)
+│       ├── config/           ← SiteConfig, defineSiteConfig, SiteStyle
+│       ├── mdx.tsx           ← getMDXComponents(): every component for MDX  (@yx-elite/notestack/mdx)
+│       ├── next.ts           ← withNotestack(): Next.js config, no React  (@yx-elite/notestack/next)
+│       └── index.ts          ← public exports  (@yx-elite/notestack)
 ├── playground/               ← docs site; consumes the package via the workspace
-│   └── kit/                  ← design-phase prototypes, moving into packages/notestack/src/
 └── starter/                  ← (planned) thin shell for new notes repos
 ```
 
@@ -76,6 +75,8 @@ notestack/
 - **Peer dependencies only** for `fumadocs-ui`, `fumadocs-core`, `fumadocs-mdx`, `next`, `react` and `react-dom`. Never move them to `dependencies`: two copies of fumadocs-ui break the provider, theme and search.
 - **Build with `tsc`, no bundler.** One output file per source file in `dist/`, so `"use client"` survives.
 - **CSS is not built.** `exports["./theme.css"]` points at `./src/theme.css` and `files` includes it, so theme edits show in the playground on save. Never point it at `dist/`.
+- **Relative imports end in `.js`** (`import { NotesLogo } from './logo.js'`, even though the file is `logo.tsx`). The `./next` entry is run by plain Node, which needs the extension, and it works under Next.js too.
+- **Server-only code stays out of the main entry.** Anything that uses `node:*` goes in `src/source/` (`@yx-elite/notestack/source`), never re-exported from `src/index.ts`.
 - **`"use client"` goes on the first line** of any component that uses state, effects, browser APIs or event handlers. Keep everything else a server component.
 - **Every component is wired in three places** in the same change: exported from `src/index.ts`, added to `getMDXComponents()` in `src/mdx.tsx`, and shown on a playground page.
 - **Separate entry point for non-React code.** `next.config.mjs` in notes repos imports from `@yx-elite/notestack/next`. That entry point must never import React or a `.css` file.
@@ -103,23 +104,16 @@ The maintainer runs installs, builds and publishes themselves. Give the exact co
 
 All commands run from the repo root (npm workspaces):
 
-Today:
-
 ```bash
 npm install                                   # install every workspace
+npm run build -w @yx-elite/notestack          # compile the package to dist/ (tsc)
+npm run dev -w @yx-elite/notestack            # recompile the package on every save (tsc --watch)
 npm run dev                                   # playground at localhost:3000
-npm run build                                 # static export of the playground
-npm run types:check -w playground             # type-check the playground
+npm run build                                 # package, then static export of the playground
+npm run typecheck                             # package build, then type-check the playground
 ```
 
-Once the package has a build and the starter exists, add these root scripts:
-
-```bash
-npm run build -w @yx-elite/notestack          # compile the package to dist/
-npm run build -w starter                      # static export of the starter (the real consumer test)
-npm run typecheck                             # type-check every workspace
-npm run build                                 # package, then playground, then starter
-```
+The playground reads the package's compiled `dist/`, so while developing keep `npm run dev -w @yx-elite/notestack` running next to `npm run dev`. Once the starter exists, `build` and `typecheck` also cover it.
 
 **Stale dev cache.** Turbopack keeps its dev cache on disk in `playground/.next/`, across restarts, and doesn't notice packages appearing in `node_modules` (e.g. after `npm install` links a workspace). If the dev server keeps showing an error that a fresh `npm run build` doesn't, stop it, delete `playground/.next/` and start again. Don't add config to work around it.
 

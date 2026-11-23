@@ -1,4 +1,3 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 // Logo paths from Simple Icons 15.22.0 (https://simpleicons.org), CC0 1.0. Each is one path in a 24x24 box.
 
 export interface StackItem {

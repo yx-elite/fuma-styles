@@ -1,5 +1,4 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { Search } from 'lucide-react';
 

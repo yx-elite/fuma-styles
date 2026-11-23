@@ -1,15 +1,14 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { ArrowRight } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
-import { CopyButton } from './copy-button';
-import { DocsPreview } from './home-preview';
-import { HomeEffects } from './home-effects';
-import { SearchButton } from './search-button';
-import { pageLastModified } from './source';
-import { repoUrl, type SiteConfig, type StartSection } from './site';
-import { notesStack, type StackItem } from './stack';
+import { CopyButton } from '../components/copy-button.js';
+import { DocsPreview } from './home-preview.js';
+import { HomeEffects } from './home-effects.js';
+import { SearchButton } from '../components/search-button.js';
+import { pageLastModified } from '../source/index.js';
+import { repoUrl, type SiteConfig, type StartSection } from '../config/site.js';
+import { notesStack, type StackItem } from './stack.js';
 
 /** The parts of a Fumadocs `loader()` source the home page reads. */
 export interface HomeSource {

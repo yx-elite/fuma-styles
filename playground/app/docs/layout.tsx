@@ -1,5 +1,5 @@
 import { source } from '@/lib/source';
-import { NotesLayout } from '@/kit/layout';
+import { NotesLayout } from '@yx-elite/notestack';
 import site from '@/site.config';
 
 export default function Layout({ children }: LayoutProps<'/docs'>) {

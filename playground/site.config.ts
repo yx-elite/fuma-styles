@@ -1,4 +1,4 @@
-import { defineSiteConfig } from '@/kit/site';
+import { defineSiteConfig } from '@yx-elite/notestack';
 
 // The one file that differs per notes site.
 export default defineSiteConfig({

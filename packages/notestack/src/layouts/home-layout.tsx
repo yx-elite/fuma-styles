@@ -1,12 +1,11 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import { SidebarProvider, useSidebar } from 'fumadocs-ui/layouts/notebook/slots/sidebar';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
-import { NavTitle } from './nav-title';
-import { Spotlight } from './spotlight';
-import { repoUrl, type SiteConfig } from './site';
+import { NavTitle } from './nav-title.js';
+import { Spotlight } from './spotlight.js';
+import { repoUrl, type SiteConfig } from '../config/site.js';
 
 // No sidebar, no mobile menu button and no collapse button on the home page
 const homeSidebarSlots = {

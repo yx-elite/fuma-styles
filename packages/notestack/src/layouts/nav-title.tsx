@@ -1,6 +1,5 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
-import { NotesLogo } from './logo';
-import type { SiteConfig } from './site';
+import { NotesLogo } from './logo.js';
+import type { SiteConfig } from '../config/site.js';
 
 /** Header title: the notes mark and the notes name */
 export function NavTitle({ site }: { site: SiteConfig }) {
