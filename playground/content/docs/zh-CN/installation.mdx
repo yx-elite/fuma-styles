@@ -1,0 +1,106 @@
+---
+title: 安装
+description: 用一条命令创建笔记网站，然后开始写作。
+icon: Download
+---
+
+<Callout type="warn" title="开发中">
+`@yx-elite/notestack` 和 `create-notestack` 还没有发布。下面的步骤是第一个正式版本中的安装方式。
+</Callout>
+
+## 环境要求
+
+- [Node.js](https://nodejs.org) 22 或更高版本。
+- npm，随 Node.js 一起安装。
+- Git，如果你想在页面上显示*最后更新*日期。
+
+## 安装
+
+<Steps>
+<Step>
+
+### 创建网站
+
+```bash
+npm create notestack@latest my-notes
+```
+
+这会新建一个 `my-notes` 文件夹，里面是一个已经配置好主题的 Fumadocs 应用，并安装好依赖。
+
+</Step>
+<Step>
+
+### 启动网站
+
+```bash
+cd my-notes
+npm run dev
+```
+
+打开 [localhost:3000](http://localhost:3000)。然后在 `site.config.ts` 中填写笔记的名称、链接和强调色：见[配置](/docs/configuration)。
+
+</Step>
+<Step>
+
+### 写作
+
+把笔记放进 `content/docs/`。见[写笔记](/docs/writing-notes)。
+
+</Step>
+</Steps>
+
+## 你会得到什么
+
+只有 Next.js 和 Fumadocs 要求应用中必须存在的文件。每个文件只有几行，调用主题，所以以后的版本通过 `npm update` 就能到达你的网站：
+
+<Files>
+  <File name="site.config.ts" />
+  <Folder name="content" defaultOpen>
+    <Folder name="docs" />
+  </Folder>
+  <Folder name="app" defaultOpen>
+    <File name="global.css" />
+    <File name="layout.tsx" />
+    <Folder name="(home)" defaultOpen>
+      <File name="layout.tsx" />
+      <File name="page.tsx" />
+    </Folder>
+    <Folder name="docs" defaultOpen>
+      <File name="layout.tsx" />
+      <File name="[[...slug]]/page.tsx" />
+    </Folder>
+  </Folder>
+  <Folder name="lib" defaultOpen>
+    <File name="source.ts" />
+  </Folder>
+  <File name="next.config.mjs" />
+</Files>
+
+| 文件 | 作用 |
+| --- | --- |
+| `site.config.ts` | 网站设置。唯一需要你编辑的代码文件。 |
+| `content/docs/` | 你的笔记。 |
+| `app/global.css` | 引入 Tailwind CSS 和 `@yx-elite/notestack/theme.css`。 |
+| `app/layout.tsx` | 字体、配置中的强调色、页面过渡。 |
+| `app/(home)/…` | 首页，由你的内容生成。 |
+| `app/docs/…` | 笔记布局和页面。 |
+| `lib/source.ts` | 内容来源：MDX、Obsidian 仓库，或两者都有。 |
+| `next.config.mjs` | 静态导出设置，无需服务器即可托管。 |
+
+## 添加 Obsidian 仓库
+
+要在 MDX 页面之外（或代替它们）发布一个 Obsidian 仓库，安装 Fumadocs 的 Obsidian 集成：
+
+```bash
+npm install fumadocs-obsidian
+```
+
+然后见[写笔记](/docs/writing-notes#an-obsidian-vault)。
+
+## 更新
+
+```bash
+npm update @yx-elite/notestack
+```
+
+更新内容列在更新日志中。如果某个版本需要你修改文件，会写明具体要改什么。

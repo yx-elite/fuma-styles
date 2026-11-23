@@ -37,7 +37,21 @@ export interface SiteConfig {
   language?: string;
   /** Change any of Notestack's text, e.g. { startReading: 'Read the notes' } */
   text?: Partial<NotesText>;
+  /**
+   * Several languages in one site, e.g. ['en', 'zh-CN']; the first is the default.
+   * URLs get the language first (/en/docs/…, /zh-CN/docs/…), the header shows a
+   * language switch, and notes live in one folder per language (content/docs/en/…).
+   * Leave it out for a site in one language (see `language`).
+   */
+  languages?: string[];
+  /** Per-language versions of the site's own text, e.g. { 'zh-CN': { name: '股票交易笔记' } }. Anything left out uses the default language's value. */
+  translations?: Record<string, SiteTranslation>;
 }
+
+/** The parts of the site config that can differ per language */
+export type SiteTranslation = Partial<
+  Pick<SiteConfig, 'name' | 'author' | 'tag' | 'description' | 'bannerLink' | 'links' | 'start' | 'text'>
+>;
 
 export interface StartSection {
   title: string;

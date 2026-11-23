@@ -1,0 +1,20 @@
+{
+  "title": "组件展示",
+  "pages": [
+    "---Markdown---",
+    "typography",
+    "lists",
+    "links-and-images",
+    "code",
+    "tables",
+    "quotes-and-callouts",
+    "---组件---",
+    "cards",
+    "tabs-and-steps",
+    "accordions-and-files",
+    "type-table",
+    "glossary",
+    "---Obsidian---",
+    "Obsidian notes"
+  ]
+}

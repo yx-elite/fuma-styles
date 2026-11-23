@@ -8,13 +8,14 @@ import { SidebarBanner } from './sidebar-banner.js';
 import { SidebarLinks } from './sidebar-links.js';
 import { TabletMenu } from './tablet-menu.js';
 import { repoUrl, type SiteConfig } from '../config/site.js';
-import { notesText } from '../i18n/index.js';
+import { localizeHref, notesText } from '../i18n/index.js';
 
 /** Shared header options: the same header on the home page and in the docs */
 export function baseOptions(site: SiteConfig): BaseLayoutProps {
   return {
     // See-through until the page scrolls
-    nav: { title: <NavTitle site={site} />, transparentMode: 'top' },
+    // The logo goes to this language's home page on a site with languages
+    nav: { title: <NavTitle site={site} />, url: localizeHref('/', site), transparentMode: 'top' },
     themeSwitch: { mode: 'light-dark-system' },
     githubUrl: repoUrl(site),
   };

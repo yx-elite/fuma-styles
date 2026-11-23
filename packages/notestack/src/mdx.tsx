@@ -6,19 +6,22 @@ import { Step, Steps } from 'fumadocs-ui/components/steps';
 import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
 import type { MDXComponents } from 'mdx/types';
-import type { ComponentProps } from 'react';
+import type { ComponentProps, ComponentType } from 'react';
 import { Glossary } from './components/glossary.js';
-import { languageOf, notesText, type LanguageConfig } from './i18n/index.js';
+import { hasLanguageRoutes, languageOf, localizeHref, notesText, type LanguageConfig } from './i18n/index.js';
 
 /**
  * Every component a note can use, plus any site-specific overrides.
- * Pass `{ site }` so components with text (the glossary) use the site's language.
+ * Pass `{ site }` (on a site with `languages`, the config for the page's language)
+ * so text follows the site's language and `/docs/…` links in notes get the page's
+ * language added (`/zh-CN/docs/…`).
  */
 export function getMDXComponents(components?: MDXComponents, { site }: { site?: LanguageConfig } = {}) {
   const text = notesText(site);
   const language = languageOf(site);
+  const localize = (href: string | undefined) => localizeHref(href, site);
 
-  return {
+  const merged = {
     ...defaultMdxComponents,
     img: (props) => <ImageZoom {...(props as any)} />,
     Accordion,
@@ -26,12 +29,30 @@ export function getMDXComponents(components?: MDXComponents, { site }: { site?: 
     File,
     Files,
     Folder,
-    Glossary: (props: ComponentProps<typeof Glossary>) => <Glossary text={text} language={language} {...props} />,
+    Glossary: ({ terms, ...props }: ComponentProps<typeof Glossary>) => (
+      <Glossary
+        text={text}
+        language={language}
+        terms={terms.map((term) => ({ ...term, href: localize(term.href) }))}
+        {...props}
+      />
+    ),
     Step,
     Steps,
     Tab,
     Tabs,
     TypeTable,
     ...components,
+  } satisfies MDXComponents;
+
+  if (!hasLanguageRoutes(site)) return merged;
+
+  // Links and cards: whatever renders them (the site may pass its own `a`), with the language added
+  const Anchor = (merged.a ?? 'a') as ComponentType<ComponentProps<'a'>>;
+  const Card = merged.Card;
+  return {
+    ...merged,
+    a: (props: ComponentProps<'a'>) => <Anchor {...props} href={localize(props.href)} />,
+    Card: (props: ComponentProps<typeof Card>) => <Card {...props} href={localize(props.href)} />,
   } satisfies MDXComponents;
 }

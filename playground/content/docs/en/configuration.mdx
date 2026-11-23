@@ -82,6 +82,14 @@ export default defineSiteConfig({
       description: 'Change any of the theme\'s own text, such as the landing page buttons. Keys and English values are listed in the package\'s NotesText type.',
       type: 'Partial<NotesText>',
     },
+    languages: {
+      description: 'Several languages in one site, the first being the default. Adds the language to every URL and a language switch to the header.',
+      type: 'string[]',
+    },
+    translations: {
+      description: 'The site\'s own text per language: name, author, tag, description, links, bannerLink, start and text.',
+      type: 'Record<string, SiteTranslation>',
+    },
   }}
 />
 
@@ -115,7 +123,40 @@ export default defineSiteConfig({
 
 `{n}`, `{date}` and other words in braces are filled in by the theme. A text that depends on a count takes one form per plural category of your language. English uses `one` and `other`, Chinese only `other`.
 
-One site is one language. Sites with several languages and a language switch are planned.
+## Several languages
+
+To publish the same notes in more than one language, list the languages. The first one is the default:
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  name: 'Stock Trading Notes',
+  description: 'Notes on technical analysis and risk.',
+  links: [{ text: 'Glossary', url: '/docs/glossary', icon: 'BookA' }],
+  languages: ['en', 'zh-CN'],
+  translations: {
+    'zh-CN': {
+      name: '股票交易笔记',
+      description: '技术分析与风险管理笔记。',
+      links: [{ text: '术语表', url: '/docs/glossary', icon: 'BookA' }],
+    },
+  },
+});
+```
+
+What changes:
+
+- **One folder per language.** Notes go in `content/docs/en/` and `content/docs/zh-CN/`, each with its own `meta.json` for the sidebar. An Obsidian vault works the same way: `vault/en/`, `vault/zh-CN/`.
+- **Missing pages fall back.** A page that has no translation yet shows the default language's page, so you can translate one page at a time.
+- **URLs start with the language.** `/en/docs/…` and `/zh-CN/docs/…`. A static site can't hide it. Opening `/` sends readers to the language their browser prefers, or the one they read last.
+- **Links stay simple.** Keep writing `/docs/…` in notes, cards, quick links and the glossary: the theme adds the page's language.
+- **A language switch** appears in the header.
+- **`translations`** holds the site's own text per language. Anything you leave out uses the default language's value.
+
+`language` is not needed with `languages`: each page takes the language from its URL.
+
+<Callout title="Changing an existing site">
+Turning `languages` on moves every page to a new URL and needs the app's pages in an `app/[lang]/` folder. Decide early. `npm create notestack` will ask.
+</Callout>
 
 ## Quick links
 

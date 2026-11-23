@@ -11,7 +11,14 @@ type Section = 'home' | 'docs';
  * Browsers without the API, and "reduce motion" users, navigate normally.
  * The animation itself is in theme.css (data-ns-transition on <html>).
  */
-export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
+export function PageTransitions({
+  docsPath = '/docs',
+  languages = [],
+}: {
+  docsPath?: string;
+  /** A site's `languages`: their URL prefix is ignored, so /en/docs/x and /zh-CN/docs/x are both docs */
+  languages?: string[];
+}) {
   const router = useRouter();
   const pathname = usePathname();
   const done = useRef<(() => void) | null>(null);
@@ -23,8 +30,14 @@ export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
   }, [pathname]);
 
   useEffect(() => {
-    const sectionOf = (path: string): Section =>
-      path === docsPath || path.startsWith(`${docsPath}/`) ? 'docs' : 'home';
+    const withoutLanguage = (path: string) => {
+      const first = path.split('/')[1];
+      return first && languages.includes(first) ? path.slice(first.length + 1) || '/' : path;
+    };
+    const sectionOf = (url: string): Section => {
+      const path = withoutLanguage(url);
+      return path === docsPath || path.startsWith(`${docsPath}/`) ? 'docs' : 'home';
+    };
 
     const onClick = (event: MouseEvent) => {
       if (event.defaultPrevented || event.button !== 0) return;
@@ -69,7 +82,7 @@ export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
     // Capture phase: runs before the framework's own link handling
     document.addEventListener('click', onClick, true);
     return () => document.removeEventListener('click', onClick, true);
-  }, [router, docsPath]);
+  }, [router, docsPath, languages]);
 
   return null;
 }

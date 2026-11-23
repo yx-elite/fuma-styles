@@ -1,12 +1,15 @@
 import { Fragment, type ReactNode } from 'react';
 import { en, zhCN, type NotesText, type Plural } from './text.js';
+import type { SiteConfig } from '../config/site.js';
 
 export type { NotesText, Plural } from './text.js';
 
-/** The language part of site.config.ts that text and dates depend on */
+/** The language part of site.config.ts that text, dates and links depend on */
 export interface LanguageConfig {
   /** BCP 47 language tag, e.g. "en", "zh-CN". Default "en". */
   language?: string;
+  /** Several languages in one site; the first is the default */
+  languages?: string[];
   /** Change any of Notestack's text */
   text?: Partial<NotesText>;
 }
@@ -22,11 +25,56 @@ function builtInFor(language: string): NotesText | undefined {
   return builtIn[tag.split('-')[0]];
 }
 
-export const languageOf = (site?: LanguageConfig) => site?.language ?? 'en';
+/** The language a page is in: `language`, else the first of `languages`, else "en" */
+export const languageOf = (site?: LanguageConfig) => site?.language ?? site?.languages?.[0] ?? 'en';
+
+/** The site's default language: the first of `languages`, else `language`, else "en" */
+export const defaultLanguageOf = (site?: LanguageConfig) => site?.languages?.[0] ?? site?.language ?? 'en';
+
+/** Where the last visited language is kept (localStorage), so `/` opens it next time */
+export const languageKey = 'ns-language';
+
+/** True for a site with several languages, whose URLs start with the language */
+export const hasLanguageRoutes = (site?: LanguageConfig) => (site?.languages?.length ?? 0) > 0;
 
 /** All of Notestack's text for a site: its language's built-in text (English if none), then `site.text` on top */
 export function notesText(site?: LanguageConfig): NotesText {
   return { ...(builtInFor(languageOf(site)) ?? en), ...site?.text };
+}
+
+/**
+ * Adds the page's language to a link inside the notes, so notes can link to `/docs/…`
+ * and the link works in every language: `/docs/risk` → `/zh-CN/docs/risk`.
+ * The home page `/` becomes `/zh-CN/`. Other links (files, other sites, already
+ * prefixed ones) and every link on a one-language site are left as they are.
+ */
+export function localizeHref<T extends string | undefined>(href: T, site?: LanguageConfig): T {
+  if (!href || !hasLanguageRoutes(site)) return href;
+  const language = languageOf(site);
+  if (href === '/') return `/${language}/` as T;
+  if (/^\/docs(?=$|[/?#])/.test(href)) return `/${language}${href}` as T;
+  return href;
+}
+
+/**
+ * The site config as seen in one language: that language's `translations` on top,
+ * `language` set to it, and the site's own links pointing inside it.
+ * On a one-language site it returns the config with links unchanged.
+ */
+export function siteFor<T extends SiteConfig>(site: T, language: string): T {
+  const translation = site.translations?.[language];
+  const isDefault = language === defaultLanguageOf(site);
+  const merged: T = {
+    ...site,
+    ...translation,
+    language,
+    text: { ...(isDefault ? site.text : undefined), ...translation?.text },
+  };
+  return {
+    ...merged,
+    links: merged.links?.map((link) => ({ ...link, url: localizeHref(link.url, merged) })),
+    bannerLink: merged.bannerLink && { ...merged.bannerLink, href: localizeHref(merged.bannerLink.href, merged) },
+  };
 }
 
 /** Fill `{name}` placeholders with strings or numbers */

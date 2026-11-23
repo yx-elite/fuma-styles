@@ -3,7 +3,7 @@
 // MDX components in '@yx-elite/notestack/mdx', the Next.js config helper in '@yx-elite/notestack/next'.
 
 export { defineSiteConfig, repoUrl, SiteStyle } from './config/site.js';
-export type { SiteConfig, StartSection } from './config/site.js';
+export type { SiteConfig, SiteTranslation, StartSection } from './config/site.js';
 
 export { NotesLayout, baseOptions, lucideIcon } from './layouts/layout.js';
 export { NotesHomeLayout } from './layouts/home-layout.js';
@@ -23,6 +23,19 @@ export { SearchButton } from './components/search-button.js';
 
 export { LastUpdated, notesPageProps } from './pages/page.js';
 
-export { notesText, fill, fillNodes, plural, formatDate } from './i18n/index.js';
+export {
+  notesText,
+  siteFor,
+  localizeHref,
+  languageOf,
+  defaultLanguageOf,
+  hasLanguageRoutes,
+  fill,
+  fillNodes,
+  plural,
+  formatDate,
+} from './i18n/index.js';
 export type { NotesText, Plural, LanguageConfig } from './i18n/index.js';
-export { notesI18n } from './i18n/fumadocs.js';
+export { notesI18n, notesLanguages, languageName } from './i18n/fumadocs.js';
+export { LanguageRedirect } from './i18n/redirect.js';
+export { RememberLanguage } from './i18n/remember.js';

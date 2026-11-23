@@ -1,19 +1,21 @@
 import { source } from '@/lib/source';
 import { notFound } from 'next/navigation';
 import { generateOGImage } from 'fumadocs-ui/og';
-import { appName, getPageImageUrl } from '@/lib/shared';
+import { siteFor } from '@yx-elite/notestack';
+import { getPageImageUrl } from '@/lib/shared';
+import site from '@/site.config';
 
 export const revalidate = false;
 
-export async function GET(_req: Request, { params }: RouteContext<'/og/docs/[...slug]'>) {
-  const { slug } = await params;
-  const page = source.getPage(slug.slice(0, -1));
+export async function GET(_req: Request, { params }: RouteContext<'/[lang]/og/docs/[...slug]'>) {
+  const { lang, slug } = await params;
+  const page = source.getPage(slug.slice(0, -1), lang);
   if (!page) notFound();
 
   return generateOGImage({
     title: page.data.title,
     description: page.data.description,
-    site: appName,
+    site: siteFor(site, lang).name,
   });
 }
 

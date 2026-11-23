@@ -6,6 +6,7 @@ import type { ReactNode } from 'react';
 import { NavTitle } from './nav-title.js';
 import { Spotlight } from './spotlight.js';
 import { repoUrl, type SiteConfig } from '../config/site.js';
+import { localizeHref } from '../i18n/index.js';
 
 // No sidebar, no mobile menu button and no collapse button on the home page
 const homeSidebarSlots = {
@@ -33,7 +34,7 @@ export function NotesHomeLayout({
   return (
     <DocsLayout
       tree={tree}
-      nav={{ title: <NavTitle site={site} />, transparentMode: 'top', mode: 'top' }}
+      nav={{ title: <NavTitle site={site} />, url: localizeHref('/', site), transparentMode: 'top', mode: 'top' }}
       themeSwitch={{ mode: 'light-dark-system' }}
       githubUrl={repoUrl(site)}
       slots={{ sidebar: homeSidebarSlots }}

@@ -1,0 +1,14 @@
+{
+  "pages": [
+    "---入门---",
+    "index",
+    "installation",
+    "configuration",
+    "writing-notes",
+    "---指南---",
+    "theme",
+    "landing-page",
+    "deployment",
+    "...showcase"
+  ]
+}

@@ -1,0 +1,42 @@
+---
+title: 简介
+description: 为用 Fumadocs 搭建的学习笔记网站准备的现成主题。安装一次，每个笔记网站的外观和用法都一致。
+icon: House
+---
+
+**Notestack**（`@yx-elite/notestack`）是 [Fumadocs](https://fumadocs.dev) 的一个主题。它把一个普通的 Fumadocs 应用变成一个有设计感的笔记网站：页头、侧边栏、首页、页面过渡动画和排版好的内容。你的笔记仍然是普通的 Markdown、MDX 或 Obsidian 仓库。
+
+<Callout type="warn" title="开发中">
+这个包还没有发布。这些页面描述的是第一个正式版本，而这个网站就是它的在线演示。
+</Callout>
+
+## 为什么
+
+写笔记才是重点，搭网站不该是。Notestack 把搭建工作减少到一次安装和一个配置文件：
+
+- **一个配置文件。** 名称、链接、强调色和首页都来自 `site.config.ts`。
+- **通过 npm 更新。** 设计和修复都随包发布，每个笔记网站运行 `npm update` 就能获得。
+- **静态，托管便宜。** 每个网站都是静态导出：放在 S3 或任何静态托管上的普通文件，不需要服务器。
+- **基于 Fumadocs。** 搜索、侧边栏、MDX 和 Obsidian 支持都来自 Fumadocs 本身；主题只增加设计和一些笔记功能。
+
+## 功能
+
+| 功能 | 你会得到 |
+| --- | --- |
+| 设计 | 黑色主题，一个强调色及与之搭配的第二色调，背景网格和光晕，Geist 与 JetBrains Mono 字体 |
+| 布局 | 全宽笔记布局，顶部页头，侧边栏横幅和快速链接，固定显示当前页面，*本页目录* 列表 |
+| 首页 | 由你的内容生成：文档的实时预览、章节卡片、"快速开始"部分 |
+| 动效 | 首页与文档之间流畅的页面过渡，针对 Safari 调优 |
+| 笔记功能 | 术语表页面、来自 git 的最后更新日期、静态搜索 |
+| 内容 | MDX 页面、Obsidian 仓库，或在同一个网站中两者并用 |
+| 语言 | 一个网站一种语言，或多种语言并带有语言切换 |
+| 设备 | 手机、平板（侧边栏作为侧滑面板）和电脑，支持浅色和深色模式 |
+
+## 下一步
+
+<Cards>
+  <Card title="安装" href="/docs/installation" description="用一条命令创建笔记网站。" />
+  <Card title="配置" href="/docs/configuration" description="site.config.ts 中的每个选项。" />
+  <Card title="主题与强调色" href="/docs/theme" description="更改强调色，微调外观。" />
+  <Card title="组件展示" href="/docs/showcase/typography" description="主题下每个元素的样子。" />
+</Cards>

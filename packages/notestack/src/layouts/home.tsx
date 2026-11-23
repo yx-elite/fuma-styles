@@ -8,13 +8,23 @@ import { HomeEffects } from './home-effects.js';
 import { SearchButton } from '../components/search-button.js';
 import { pageLastModified } from '../source/index.js';
 import { repoUrl, type SiteConfig, type StartSection } from '../config/site.js';
-import { fill, fillNodes, formatDate, languageOf, notesText, plural, type NotesText } from '../i18n/index.js';
+import {
+  fill,
+  fillNodes,
+  formatDate,
+  hasLanguageRoutes,
+  languageOf,
+  localizeHref,
+  notesText,
+  plural,
+  type NotesText,
+} from '../i18n/index.js';
 import { notesStack, type StackItem } from './stack.js';
 
 /** The parts of a Fumadocs `loader()` source the home page reads. */
 export interface HomeSource {
-  getPageTree(): PageTree.Root;
-  getPages(): { data: object; absolutePath?: string }[];
+  getPageTree(language?: string): PageTree.Root;
+  getPages(language?: string): { data: object; absolutePath?: string }[];
 }
 
 export interface HomePage {
@@ -71,9 +81,9 @@ export function groupPageTree(tree: PageTree.Root, firstSection = 'Start here'):
   return groups.filter((group) => group.pages.length > 0);
 }
 
-function latestUpdate(source: HomeSource): Date | undefined {
+function latestUpdate(source: HomeSource, language?: string): Date | undefined {
   let latest: number | undefined;
-  for (const page of source.getPages()) {
+  for (const page of source.getPages(language)) {
     const time = pageLastModified(page)?.getTime();
     if (time !== undefined && (latest === undefined || time > latest)) latest = time;
   }
@@ -99,17 +109,20 @@ function repeat<T>(items: T[], min: number): T[] {
 export function NotesHome({
   site,
   source,
-  docsPath = '/docs',
+  docsPath = localizeHref('/docs', site),
 }: {
+  /** On a site with `languages`, the config for this page's language: `siteFor(site, lang)` */
   site: SiteConfig;
   source: HomeSource;
   docsPath?: string;
 }) {
   const text = notesText(site);
   const language = languageOf(site);
-  const groups = groupPageTree(source.getPageTree(), text.firstSection);
+  // Only a site with languages has one page tree per language
+  const treeLanguage = hasLanguageRoutes(site) ? language : undefined;
+  const groups = groupPageTree(source.getPageTree(treeLanguage), text.firstSection);
   const pageCount = groups.reduce((sum, group) => sum + group.pages.length, 0);
-  const updated = latestUpdate(source);
+  const updated = latestUpdate(source, treeLanguage);
   const firstUrl = groups[0]?.pages[0]?.url ?? docsPath;
   const words = site.name.split(/\s+/);
 

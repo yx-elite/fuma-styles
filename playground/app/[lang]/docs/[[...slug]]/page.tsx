@@ -12,51 +12,58 @@ import { getMDXComponents } from '@/components/mdx';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
 import * as ObsidianComponents from 'fumadocs-obsidian/ui';
+import { relative } from 'node:path';
 import { getPageImageUrl, gitConfig } from '@/lib/shared';
-import { notesPageProps } from '@yx-elite/notestack';
+import { notesPageProps, siteFor } from '@yx-elite/notestack';
 import { pageLastModified } from '@yx-elite/notestack/source';
 import site from '@/site.config';
 
-export default async function Page(props: PageProps<'/docs/[[...slug]]'>) {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+export default async function Page(props: PageProps<'/[lang]/docs/[[...slug]]'>) {
+  const { lang, slug } = await props.params;
+  const page = source.getPage(slug, lang);
   if (!page) notFound();
 
-  const components = getMDXComponents({
-    // this allows you to link to other pages with relative file paths
-    a: createRelativeLink(source, page),
-  });
+  const local = siteFor(site, lang);
+  const components = getMDXComponents(
+    {
+      // this allows you to link to other pages with relative file paths
+      a: createRelativeLink(source, page),
+    },
+    lang,
+  );
 
   // Two kinds of page: compiled MDX, or an Obsidian note rendered from the vault
   let body;
   let toc;
   let full: boolean | undefined;
-  let file: string;
   if (page.type === 'vault') {
     const rendered = await (await page.data.load()).render({ ...components, ...ObsidianComponents });
     body = rendered.body;
     toc = rendered.toc;
     full = page.data.frontmatter.full;
-    file = `public/vault/${page.path.replace(/^showcase\//, '')}`;
   } else {
     const MDX = page.data.body;
     body = <MDX components={components} />;
     toc = page.data.toc;
     full = page.data.full;
-    file = `content/docs/${page.path}`;
   }
 
+  // The file this page comes from. A page not translated yet is the default language's file.
+  const file = page.absolutePath ? relative(process.cwd(), page.absolutePath) : undefined;
   const markdownUrl = `/llms.mdx${page.url}.md`;
 
   return (
-    <DocsPage full={full} {...notesPageProps({ toc, lastModified: pageLastModified(page), site })}>
+    <DocsPage full={full} {...notesPageProps({ toc, lastModified: pageLastModified(page), site: local })}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
         <MarkdownCopyButton markdownUrl={markdownUrl} />
         <ViewOptionsPopover
           markdownUrl={markdownUrl}
-          githubUrl={`https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/playground/${encodeURI(file)}`}
+          githubUrl={
+            file &&
+            `https://github.com/${gitConfig.user}/${gitConfig.repo}/blob/${gitConfig.branch}/playground/${encodeURI(file)}`
+          }
         />
       </div>
       <DocsBody>{body}</DocsBody>
@@ -68,9 +75,9 @@ export async function generateStaticParams() {
   return source.generateParams();
 }
 
-export async function generateMetadata(props: PageProps<'/docs/[[...slug]]'>): Promise<Metadata> {
-  const params = await props.params;
-  const page = source.getPage(params.slug);
+export async function generateMetadata(props: PageProps<'/[lang]/docs/[[...slug]]'>): Promise<Metadata> {
+  const { lang, slug } = await props.params;
+  const page = source.getPage(slug, lang);
   if (!page) notFound();
 
   return {

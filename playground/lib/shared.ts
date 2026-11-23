@@ -1,7 +1,6 @@
 import { createGetUrl } from 'fumadocs-core/source';
 import site from '@/site.config';
 
-export const appName = site.name;
 export const docsRoute = '/docs';
 export const docsImageRoute = '/og/docs';
 
