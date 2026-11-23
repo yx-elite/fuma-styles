@@ -1,4 +1,2 @@
 @import 'tailwindcss';
 @import '@yx-elite/notestack/theme.css';
-/* Obsidian callouts and embeds (fumadocs-obsidian) */
-@import 'fumadocs-obsidian/css/preset.css';

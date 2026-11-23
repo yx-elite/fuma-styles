@@ -11,10 +11,9 @@ import { notFound } from 'next/navigation';
 import { getMDXComponents } from '@/components/mdx';
 import type { Metadata } from 'next';
 import { createRelativeLink } from 'fumadocs-ui/mdx';
-import * as ObsidianComponents from 'fumadocs-obsidian/ui';
 import { relative } from 'node:path';
 import { getPageImageUrl, gitConfig } from '@/lib/shared';
-import { notesPageProps, siteFor } from '@yx-elite/notestack';
+import { notesPageProps, siteFor, withoutLanguageFolder } from '@yx-elite/notestack';
 import { pageLastModified } from '@yx-elite/notestack/source';
 import site from '@/site.config';
 
@@ -26,34 +25,21 @@ export default async function Page(props: PageProps<'/[lang]/docs/[[...slug]]'>)
   const local = siteFor(site, lang);
   const components = getMDXComponents(
     {
-      // this allows you to link to other pages with relative file paths
-      a: createRelativeLink(source, page),
+      // links to other notes by file path (`./other.mdx`);
+      // Fumadocs looks pages up without their language folder
+      a: createRelativeLink(source, { ...page, path: withoutLanguageFolder(page.path, site) }),
     },
     lang,
   );
 
-  // Two kinds of page: compiled MDX, or an Obsidian note rendered from the vault
-  let body;
-  let toc;
-  let full: boolean | undefined;
-  if (page.type === 'vault') {
-    const rendered = await (await page.data.load()).render({ ...components, ...ObsidianComponents });
-    body = rendered.body;
-    toc = rendered.toc;
-    full = page.data.frontmatter.full;
-  } else {
-    const MDX = page.data.body;
-    body = <MDX components={components} />;
-    toc = page.data.toc;
-    full = page.data.full;
-  }
+  const MDX = page.data.body;
 
   // The file this page comes from. A page not translated yet is the default language's file.
   const file = page.absolutePath ? relative(process.cwd(), page.absolutePath) : undefined;
   const markdownUrl = `/llms.mdx${page.url}.md`;
 
   return (
-    <DocsPage full={full} {...notesPageProps({ toc, lastModified: pageLastModified(page), site: local })}>
+    <DocsPage full={page.data.full} {...notesPageProps({ toc: page.data.toc, lastModified: pageLastModified(page), site: local })}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
       <div className="flex flex-row gap-2 items-center border-b pb-6">
@@ -66,7 +52,9 @@ export default async function Page(props: PageProps<'/[lang]/docs/[[...slug]]'>)
           }
         />
       </div>
-      <DocsBody>{body}</DocsBody>
+      <DocsBody>
+        <MDX components={components} />
+      </DocsBody>
     </DocsPage>
   );
 }

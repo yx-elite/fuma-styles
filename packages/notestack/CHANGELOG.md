@@ -8,7 +8,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 - `@yx-elite/notestack`: `defineSiteConfig`, `SiteStyle`, `NotesLayout`, `NotesHomeLayout`, `NotesHome`, `NotesLogo`, `PageTransitions`, `AccentPicker`, `CopyButton`, `Glossary`, `SearchButton`, `notesPageProps` and `LastUpdated`.
 - `@yx-elite/notestack/mdx`: `getMDXComponents()`, with fumadocs-ui's components and `Glossary`.
-- `@yx-elite/notestack/source`: `notesSourcePlugins`, `pageLastModified()`, `gitLastModified()` and `urlSlugs()`, for build time only.
+- `@yx-elite/notestack/source`: `notesSourcePlugins` (Lucide icons from `icon:` frontmatter) and `pageLastModified()`.
 - `@yx-elite/notestack/next`: `withNotestack()`, which sets static export, `trailingSlash` and unoptimized images.
 - `theme.css` now has `@source "../dist"`, so Tailwind generates the classes the components use.
 - Languages: `language` and `text` in `site.config.ts`. A site in one language gets its `<html lang>`, dates, Fumadocs' text and Notestack's text in that language. Notestack's text ships in English and Simplified Chinese; Fumadocs' text comes from `@fumadocs/language` (Simplified and Traditional Chinese, Japanese).
@@ -18,6 +18,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 - `siteFor(site, lang)` gives the config for one language; `notesLanguages(site)` gives Fumadocs' language config for `loader({ i18n })`; `notesI18n(site)` adds the language switch when the site has `languages`.
 - `LanguageRedirect` for the page at `/`: it sends readers to the language they read last, else their browser's language, else the default. `RememberLanguage` stores the language being read.
 - Links written as `/docs/…` in notes, cards, quick links, the banner and the glossary get the page's language added (`localizeHref`). `PageTransitions` takes `languages`, and the header logo goes to the current language's home page.
+- `withoutLanguageFolder(path, site)`: on a site with `languages`, pass `{ ...page, path: withoutLanguageFolder(page.path, site) }` to Fumadocs' `createRelativeLink`, so links between notes by file path (`./other.mdx`) resolve. Fumadocs looks pages up without their language folder but keeps it in `page.path`.
 
 ### Fixed
 

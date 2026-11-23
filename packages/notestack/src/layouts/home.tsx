@@ -24,7 +24,7 @@ import { notesStack, type StackItem } from './stack.js';
 /** The parts of a Fumadocs `loader()` source the home page reads. */
 export interface HomeSource {
   getPageTree(language?: string): PageTree.Root;
-  getPages(language?: string): { data: object; absolutePath?: string }[];
+  getPages(language?: string): { data: object }[];
 }
 
 export interface HomePage {

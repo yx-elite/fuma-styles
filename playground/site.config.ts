@@ -5,7 +5,7 @@ export default defineSiteConfig({
   name: 'Notestack',
   author: 'yx-elite',
   tag: 'playground',
-  description: 'A Fumadocs theme for study notes. Write in Markdown or Obsidian, publish a site that reads beautifully.',
+  description: 'A Fumadocs theme for study notes. Write in Markdown, publish a site that reads beautifully.',
   repo: 'yx-elite/notestack',
   branch: 'main',
   // Trying NativeWind's cyan
@@ -30,7 +30,7 @@ export default defineSiteConfig({
   translations: {
     'zh-CN': {
       tag: '演示',
-      description: '为学习笔记打造的 Fumadocs 主题。用 Markdown 或 Obsidian 写作，发布一个读起来舒服的网站。',
+      description: '为学习笔记打造的 Fumadocs 主题。用 Markdown 写作，发布一个读起来舒服的网站。',
       links: [
         { text: '安装', url: '/docs/installation', icon: 'Download' },
         { text: '组件展示', url: '/docs/showcase/typography', icon: 'LayoutGrid' },

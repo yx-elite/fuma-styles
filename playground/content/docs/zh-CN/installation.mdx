@@ -84,18 +84,8 @@ npm run dev
 | `app/layout.tsx` | 字体、配置中的强调色、页面过渡。 |
 | `app/(home)/…` | 首页，由你的内容生成。 |
 | `app/docs/…` | 笔记布局和页面。 |
-| `lib/source.ts` | 内容来源：MDX、Obsidian 仓库，或两者都有。 |
+| `lib/source.ts` | 笔记的读取位置：`content/docs/`。 |
 | `next.config.mjs` | 静态导出设置，无需服务器即可托管。 |
-
-## 添加 Obsidian 仓库
-
-要在 MDX 页面之外（或代替它们）发布一个 Obsidian 仓库，安装 Fumadocs 的 Obsidian 集成：
-
-```bash
-npm install fumadocs-obsidian
-```
-
-然后见[写笔记](/docs/writing-notes#an-obsidian-vault)。
 
 ## 更新
 

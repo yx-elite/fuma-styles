@@ -1,5 +1,5 @@
 // Everything a notes site imports from '@yx-elite/notestack'.
-// Server-only helpers (git dates, loader plugins) live in '@yx-elite/notestack/source',
+// Content-loader helpers (sidebar icons, last-updated dates) live in '@yx-elite/notestack/source',
 // MDX components in '@yx-elite/notestack/mdx', the Next.js config helper in '@yx-elite/notestack/next'.
 
 export { defineSiteConfig, repoUrl, SiteStyle } from './config/site.js';
@@ -27,6 +27,7 @@ export {
   notesText,
   siteFor,
   localizeHref,
+  withoutLanguageFolder,
   languageOf,
   defaultLanguageOf,
   hasLanguageRoutes,

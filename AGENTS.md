@@ -61,7 +61,7 @@ notestack/
 │       ├── components/       ← Glossary and other MDX components
 │       ├── layouts/          ← notes layout, home layout, landing page, banner, links
 │       ├── pages/            ← docs page factory (page, metadata, static params)
-│       ├── source/           ← source plugins, last-updated dates, vault slugs  (@yx-elite/notestack/source, server only)
+│       ├── source/           ← loader plugins, last-updated dates  (@yx-elite/notestack/source)
 │       ├── config/           ← SiteConfig, defineSiteConfig, SiteStyle
 │       ├── mdx.tsx           ← getMDXComponents(): every component for MDX  (@yx-elite/notestack/mdx)
 │       ├── next.ts           ← withNotestack(): Next.js config, no React  (@yx-elite/notestack/next)

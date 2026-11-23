@@ -57,6 +57,20 @@ export function localizeHref<T extends string | undefined>(href: T, site?: Langu
 }
 
 /**
+ * A file path inside a site with `languages`, without its language folder:
+ * `en/showcase/cards.mdx` → `showcase/cards.mdx`.
+ * Fumadocs keys pages by this path but keeps the folder in `page.path`, so pass
+ * `{ ...page, path: withoutLanguageFolder(page.path, site) }` to `createRelativeLink`,
+ * or links between notes by file path (`./other.mdx`) don't resolve.
+ */
+export function withoutLanguageFolder(path: string, site?: LanguageConfig): string {
+  const languages = site?.languages ?? [];
+  const segments = path.split('/');
+  const at = segments.findIndex((segment, i) => i < segments.length - 1 && languages.includes(segment));
+  return at === -1 ? path : [...segments.slice(0, at), ...segments.slice(at + 1)].join('/');
+}
+
+/**
  * The site config as seen in one language: that language's `translations` on top,
  * `language` set to it, and the site's own links pointing inside it.
  * On a one-language site it returns the config with links unchanged.

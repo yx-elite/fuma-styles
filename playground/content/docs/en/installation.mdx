@@ -84,18 +84,8 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
 | `app/layout.tsx` | Fonts, the accent from your config, page transitions. |
 | `app/(home)/…` | The landing page, built from your content. |
 | `app/docs/…` | The notes layout and page. |
-| `lib/source.ts` | Your content sources: MDX, an Obsidian vault, or both. |
+| `lib/source.ts` | Where the notes are read from: `content/docs/`. |
 | `next.config.mjs` | Static export settings for hosting without a server. |
-
-## Adding an Obsidian vault
-
-To publish an Obsidian vault as well as, or instead of, MDX pages, install Fumadocs' Obsidian integration:
-
-```bash
-npm install fumadocs-obsidian
-```
-
-Then see [Writing notes](/docs/writing-notes#an-obsidian-vault).
 
 ## Updating
 

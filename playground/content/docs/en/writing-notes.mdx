@@ -1,10 +1,10 @@
 ---
 title: Writing notes
-description: Where your notes go, in MDX or in an Obsidian vault, and where to learn each format.
+description: Where your notes go, how a page starts, and where to learn the syntax.
 icon: PenLine
 ---
 
-The theme styles whatever Fumadocs renders, so you write notes the normal Fumadocs way. A site can use either source, or both side by side in one sidebar.
+The theme styles whatever Fumadocs renders, so you write notes the normal Fumadocs way.
 
 ## MDX pages
 
@@ -35,21 +35,9 @@ Your note starts here.
 
 To learn the syntax, see the Fumadocs guide to [writing pages](https://fumadocs.dev/docs/next/markdown). Everything it shows is styled by the theme: see the [Showcase](/docs/showcase/typography).
 
-## An Obsidian vault
-
-Keep writing in [Obsidian](https://obsidian.md), and publish the vault as it is. Wikilinks, image embeds, callouts, block IDs and comments are supported through Fumadocs' official [Obsidian integration](https://fumadocs.dev/docs/next/integrations/content/obsidian).
-
-1. Install it: `npm install fumadocs-obsidian`.
-2. Put the vault (or a copy of it) in `public/vault/`, so its images are served too.
-3. Point the source at it in `lib/source.ts`. A site made with `npm create notestack` can set this up for you.
-
-Notes keep their Obsidian file names, and get clean URLs: `Block IDs and comments.md` is served at `/docs/…/block-ids-and-comments`.
-
-<Callout type="info" title="Sync with git, not iCloud">
-Keep the vault in the site's Git repository. Commit and push to publish; every change is kept in the history, and the *Last updated* date of each page comes from it.
+<Callout type="info" title="Keep your notes in git">
+Commit and push to publish. Every change is kept in the history, any computer gets the notes with `git pull`, and the *Last updated* date of each page comes from its latest commit.
 </Callout>
-
-To learn Obsidian's syntax, see [Obsidian Help](https://help.obsidian.md). See how the theme shows it on [Obsidian notes](/docs/showcase/obsidian-notes).
 
 ## Glossary
 
