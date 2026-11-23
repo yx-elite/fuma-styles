@@ -2,6 +2,20 @@
   "name": "@yx-elite/notestack",
   "version": "0.0.0",
   "description": "A Fumadocs theme for study notes",
+  "keywords": [
+    "fumadocs",
+    "fumadocs-theme",
+    "nextjs",
+    "mdx",
+    "docs",
+    "notes",
+    "study-notes",
+    "static-site"
+  ],
+  "homepage": "https://github.com/yx-elite/notestack#readme",
+  "bugs": {
+    "url": "https://github.com/yx-elite/notestack/issues"
+  },
   "license": "MIT",
   "author": "yx-elite <exian0716@gmail.com>",
   "repository": {
@@ -18,7 +32,8 @@
   },
   "files": [
     "dist",
-    "src/theme.css"
+    "src",
+    "LICENSE"
   ],
   "exports": {
     ".": {
@@ -40,8 +55,10 @@
     "./theme.css": "./src/theme.css"
   },
   "scripts": {
-    "build": "tsc",
-    "dev": "tsc --watch"
+    "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
+    "build": "npm run clean && tsc",
+    "dev": "tsc --watch",
+    "prepublishOnly": "npm run build"
   },
   "dependencies": {
     "@fumadocs/language": "^0.2.21",
