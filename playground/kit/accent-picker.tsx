@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { Check, Palette, RotateCcw } from 'lucide-react';
 import { type CSSProperties, useEffect, useRef, useState } from 'react';
 
@@ -20,13 +20,13 @@ export const accentSwatches: AccentSwatch[] = [
   { name: 'Mono', light: '#404040', dark: '#e5e5e5' },
 ];
 
-const KEY = 'fs-accent';
-const STYLE_ID = 'fs-accent-picked';
+const KEY = 'ns-accent';
+const STYLE_ID = 'ns-accent-picked';
 
 type Picked = { light: string; dark: string };
 
 // `html:root` / `html.dark` outrank the site's own accent (`:root` / `.dark` from <SiteStyle />)
-const css = (picked: Picked) => `html:root{--fs-accent:${picked.light}}html.dark{--fs-accent:${picked.dark}}`;
+const css = (picked: Picked) => `html:root{--ns-accent:${picked.light}}html.dark{--ns-accent:${picked.dark}}`;
 
 function apply(picked: Picked | null) {
   let style = document.getElementById(STYLE_ID);
@@ -58,7 +58,7 @@ function save(picked: Picked | null) {
 }
 
 // Runs before the page paints, so a saved accent shows without a flash of the default one
-const earlyScript = `try{var p=JSON.parse(localStorage.getItem('${KEY}')||'null');if(p&&p.light&&p.dark){var s=document.createElement('style');s.id='${STYLE_ID}';s.textContent='html:root{--fs-accent:'+p.light+'}html.dark{--fs-accent:'+p.dark+'}';document.head.appendChild(s)}}catch(e){}`;
+const earlyScript = `try{var p=JSON.parse(localStorage.getItem('${KEY}')||'null');if(p&&p.light&&p.dark){var s=document.createElement('style');s.id='${STYLE_ID}';s.textContent='html:root{--ns-accent:'+p.light+'}html.dark{--ns-accent:'+p.dark+'}';document.head.appendChild(s)}}catch(e){}`;
 
 /** Put first in <body>: applies a saved accent before the page paints, so there is no flash */
 export function AccentPickerScript() {
@@ -106,25 +106,25 @@ export function AccentPicker({ swatches = accentSwatches }: { swatches?: AccentS
     choose({ light: hex, dark: CSS.supports('color', 'oklch(from red l c h)') ? `oklch(from ${hex} max(l, 0.82) c h)` : hex });
 
   return (
-    <div ref={root} className="fs-picker" data-open={open}>
+    <div ref={root} className="ns-picker" data-open={open}>
       {open && (
-        <div className="fs-picker-panel" role="dialog" aria-label="Accent colour">
-          <div className="fs-picker-head">
+        <div className="ns-picker-panel" role="dialog" aria-label="Accent colour">
+          <div className="ns-picker-head">
             <span>Accent</span>
-            <button type="button" className="fs-picker-reset" onClick={() => choose(null)} disabled={!picked}>
+            <button type="button" className="ns-picker-reset" onClick={() => choose(null)} disabled={!picked}>
               <RotateCcw />
               Reset
             </button>
           </div>
-          <div className="fs-picker-swatches">
+          <div className="ns-picker-swatches">
             {swatches.map((swatch) => {
               const active = picked?.light === swatch.light && picked?.dark === swatch.dark;
               return (
                 <button
                   key={swatch.name}
                   type="button"
-                  className="fs-picker-swatch"
-                  style={{ '--fs-swatch-light': swatch.light, '--fs-swatch-dark': swatch.dark } as CSSProperties}
+                  className="ns-picker-swatch"
+                  style={{ '--ns-swatch-light': swatch.light, '--ns-swatch-dark': swatch.dark } as CSSProperties}
                   aria-label={swatch.name}
                   aria-pressed={active}
                   title={swatch.name}
@@ -135,16 +135,16 @@ export function AccentPicker({ swatches = accentSwatches }: { swatches?: AccentS
               );
             })}
           </div>
-          <label className="fs-picker-custom">
+          <label className="ns-picker-custom">
             <input type="color" defaultValue={picked?.light ?? '#0092b3'} onChange={(e) => custom(e.target.value)} />
             Custom colour
           </label>
-          <p className="fs-picker-note">Only changes this browser. The site&apos;s own accent comes from site.config.ts.</p>
+          <p className="ns-picker-note">Only changes this browser. The site&apos;s own accent comes from site.config.ts.</p>
         </div>
       )}
       <button
         type="button"
-        className="fs-picker-button"
+        className="ns-picker-button"
         aria-label="Change the accent colour"
         aria-expanded={open}
         onClick={() => setOpen((value) => !value)}

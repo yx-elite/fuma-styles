@@ -5,7 +5,7 @@ icon: Download
 ---
 
 <Callout type="warn" title="In development">
-`@yx-elite/fuma-styles` and its `init` command are not published yet. The steps below are how installation will work in the first release.
+`@yx-elite/notestack` and its `init` command are not published yet. The steps below are how installation will work in the first release.
 </Callout>
 
 ## Requirements
@@ -34,7 +34,7 @@ When asked, choose **Next.js** as the framework and **Fumadocs MDX** as the cont
 
 ```bash
 cd my-notes
-npm install @yx-elite/fuma-styles
+npm install @yx-elite/notestack
 ```
 
 </Step>
@@ -43,7 +43,7 @@ npm install @yx-elite/fuma-styles
 ### Apply it
 
 ```bash
-npx fuma-styles init
+npx notestack init
 ```
 
 This creates `site.config.ts` and points the app's files at the theme. See [what init changes](#what-init-changes).
@@ -89,7 +89,7 @@ Open [localhost:3000](http://localhost:3000). Then edit `site.config.ts` with yo
 | File | After `init` |
 | --- | --- |
 | `site.config.ts` | Your site's settings. The only code file you edit. |
-| `app/global.css` | Imports Tailwind CSS and `@yx-elite/fuma-styles/theme.css`. |
+| `app/global.css` | Imports Tailwind CSS and `@yx-elite/notestack/theme.css`. |
 | `app/layout.tsx` | Fonts, the accent from your config, page transitions. |
 | `app/(home)/…` | The landing page, built from your content. |
 | `app/docs/…` | The notes layout and page. |
@@ -111,7 +111,7 @@ Then see [Writing notes](/docs/writing-notes#an-obsidian-vault).
 ## Updating
 
 ```bash
-npm update @yx-elite/fuma-styles
+npm update @yx-elite/notestack
 ```
 
 Changes are listed in the changelog. A release that needs you to edit a file says so, with the exact edit.

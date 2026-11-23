@@ -1,13 +1,13 @@
 {
-  "name": "@yx-elite/fuma-styles",
+  "name": "@yx-elite/notestack",
   "version": "0.0.0",
-  "description": "Shared Fumadocs theme for study-notes sites",
+  "description": "A Fumadocs theme for study notes",
   "license": "MIT",
   "author": "yx-elite <exian0716@gmail.com>",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/yx-elite/fuma-styles.git",
-    "directory": "packages/fuma-styles"
+    "url": "git+https://github.com/yx-elite/notestack.git",
+    "directory": "packages/notestack"
   },
   "type": "module",
   "files": ["src/theme.css"],

@@ -12,7 +12,7 @@ One colour drives the whole look: links, active items, the glow, the border ligh
 accent: { light: '#7c3aed', dark: '#c4b5fd' },
 ```
 
-The theme turns the accent's hue by 50° to make a second tone, `--fs-accent-2`, and runs gradients from one to the other. Browsers that cannot compute it use the accent for both.
+The theme turns the accent's hue by 50° to make a second tone, `--ns-accent-2`, and runs gradients from one to the other. Browsers that cannot compute it use the accent for both.
 
 <Callout type="idea" title="Try it here">
 The palette button in the corner of this site applies any accent to every page at once. It only changes your browser; the site's own accent still comes from its config.
@@ -24,24 +24,24 @@ For finer changes, override these variables in `app/global.css`, after the theme
 
 ```css title="app/global.css"
 @import 'tailwindcss';
-@import '@yx-elite/fuma-styles/theme.css';
+@import '@yx-elite/notestack/theme.css';
 
 :root {
-  --fs-glow-strength: 8%;
+  --ns-glow-strength: 8%;
 }
 ```
 
 | Variable | What it changes | Default |
 | --- | --- | --- |
-| `--fs-accent` | The accent colour (set by `site.config.ts`) | Blue |
-| `--fs-accent-2` | The second tone for gradients | Accent, hue +50° |
-| `--fs-glow-strength` | Glow at the top of each page | `14%` |
-| `--fs-glow-fixed-strength` | Glow that stays at the top while scrolling | `5%` light, `7%` dark |
-| `--fs-grid-opacity` | Background grid | `1` light, `0.8` dark |
-| `--fs-header-tint` | Header background once scrolled | `45%` |
-| `--fs-sidebar-width` | Sidebar and *On this page* width | `286px` |
-| `--fs-content-width` | Width of the text column | `768px` |
-| `--fs-home-width` | Width of the landing page and its header | `72rem` |
+| `--ns-accent` | The accent colour (set by `site.config.ts`) | Blue |
+| `--ns-accent-2` | The second tone for gradients | Accent, hue +50° |
+| `--ns-glow-strength` | Glow at the top of each page | `14%` |
+| `--ns-glow-fixed-strength` | Glow that stays at the top while scrolling | `5%` light, `7%` dark |
+| `--ns-grid-opacity` | Background grid | `1` light, `0.8` dark |
+| `--ns-header-tint` | Header background once scrolled | `45%` |
+| `--ns-sidebar-width` | Sidebar and *On this page* width | `286px` |
+| `--ns-content-width` | Width of the text column | `768px` |
+| `--ns-home-width` | Width of the landing page and its header | `72rem` |
 
 Set a strength to `0%` to turn that effect off.
 

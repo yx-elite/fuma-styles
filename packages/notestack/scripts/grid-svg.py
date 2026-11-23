@@ -1,4 +1,4 @@
-# Generates the --fs-grid-image values in src/theme.css (run: python3 scripts/grid-svg.py).
+# Generates the --ns-grid-image values in src/theme.css (run: python3 scripts/grid-svg.py).
 # One combined 360px pattern (6x6 cells of 60px): lines drawn as a single path + the filled cells.
 import sys, urllib.parse
 M = "matrix(1.13247 -0.36397 -0.36397 1 0 0)"
@@ -14,7 +14,7 @@ def svg(line, line_op, cell, ops):
 light = svg('rgb(136,136,136)', '0.2', 'black', ['.035','.05','.025','.03','.04','.025'])
 dark = svg('rgb(136,136,136)', '0.27', 'white', ['.04','.06','.03','.035','.05','.03'])
 if sys.argv[1:] == ['css']:
-    print(f":root{{--fs-grid-image:{light}}}.dark{{--fs-grid-image:{dark}}}"
-          "#nd-notebook-layout::after{transform:none!important;background-image:var(--fs-grid-image)!important;background-size:100% 100%!important}")
+    print(f":root{{--ns-grid-image:{light}}}.dark{{--ns-grid-image:{dark}}}"
+          "#nd-notebook-layout::after{transform:none!important;background-image:var(--ns-grid-image)!important;background-size:100% 100%!important}")
 else:
     print(light); print(dark)

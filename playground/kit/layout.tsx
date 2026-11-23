@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import type * as PageTree from 'fumadocs-core/page-tree';

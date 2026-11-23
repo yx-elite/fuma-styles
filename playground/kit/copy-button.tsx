@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { Check, Copy } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -16,7 +16,7 @@ export function CopyButton({ text, label = 'Copy' }: { text: string; label?: str
   return (
     <button
       type="button"
-      className="fs-copy"
+      className="ns-copy"
       aria-label={copied ? 'Copied' : label}
       data-copied={copied}
       onClick={() => {

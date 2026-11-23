@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { ArrowRight } from 'lucide-react';
@@ -114,37 +114,37 @@ export function NotesHome({
   const words = site.name.split(/\s+/);
 
   return (
-    <main className="fs-home">
-      <section className="fs-home-hero">
+    <main className="ns-home">
+      <section className="ns-home-hero">
         {site.tag && (
-          <span className="fs-home-badge">
-            <span className="fs-home-badge-dot" aria-hidden />
-            <span className="fs-shiny">{site.tag}</span>
+          <span className="ns-home-badge">
+            <span className="ns-home-badge-dot" aria-hidden />
+            <span className="ns-shiny">{site.tag}</span>
           </span>
         )}
-        <h1 className="fs-home-title" aria-label={site.name}>
+        <h1 className="ns-home-title" aria-label={site.name}>
           {words.map((word, i) => (
-            <span key={i} className="fs-home-word" style={vars({ '--i': i })} aria-hidden>
+            <span key={i} className="ns-home-word" style={vars({ '--i': i })} aria-hidden>
               {word}
             </span>
           ))}
         </h1>
-        <p className="fs-home-text">{site.description}</p>
-        <div className="fs-home-actions">
-          <Link href={docsPath} className="fs-button fs-button-primary">
+        <p className="ns-home-text">{site.description}</p>
+        <div className="ns-home-actions">
+          <Link href={docsPath} className="ns-button ns-button-primary">
             Start reading
             <ArrowRight />
           </Link>
-          <a href={repoUrl(site)} className="fs-button fs-button-secondary" target="_blank" rel="noreferrer">
+          <a href={repoUrl(site)} className="ns-button ns-button-secondary" target="_blank" rel="noreferrer">
             View on GitHub
           </a>
         </div>
-        <p className="fs-home-stats">
+        <p className="ns-home-stats">
           <span>
-            <b data-fs-count={pageCount}>{pageCount}</b> pages
+            <b data-ns-count={pageCount}>{pageCount}</b> pages
           </span>
           <span>
-            <b data-fs-count={groups.length}>{groups.length}</b> sections
+            <b data-ns-count={groups.length}>{groups.length}</b> sections
           </span>
           {updated && (
             <span>
@@ -154,19 +154,19 @@ export function NotesHome({
         </p>
       </section>
 
-      <div className="fs-home-preview">
+      <div className="ns-home-preview">
         <DocsPreview site={site} groups={groups} href={firstUrl} />
       </div>
 
       <StackStrip items={notesStack} />
 
       {groups.length > 0 && (
-        <section className="fs-home-section" aria-labelledby="fs-home-contents">
-          <SectionHead id="fs-home-contents" eyebrow="Contents" title="What's inside">
+        <section className="ns-home-section" aria-labelledby="ns-home-contents">
+          <SectionHead id="ns-home-contents" eyebrow="Contents" title="What's inside">
             {plural(pageCount, 'page')} in {plural(groups.length, 'section')}. Jump into any of them, or start
             from the first page.
           </SectionHead>
-          <div className="fs-home-cards" data-count={Math.min(groups.length, 4)}>
+          <div className="ns-home-cards" data-count={Math.min(groups.length, 4)}>
             {groups.map((group, i) => (
               <SectionCard key={i} group={group} index={i} />
             ))}
@@ -176,21 +176,21 @@ export function NotesHome({
 
       {site.start !== false && <GetStarted section={site.start ?? runLocally(site)} />}
 
-      <section className="fs-home-cta fs-reveal">
+      <section className="ns-home-cta ns-reveal">
         <div>
-          <h2 className="fs-home-h2">Find anything in seconds</h2>
-          <p className="fs-home-lead">Every page is searchable. Search runs in your browser, so results show as you type.</p>
+          <h2 className="ns-home-h2">Find anything in seconds</h2>
+          <p className="ns-home-lead">Every page is searchable. Search runs in your browser, so results show as you type.</p>
         </div>
-        <div className="fs-home-actions">
+        <div className="ns-home-actions">
           <SearchButton />
-          <Link href={docsPath} className="fs-button fs-button-primary">
+          <Link href={docsPath} className="ns-button ns-button-primary">
             Start reading
             <ArrowRight />
           </Link>
         </div>
       </section>
 
-      <footer className="fs-home-footer">
+      <footer className="ns-home-footer">
         <span>
           {site.name}
           {site.author && <> · by {site.author}</>}
@@ -212,12 +212,12 @@ export function NotesHome({
 
 function SectionHead({ id, eyebrow, title, children }: { id: string; eyebrow: string; title: string; children: ReactNode }) {
   return (
-    <header className="fs-home-section-head fs-reveal">
-      <p className="fs-home-eyebrow">{eyebrow}</p>
-      <h2 id={id} className="fs-home-h2">
+    <header className="ns-home-section-head ns-reveal">
+      <p className="ns-home-eyebrow">{eyebrow}</p>
+      <h2 id={id} className="ns-home-h2">
         {title}
       </h2>
-      <p className="fs-home-lead">{children}</p>
+      <p className="ns-home-lead">{children}</p>
     </header>
   );
 }
@@ -245,14 +245,14 @@ function StackLogo({ item }: { item: StackItem }) {
 function StackStrip({ items }: { items: StackItem[] }) {
   const row = fill(items, 10);
   const strip = (copy: boolean) => (
-    <ul className="fs-marquee-group" aria-hidden={copy || undefined}>
+    <ul className="ns-marquee-group" aria-hidden={copy || undefined}>
       {row.map((item, i) => (
         <li key={i}>
           <a
             href={item.href}
             target="_blank"
             rel="noreferrer"
-            className="fs-stack-item"
+            className="ns-stack-item"
             tabIndex={copy || i >= items.length ? -1 : undefined}
           >
             <StackLogo item={item} />
@@ -264,9 +264,9 @@ function StackStrip({ items }: { items: StackItem[] }) {
   );
 
   return (
-    <section className="fs-home-stack fs-reveal" aria-label="Built with">
-      <p className="fs-home-stack-label">Built with</p>
-      <div className="fs-marquee" style={vars({ '--fs-duration': `${row.length * 4}s` })}>
+    <section className="ns-home-stack ns-reveal" aria-label="Built with">
+      <p className="ns-home-stack-label">Built with</p>
+      <div className="ns-marquee" style={vars({ '--ns-duration': `${row.length * 4}s` })}>
         {strip(false)}
         {strip(true)}
       </div>
@@ -282,10 +282,10 @@ function SectionCard({ group, index }: { group: HomeGroup; index: number }) {
   const more = group.pages.length - 3;
 
   const list = (copy: boolean) => (
-    <ul className="fs-marquee-group" aria-hidden={copy || undefined}>
+    <ul className="ns-marquee-group" aria-hidden={copy || undefined}>
       {items.map((page, i) => (
         <li key={i}>
-          <Link href={page.url} className="fs-page-chip" tabIndex={copy || i >= group.pages.length ? -1 : undefined}>
+          <Link href={page.url} className="ns-page-chip" tabIndex={copy || i >= group.pages.length ? -1 : undefined}>
             <b>{page.name}</b>
             {page.description && <span>{page.description}</span>}
           </Link>
@@ -295,25 +295,25 @@ function SectionCard({ group, index }: { group: HomeGroup; index: number }) {
   );
 
   return (
-    <article className="fs-card fs-reveal" style={vars({ '--i': index })}>
+    <article className="ns-card ns-reveal" style={vars({ '--i': index })}>
       <div
-        className="fs-card-visual fs-marquee"
+        className="ns-card-visual ns-marquee"
         data-vertical
         data-reverse={index % 2 === 1 || undefined}
-        style={vars({ '--fs-duration': `${items.length * 3.5}s` })}
+        style={vars({ '--ns-duration': `${items.length * 3.5}s` })}
       >
         {list(false)}
         {list(true)}
       </div>
-      <div className="fs-card-body">
-        <div className="fs-card-head">
-          <span className="fs-card-icon" data-number={group.icon ? undefined : true}>
+      <div className="ns-card-body">
+        <div className="ns-card-head">
+          <span className="ns-card-icon" data-number={group.icon ? undefined : true}>
             {group.icon ?? String(index + 1).padStart(2, '0')}
           </span>
-          <h3 className="fs-card-title">{group.name}</h3>
-          <span className="fs-card-count">{plural(group.pages.length, 'page')}</span>
+          <h3 className="ns-card-title">{group.name}</h3>
+          <span className="ns-card-count">{plural(group.pages.length, 'page')}</span>
         </div>
-        <p className="fs-card-text">
+        <p className="ns-card-text">
           {group.pages.slice(0, 3).map((page, i) => (
             <span key={i}>
               {i > 0 && ', '}
@@ -323,7 +323,7 @@ function SectionCard({ group, index }: { group: HomeGroup; index: number }) {
           {more > 0 && ` and ${more} more`}.
         </p>
         {first && (
-          <Link href={first.url} className="fs-card-start">
+          <Link href={first.url} className="ns-card-start">
             Start with {first.name}
             <ArrowRight aria-hidden />
           </Link>
@@ -353,15 +353,15 @@ function GetStarted({ section }: { section: StartSection }) {
   const all = section.steps.map((step) => step.command).join('\n');
 
   return (
-    <section className="fs-home-section" aria-labelledby="fs-home-start">
-      <SectionHead id="fs-home-start" eyebrow="Get started" title={section.title}>
+    <section className="ns-home-section" aria-labelledby="ns-home-start">
+      <SectionHead id="ns-home-start" eyebrow="Get started" title={section.title}>
         {section.text}
       </SectionHead>
-      <div className="fs-start">
-        <ol className="fs-steps fs-reveal">
+      <div className="ns-start">
+        <ol className="ns-steps ns-reveal">
           {section.steps.map((step, i) => (
-            <li key={i} className="fs-step">
-              <span className="fs-step-number">{i + 1}</span>
+            <li key={i} className="ns-step">
+              <span className="ns-step-number">{i + 1}</span>
               <div>
                 <h3>{step.title}</h3>
                 <p>{step.text}</p>
@@ -369,9 +369,9 @@ function GetStarted({ section }: { section: StartSection }) {
             </li>
           ))}
         </ol>
-        <div className="fs-terminal fs-reveal" style={vars({ '--i': 1 })}>
-          <div className="fs-terminal-bar">
-            <span className="fs-preview-dots" aria-hidden>
+        <div className="ns-terminal ns-reveal" style={vars({ '--i': 1 })}>
+          <div className="ns-terminal-bar">
+            <span className="ns-preview-dots" aria-hidden>
               <i />
               <i />
               <i />
@@ -379,15 +379,15 @@ function GetStarted({ section }: { section: StartSection }) {
             <span>Terminal</span>
             <CopyButton text={all} label="Copy the commands" />
           </div>
-          <pre className="fs-terminal-body">
+          <pre className="ns-terminal-body">
             {section.steps.map((step, i) => (
-              <code key={i} className="fs-terminal-line" style={vars({ '--i': i, '--n': step.command.length })}>
-                <span className="fs-terminal-prompt">$ </span>
-                <span className="fs-terminal-type">{step.command}</span>
+              <code key={i} className="ns-terminal-line" style={vars({ '--i': i, '--n': step.command.length })}>
+                <span className="ns-terminal-prompt">$ </span>
+                <span className="ns-terminal-type">{step.command}</span>
               </code>
             ))}
-            <code className="fs-terminal-line fs-terminal-out" style={vars({ '--i': section.steps.length })}>
-              <span className="fs-terminal-ok">✓</span> {section.done ?? 'Ready on http://localhost:3000'}
+            <code className="ns-terminal-line ns-terminal-out" style={vars({ '--i': section.steps.length })}>
+              <span className="ns-terminal-ok">✓</span> {section.done ?? 'Ready on http://localhost:3000'}
             </code>
           </pre>
         </div>

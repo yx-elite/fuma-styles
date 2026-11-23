@@ -4,13 +4,13 @@ Rules for anyone, human or coding agent, working in this repo. The plan and its 
 
 ## What this repo is
 
-`fuma-styles` is a shared theme for [Fumadocs](https://fumadocs.dev) study-notes sites, published to npm as **`@yx-elite/fuma-styles`**. Every notes repo (AWS SAA, Linux, and later ones) installs it, so they all look and behave the same. This repo holds **no study notes**.
+**Notestack** is a shared theme for [Fumadocs](https://fumadocs.dev) study-notes sites, published to npm as **`@yx-elite/notestack`**. Every notes repo (AWS SAA, Linux, and later ones) installs it, so they all look and behave the same. This repo holds **no study notes**.
 
 It has three parts, and each has one job:
 
 | Part | Path | Job | Published? |
 | --- | --- | --- | --- |
-| Package | `packages/fuma-styles/` | All styling and all logic: theme CSS, MDX components, layouts, page factories, static search, config helpers | Yes, to npm |
+| Package | `packages/notestack/` | All styling and all logic: theme CSS, MDX components, layouts, page factories, static search, config helpers | Yes, to npm |
 | Playground | `playground/` | A full Fumadocs site that shows every component and edge case, for testing the package | No |
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied with `giget`) |
 
@@ -34,23 +34,23 @@ This is the only AGENTS.md in the repo. `create-fumadocs-app` writes its own AGE
 
 A notes repo is a one-time copy of `starter/`. Later changes to `starter/` never reach repos that were already copied, but a new package version reaches all of them through `npm update`. So:
 
-- Every starter file other than `site.config.ts`, `content/` and `package.json` is a few lines that import from `@yx-elite/fuma-styles` and re-export. No styling, no JSX trees, no logic.
+- Every starter file other than `site.config.ts`, `content/` and `package.json` is a few lines that import from `@yx-elite/notestack` and re-export. No styling, no JSX trees, no logic.
 - If a starter file starts to grow, move that code into the package and make the file call it.
 - **Exception, design phase:** while the look and arrangement are being designed, layout and component code may be prototyped in `playground/` first. Every such file is listed under *Design phase: to move into the package* in `PRD.md`; keep that list current. No notes repo may be created from the starter until the list is empty.
 - `site.config.ts` is the only file a notes repo is expected to edit (title, subdomain, links). Anything subject-specific belongs there or in `content/`, never in the package.
-- A change that existing notes repos must also apply by hand (a new route file, a renamed export, a new config key) is a **breaking change**. It needs a major version bump and a `### Migration` entry in `packages/fuma-styles/CHANGELOG.md` listing the exact edit for each notes repo. Avoid these.
+- A change that existing notes repos must also apply by hand (a new route file, a renamed export, a new config key) is a **breaking change**. It needs a major version bump and a `### Migration` entry in `packages/notestack/CHANGELOG.md` listing the exact edit for each notes repo. Avoid these.
 
 ## Layout
 
 ```text
-fuma-styles/
+notestack/
 ├── package.json              ← private npm workspaces root
 ├── AGENTS.md · CLAUDE.md · README.md · LICENSE
 ├── PRD.md                    ← local only, not committed
 ├── .github/workflows/
 │   ├── ci.yml                ← builds package, playground and starter on every push
 │   └── deploy-s3.yml         ← reusable deploy workflow that notes repos call
-├── packages/fuma-styles/     ← @yx-elite/fuma-styles
+├── packages/notestack/       ← @yx-elite/notestack
 │   ├── package.json · tsconfig.json · README.md · CHANGELOG.md
 │   └── src/
 │       ├── theme.css         ← tokens, fonts, numbered headings, @source for Tailwind
@@ -72,13 +72,13 @@ fuma-styles/
 - **CSS is not built.** `exports["./theme.css"]` points at `./src/theme.css` and `files` includes it, so theme edits show in the playground on save. Never point it at `dist/`.
 - **`"use client"` goes on the first line** of any component that uses state, effects, browser APIs or event handlers. Keep everything else a server component.
 - **Every component is wired in three places** in the same change: exported from `src/index.ts`, added to `getMDXComponents()` in `src/mdx.tsx`, and shown on a playground page.
-- **Separate entry point for non-React code.** `next.config.mjs` in notes repos imports from `@yx-elite/fuma-styles/next`. That entry point must never import React or a `.css` file.
+- **Separate entry point for non-React code.** `next.config.mjs` in notes repos imports from `@yx-elite/notestack/next`. That entry point must never import React or a `.css` file.
 - **`fumadocs-ui` may be an alias.** The scaffold installs `"fumadocs-ui": "npm:@fumadocs/base-ui@…"`. Always import from `fumadocs-ui/...`, never from `@fumadocs/base-ui`.
 - **Tailwind v4 skips `node_modules`.** Once the package has components, `src/theme.css` needs an `@source "../dist";` line so a notes repo's Tailwind sees their classes. Check this in the starter build, not only the playground.
-- **Override Fumadocs tokens, don't fight its classes.** Change the `--color-fd-*` variables and fumadocs-ui's documented CSS first. Prefix custom CSS variables with `--fs-` and custom class names with `fs-`.
+- **Override Fumadocs tokens, don't fight its classes.** Change the `--color-fd-*` variables and fumadocs-ui's documented CSS first. Prefix custom CSS variables with `--ns-` and custom class names with `ns-`.
 - **Build on fumadocs-ui components where they exist** (`Callout`, `Steps`, `ImageZoom`, `Tabs`, `Accordion`) instead of rewriting them.
 - **Light and dark mode both work** for every token and component. Check both in the playground.
-- **Keep page transitions smooth in Safari.** Safari (WebKit) re-draws transformed or skewed elements with repeating backgrounds on every animation frame: a CSS-skewed grid dropped transitions to ~10 fps there (Chrome stayed at 60). Never `transform` large patterned layers; pre-render them instead (the background grid is a pre-skewed SVG, generated by `packages/fuma-styles/scripts/grid-svg.py`). Animate only `opacity` and `transform` of the transitioning elements, never `filter: blur()`. Test transitions in WebKit as well as Chrome.
+- **Keep page transitions smooth in Safari.** Safari (WebKit) re-draws transformed or skewed elements with repeating backgrounds on every animation frame: a CSS-skewed grid dropped transitions to ~10 fps there (Chrome stayed at 60). Never `transform` large patterned layers; pre-render them instead (the background grid is a pre-skewed SVG, generated by `packages/notestack/scripts/grid-svg.py`). Animate only `opacity` and `transform` of the transitioning elements, never `filter: blur()`. Test transitions in WebKit as well as Chrome.
 - **No branding or subject content in the package.** Names, links, colours that belong to one subject, and glossary terms all come from the notes repo.
 
 ## Static export rules
@@ -99,7 +99,7 @@ All commands run from the repo root (npm workspaces):
 
 ```bash
 npm install                                   # install every workspace
-npm run build -w @yx-elite/fuma-styles        # compile the package to dist/
+npm run build -w @yx-elite/notestack        # compile the package to dist/
 npm run dev -w playground                     # playground at localhost:3000
 npm run build -w playground                   # static export of the playground
 npm run build -w starter                      # static export of the starter (the real consumer test)
@@ -114,7 +114,7 @@ Before calling a change done, all of these must pass: the package build, `npm ru
 
 - Semver. While in `0.x`, a breaking change bumps the minor.
 - Never bump the version, run `npm publish` or create tags unless the maintainer asks.
-- Every user-visible change gets a line in `packages/fuma-styles/CHANGELOG.md` under *Unreleased*.
+- Every user-visible change gets a line in `packages/notestack/CHANGELOG.md` under *Unreleased*.
 - The reusable deploy workflow is pinned by notes repos to a major tag (`@v1`). Changing its inputs is a breaking change.
 
 ## Commit messages

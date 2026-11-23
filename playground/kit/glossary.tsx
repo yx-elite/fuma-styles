@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's components/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's components/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { ArrowRight, Search } from 'lucide-react';
 import { useEffect, useMemo, useRef, useState } from 'react';
@@ -72,9 +72,9 @@ export function Glossary({ terms }: { terms: GlossaryTerm[] }) {
   };
 
   return (
-    <div className="fs-glossary not-prose">
-      <div className="fs-glossary-bar">
-        <label className="fs-glossary-filter">
+    <div className="ns-glossary not-prose">
+      <div className="ns-glossary-bar">
+        <label className="ns-glossary-filter">
           <Search aria-hidden />
           <input
             type="search"
@@ -83,9 +83,9 @@ export function Glossary({ terms }: { terms: GlossaryTerm[] }) {
             placeholder={`Filter ${terms.length} terms…`}
             aria-label="Filter terms"
           />
-          {query && <span className="fs-glossary-count">{shown} found</span>}
+          {query && <span className="ns-glossary-count">{shown} found</span>}
         </label>
-        <nav className="fs-glossary-letters" aria-label="Jump to letter">
+        <nav className="ns-glossary-letters" aria-label="Jump to letter">
           {LETTERS.map((letter) => {
             const has = groups.has(letter);
             return (
@@ -105,24 +105,24 @@ export function Glossary({ terms }: { terms: GlossaryTerm[] }) {
       </div>
 
       {shown === 0 ? (
-        <p className="fs-glossary-empty">No terms match “{query}”.</p>
+        <p className="ns-glossary-empty">No terms match “{query}”.</p>
       ) : (
         [...groups.entries()].map(([letter, list]) => (
           <section
             key={letter}
             id={`glossary-${letter.toLowerCase()}`}
             data-glossary-letter={letter}
-            className="fs-glossary-section"
+            className="ns-glossary-section"
           >
-            <h2 className="fs-glossary-letter">{letter}</h2>
-            <dl className="fs-glossary-terms">
+            <h2 className="ns-glossary-letter">{letter}</h2>
+            <dl className="ns-glossary-terms">
               {list.map((t) => (
-                <div key={t.term} id={`term-${slug(t.term)}`} className="fs-glossary-term">
+                <div key={t.term} id={`term-${slug(t.term)}`} className="ns-glossary-term">
                   <dt>{t.term}</dt>
                   <dd>
                     <p>{t.definition}</p>
                     {t.href && (
-                      <Link href={t.href} className="fs-glossary-link">
+                      <Link href={t.href} className="ns-glossary-link">
                         {t.label ?? 'Read more'}
                         <ArrowRight aria-hidden />
                       </Link>

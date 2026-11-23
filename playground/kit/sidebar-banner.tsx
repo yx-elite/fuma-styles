@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { BookOpen } from 'lucide-react';
 import { repoUrl, type SiteConfig } from './site';
 
@@ -8,15 +8,15 @@ export function SidebarBanner({ site }: { site: SiteConfig }) {
   const external = /^https?:\/\//.test(link.href);
 
   return (
-    <div className="fs-banner">
-      <div className="fs-banner-dots" aria-hidden />
-      <p className="fs-banner-title">
+    <div className="ns-banner">
+      <div className="ns-banner-dots" aria-hidden />
+      <p className="ns-banner-title">
         {site.name}
-        {site.tag && <span className="fs-banner-tag">{site.tag}</span>}
+        {site.tag && <span className="ns-banner-tag">{site.tag}</span>}
       </p>
-      <p className="fs-banner-text">{site.description}</p>
+      <p className="ns-banner-text">{site.description}</p>
       <a
-        className="fs-banner-link"
+        className="ns-banner-link"
         href={link.href}
         {...(external ? { target: '_blank', rel: 'noreferrer' } : {})}
       >

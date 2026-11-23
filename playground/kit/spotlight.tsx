@@ -1,11 +1,11 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { useEffect, useRef } from 'react';
 
 /**
  * Interactive landing background: a soft accent glow that follows the cursor,
  * revealing a dot matrix around it like a torch. Only for a real mouse
- * (no touch screens) and not for "reduce motion". Styles in theme.css (.fs-spotlight).
+ * (no touch screens) and not for "reduce motion". Styles in theme.css (.ns-spotlight).
  * Updates two CSS variables at most once per frame, so it stays cheap.
  */
 export function Spotlight() {
@@ -24,8 +24,8 @@ export function Spotlight() {
 
     const apply = () => {
       frame = 0;
-      el.style.setProperty('--fs-x', `${x}px`);
-      el.style.setProperty('--fs-y', `${y}px`);
+      el.style.setProperty('--ns-x', `${x}px`);
+      el.style.setProperty('--ns-y', `${y}px`);
     };
     const onMove = (event: PointerEvent) => {
       x = event.clientX;
@@ -47,9 +47,9 @@ export function Spotlight() {
   }, []);
 
   return (
-    <div ref={ref} className="fs-spotlight" data-active="false" aria-hidden>
-      <div className="fs-spotlight-glow" />
-      <div className="fs-spotlight-dots" />
+    <div ref={ref} className="ns-spotlight" data-active="false" aria-hidden>
+      <div className="ns-spotlight-glow" />
+      <div className="ns-spotlight-dots" />
     </div>
   );
 }

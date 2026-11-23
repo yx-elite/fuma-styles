@@ -1,12 +1,12 @@
 /*
- * @yx-elite/fuma-styles: the shared theme.
+ * @yx-elite/notestack: the shared theme.
  * Import it in app/global.css, right after Tailwind:
  *   @import 'tailwindcss';
- *   @import '@yx-elite/fuma-styles/theme.css';
+ *   @import '@yx-elite/notestack/theme.css';
  *
- * Change the accent for one site by setting --fs-accent after the import:
- *   :root { --fs-accent: #16a34a; }   (light mode)
- *   .dark { --fs-accent: #86efac; }   (dark mode)
+ * Change the accent for one site by setting --ns-accent after the import:
+ *   :root { --ns-accent: #16a34a; }   (light mode)
+ *   .dark { --ns-accent: #86efac; }   (dark mode)
  * Links, active items and the background glow all follow it.
  */
 
@@ -25,13 +25,13 @@
 /* ── Accent ─────────────────────────────────────────────────────────── */
 
 :root {
-  --fs-accent: hsl(217, 100%, 58%);
-  --color-fd-primary: var(--fs-accent);
+  --ns-accent: hsl(217, 100%, 58%);
+  --color-fd-primary: var(--ns-accent);
   --color-fd-primary-foreground: hsl(0, 0%, 100%);
 }
 
 .dark {
-  --fs-accent: #a9ceff;
+  --ns-accent: #a9ceff;
   --color-fd-primary-foreground: hsl(0, 0%, 9%);
 }
 
@@ -42,12 +42,12 @@
  * Browsers without relative colours fall back to the accent itself.
  */
 :root {
-  --fs-accent-2: var(--fs-accent);
+  --ns-accent-2: var(--ns-accent);
 }
 
 @supports (color: oklch(from red l c h)) {
   :root {
-    --fs-accent-2: oklch(from var(--fs-accent) l c calc(h + 50));
+    --ns-accent-2: oklch(from var(--ns-accent) l c calc(h + 50));
   }
 }
 
@@ -84,25 +84,25 @@ html > body[data-scroll-locked] {
  *               with a few faintly filled cells
  * All fade out from the top centre. Docs pages on phones show none of them.
  *
- * Tune:  --fs-glow-strength        scrolling glow (0% = off)
- *        --fs-glow-fixed-strength  fixed glow (0% = off)
- *        --fs-grid-opacity         strength of the grid
+ * Tune:  --ns-glow-strength        scrolling glow (0% = off)
+ *        --ns-glow-fixed-strength  fixed glow (0% = off)
+ *        --ns-grid-opacity         strength of the grid
  */
 
 :root {
-  --fs-glow-strength: 14%;
-  --fs-glow-fixed-strength: 5%;
-  --fs-grid-opacity: 1;
+  --ns-glow-strength: 14%;
+  --ns-glow-fixed-strength: 5%;
+  --ns-grid-opacity: 1;
   /* Pre-skewed grid (lines + a few filled cells) as one SVG pattern: Safari animates it far
      more smoothly than a CSS-skewed element. Regenerate with the script noted in AGENTS.md. */
-  --fs-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='black'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.025'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.025'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
+  --ns-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='black'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.025'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.025'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.2'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
 }
 
 .dark {
-  --fs-glow-strength: 14%;
-  --fs-glow-fixed-strength: 7%;
-  --fs-grid-opacity: 0.8;
-  --fs-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.03'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.27'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
+  --ns-glow-strength: 14%;
+  --ns-glow-fixed-strength: 7%;
+  --ns-grid-opacity: 0.8;
+  --ns-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.03'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.27'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
 }
 
 :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout) {
@@ -112,12 +112,12 @@ html > body[data-scroll-locked] {
   background-image:
     radial-gradient(
       ellipse 28rem 22rem at 68% 0%,
-      color-mix(in oklab, var(--fs-accent-2) calc(var(--fs-glow-strength) * 0.7), transparent),
+      color-mix(in oklab, var(--ns-accent-2) calc(var(--ns-glow-strength) * 0.7), transparent),
       transparent 80%
     ),
     radial-gradient(
       ellipse 46rem 36rem at 50% 0%,
-      color-mix(in oklab, var(--fs-accent) var(--fs-glow-strength), transparent),
+      color-mix(in oklab, var(--ns-accent) var(--ns-glow-strength), transparent),
       transparent 80%
     );
   background-repeat: no-repeat;
@@ -139,16 +139,16 @@ html > body[data-scroll-locked] {
 :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before {
   position: fixed;
   border-radius: 9999px;
-  background-color: color-mix(in oklab, var(--fs-accent) var(--fs-glow-fixed-strength), transparent);
+  background-color: color-mix(in oklab, var(--ns-accent) var(--ns-glow-fixed-strength), transparent);
   mask-image: radial-gradient(circle at center, black, transparent 69%);
 }
 
 /* Skewed grid with a few filled cells */
 :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
   position: absolute;
-  background-image: var(--fs-grid-image); /* already skewed 20deg on both axes */
+  background-image: var(--ns-grid-image); /* already skewed 20deg on both axes */
   background-size: 100% 100%;
-  opacity: var(--fs-grid-opacity);
+  opacity: var(--ns-grid-opacity);
   /* starts below the header (fades in over 6rem), then fades out from the top centre */
   top: 3.5rem;
   mask-image:
@@ -163,21 +163,21 @@ html > body[data-scroll-locked] {
  * fixed glow and grid scaled down to the narrow screen.
  */
 @media (max-width: 767px) {
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.fs-home-root)) {
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root)) {
     background-image: none;
   }
 
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.fs-home-root))::before,
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.fs-home-root))::after {
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root))::before,
+  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root))::after {
     display: none;
   }
 
-  #nd-notebook-layout:has(.fs-home-root)::before {
+  #nd-notebook-layout:has(.ns-home-root)::before {
     width: 40rem;
     height: 40rem;
   }
 
-  #nd-notebook-layout:has(.fs-home-root)::after {
+  #nd-notebook-layout:has(.ns-home-root)::after {
     width: 44rem;
     height: 44rem;
   }
@@ -187,17 +187,17 @@ html > body[data-scroll-locked] {
 /*
  * Full width: sidebar against the left edge, "On this page" against the right,
  * the page content in a centred column between them.
- * Tune: --fs-content-width (reading column)
+ * Tune: --ns-content-width (reading column)
  */
 
 :root {
   --fd-layout-width: 100vw;
-  --fs-content-width: 768px;
+  --ns-content-width: 768px;
 }
 
 #nd-notebook-layout #nd-page > * {
   width: 100%;
-  max-width: var(--fs-content-width);
+  max-width: var(--ns-content-width);
   margin-inline: auto;
 }
 
@@ -206,7 +206,7 @@ html > body[data-scroll-locked] {
   padding-bottom: 6rem;
 }
 
-.fs-last-updated {
+.ns-last-updated {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--color-fd-border);
@@ -222,16 +222,16 @@ html > body[data-scroll-locked] {
 :is(#nd-subnav, #nd-nav) {
   z-index: 40; /* above the sticky sidebar (z-20), also during over-scroll bounce */
   backdrop-filter: blur(12px);
-  view-transition-name: fs-header; /* stays in place while the page changes */
+  view-transition-name: ns-header; /* stays in place while the page changes */
 }
 
 /* Once scrolled: a light tint, so the page stays visible (blurred) behind the header */
 :is(#nd-subnav, #nd-nav)[data-transparent='false'] {
-  background-color: color-mix(in oklab, var(--color-fd-background) var(--fs-header-tint), transparent);
+  background-color: color-mix(in oklab, var(--color-fd-background) var(--ns-header-tint), transparent);
 }
 
 :root {
-  --fs-header-tint: 45%;
+  --ns-header-tint: 45%;
 }
 
 /* GitHub icon at the far right, after the theme switch */
@@ -259,7 +259,7 @@ html > body[data-scroll-locked] {
 /* Sidebar and "On this page" widths (Fumadocs default 268px each) */
 @media (min-width: 1024px) {
   #nd-notebook-layout#nd-notebook-layout:has(#nd-sidebar) {
-    --fd-sidebar-width: var(--fs-sidebar-width);
+    --fd-sidebar-width: var(--ns-sidebar-width);
   }
 }
 
@@ -293,7 +293,7 @@ html > body[data-scroll-locked] {
       visibility 0s 0.4s;
   }
 
-  html[data-fs-menu='open'] #nd-notebook-layout > div:has(> #nd-sidebar) {
+  html[data-ns-menu='open'] #nd-notebook-layout > div:has(> #nd-sidebar) {
     transform: none;
     visibility: visible;
     /* the huge second shadow dims the whole page behind the panel (and stays behind it) */
@@ -319,12 +319,12 @@ html > body[data-scroll-locked] {
    so the content column never shifts between pages. Not on the home page. */
 @media (min-width: 1280px) {
   #nd-notebook-layout#nd-notebook-layout:has(#nd-sidebar) {
-    --fd-toc-width: var(--fs-sidebar-width);
+    --fd-toc-width: var(--ns-sidebar-width);
   }
 }
 
 :root {
-  --fs-sidebar-width: 286px;
+  --ns-sidebar-width: 286px;
 }
 
 /*
@@ -381,15 +381,15 @@ html > body[data-scroll-locked] {
 }
 
 /* ── Header title ───────────────────────────────────────────────────── */
-/* Used as nav.title: <NotesLogo.fs-nav-mark/><span.fs-nav-name/> */
+/* Used as nav.title: <NotesLogo.ns-nav-mark/><span.ns-nav-name/> */
 
-.fs-nav-mark {
+.ns-nav-mark {
   width: 1.375rem;
   height: 1.375rem;
   flex-shrink: 0;
 }
 
-.fs-nav-name {
+.ns-nav-name {
   font-weight: 600;
   letter-spacing: -0.01em;
   white-space: nowrap;
@@ -400,22 +400,22 @@ html > body[data-scroll-locked] {
 /*
  * The box at the top of the sidebar: subject name, tag, one-line description, link.
  * Accent gradient, dashed accent border, dotted pattern fading in from the top left.
- * Tune: --fs-banner-from / --fs-banner-to (gradient strength)
+ * Tune: --ns-banner-from / --ns-banner-to (gradient strength)
  */
 
 :root {
-  --fs-banner-from: color-mix(in oklab, var(--fs-accent) 14%, transparent);
-  --fs-banner-to: color-mix(in oklab, color-mix(in oklab, var(--fs-accent-2) 70%, white) 40%, transparent);
-  --fs-banner-dot: rgb(0 0 0 / 0.45);
+  --ns-banner-from: color-mix(in oklab, var(--ns-accent) 14%, transparent);
+  --ns-banner-to: color-mix(in oklab, color-mix(in oklab, var(--ns-accent-2) 70%, white) 40%, transparent);
+  --ns-banner-dot: rgb(0 0 0 / 0.45);
 }
 
 .dark {
-  --fs-banner-from: color-mix(in oklab, var(--fs-accent) 20%, transparent);
-  --fs-banner-to: color-mix(in oklab, color-mix(in oklab, var(--fs-accent-2) 70%, white) 50%, transparent);
-  --fs-banner-dot: rgb(255 255 255 / 0.85);
+  --ns-banner-from: color-mix(in oklab, var(--ns-accent) 20%, transparent);
+  --ns-banner-to: color-mix(in oklab, color-mix(in oklab, var(--ns-accent-2) 70%, white) 50%, transparent);
+  --ns-banner-dot: rgb(255 255 255 / 0.85);
 }
 
-.fs-banner {
+.ns-banner {
   position: relative;
   display: flex;
   flex-direction: column;
@@ -424,23 +424,23 @@ html > body[data-scroll-locked] {
   /* run edge to edge: cancel the sidebar's 1rem padding on top and sides */
   margin: -1rem -1rem 0.5rem;
   padding: 1rem;
-  border-bottom: 1px dashed color-mix(in oklab, var(--fs-accent) 35%, transparent);
+  border-bottom: 1px dashed color-mix(in oklab, var(--ns-accent) 35%, transparent);
   background-color: var(--color-fd-background); /* solid base: the page grid must not show through */
-  background-image: linear-gradient(to bottom, var(--fs-banner-from), var(--fs-banner-to));
+  background-image: linear-gradient(to bottom, var(--ns-banner-from), var(--ns-banner-to));
   backdrop-filter: blur(8px);
 }
 
-.fs-banner-dots {
+.ns-banner-dots {
   position: absolute;
   inset: 0;
   pointer-events: none;
   opacity: 0.5;
-  background-image: radial-gradient(circle at center, var(--fs-banner-dot) 1px, transparent 1.5px);
+  background-image: radial-gradient(circle at center, var(--ns-banner-dot) 1px, transparent 1.5px);
   background-size: 10px 10px;
   mask-image: radial-gradient(ellipse at top left, transparent 50%, black);
 }
 
-.fs-banner-title {
+.ns-banner-title {
   position: relative;
   display: flex;
   align-items: baseline;
@@ -451,21 +451,21 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-foreground);
 }
 
-.fs-banner-tag {
+.ns-banner-tag {
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
   font-weight: 500;
   opacity: 0.55;
 }
 
-.fs-banner-text {
+.ns-banner-text {
   position: relative;
   font-size: 0.8125rem;
   line-height: 1.5;
   color: color-mix(in oklab, var(--color-fd-foreground) 65%, transparent);
 }
 
-.fs-banner-link {
+.ns-banner-link {
   position: relative;
   display: inline-flex;
   align-items: center;
@@ -481,11 +481,11 @@ html > body[data-scroll-locked] {
   transition: opacity 0.2s;
 }
 
-.fs-banner-link:hover {
+.ns-banner-link:hover {
   opacity: 0.7;
 }
 
-.fs-banner-link svg {
+.ns-banner-link svg {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
@@ -494,7 +494,7 @@ html > body[data-scroll-locked] {
 /* ── Sidebar quick links ────────────────────────────────────────────── */
 /* Fixed under the banner (Home, Glossary…), styled like sidebar items. */
 
-.fs-links {
+.ns-links {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
@@ -502,7 +502,7 @@ html > body[data-scroll-locked] {
   border-bottom: 1px solid var(--color-fd-border);
 }
 
-.fs-link {
+.ns-link {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -513,17 +513,17 @@ html > body[data-scroll-locked] {
   transition: background-color 0.15s, color 0.15s;
 }
 
-.fs-link:hover {
+.ns-link:hover {
   background-color: color-mix(in oklab, var(--color-fd-accent) 50%, transparent);
   color: color-mix(in oklab, var(--color-fd-accent-foreground) 80%, transparent);
   transition: none;
 }
 
-.fs-link[data-active='true'] {
+.ns-link[data-active='true'] {
   color: var(--color-fd-primary);
 }
 
-.fs-link svg {
+.ns-link svg {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
@@ -540,68 +540,68 @@ html > body[data-scroll-locked] {
  * Only opacity and transform are animated, so the GPU does the work.
  */
 
-#nd-notebook-layout #nd-sidebar { view-transition-name: fs-sidebar; }
-#nd-notebook-layout #nd-toc { view-transition-name: fs-toc; }
-#nd-notebook-layout #nd-page { view-transition-name: fs-page; }
-.fs-home-root { view-transition-name: fs-home; }
-#nd-subnav a:has(.fs-nav-name) { view-transition-name: fs-nav-title; }
-#nd-subnav button:has(kbd) { view-transition-name: fs-nav-search; }
-#nd-subnav [data-theme-toggle] { view-transition-name: fs-nav-theme; }
-#nd-subnav a[href*='github.com'] { view-transition-name: fs-nav-github; }
+#nd-notebook-layout #nd-sidebar { view-transition-name: ns-sidebar; }
+#nd-notebook-layout #nd-toc { view-transition-name: ns-toc; }
+#nd-notebook-layout #nd-page { view-transition-name: ns-page; }
+.ns-home-root { view-transition-name: ns-home; }
+#nd-subnav a:has(.ns-nav-name) { view-transition-name: ns-nav-title; }
+#nd-subnav button:has(kbd) { view-transition-name: ns-nav-search; }
+#nd-subnav [data-theme-toggle] { view-transition-name: ns-nav-theme; }
+#nd-subnav a[href*='github.com'] { view-transition-name: ns-nav-github; }
 
 @media (prefers-reduced-motion: no-preference) {
   :root {
-    --fs-ease: cubic-bezier(0.16, 1, 0.3, 1); /* soft ease-out */
-    --fs-ease-move: cubic-bezier(0.65, 0, 0.35, 1); /* smooth in-out, for gliding */
-    --fs-ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* quick exit: old content clears before the new arrives */
+    --ns-ease: cubic-bezier(0.16, 1, 0.3, 1); /* soft ease-out */
+    --ns-ease-move: cubic-bezier(0.65, 0, 0.35, 1); /* smooth in-out, for gliding */
+    --ns-ease-out: cubic-bezier(0.33, 1, 0.68, 1); /* quick exit: old content clears before the new arrives */
   }
 
   /* Background and header bar: identical on both pages, swap instantly */
   ::view-transition-old(root),
-  ::view-transition-old(fs-header) { display: none; }
+  ::view-transition-old(ns-header) { display: none; }
   ::view-transition-new(root),
-  ::view-transition-new(fs-header),
+  ::view-transition-new(ns-header),
   ::view-transition-group(root),
-  ::view-transition-group(fs-header) { animation: none; }
+  ::view-transition-group(ns-header) { animation: none; }
 
   /* Header pieces glide to their new place */
-  ::view-transition-group(fs-nav-title),
-  ::view-transition-group(fs-nav-search),
-  ::view-transition-group(fs-nav-theme),
-  ::view-transition-group(fs-nav-github) {
+  ::view-transition-group(ns-nav-title),
+  ::view-transition-group(ns-nav-search),
+  ::view-transition-group(ns-nav-theme),
+  ::view-transition-group(ns-nav-github) {
     animation-duration: 0.75s;
-    animation-timing-function: var(--fs-ease-move);
+    animation-timing-function: var(--ns-ease-move);
   }
 
   /* The search box changes width: show it unstretched, cross-fading */
-  ::view-transition-old(fs-nav-search),
-  ::view-transition-new(fs-nav-search) {
+  ::view-transition-old(ns-nav-search),
+  ::view-transition-new(ns-nav-search) {
     height: 100%;
     object-fit: none;
     object-position: left center;
   }
 
   /* Into the docs */
-  ::view-transition-old(fs-home):only-child { animation: fs-flow-out-up 0.28s var(--fs-ease-out) both; }
-  ::view-transition-new(fs-page):only-child { animation: fs-flow-in-up 0.7s 0.24s var(--fs-ease) both; }
-  ::view-transition-new(fs-sidebar):only-child { animation: fs-slide-in-left 0.7s 0.18s var(--fs-ease) both; }
-  ::view-transition-new(fs-toc):only-child { animation: fs-slide-in-right 0.7s 0.3s var(--fs-ease) both; }
+  ::view-transition-old(ns-home):only-child { animation: ns-flow-out-up 0.28s var(--ns-ease-out) both; }
+  ::view-transition-new(ns-page):only-child { animation: ns-flow-in-up 0.7s 0.24s var(--ns-ease) both; }
+  ::view-transition-new(ns-sidebar):only-child { animation: ns-slide-in-left 0.7s 0.18s var(--ns-ease) both; }
+  ::view-transition-new(ns-toc):only-child { animation: ns-slide-in-right 0.7s 0.3s var(--ns-ease) both; }
 
   /* Back home */
-  ::view-transition-old(fs-page):only-child { animation: fs-flow-out-down 0.28s var(--fs-ease-out) both; }
-  ::view-transition-old(fs-sidebar):only-child { animation: fs-slide-out-left 0.3s var(--fs-ease-out) both; }
-  ::view-transition-old(fs-toc):only-child { animation: fs-slide-out-right 0.28s var(--fs-ease-out) both; }
-  ::view-transition-new(fs-home):only-child { animation: fs-flow-in-down 0.7s 0.24s var(--fs-ease) both; }
+  ::view-transition-old(ns-page):only-child { animation: ns-flow-out-down 0.28s var(--ns-ease-out) both; }
+  ::view-transition-old(ns-sidebar):only-child { animation: ns-slide-out-left 0.3s var(--ns-ease-out) both; }
+  ::view-transition-old(ns-toc):only-child { animation: ns-slide-out-right 0.28s var(--ns-ease-out) both; }
+  ::view-transition-new(ns-home):only-child { animation: ns-flow-in-down 0.7s 0.24s var(--ns-ease) both; }
 }
 
-@keyframes fs-flow-out-up { to { opacity: 0; transform: translateY(-2.5rem) scale(0.98); } }
-@keyframes fs-flow-in-up { from { opacity: 0; transform: translateY(3rem); } }
-@keyframes fs-flow-out-down { to { opacity: 0; transform: translateY(2.5rem); } }
-@keyframes fs-flow-in-down { from { opacity: 0; transform: translateY(-2rem) scale(0.98); } }
-@keyframes fs-slide-in-left { from { opacity: 0; transform: translateX(-3rem); } }
-@keyframes fs-slide-out-left { to { opacity: 0; transform: translateX(-3rem); } }
-@keyframes fs-slide-in-right { from { opacity: 0; transform: translateX(3rem); } }
-@keyframes fs-slide-out-right { to { opacity: 0; transform: translateX(3rem); } }
+@keyframes ns-flow-out-up { to { opacity: 0; transform: translateY(-2.5rem) scale(0.98); } }
+@keyframes ns-flow-in-up { from { opacity: 0; transform: translateY(3rem); } }
+@keyframes ns-flow-out-down { to { opacity: 0; transform: translateY(2.5rem); } }
+@keyframes ns-flow-in-down { from { opacity: 0; transform: translateY(-2rem) scale(0.98); } }
+@keyframes ns-slide-in-left { from { opacity: 0; transform: translateX(-3rem); } }
+@keyframes ns-slide-out-left { to { opacity: 0; transform: translateX(-3rem); } }
+@keyframes ns-slide-in-right { from { opacity: 0; transform: translateX(3rem); } }
+@keyframes ns-slide-out-right { to { opacity: 0; transform: translateX(3rem); } }
 
 /* ── Home page ──────────────────────────────────────────────────────── */
 /*
@@ -611,7 +611,7 @@ html > body[data-scroll-locked] {
  * Motion comes from <HomeEffects /> and the "Landing interactions" below.
  */
 
-.fs-home-root {
+.ns-home-root {
   grid-area: main;
   position: relative;
   display: flex;
@@ -619,8 +619,8 @@ html > body[data-scroll-locked] {
   min-height: calc(100dvh - 3.5rem);
 }
 
-.fs-home {
-  --fs-card-bg: color-mix(in oklab, var(--color-fd-card) 70%, transparent);
+.ns-home {
+  --ns-card-bg: color-mix(in oklab, var(--color-fd-card) 70%, transparent);
   display: flex;
   flex: 1;
   flex-direction: column;
@@ -628,14 +628,14 @@ html > body[data-scroll-locked] {
   padding: 0 1.5rem;
 }
 
-.fs-home > * {
+.ns-home > * {
   width: 100%;
-  max-width: var(--fs-home-width);
+  max-width: var(--ns-home-width);
 }
 
 /* Hero */
 
-.fs-home-hero {
+.ns-home-hero {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -645,28 +645,28 @@ html > body[data-scroll-locked] {
   text-align: center;
 }
 
-.fs-home-badge {
+.ns-home-badge {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
   padding: 0.25rem 0.75rem;
   border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--fs-accent) 40%, transparent);
-  background: color-mix(in oklab, var(--fs-accent) 10%, transparent);
-  color: var(--fs-accent);
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 10%, transparent);
+  color: var(--ns-accent);
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
 }
 
-.fs-home-badge-dot {
+.ns-home-badge-dot {
   width: 0.375rem;
   height: 0.375rem;
   border-radius: 9999px;
-  background: var(--fs-accent);
-  box-shadow: 0 0 0 0.2rem color-mix(in oklab, var(--fs-accent) 25%, transparent);
+  background: var(--ns-accent);
+  box-shadow: 0 0 0 0.2rem color-mix(in oklab, var(--ns-accent) 25%, transparent);
 }
 
-.fs-home-title {
+.ns-home-title {
   font-size: clamp(2.5rem, 7vw, 4.5rem);
   font-weight: 700;
   line-height: 1.15;
@@ -674,7 +674,7 @@ html > body[data-scroll-locked] {
 }
 
 /* Each word carries the gradient itself, so it can rise on its own */
-.fs-home-word {
+.ns-home-word {
   display: inline-block;
   padding-bottom: 0.1em; /* room for descenders: the gradient text is clipped to this box */
   background: linear-gradient(to bottom, var(--color-fd-foreground) 40%, color-mix(in oklab, var(--color-fd-foreground) 55%, transparent));
@@ -683,18 +683,18 @@ html > body[data-scroll-locked] {
   color: transparent;
 }
 
-.fs-home-word:not(:last-child) {
+.ns-home-word:not(:last-child) {
   margin-inline-end: 0.25em;
 }
 
-.fs-home-text {
+.ns-home-text {
   max-width: 36rem;
   font-size: clamp(1rem, 2.2vw, 1.25rem);
   line-height: 1.6;
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-home-actions {
+.ns-home-actions {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -702,7 +702,7 @@ html > body[data-scroll-locked] {
   margin-top: 0.5rem;
 }
 
-.fs-home-stats {
+.ns-home-stats {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
@@ -712,13 +712,13 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-home-stats b {
+.ns-home-stats b {
   font-weight: 500;
   color: var(--color-fd-foreground);
   font-variant-numeric: tabular-nums;
 }
 
-.fs-home-stats > span + span::before {
+.ns-home-stats > span + span::before {
   content: '·';
   margin-inline-end: 1.25rem;
   opacity: 0.5;
@@ -726,7 +726,7 @@ html > body[data-scroll-locked] {
 
 /* Buttons */
 
-.fs-button {
+.ns-button {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
@@ -738,42 +738,42 @@ html > body[data-scroll-locked] {
   transition: opacity 0.2s, background-color 0.2s, border-color 0.2s;
 }
 
-.fs-button svg {
+.ns-button svg {
   width: 1rem;
   height: 1rem;
   transition: transform 0.2s;
 }
 
-.fs-button-primary:hover svg {
+.ns-button-primary:hover svg {
   transform: translateX(2px);
 }
 
-.fs-button-primary {
+.ns-button-primary {
   background: var(--color-fd-foreground);
   color: var(--color-fd-background);
 }
 
-.fs-button-primary:hover {
+.ns-button-primary:hover {
   opacity: 0.85;
 }
 
-.fs-button-secondary {
+.ns-button-secondary {
   border: 1px solid var(--color-fd-border);
   background: color-mix(in oklab, var(--color-fd-background) 50%, transparent);
   color: var(--color-fd-foreground);
 }
 
-.fs-button-secondary:hover {
+.ns-button-secondary:hover {
   background: color-mix(in oklab, var(--color-fd-accent) 60%, transparent);
 }
 
-.fs-button-keys {
+.ns-button-keys {
   display: inline-flex;
   gap: 0.25rem;
   margin-inline-start: 0.25rem;
 }
 
-.fs-button-keys kbd {
+.ns-button-keys kbd {
   padding: 0.0625rem 0.375rem;
   border: 1px solid var(--color-fd-border);
   border-radius: 0.3125rem;
@@ -784,32 +784,32 @@ html > body[data-scroll-locked] {
 
 /* Docs preview: a frame around a miniature screen sized in em, scaled from its width */
 
-.fs-home-preview {
-  --fs-tilt: 0;
+.ns-home-preview {
+  --ns-tilt: 0;
   /* room around the frame, inside the fade mask, so its shadow is not cut off at the sides */
-  --fs-bleed: clamp(1rem, calc((100vw - var(--fs-home-width)) / 2), 3rem);
+  --ns-bleed: clamp(1rem, calc((100vw - var(--ns-home-width)) / 2), 3rem);
   position: relative;
-  width: calc(100% + 2 * var(--fs-bleed));
-  max-width: calc(var(--fs-home-width) + 2 * var(--fs-bleed));
-  margin: clamp(2rem, calc(13vh - 3rem), 5rem) calc(-1 * var(--fs-bleed)) 0;
-  padding: 4rem var(--fs-bleed) 0;
+  width: calc(100% + 2 * var(--ns-bleed));
+  max-width: calc(var(--ns-home-width) + 2 * var(--ns-bleed));
+  margin: clamp(2rem, calc(13vh - 3rem), 5rem) calc(-1 * var(--ns-bleed)) 0;
+  padding: 4rem var(--ns-bleed) 0;
   perspective: 1800px;
   /* the glow behind fades in at the top; the bottom of the "screenshot" fades into the page */
   mask-image: linear-gradient(to bottom, transparent, black 3.5rem, black 62%, transparent 98%);
 }
 
-.fs-home-preview::before {
+.ns-home-preview::before {
   content: '';
   position: absolute;
   inset: 0 6% 30%;
   z-index: -1;
   background:
-    radial-gradient(ellipse at 30% 30%, color-mix(in oklab, var(--fs-accent) 22%, transparent), transparent 65%),
-    radial-gradient(ellipse at 72% 35%, color-mix(in oklab, var(--fs-accent-2) 18%, transparent), transparent 65%);
+    radial-gradient(ellipse at 30% 30%, color-mix(in oklab, var(--ns-accent) 22%, transparent), transparent 65%),
+    radial-gradient(ellipse at 72% 35%, color-mix(in oklab, var(--ns-accent-2) 18%, transparent), transparent 65%);
   pointer-events: none;
 }
 
-.fs-preview {
+.ns-preview {
   position: relative;
   isolation: isolate;
   display: block;
@@ -823,18 +823,18 @@ html > body[data-scroll-locked] {
     0 0 0 0.375rem color-mix(in oklab, var(--color-fd-foreground) 4%, transparent),
     0 2rem 4rem -1rem rgb(0 0 0 / 0.35);
   transform-origin: 50% 0;
-  transform: rotateX(calc(var(--fs-tilt) * 24deg)) scale(calc(1 - var(--fs-tilt) * 0.06));
+  transform: rotateX(calc(var(--ns-tilt) * 24deg)) scale(calc(1 - var(--ns-tilt) * 0.06));
   transition: border-color 0.3s;
 }
 
-.fs-preview:hover {
-  background: color-mix(in oklab, var(--fs-accent) 45%, var(--color-fd-background));
+.ns-preview:hover {
+  background: color-mix(in oklab, var(--ns-accent) 45%, var(--color-fd-background));
 }
 
 /* Border beam: a big square with a conic gradient, spinning behind the screen.
    Only its edge shows, as a light running around the frame. Spinning it is a
    pure transform, so it costs no repaints (smooth in Safari too). */
-.fs-preview-beam {
+.ns-preview-beam {
   position: absolute;
   top: 50%;
   left: 50%;
@@ -846,25 +846,25 @@ html > body[data-scroll-locked] {
   background: conic-gradient(
     from 0deg,
     transparent 0deg 100deg,
-    color-mix(in oklab, var(--fs-accent-2) 35%, transparent) 140deg,
-    var(--fs-accent) 172deg,
-    color-mix(in oklab, var(--fs-accent) 40%, white) 178deg,
+    color-mix(in oklab, var(--ns-accent-2) 35%, transparent) 140deg,
+    var(--ns-accent) 172deg,
+    color-mix(in oklab, var(--ns-accent) 40%, white) 178deg,
     transparent 180deg 280deg,
-    color-mix(in oklab, var(--fs-accent-2) 35%, transparent) 320deg,
-    var(--fs-accent) 352deg,
-    color-mix(in oklab, var(--fs-accent) 40%, white) 358deg,
+    color-mix(in oklab, var(--ns-accent-2) 35%, transparent) 320deg,
+    var(--ns-accent) 352deg,
+    color-mix(in oklab, var(--ns-accent) 40%, white) 358deg,
     transparent 360deg
   );
   pointer-events: none;
 }
 
-.fs-preview-screen {
+.ns-preview-screen {
   position: relative;
   border-radius: calc(1rem - 1.5px);
   background: var(--color-fd-background);
   overflow: hidden;
-  --fs-line: color-mix(in oklab, var(--color-fd-foreground) 9%, transparent);
-  --fs-line-strong: color-mix(in oklab, var(--color-fd-foreground) 16%, transparent);
+  --ns-line: color-mix(in oklab, var(--color-fd-foreground) 9%, transparent);
+  --ns-line-strong: color-mix(in oklab, var(--color-fd-foreground) 16%, transparent);
   display: flex;
   flex-direction: column;
   font-size: calc(100cqw / 72);
@@ -874,35 +874,35 @@ html > body[data-scroll-locked] {
   user-select: none;
 }
 
-.fs-preview-screen svg {
+.ns-preview-screen svg {
   width: 1.1em;
   height: 1.1em;
   flex-shrink: 0;
 }
 
-.fs-preview-bar {
+.ns-preview-bar {
   display: flex;
   align-items: center;
   gap: 1em;
   height: 2.75em;
   padding: 0 1.1em;
-  border-bottom: 1px solid var(--fs-line);
+  border-bottom: 1px solid var(--ns-line);
   background: var(--color-fd-muted);
 }
 
-.fs-preview-dots {
+.ns-preview-dots {
   display: flex;
   gap: 0.45em;
 }
 
-.fs-preview-dots i {
+.ns-preview-dots i {
   width: 0.75em;
   height: 0.75em;
   border-radius: 9999px;
-  background: var(--fs-line-strong);
+  background: var(--ns-line-strong);
 }
 
-.fs-preview-url {
+.ns-preview-url {
   flex: 0 1 28em;
   margin-inline: auto;
   padding: 0.3em 1em;
@@ -917,16 +917,16 @@ html > body[data-scroll-locked] {
   text-overflow: ellipsis;
 }
 
-.fs-preview-header {
+.ns-preview-header {
   display: flex;
   align-items: center;
   gap: 1.5em;
   height: 3.75em;
   padding: 0 1.5em;
-  border-bottom: 1px solid var(--fs-line);
+  border-bottom: 1px solid var(--ns-line);
 }
 
-.fs-preview-brand {
+.ns-preview-brand {
   display: flex;
   align-items: center;
   gap: 0.6em;
@@ -935,84 +935,84 @@ html > body[data-scroll-locked] {
   white-space: nowrap;
 }
 
-.fs-preview-screen .fs-preview-mark {
+.ns-preview-screen .ns-preview-mark {
   width: 1.6em;
   height: 1.6em;
 }
 
-.fs-preview-search {
+.ns-preview-search {
   display: flex;
   align-items: center;
   gap: 0.5em;
   width: 20em;
   margin-inline: auto;
   padding: 0.45em 0.8em;
-  border: 1px solid var(--fs-line);
+  border: 1px solid var(--ns-line);
   border-radius: 9999px;
   font-size: 0.85em;
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-preview-search kbd {
+.ns-preview-search kbd {
   margin-inline-start: auto;
   font-family: inherit;
   font-size: 0.85em;
 }
 
-.fs-preview-icons {
+.ns-preview-icons {
   display: flex;
   gap: 0.75em;
 }
 
-.fs-preview-icons i {
+.ns-preview-icons i {
   width: 1.4em;
   height: 1.4em;
   border-radius: 9999px;
-  background: var(--fs-line);
+  background: var(--ns-line);
 }
 
-.fs-preview-body {
+.ns-preview-body {
   display: grid;
   grid-template-columns: 17em 1fr 13em;
   height: 36em;
   overflow: hidden;
 }
 
-.fs-preview-sidebar {
+.ns-preview-sidebar {
   display: flex;
   flex-direction: column;
   gap: 0.15em;
   padding: 1em;
-  border-right: 1px solid var(--fs-line);
+  border-right: 1px solid var(--ns-line);
   font-size: 0.85em;
 }
 
-.fs-preview-banner {
+.ns-preview-banner {
   display: flex;
   flex-direction: column;
   gap: 0.45em;
   margin-bottom: 0.6em;
   padding: 0.9em;
   border-radius: 0.75em;
-  background: linear-gradient(135deg, color-mix(in oklab, var(--fs-accent) 28%, var(--color-fd-background)), color-mix(in oklab, var(--fs-accent) 6%, var(--color-fd-background)));
+  background: linear-gradient(135deg, color-mix(in oklab, var(--ns-accent) 28%, var(--color-fd-background)), color-mix(in oklab, var(--ns-accent) 6%, var(--color-fd-background)));
 }
 
-.fs-preview-banner b {
+.ns-preview-banner b {
   font-weight: 600;
 }
 
-.fs-preview-banner small {
+.ns-preview-banner small {
   align-self: flex-start;
   padding: 0 0.5em;
   border-radius: 9999px;
-  background: color-mix(in oklab, var(--fs-accent) 20%, transparent);
-  color: var(--fs-accent);
+  background: color-mix(in oklab, var(--ns-accent) 20%, transparent);
+  color: var(--ns-accent);
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.75em;
 }
 
-.fs-preview-link,
-.fs-preview-item {
+.ns-preview-link,
+.ns-preview-item {
   display: flex;
   align-items: center;
   gap: 0.55em;
@@ -1024,12 +1024,12 @@ html > body[data-scroll-locked] {
   text-overflow: ellipsis;
 }
 
-.fs-preview-item[data-active='true'] {
-  color: var(--fs-accent);
-  background: color-mix(in oklab, var(--fs-accent) 8%, transparent);
+.ns-preview-item[data-active='true'] {
+  color: var(--ns-accent);
+  background: color-mix(in oklab, var(--ns-accent) 8%, transparent);
 }
 
-.fs-preview-label {
+.ns-preview-label {
   margin-top: 1.1em;
   padding: 0 0.6em 0.2em;
   font-size: 0.85em;
@@ -1037,7 +1037,7 @@ html > body[data-scroll-locked] {
   color: color-mix(in oklab, var(--color-fd-muted-foreground) 80%, transparent);
 }
 
-.fs-preview-page {
+.ns-preview-page {
   display: flex;
   flex-direction: column;
   gap: 0.85em;
@@ -1045,14 +1045,14 @@ html > body[data-scroll-locked] {
   min-width: 0;
 }
 
-.fs-preview-title {
+.ns-preview-title {
   font-size: 2.1em;
   font-weight: 700;
   letter-spacing: -0.02em;
   line-height: 1.2;
 }
 
-.fs-preview-desc {
+.ns-preview-desc {
   max-width: 44em;
   font-size: 1.05em;
   color: var(--color-fd-muted-foreground);
@@ -1062,87 +1062,87 @@ html > body[data-scroll-locked] {
   overflow: hidden;
 }
 
-.fs-preview-buttons {
+.ns-preview-buttons {
   display: flex;
   gap: 0.6em;
 }
 
-.fs-preview-buttons i {
+.ns-preview-buttons i {
   width: 7em;
   height: 1.9em;
-  border: 1px solid var(--fs-line);
+  border: 1px solid var(--ns-line);
   border-radius: 0.5em;
   background: var(--color-fd-muted);
 }
 
-.fs-preview-buttons i + i {
+.ns-preview-buttons i + i {
   width: 4.5em;
 }
 
-.fs-preview-rule {
+.ns-preview-rule {
   height: 1px;
   margin: 0.4em 0;
-  background: var(--fs-line);
+  background: var(--ns-line);
 }
 
-.fs-preview-line {
+.ns-preview-line {
   display: block;
   width: var(--w, 100%);
   height: 0.6em;
   border-radius: 9999px;
-  background: var(--fs-line);
+  background: var(--ns-line);
 }
 
-.fs-preview-heading {
+.ns-preview-heading {
   width: 30%;
   height: 1.1em;
   margin-top: 0.8em;
   border-radius: 9999px;
-  background: var(--fs-line-strong);
+  background: var(--ns-line-strong);
 }
 
-.fs-preview-callout {
+.ns-preview-callout {
   display: flex;
   flex-direction: column;
   gap: 0.7em;
   padding: 1em 1.2em;
-  border: 1px solid var(--fs-line);
-  border-inline-start: 0.25em solid var(--fs-accent);
+  border: 1px solid var(--ns-line);
+  border-inline-start: 0.25em solid var(--ns-accent);
   border-radius: 0.6em;
-  background: color-mix(in oklab, var(--fs-accent) 5%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 5%, transparent);
 }
 
-.fs-preview-code {
+.ns-preview-code {
   display: flex;
   flex-direction: column;
   gap: 0.7em;
   padding: 1.1em 1.2em;
-  border: 1px solid var(--fs-line);
+  border: 1px solid var(--ns-line);
   border-radius: 0.6em;
   background: var(--color-fd-muted);
 }
 
-.fs-preview-code > span {
+.ns-preview-code > span {
   display: flex;
   gap: 0.6em;
 }
 
-.fs-preview-code i {
+.ns-preview-code i {
   width: var(--w);
   height: 0.6em;
   border-radius: 9999px;
-  background: var(--fs-line-strong);
+  background: var(--ns-line-strong);
 }
 
-.fs-preview-code .fs-c1 {
-  background: color-mix(in oklab, var(--fs-accent) 55%, transparent);
+.ns-preview-code .ns-c1 {
+  background: color-mix(in oklab, var(--ns-accent) 55%, transparent);
 }
 
-.fs-preview-code .fs-c2 {
+.ns-preview-code .ns-c2 {
   background: color-mix(in oklab, #e879f9 45%, transparent);
 }
 
-.fs-preview-toc {
+.ns-preview-toc {
   display: flex;
   flex-direction: column;
   gap: 1em;
@@ -1150,95 +1150,95 @@ html > body[data-scroll-locked] {
   font-size: 0.85em;
 }
 
-.fs-preview-toc-title {
+.ns-preview-toc-title {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-preview-toc-items {
+.ns-preview-toc-items {
   display: flex;
   flex-direction: column;
   gap: 0.9em;
   padding-inline-start: 0.9em;
-  border-inline-start: 1px solid var(--fs-line);
+  border-inline-start: 1px solid var(--ns-line);
 }
 
-.fs-preview-toc-items [data-active] {
-  background: color-mix(in oklab, var(--fs-accent) 60%, transparent);
+.ns-preview-toc-items [data-active] {
+  background: color-mix(in oklab, var(--ns-accent) 60%, transparent);
 }
 
 /* Narrow screens: drop "On this page" so the rest stays readable */
 @container (max-width: 40rem) {
-  .fs-preview-screen { font-size: calc(100cqw / 52); }
-  .fs-preview-body { grid-template-columns: 15em 1fr; }
-  .fs-preview-toc,
-  .fs-preview-search { display: none; }
-  .fs-preview-icons { margin-inline-start: auto; }
-  .fs-preview-page { padding: 2em; }
+  .ns-preview-screen { font-size: calc(100cqw / 52); }
+  .ns-preview-body { grid-template-columns: 15em 1fr; }
+  .ns-preview-toc,
+  .ns-preview-search { display: none; }
+  .ns-preview-icons { margin-inline-start: auto; }
+  .ns-preview-page { padding: 2em; }
 }
 
 /* Sections */
 
-.fs-home-section {
+.ns-home-section {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
   margin-top: clamp(2rem, 5vw, 3rem);
 }
 
-.fs-home-section-head {
+.ns-home-section-head {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   max-width: 40rem;
 }
 
-.fs-home-eyebrow {
+.ns-home-eyebrow {
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
-  color: var(--fs-accent);
+  color: var(--ns-accent);
 }
 
-.fs-home-h2 {
+.ns-home-h2 {
   font-size: clamp(1.75rem, 4vw, 2.5rem);
   font-weight: 700;
   line-height: 1.15;
   letter-spacing: -0.03em;
 }
 
-.fs-home-lead {
+.ns-home-lead {
   font-size: 1.0625rem;
   line-height: 1.6;
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-home-cards {
+.ns-home-cards {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(min(100%, 20rem), 1fr));
   gap: 1rem;
 }
 
 @media (min-width: 900px) {
-  .fs-home-cards[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
-  .fs-home-cards[data-count='3'] { grid-template-columns: 1.15fr 1fr; }
-  .fs-home-cards[data-count='3'] > :first-child { grid-row: span 2; }
-  .fs-home-cards[data-count='4'] { grid-template-columns: repeat(3, 1fr); }
+  .ns-home-cards[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
+  .ns-home-cards[data-count='3'] { grid-template-columns: 1.15fr 1fr; }
+  .ns-home-cards[data-count='3'] > :first-child { grid-row: span 2; }
+  .ns-home-cards[data-count='4'] { grid-template-columns: repeat(3, 1fr); }
 }
 
 /* Card (Magic UI bento style): a moving list of the section's pages on top,
    the section below. The border lights up where the mouse is
-   (--fs-mx/--fs-my from <HomeEffects />). */
-.fs-card {
+   (--ns-mx/--ns-my from <HomeEffects />). */
+.ns-card {
   position: relative;
   display: flex;
   flex-direction: column;
   border: 1px solid var(--color-fd-border);
   border-radius: 1rem;
-  background: var(--fs-card-bg);
-  transition: border-color 0.3s, transform 0.3s var(--fs-ease, ease-out);
+  background: var(--ns-card-bg);
+  transition: border-color 0.3s, transform 0.3s var(--ns-ease, ease-out);
 }
 
-.fs-card::before,
-.fs-card::after {
+.ns-card::before,
+.ns-card::after {
   content: '';
   position: absolute;
   inset: -1px;
@@ -1250,27 +1250,27 @@ html > body[data-scroll-locked] {
 }
 
 /* soft light inside */
-.fs-card::before {
-  background: radial-gradient(22rem circle at var(--fs-mx, 50%) var(--fs-my, 0%), color-mix(in oklab, var(--fs-accent) 9%, transparent), transparent 70%);
+.ns-card::before {
+  background: radial-gradient(22rem circle at var(--ns-mx, 50%) var(--ns-my, 0%), color-mix(in oklab, var(--ns-accent) 9%, transparent), transparent 70%);
 }
 
 /* bright edge: the same light, shown only on the 1px border */
-.fs-card::after {
+.ns-card::after {
   padding: 1px;
-  background: radial-gradient(16rem circle at var(--fs-mx, 50%) var(--fs-my, 0%), color-mix(in oklab, var(--fs-accent) 85%, transparent), color-mix(in oklab, var(--fs-accent-2) 45%, transparent) 40%, transparent 70%);
+  background: radial-gradient(16rem circle at var(--ns-mx, 50%) var(--ns-my, 0%), color-mix(in oklab, var(--ns-accent) 85%, transparent), color-mix(in oklab, var(--ns-accent-2) 45%, transparent) 40%, transparent 70%);
   mask:
     linear-gradient(black, black) content-box,
     linear-gradient(black, black);
   mask-composite: exclude;
 }
 
-.fs-card:hover::before,
-.fs-card:hover::after {
+.ns-card:hover::before,
+.ns-card:hover::after {
   opacity: 1;
 }
 
 /* The picture: page chips drifting upwards, fading out at both ends, on a faint dot grid */
-.fs-card-visual {
+.ns-card-visual {
   position: relative;
   height: 13rem;
   padding: 0 1.25rem;
@@ -1280,18 +1280,18 @@ html > body[data-scroll-locked] {
   background-size: 16px 16px;
 }
 
-.fs-home-cards[data-count='3'] > :first-child .fs-card-visual {
+.ns-home-cards[data-count='3'] > :first-child .ns-card-visual {
   flex: 1;
   height: auto;
   min-height: 13rem;
 }
 
 /* The moving list must never size the card: only the CSS heights above do */
-.fs-card-visual {
+.ns-card-visual {
   contain: size;
 }
 
-.fs-page-chip {
+.ns-page-chip {
   display: flex;
   flex-direction: column;
   gap: 0.125rem;
@@ -1303,16 +1303,16 @@ html > body[data-scroll-locked] {
   transition: border-color 0.2s, background-color 0.2s;
 }
 
-.fs-page-chip:hover {
-  border-color: color-mix(in oklab, var(--fs-accent) 50%, transparent);
+.ns-page-chip:hover {
+  border-color: color-mix(in oklab, var(--ns-accent) 50%, transparent);
 }
 
-.fs-page-chip b {
+.ns-page-chip b {
   font-size: 0.875rem;
   font-weight: 500;
 }
 
-.fs-page-chip span {
+.ns-page-chip span {
   font-size: 0.75rem;
   line-height: 1.45;
   color: var(--color-fd-muted-foreground);
@@ -1322,62 +1322,62 @@ html > body[data-scroll-locked] {
   overflow: hidden;
 }
 
-.fs-card-body {
+.ns-card-body {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   padding: 1.25rem 1.5rem 0;
 }
 
-.fs-card-head {
+.ns-card-head {
   display: grid;
   grid-template-columns: auto 1fr auto;
   align-items: center;
   gap: 0.75rem;
 }
 
-.fs-card-icon {
+.ns-card-icon {
   display: grid;
   place-items: center;
   width: 2.25rem;
   height: 2.25rem;
   border-radius: 0.625rem;
-  border: 1px solid color-mix(in oklab, var(--fs-accent) 30%, transparent);
-  background: color-mix(in oklab, var(--fs-accent) 12%, transparent);
-  color: var(--fs-accent);
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 30%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 12%, transparent);
+  color: var(--ns-accent);
 }
 
-.fs-card-icon[data-number] {
+.ns-card-icon[data-number] {
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
   font-weight: 500;
 }
 
-.fs-card-icon svg {
+.ns-card-icon svg {
   width: 1.125rem;
   height: 1.125rem;
 }
 
-.fs-card-title {
+.ns-card-title {
   font-size: 1.125rem;
   font-weight: 600;
   letter-spacing: -0.01em;
 }
 
-.fs-card-count {
+.ns-card-count {
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.75rem;
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-card-text {
+.ns-card-text {
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--color-fd-muted-foreground);
 }
 
 /* A way in, along the bottom of the card */
-.fs-card-start {
+.ns-card-start {
   position: relative;
   z-index: 3;
   display: flex;
@@ -1389,56 +1389,56 @@ html > body[data-scroll-locked] {
   border-radius: 0 0 1rem 1rem;
   font-size: 0.875rem;
   font-weight: 500;
-  color: var(--fs-accent);
+  color: var(--ns-accent);
   transition: background-color 0.2s;
 }
 
-.fs-card-start:hover {
-  background: color-mix(in oklab, var(--fs-accent) 7%, transparent);
+.ns-card-start:hover {
+  background: color-mix(in oklab, var(--ns-accent) 7%, transparent);
 }
 
-.fs-card-start svg {
+.ns-card-start svg {
   width: 1rem;
   height: 1rem;
   transition: transform 0.2s;
 }
 
-.fs-card:hover .fs-card-start svg {
+.ns-card:hover .ns-card-start svg {
   transform: translateX(3px);
 }
 
 /* Marquee: two copies of a list side by side, sliding by one copy's length and
    starting over. Only transform moves, so it stays smooth in Safari.
    Pauses under the mouse; still and wrapped for reduced motion. */
-.fs-marquee {
-  --fs-gap: 0.75rem;
+.ns-marquee {
+  --ns-gap: 0.75rem;
   display: flex;
-  gap: var(--fs-gap);
+  gap: var(--ns-gap);
   overflow: hidden;
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
 
-.fs-marquee[data-vertical] {
+.ns-marquee[data-vertical] {
   flex-direction: column;
   mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
 }
 
-.fs-marquee-group {
+.ns-marquee-group {
   display: flex;
   flex-shrink: 0;
-  gap: var(--fs-gap);
+  gap: var(--ns-gap);
   margin: 0;
   padding: 0;
   list-style: none;
 }
 
-.fs-marquee[data-vertical] .fs-marquee-group {
+.ns-marquee[data-vertical] .ns-marquee-group {
   flex-direction: column;
 }
 
 /* Built with */
 
-.fs-home-stack {
+.ns-home-stack {
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -1446,7 +1446,7 @@ html > body[data-scroll-locked] {
   margin-top: clamp(1rem, 3vw, 2rem);
 }
 
-.fs-home-stack-label {
+.ns-home-stack-label {
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.75rem;
   letter-spacing: 0.08em;
@@ -1454,12 +1454,12 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-home-stack .fs-marquee {
-  --fs-gap: 2.75rem;
+.ns-home-stack .ns-marquee {
+  --ns-gap: 2.75rem;
   width: 100%;
 }
 
-.fs-stack-item {
+.ns-stack-item {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -1471,18 +1471,18 @@ html > body[data-scroll-locked] {
   transition: color 0.2s;
 }
 
-.fs-stack-item:hover {
+.ns-stack-item:hover {
   color: var(--color-fd-foreground);
 }
 
-.fs-stack-item svg {
+.ns-stack-item svg {
   width: 1.375rem;
   height: 1.375rem;
 }
 
 /* Get started */
 
-.fs-start {
+.ns-start {
   display: grid;
   grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
   align-items: center;
@@ -1490,10 +1490,10 @@ html > body[data-scroll-locked] {
 }
 
 @media (max-width: 899px) {
-  .fs-start { grid-template-columns: minmax(0, 1fr); }
+  .ns-start { grid-template-columns: minmax(0, 1fr); }
 }
 
-.fs-steps {
+.ns-steps {
   display: flex;
   flex-direction: column;
   margin: 0;
@@ -1501,57 +1501,57 @@ html > body[data-scroll-locked] {
   list-style: none;
 }
 
-.fs-step {
+.ns-step {
   position: relative;
   display: flex;
   gap: 1rem;
   padding-bottom: 1.75rem;
 }
 
-.fs-step:last-child {
+.ns-step:last-child {
   padding-bottom: 0;
 }
 
 /* the line joining the numbers */
-.fs-step:not(:last-child)::before {
+.ns-step:not(:last-child)::before {
   content: '';
   position: absolute;
   top: 2.25rem;
   bottom: 0.25rem;
   left: calc(1rem - 0.5px);
   width: 1px;
-  background: linear-gradient(var(--color-fd-border), color-mix(in oklab, var(--fs-accent) 40%, transparent));
+  background: linear-gradient(var(--color-fd-border), color-mix(in oklab, var(--ns-accent) 40%, transparent));
 }
 
-.fs-step-number {
+.ns-step-number {
   display: grid;
   place-items: center;
   flex-shrink: 0;
   width: 2rem;
   height: 2rem;
   border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--fs-accent) 40%, transparent);
-  background: color-mix(in oklab, var(--fs-accent) 12%, var(--color-fd-background));
-  color: var(--fs-accent);
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 40%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 12%, var(--color-fd-background));
+  color: var(--ns-accent);
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
   font-weight: 500;
 }
 
-.fs-step h3 {
+.ns-step h3 {
   margin-top: 0.25rem;
   font-size: 1rem;
   font-weight: 600;
 }
 
-.fs-step p {
+.ns-step p {
   margin-top: 0.25rem;
   font-size: 0.875rem;
   line-height: 1.55;
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-terminal {
+.ns-terminal {
   border: 1px solid var(--color-fd-border);
   border-radius: 1rem;
   background: var(--color-fd-card);
@@ -1559,7 +1559,7 @@ html > body[data-scroll-locked] {
   box-shadow: 0 1.5rem 3rem -1.5rem rgb(0 0 0 / 0.3);
 }
 
-.fs-terminal-bar {
+.ns-terminal-bar {
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -1571,11 +1571,11 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-terminal-bar .fs-preview-dots { font-size: 0.875rem; }
-.fs-terminal-bar .fs-preview-dots i { background: color-mix(in oklab, var(--color-fd-foreground) 16%, transparent); }
-.fs-terminal-bar > span:nth-child(2) { flex: 1; text-align: center; }
+.ns-terminal-bar .ns-preview-dots { font-size: 0.875rem; }
+.ns-terminal-bar .ns-preview-dots i { background: color-mix(in oklab, var(--color-fd-foreground) 16%, transparent); }
+.ns-terminal-bar > span:nth-child(2) { flex: 1; text-align: center; }
 
-.fs-terminal-body {
+.ns-terminal-body {
   display: flex;
   flex-direction: column;
   gap: 0.5rem;
@@ -1587,30 +1587,30 @@ html > body[data-scroll-locked] {
   line-height: 1.6;
 }
 
-.fs-terminal-line {
+.ns-terminal-line {
   display: block;
   white-space: pre;
 }
 
-.fs-terminal-prompt {
-  color: var(--fs-accent);
+.ns-terminal-prompt {
+  color: var(--ns-accent);
   user-select: none;
 }
 
-.fs-terminal-type {
+.ns-terminal-type {
   display: inline-block;
   vertical-align: top;
 }
 
-.fs-terminal-out {
+.ns-terminal-out {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-terminal-ok {
+.ns-terminal-ok {
   color: #22c55e;
 }
 
-.fs-copy {
+.ns-copy {
   display: grid;
   place-items: center;
   width: 2rem;
@@ -1620,23 +1620,23 @@ html > body[data-scroll-locked] {
   transition: background-color 0.2s, color 0.2s;
 }
 
-.fs-copy:hover {
+.ns-copy:hover {
   background: var(--color-fd-accent);
   color: var(--color-fd-foreground);
 }
 
-.fs-copy[data-copied='true'] {
+.ns-copy[data-copied='true'] {
   color: #22c55e;
 }
 
-.fs-copy svg {
+.ns-copy svg {
   width: 0.9375rem;
   height: 0.9375rem;
 }
 
 /* Call to action */
 
-.fs-home-cta {
+.ns-home-cta {
   position: relative;
   display: flex;
   flex-wrap: wrap;
@@ -1648,26 +1648,26 @@ html > body[data-scroll-locked] {
   border: 1px solid var(--color-fd-border);
   border-radius: 1.25rem;
   background:
-    radial-gradient(40rem 20rem at 100% 0%, color-mix(in oklab, var(--fs-accent-2) 14%, transparent), transparent 70%),
-    radial-gradient(30rem 16rem at 0% 100%, color-mix(in oklab, var(--fs-accent) 10%, transparent), transparent 70%),
-    var(--fs-card-bg);
+    radial-gradient(40rem 20rem at 100% 0%, color-mix(in oklab, var(--ns-accent-2) 14%, transparent), transparent 70%),
+    radial-gradient(30rem 16rem at 0% 100%, color-mix(in oklab, var(--ns-accent) 10%, transparent), transparent 70%),
+    var(--ns-card-bg);
   overflow: hidden;
 }
 
-.fs-home-cta > div:first-child {
+.ns-home-cta > div:first-child {
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   max-width: 34rem;
 }
 
-.fs-home-cta .fs-home-actions {
+.ns-home-cta .ns-home-actions {
   margin-top: 0;
 }
 
 /* Footer */
 
-.fs-home-footer {
+.ns-home-footer {
   display: flex;
   flex-wrap: wrap;
   align-items: center;
@@ -1680,34 +1680,34 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-home-footer nav {
+.ns-home-footer nav {
   display: flex;
   gap: 1.5rem;
 }
 
-.fs-home-footer a {
+.ns-home-footer a {
   transition: color 0.2s;
 }
 
-.fs-home-footer a:hover {
+.ns-home-footer a:hover {
   color: var(--color-fd-foreground);
 }
 
 @media (max-width: 639px) {
-  .fs-home { padding-inline: 1rem; }
-  .fs-home-actions > * { flex: 1 1 100%; justify-content: center; }
-  .fs-home-cta .fs-home-actions { width: 100%; }
-  .fs-button-keys { display: none; }
-  .fs-terminal-body { font-size: 0.75rem; padding-inline: 1rem; }
+  .ns-home { padding-inline: 1rem; }
+  .ns-home-actions > * { flex: 1 1 100%; justify-content: center; }
+  .ns-home-cta .ns-home-actions { width: 100%; }
+  .ns-button-keys { display: none; }
+  .ns-terminal-body { font-size: 0.75rem; padding-inline: 1rem; }
   /* the date gets its own line, without a leading dot */
-  .fs-home-stats > :nth-child(3) { flex-basis: 100%; }
-  .fs-home-stats > :nth-child(3)::before { content: none; }
+  .ns-home-stats > :nth-child(3) { flex-basis: 100%; }
+  .ns-home-stats > :nth-child(3)::before { content: none; }
 }
 
 /* ── Accent picker (demo sites only) ────────────────────────────────── */
 /* <AccentPicker />: round button bottom-right, panel of accents above it */
 
-.fs-picker {
+.ns-picker {
   position: fixed;
   right: 1.25rem;
   bottom: 1.25rem;
@@ -1718,32 +1718,32 @@ html > body[data-scroll-locked] {
   gap: 0.75rem;
 }
 
-.fs-picker-button {
+.ns-picker-button {
   display: grid;
   place-items: center;
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--fs-accent) 40%, var(--color-fd-border));
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 40%, var(--color-fd-border));
   background:
-    linear-gradient(135deg, color-mix(in oklab, var(--fs-accent) 22%, transparent), color-mix(in oklab, var(--fs-accent-2) 22%, transparent)),
+    linear-gradient(135deg, color-mix(in oklab, var(--ns-accent) 22%, transparent), color-mix(in oklab, var(--ns-accent-2) 22%, transparent)),
     color-mix(in oklab, var(--color-fd-background) 85%, transparent);
   backdrop-filter: blur(10px);
-  color: var(--fs-accent);
+  color: var(--ns-accent);
   box-shadow: 0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
   transition: transform 0.2s;
 }
 
-.fs-picker-button:hover {
+.ns-picker-button:hover {
   transform: rotate(-12deg) scale(1.05);
 }
 
-.fs-picker-button svg {
+.ns-picker-button svg {
   width: 1.125rem;
   height: 1.125rem;
 }
 
-.fs-picker-panel {
+.ns-picker-panel {
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
@@ -1756,7 +1756,7 @@ html > body[data-scroll-locked] {
   box-shadow: 0 1rem 2.5rem -1rem rgb(0 0 0 / 0.4);
 }
 
-.fs-picker-head {
+.ns-picker-head {
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -1764,7 +1764,7 @@ html > body[data-scroll-locked] {
   font-weight: 600;
 }
 
-.fs-picker-reset {
+.ns-picker-reset {
   display: inline-flex;
   align-items: center;
   gap: 0.375rem;
@@ -1773,53 +1773,53 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-picker-reset:hover:not(:disabled) {
+.ns-picker-reset:hover:not(:disabled) {
   color: var(--color-fd-foreground);
 }
 
-.fs-picker-reset:disabled {
+.ns-picker-reset:disabled {
   opacity: 0.4;
 }
 
-.fs-picker-reset svg {
+.ns-picker-reset svg {
   width: 0.75rem;
   height: 0.75rem;
 }
 
-.fs-picker-swatches {
+.ns-picker-swatches {
   display: grid;
   grid-template-columns: repeat(7, 1fr);
   gap: 0.375rem;
 }
 
 /* each swatch shows both of its shades: light mode's on the left, dark mode's on the right */
-.fs-picker-swatch {
+.ns-picker-swatch {
   display: grid;
   place-items: center;
   aspect-ratio: 1;
   border-radius: 9999px;
-  background: linear-gradient(135deg, var(--fs-swatch-light) 50%, var(--fs-swatch-dark) 50%);
+  background: linear-gradient(135deg, var(--ns-swatch-light) 50%, var(--ns-swatch-dark) 50%);
   box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
   color: white;
   transition: transform 0.15s;
 }
 
-.fs-picker-swatch:hover {
+.ns-picker-swatch:hover {
   transform: scale(1.12);
 }
 
-.fs-picker-swatch[aria-pressed='true'] {
+.ns-picker-swatch[aria-pressed='true'] {
   outline: 2px solid var(--color-fd-foreground);
   outline-offset: 2px;
 }
 
-.fs-picker-swatch svg {
+.ns-picker-swatch svg {
   width: 0.875rem;
   height: 0.875rem;
   filter: drop-shadow(0 1px 1px rgb(0 0 0 / 0.5));
 }
 
-.fs-picker-custom {
+.ns-picker-custom {
   display: flex;
   align-items: center;
   gap: 0.625rem;
@@ -1827,7 +1827,7 @@ html > body[data-scroll-locked] {
   cursor: pointer;
 }
 
-.fs-picker-custom input {
+.ns-picker-custom input {
   width: 1.75rem;
   height: 1.75rem;
   padding: 0;
@@ -1837,7 +1837,7 @@ html > body[data-scroll-locked] {
   cursor: pointer;
 }
 
-.fs-picker-note {
+.ns-picker-note {
   font-size: 0.75rem;
   line-height: 1.5;
   color: var(--color-fd-muted-foreground);
@@ -1846,14 +1846,14 @@ html > body[data-scroll-locked] {
 /* ── Glossary ───────────────────────────────────────────────────────── */
 /* <Glossary terms={…} />: sticky A–Z bar + filter, terms grouped by letter */
 
-.fs-glossary {
+.ns-glossary {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
   margin-top: 0.5rem;
 }
 
-.fs-glossary-bar {
+.ns-glossary-bar {
   position: sticky;
   top: 3.5rem; /* below the header */
   z-index: 5;
@@ -1870,7 +1870,7 @@ html > body[data-scroll-locked] {
   box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5);
 }
 
-.fs-glossary-filter {
+.ns-glossary-filter {
   display: flex;
   align-items: center;
   gap: 0.5rem;
@@ -1882,17 +1882,17 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-glossary-filter:focus-within {
-  border-color: color-mix(in oklab, var(--fs-accent) 60%, transparent);
+.ns-glossary-filter:focus-within {
+  border-color: color-mix(in oklab, var(--ns-accent) 60%, transparent);
 }
 
-.fs-glossary-filter svg {
+.ns-glossary-filter svg {
   width: 1rem;
   height: 1rem;
   flex-shrink: 0;
 }
 
-.fs-glossary-filter input {
+.ns-glossary-filter input {
   flex: 1;
   min-width: 0;
   background: transparent;
@@ -1901,18 +1901,18 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-foreground);
 }
 
-.fs-glossary-count {
+.ns-glossary-count {
   font-size: 0.75rem;
   white-space: nowrap;
 }
 
-.fs-glossary-letters {
+.ns-glossary-letters {
   display: flex;
   flex-wrap: wrap;
   gap: 0.25rem;
 }
 
-.fs-glossary-letters button {
+.ns-glossary-letters button {
   display: grid;
   place-items: center;
   width: 1.875rem;
@@ -1925,44 +1925,44 @@ html > body[data-scroll-locked] {
   transition: background-color 0.15s, color 0.15s;
 }
 
-.fs-glossary-letters button:hover:not(:disabled) {
+.ns-glossary-letters button:hover:not(:disabled) {
   background: color-mix(in oklab, var(--color-fd-accent) 70%, transparent);
 }
 
-.fs-glossary-letters button[data-active='true'] {
-  background: color-mix(in oklab, var(--fs-accent) 16%, transparent);
-  color: var(--fs-accent);
+.ns-glossary-letters button[data-active='true'] {
+  background: color-mix(in oklab, var(--ns-accent) 16%, transparent);
+  color: var(--ns-accent);
 }
 
-.fs-glossary-letters button:disabled {
+.ns-glossary-letters button:disabled {
   color: color-mix(in oklab, var(--color-fd-muted-foreground) 35%, transparent);
   cursor: default;
 }
 
-.fs-glossary-section {
+.ns-glossary-section {
   display: grid;
   grid-template-columns: 3rem 1fr;
   gap: 1rem;
   scroll-margin-top: 13rem; /* header + sticky letter bar */
 }
 
-.fs-glossary-letter {
+.ns-glossary-letter {
   position: sticky;
   top: 13rem;
   align-self: start;
   font-size: 2rem;
   font-weight: 700;
   line-height: 1;
-  color: var(--fs-accent);
+  color: var(--ns-accent);
 }
 
-.fs-glossary-terms {
+.ns-glossary-terms {
   display: flex;
   flex-direction: column;
   border-top: 1px solid var(--color-fd-border);
 }
 
-.fs-glossary-term {
+.ns-glossary-term {
   display: grid;
   grid-template-columns: minmax(8rem, 11rem) 1fr;
   gap: 0.25rem 1.5rem;
@@ -1971,12 +1971,12 @@ html > body[data-scroll-locked] {
   scroll-margin-top: 13rem;
 }
 
-.fs-glossary-term dt {
+.ns-glossary-term dt {
   font-weight: 600;
   color: var(--color-fd-foreground);
 }
 
-.fs-glossary-term dd {
+.ns-glossary-term dd {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
@@ -1985,43 +1985,43 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.fs-glossary-link {
+.ns-glossary-link {
   display: inline-flex;
   align-items: center;
   gap: 0.25rem;
   font-size: 0.8125rem;
   font-weight: 500;
-  color: var(--fs-accent);
+  color: var(--ns-accent);
 }
 
-.fs-glossary-link svg {
+.ns-glossary-link svg {
   width: 0.875rem;
   height: 0.875rem;
   transition: transform 0.15s;
 }
 
-.fs-glossary-link:hover svg {
+.ns-glossary-link:hover svg {
   transform: translateX(2px);
 }
 
-.fs-glossary-empty {
+.ns-glossary-empty {
   padding: 2rem 0;
   text-align: center;
   color: var(--color-fd-muted-foreground);
 }
 
 @media (max-width: 639px) {
-  .fs-glossary-section {
+  .ns-glossary-section {
     grid-template-columns: 1fr;
     gap: 0.5rem;
   }
 
-  .fs-glossary-letter {
+  .ns-glossary-letter {
     position: static;
     font-size: 1.5rem;
   }
 
-  .fs-glossary-term {
+  .ns-glossary-term {
     grid-template-columns: 1fr;
   }
 }
@@ -2035,21 +2035,21 @@ html > body[data-scroll-locked] {
  */
 
 :root {
-  --fs-home-width: 72rem;
+  --ns-home-width: 72rem;
 }
 
-#nd-notebook-layout:has(.fs-home-root) #nd-subnav > div {
-  padding-inline: max(1.5rem, calc((100% - var(--fs-home-width)) / 2));
+#nd-notebook-layout:has(.ns-home-root) #nd-subnav > div {
+  padding-inline: max(1.5rem, calc((100% - var(--ns-home-width)) / 2));
 }
 
 @media (min-width: 768px) {
-  #nd-notebook-layout:has(.fs-home-root) #nd-subnav > div > button:has(kbd) {
+  #nd-notebook-layout:has(.ns-home-root) #nd-subnav > div > button:has(kbd) {
     order: 1;
     width: 15rem;
     max-width: 15rem;
   }
 
-  #nd-notebook-layout:has(.fs-home-root) #nd-subnav > div > div:last-child {
+  #nd-notebook-layout:has(.ns-home-root) #nd-subnav > div > div:last-child {
     order: 2;
     flex: 0 0 auto;
   }
@@ -2058,132 +2058,132 @@ html > body[data-scroll-locked] {
 /* ── Landing interactions ───────────────────────────────────────────── */
 
 /* Cursor spotlight (<Spotlight />): accent glow + a dot matrix revealed around the cursor */
-.fs-spotlight {
+.ns-spotlight {
   position: fixed;
   inset: 0;
   z-index: -1;
   pointer-events: none;
   opacity: 0;
   transition: opacity 0.6s ease;
-  --fs-x: 50%;
-  --fs-y: 30%;
-  --fs-dot: rgb(0 0 0 / 0.35);
+  --ns-x: 50%;
+  --ns-y: 30%;
+  --ns-dot: rgb(0 0 0 / 0.35);
 }
 
-.dark .fs-spotlight {
-  --fs-dot: rgb(255 255 255 / 0.35);
+.dark .ns-spotlight {
+  --ns-dot: rgb(255 255 255 / 0.35);
 }
 
-.fs-spotlight[data-active='true'] {
+.ns-spotlight[data-active='true'] {
   opacity: 1;
 }
 
-.fs-spotlight-glow,
-.fs-spotlight-dots {
+.ns-spotlight-glow,
+.ns-spotlight-dots {
   position: absolute;
   inset: 0;
 }
 
-.fs-spotlight-glow {
+.ns-spotlight-glow {
   background: radial-gradient(
-    34rem circle at var(--fs-x) var(--fs-y),
-    color-mix(in oklab, var(--fs-accent) 13%, transparent),
+    34rem circle at var(--ns-x) var(--ns-y),
+    color-mix(in oklab, var(--ns-accent) 13%, transparent),
     transparent 70%
   );
 }
 
-.fs-spotlight-dots {
-  background-image: radial-gradient(circle at center, var(--fs-dot) 1px, transparent 1.6px);
+.ns-spotlight-dots {
+  background-image: radial-gradient(circle at center, var(--ns-dot) 1px, transparent 1.6px);
   background-size: 22px 22px;
-  mask-image: radial-gradient(15rem circle at var(--fs-x) var(--fs-y), black, transparent 75%);
+  mask-image: radial-gradient(15rem circle at var(--ns-x) var(--ns-y), black, transparent 75%);
 }
 
 @media (prefers-reduced-motion: no-preference) {
   /* The fixed top glow breathes slowly on the landing page */
-  #nd-notebook-layout:has(.fs-home-root)::before {
-    animation: fs-breathe 7s ease-in-out infinite alternate;
+  #nd-notebook-layout:has(.ns-home-root)::before {
+    animation: ns-breathe 7s ease-in-out infinite alternate;
   }
 
   /* Hero enters in a short stagger; the title rises word by word */
-  .fs-home-hero > *,
-  .fs-home-preview {
-    animation: fs-rise 0.9s var(--fs-ease, ease-out) both;
+  .ns-home-hero > *,
+  .ns-home-preview {
+    animation: ns-rise 0.9s var(--ns-ease, ease-out) both;
   }
 
-  .fs-home-hero > .fs-home-title { animation: none; }
-  .fs-home-word { animation: fs-rise 0.9s calc(0.06s + var(--i, 0) * 0.07s) var(--fs-ease, ease-out) both; }
-  .fs-home-hero > :nth-child(3) { animation-delay: 0.16s; }
-  .fs-home-hero > :nth-child(4) { animation-delay: 0.24s; }
-  .fs-home-hero > :nth-child(5) { animation-delay: 0.32s; }
-  .fs-home-preview { animation-duration: 1.2s; animation-delay: 0.4s; }
+  .ns-home-hero > .ns-home-title { animation: none; }
+  .ns-home-word { animation: ns-rise 0.9s calc(0.06s + var(--i, 0) * 0.07s) var(--ns-ease, ease-out) both; }
+  .ns-home-hero > :nth-child(3) { animation-delay: 0.16s; }
+  .ns-home-hero > :nth-child(4) { animation-delay: 0.24s; }
+  .ns-home-hero > :nth-child(5) { animation-delay: 0.32s; }
+  .ns-home-preview { animation-duration: 1.2s; animation-delay: 0.4s; }
 
   /* Badge text: a light sweeps across it now and then */
-  .fs-shiny {
-    background: linear-gradient(110deg, var(--fs-accent) 40%, color-mix(in oklab, var(--fs-accent-2) 40%, white) 50%, var(--fs-accent) 60%);
+  .ns-shiny {
+    background: linear-gradient(110deg, var(--ns-accent) 40%, color-mix(in oklab, var(--ns-accent-2) 40%, white) 50%, var(--ns-accent) 60%);
     background-size: 250% 100%;
     -webkit-background-clip: text;
     background-clip: text;
     color: transparent;
-    animation: fs-shine 5s linear infinite;
+    animation: ns-shine 5s linear infinite;
   }
 
   /* Badge dot pulses */
-  .fs-home-badge-dot { animation: fs-pulse 2.4s ease-in-out infinite; }
+  .ns-home-badge-dot { animation: ns-pulse 2.4s ease-in-out infinite; }
 
   /* Sections rise in as they scroll into view (data-reveal set by <HomeEffects />).
      Backwards fill only, so hover transforms still work afterwards. */
-  .fs-reveal[data-reveal='hidden'] { opacity: 0; }
-  .fs-reveal[data-reveal='shown'] {
-    animation: fs-rise 0.8s calc(var(--i, 0) * 0.08s) var(--fs-ease, ease-out) backwards;
+  .ns-reveal[data-reveal='hidden'] { opacity: 0; }
+  .ns-reveal[data-reveal='shown'] {
+    animation: ns-rise 0.8s calc(var(--i, 0) * 0.08s) var(--ns-ease, ease-out) backwards;
   }
 
-  .fs-card:hover { transform: translateY(-2px); }
+  .ns-card:hover { transform: translateY(-2px); }
 
   /* Preview border beams: one lap every 8 seconds */
-  .fs-preview-beam { animation: fs-spin 8s linear infinite; }
+  .ns-preview-beam { animation: ns-spin 8s linear infinite; }
 
   /* Marquees slide by one copy; pause under the mouse */
-  .fs-marquee-group { animation: fs-marquee var(--fs-duration, 40s) linear infinite; }
-  .fs-marquee[data-vertical] .fs-marquee-group { animation-name: fs-marquee-up; }
-  .fs-marquee[data-reverse] .fs-marquee-group { animation-direction: reverse; }
-  .fs-marquee:hover .fs-marquee-group { animation-play-state: paused; }
+  .ns-marquee-group { animation: ns-marquee var(--ns-duration, 40s) linear infinite; }
+  .ns-marquee[data-vertical] .ns-marquee-group { animation-name: ns-marquee-up; }
+  .ns-marquee[data-reverse] .ns-marquee-group { animation-direction: reverse; }
+  .ns-marquee:hover .ns-marquee-group { animation-play-state: paused; }
 
   /* Terminal types its commands once it scrolls into view */
-  .fs-terminal[data-reveal='shown'] .fs-terminal-line {
-    animation: fs-appear 0.01s calc(0.5s + var(--i) * 1.15s) backwards;
+  .ns-terminal[data-reveal='shown'] .ns-terminal-line {
+    animation: ns-appear 0.01s calc(0.5s + var(--i) * 1.15s) backwards;
   }
-  .fs-terminal[data-reveal='shown'] .fs-terminal-type {
-    animation: fs-type calc(var(--n) * 22ms) steps(var(--n), end) calc(0.5s + var(--i) * 1.15s) backwards;
+  .ns-terminal[data-reveal='shown'] .ns-terminal-type {
+    animation: ns-type calc(var(--n) * 22ms) steps(var(--n), end) calc(0.5s + var(--i) * 1.15s) backwards;
   }
 }
 
-@keyframes fs-spin { to { rotate: 1turn; } }
-@keyframes fs-marquee { to { transform: translateX(calc(-100% - var(--fs-gap))); } }
-@keyframes fs-marquee-up { to { transform: translateY(calc(-100% - var(--fs-gap))); } }
-@keyframes fs-appear { from { opacity: 0; } }
-@keyframes fs-type { from { clip-path: inset(0 100% 0 0); } }
+@keyframes ns-spin { to { rotate: 1turn; } }
+@keyframes ns-marquee { to { transform: translateX(calc(-100% - var(--ns-gap))); } }
+@keyframes ns-marquee-up { to { transform: translateY(calc(-100% - var(--ns-gap))); } }
+@keyframes ns-appear { from { opacity: 0; } }
+@keyframes ns-type { from { clip-path: inset(0 100% 0 0); } }
 
 /* Reduced motion: the strip of libraries stands still, wrapped and centred */
 @media (prefers-reduced-motion: reduce) {
-  .fs-home-stack .fs-marquee { flex-wrap: wrap; justify-content: center; mask-image: none; }
-  .fs-home-stack .fs-marquee-group { flex-wrap: wrap; justify-content: center; }
-  .fs-marquee-group[aria-hidden] { display: none; }
+  .ns-home-stack .ns-marquee { flex-wrap: wrap; justify-content: center; mask-image: none; }
+  .ns-home-stack .ns-marquee-group { flex-wrap: wrap; justify-content: center; }
+  .ns-marquee-group[aria-hidden] { display: none; }
 }
 
-@keyframes fs-shine {
+@keyframes ns-shine {
   from { background-position: 100% 0; }
   to { background-position: -150% 0; }
 }
 
-@keyframes fs-pulse {
-  50% { box-shadow: 0 0 0 0.35rem color-mix(in oklab, var(--fs-accent) 0%, transparent); }
+@keyframes ns-pulse {
+  50% { box-shadow: 0 0 0 0.35rem color-mix(in oklab, var(--ns-accent) 0%, transparent); }
 }
 
-@keyframes fs-breathe {
+@keyframes ns-breathe {
   from { opacity: 0.7; scale: 1; }
   to { opacity: 1; scale: 1.15; }
 }
 
-@keyframes fs-rise {
+@keyframes ns-rise {
   from { opacity: 0; transform: translateY(1rem); }
 }

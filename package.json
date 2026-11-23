@@ -1,5 +1,5 @@
 {
-  "name": "fuma-styles-workspace",
+  "name": "notestack-workspace",
   "private": true,
   "workspaces": [
     "packages/*",

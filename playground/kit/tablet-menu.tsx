@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { usePathname } from 'fumadocs-core/framework';
 import { useEffect } from 'react';
 
@@ -11,14 +11,14 @@ const TRIGGER = '#nd-subnav button[aria-label="Open Sidebar"]';
  * slides in from the right, opened by the menu button at the right end of the header.
  * Fumadocs only switches to its drawer below 768px (hard-coded), so this takes over
  * that button at tablet width. Closes on tap outside, Esc, or when a page opens.
- * The panel itself is styled in theme.css (html[data-fs-menu='open']).
+ * The panel itself is styled in theme.css (html[data-ns-menu='open']).
  */
 export function TabletMenu() {
   const pathname = usePathname();
 
   // Close after navigating
   useEffect(() => {
-    delete document.documentElement.dataset.fsMenu;
+    delete document.documentElement.dataset.nsMenu;
     document.querySelector(TRIGGER)?.setAttribute('aria-expanded', 'false');
   }, [pathname]);
 
@@ -27,8 +27,8 @@ export function TabletMenu() {
     const root = document.documentElement;
 
     const setOpen = (open: boolean) => {
-      if (open) root.dataset.fsMenu = 'open';
-      else delete root.dataset.fsMenu;
+      if (open) root.dataset.nsMenu = 'open';
+      else delete root.dataset.nsMenu;
       document.querySelector(TRIGGER)?.setAttribute('aria-expanded', String(open));
     };
 
@@ -38,10 +38,10 @@ export function TabletMenu() {
       if (target?.closest(TRIGGER)) {
         event.preventDefault();
         event.stopPropagation();
-        setOpen(root.dataset.fsMenu !== 'open');
+        setOpen(root.dataset.nsMenu !== 'open');
         return;
       }
-      if (root.dataset.fsMenu === 'open' && !target?.closest('#nd-sidebar')) {
+      if (root.dataset.nsMenu === 'open' && !target?.closest('#nd-sidebar')) {
         // a tap on the dimmed page only closes the panel; it must not also press what is underneath
         event.preventDefault();
         event.stopPropagation();

@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { usePathname, useRouter } from 'fumadocs-core/framework';
 import { useEffect, useRef } from 'react';
 
@@ -10,7 +10,7 @@ type Section = 'home' | 'docs';
  * using the browser's View Transitions API. Catches every internal link click
  * that crosses between the two, including Fumadocs' own links (the header title).
  * Browsers without the API, and "reduce motion" users, navigate normally.
- * The animation itself is in theme.css (data-fs-transition on <html>).
+ * The animation itself is in theme.css (data-ns-transition on <html>).
  */
 export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
   const router = useRouter();
@@ -52,7 +52,7 @@ export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
       event.stopPropagation();
 
       const root = document.documentElement;
-      root.dataset.fsTransition = to === 'docs' ? 'to-docs' : 'to-home';
+      root.dataset.nsTransition = to === 'docs' ? 'to-docs' : 'to-home';
 
       const transition = document.startViewTransition(
         () =>
@@ -63,7 +63,7 @@ export function PageTransitions({ docsPath = '/docs' }: { docsPath?: string }) {
           }),
       );
       transition.finished.finally(() => {
-        delete root.dataset.fsTransition;
+        delete root.dataset.nsTransition;
       });
     };
 

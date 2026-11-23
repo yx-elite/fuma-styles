@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's source helpers. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's source helpers. Moves to packages/notestack/src/ at migration.
 import { execFileSync } from 'node:child_process';
 import { lucideIconsPlugin } from 'fumadocs-core/source/plugins/lucide-icons';
 

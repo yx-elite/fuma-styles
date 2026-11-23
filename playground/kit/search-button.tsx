@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { useSearchContext } from 'fumadocs-ui/contexts/search';
 import { Search } from 'lucide-react';
 
@@ -9,10 +9,10 @@ export function SearchButton() {
   if (!enabled) return null;
 
   return (
-    <button type="button" className="fs-button fs-button-secondary" onClick={() => setOpenSearch(true)}>
+    <button type="button" className="ns-button ns-button-secondary" onClick={() => setOpenSearch(true)}>
       <Search />
       Search the notes
-      <span className="fs-button-keys">
+      <span className="ns-button-keys">
         {hotKey.map((key, i) => (
           <kbd key={i}>{key.display}</kbd>
         ))}

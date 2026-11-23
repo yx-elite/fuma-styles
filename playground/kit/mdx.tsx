@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's mdx entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's mdx entry. Moves to packages/notestack/src/ at migration.
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';

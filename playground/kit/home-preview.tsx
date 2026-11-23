@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { Search } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
@@ -29,109 +29,109 @@ export function DocsPreview({ site, groups, href }: { site: SiteConfig; groups: 
   }
 
   return (
-    <Link href={href} className="fs-preview" aria-label={`Open the docs: ${site.name}`}>
-      {/* a light that runs around the border (theme.css: .fs-preview-beam) */}
-      <span className="fs-preview-beam" aria-hidden />
-      <div className="fs-preview-screen" aria-hidden>
-        <div className="fs-preview-bar">
-          <span className="fs-preview-dots">
+    <Link href={href} className="ns-preview" aria-label={`Open the docs: ${site.name}`}>
+      {/* a light that runs around the border (theme.css: .ns-preview-beam) */}
+      <span className="ns-preview-beam" aria-hidden />
+      <div className="ns-preview-screen" aria-hidden>
+        <div className="ns-preview-bar">
+          <span className="ns-preview-dots">
             <i />
             <i />
             <i />
           </span>
-          <span className="fs-preview-url">{path}</span>
+          <span className="ns-preview-url">{path}</span>
         </div>
 
-        <div className="fs-preview-header">
-          <span className="fs-preview-brand">
-            <NotesLogo className="fs-preview-mark" />
+        <div className="ns-preview-header">
+          <span className="ns-preview-brand">
+            <NotesLogo className="ns-preview-mark" />
             {site.name}
           </span>
-          <span className="fs-preview-search">
+          <span className="ns-preview-search">
             <Search />
             Search
             <kbd>⌘K</kbd>
           </span>
-          <span className="fs-preview-icons">
+          <span className="ns-preview-icons">
             <i />
             <i />
           </span>
         </div>
 
-        <div className="fs-preview-body">
-          <div className="fs-preview-sidebar">
-            <div className="fs-preview-banner">
+        <div className="ns-preview-body">
+          <div className="ns-preview-sidebar">
+            <div className="ns-preview-banner">
               <b>{site.name}</b>
               {site.tag && <small>{site.tag}</small>}
-              <span className="fs-preview-line" style={width(90)} />
-              <span className="fs-preview-line" style={width(60)} />
+              <span className="ns-preview-line" style={width(90)} />
+              <span className="ns-preview-line" style={width(60)} />
             </div>
             {(site.links ?? []).map((link) => (
-              <span key={link.url} className="fs-preview-link">
+              <span key={link.url} className="ns-preview-link">
                 {lucideIcon(link.icon)}
                 {link.text}
               </span>
             ))}
             {rows.slice(0, MAX_SIDEBAR_ROWS).map((row, i) =>
               row.label ? (
-                <span key={i} className="fs-preview-label">
+                <span key={i} className="ns-preview-label">
                   {row.name}
                 </span>
               ) : (
-                <span key={i} className="fs-preview-item" data-active={row.active}>
+                <span key={i} className="ns-preview-item" data-active={row.active}>
                   {row.name}
                 </span>
               ),
             )}
           </div>
 
-          <div className="fs-preview-page">
-            <span className="fs-preview-title">{first?.name ?? site.name}</span>
-            <span className="fs-preview-desc">{first?.description ?? site.description}</span>
-            <span className="fs-preview-buttons">
+          <div className="ns-preview-page">
+            <span className="ns-preview-title">{first?.name ?? site.name}</span>
+            <span className="ns-preview-desc">{first?.description ?? site.description}</span>
+            <span className="ns-preview-buttons">
               <i />
               <i />
             </span>
-            <span className="fs-preview-rule" />
-            <span className="fs-preview-line" style={width(96)} />
-            <span className="fs-preview-line" style={width(88)} />
-            <span className="fs-preview-line" style={width(72)} />
-            <span className="fs-preview-heading" />
-            <span className="fs-preview-callout">
-              <span className="fs-preview-line" style={width(80)} />
-              <span className="fs-preview-line" style={width(55)} />
+            <span className="ns-preview-rule" />
+            <span className="ns-preview-line" style={width(96)} />
+            <span className="ns-preview-line" style={width(88)} />
+            <span className="ns-preview-line" style={width(72)} />
+            <span className="ns-preview-heading" />
+            <span className="ns-preview-callout">
+              <span className="ns-preview-line" style={width(80)} />
+              <span className="ns-preview-line" style={width(55)} />
             </span>
-            <span className="fs-preview-line" style={width(92)} />
-            <span className="fs-preview-line" style={width(64)} />
-            <span className="fs-preview-code">
+            <span className="ns-preview-line" style={width(92)} />
+            <span className="ns-preview-line" style={width(64)} />
+            <span className="ns-preview-code">
               <span>
-                <i className="fs-c1" style={width(14)} />
+                <i className="ns-c1" style={width(14)} />
                 <i style={width(30)} />
               </span>
               <span>
-                <i className="fs-c2" style={width(10)} />
+                <i className="ns-c2" style={width(10)} />
                 <i style={width(22)} />
-                <i className="fs-c1" style={width(18)} />
+                <i className="ns-c1" style={width(18)} />
               </span>
               <span>
                 <i style={width(8)} />
-                <i className="fs-c2" style={width(36)} />
+                <i className="ns-c2" style={width(36)} />
               </span>
               <span>
-                <i className="fs-c1" style={width(20)} />
+                <i className="ns-c1" style={width(20)} />
               </span>
             </span>
-            <span className="fs-preview-line" style={width(85)} />
+            <span className="ns-preview-line" style={width(85)} />
           </div>
 
-          <div className="fs-preview-toc">
-            <span className="fs-preview-toc-title">On this page</span>
-            <span className="fs-preview-toc-items">
-              <span className="fs-preview-line" data-active style={width(70)} />
-              <span className="fs-preview-line" style={width(85)} />
-              <span className="fs-preview-line" style={width(60)} />
-              <span className="fs-preview-line" style={width(75)} />
-              <span className="fs-preview-line" style={width(50)} />
+          <div className="ns-preview-toc">
+            <span className="ns-preview-toc-title">On this page</span>
+            <span className="ns-preview-toc-items">
+              <span className="ns-preview-line" data-active style={width(70)} />
+              <span className="ns-preview-line" style={width(85)} />
+              <span className="ns-preview-line" style={width(60)} />
+              <span className="ns-preview-line" style={width(75)} />
+              <span className="ns-preview-line" style={width(50)} />
             </span>
           </div>
         </div>

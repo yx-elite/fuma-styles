@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import { SidebarProvider, useSidebar } from 'fumadocs-ui/layouts/notebook/slots/sidebar';
 import type * as PageTree from 'fumadocs-core/page-tree';
@@ -40,7 +40,7 @@ export function NotesHomeLayout({
       slots={{ sidebar: homeSidebarSlots }}
     >
       {/* One wrapper for any home content, so the page transition always works */}
-      <div className="fs-home-root">
+      <div className="ns-home-root">
         <Spotlight />
         {children}
       </div>

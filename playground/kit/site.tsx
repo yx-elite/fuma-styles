@@ -1,4 +1,4 @@
-// PROTOTYPE of the package's config/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's config/ entry. Moves to packages/notestack/src/ at migration.
 
 /** Everything that differs between notes sites. Lives in each repo's site.config.ts. */
 export interface SiteConfig {
@@ -44,9 +44,9 @@ export function defineSiteConfig(config: SiteConfig): SiteConfig {
 
 export const repoUrl = (site: SiteConfig) => `https://github.com/${site.repo}`;
 
-/** Sets --fs-accent from the site config. Put it inside <body> in app/layout.tsx. */
+/** Sets --ns-accent from the site config. Put it inside <body> in app/layout.tsx. */
 export function SiteStyle({ site }: { site: SiteConfig }) {
   if (!site.accent) return null;
-  const css = `:root{--fs-accent:${site.accent.light}}.dark{--fs-accent:${site.accent.dark}}`;
+  const css = `:root{--ns-accent:${site.accent.light}}.dark{--ns-accent:${site.accent.dark}}`;
   return <style dangerouslySetInnerHTML={{ __html: css }} />;
 }

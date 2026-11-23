@@ -1,5 +1,5 @@
 'use client';
-// PROTOTYPE of the package's layouts/ entry. Moves to packages/fuma-styles/src/ at migration.
+// PROTOTYPE of the package's layouts/ entry. Moves to packages/notestack/src/ at migration.
 import Link from 'fumadocs-core/link';
 import { usePathname } from 'fumadocs-core/framework';
 import type { ReactNode } from 'react';
@@ -20,12 +20,12 @@ export function SidebarLinks({ items }: { items: SidebarLinkItem[] }) {
   const pathname = normalize(usePathname());
 
   return (
-    <nav className="fs-links" aria-label="Quick links">
+    <nav className="ns-links" aria-label="Quick links">
       {items.map((item) => (
         <Link
           key={item.url}
           href={item.url}
-          className="fs-link"
+          className="ns-link"
           data-active={normalize(item.url) === pathname}
         >
           {item.icon}

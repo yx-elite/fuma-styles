@@ -1,8 +1,8 @@
-# Fuma Styles
+# Notestack
 
-![npm](https://img.shields.io/badge/npm-@yx--elite/fuma--styles-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
+![npm](https://img.shields.io/badge/npm-@yx--elite/notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
-A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/fuma-styles`, gives every notes site the same **layout, styles, components and search**, so my handbooks (AWS SAA, Linux and later ones) all read the same way, and a fix made once reaches all of them.
+A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**, so my handbooks (AWS SAA, Linux and later ones) all read the same way, and a fix made once reaches all of them.
 
 > [!NOTE]
 > Work in progress. The package is not on npm yet; the [roadmap](#roadmap) lists what comes next.
@@ -13,7 +13,7 @@ A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.
 
 Three parts, each with one job:
 
-- **Package** → `packages/fuma-styles/`: the theme CSS, MDX components, layouts, search and config helpers. Published to npm.
+- **Package** → `packages/notestack/`: the theme CSS, MDX components, layouts, search and config helpers. Published to npm.
 - **Playground** → `playground/`: a full Fumadocs site that shows every component, for testing the package. Never published.
 - **Starter** → `starter/`: the small shell a new notes repo is copied from. Every file in it is a few lines that call the package.
 
@@ -22,14 +22,14 @@ All the logic lives in the package, so a notes site picks up new styles and fixe
 ## Repository layout
 
 ```text
-fuma-styles/
+notestack/
 ├── README.md                 ← you are here
 ├── LICENSE
 ├── AGENTS.md                 ← working rules for this repo
 ├── CLAUDE.md
 ├── package.json              ← npm workspaces root (private)
 ├── playground/               ← test site
-├── packages/fuma-styles/     ← the npm package (coming next)
+├── packages/notestack/       ← the npm package (coming next)
 └── starter/                  ← template for new notes sites (planned)
 ```
 
@@ -48,7 +48,7 @@ npm run build      # static export of the playground into playground/out/
 Planned, once the starter and the first npm release exist:
 
 ```bash
-npx giget@latest gh:yx-elite/fuma-styles/starter my-notes
+npx giget@latest gh:yx-elite/notestack/starter my-notes
 cd my-notes
 npm install
 ```
@@ -58,7 +58,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 ## Roadmap
 
 1. **Scaffold** → workspace and playground. ✅
-2. **Package skeleton** → `@yx-elite/fuma-styles` wired into the playground.
+2. **Package skeleton** → `@yx-elite/notestack` wired into the playground.
 3. **Starter** → the thin template for notes sites.
 4. **CI and first release** → `0.1.0` on npm.
 5. **First real site** → the AWS SAA handbook.
