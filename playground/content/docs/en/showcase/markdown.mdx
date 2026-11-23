@@ -192,15 +192,17 @@ Caches trade freshness for speed[^1]. DNS answers are cached at several levels[^
 
 ### Images
 
-A plain image (click it to zoom):
+A plain image (click it to zoom). A diagram comes in two files, one per mode; place both and only the one for the current mode shows:
 
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/notes-site-architecture.svg)
+![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
 ### Image with a caption
 
 <figure>
 
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/notes-site-architecture.svg)
+![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
 <figcaption>CloudFront answers from its cache; on a miss it reads the file from the private S3 bucket.</figcaption>
 
@@ -211,7 +213,8 @@ A plain image (click it to zoom):
 1. A reader asks for a page.
 2. CloudFront answers from its cache, or reads the file from S3:
 
-   ![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/notes-site-architecture.svg)
+   ![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+   ![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
 3. The reader gets the page.
 
