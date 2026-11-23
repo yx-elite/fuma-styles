@@ -35,12 +35,8 @@ export interface NotesText {
   contentsText: string;
   /** Name of the first section when the docs start with pages before any separator */
   firstSection: string;
-  /** Between page names in a section card */
-  listSeparator: string;
   /** `{n}` pages not listed */
   andMore: string;
-  /** After the list of page names */
-  listEnd: string;
   /** `{page}` */
   startWith: string;
   builtWith: string;
@@ -114,9 +110,7 @@ export const en: NotesText = {
   contentsTitle: "What's inside",
   contentsText: '{pages} in {sections}. Jump into any of them, or start from the first page.',
   firstSection: 'Start here',
-  listSeparator: ', ',
   andMore: ' and {n} more',
-  listEnd: '.',
   startWith: 'Start with {page}',
   builtWith: 'Built with',
 
@@ -177,9 +171,7 @@ export const zhCN: NotesText = {
   contentsTitle: '内容一览',
   contentsText: '共 {sections}，{pages}。可以从任意章节开始，也可以从第一页读起。',
   firstSection: '从这里开始',
-  listSeparator: '、',
   andMore: '，以及另外 {n} 页',
-  listEnd: '。',
   startWith: '从「{page}」开始',
   builtWith: '构建工具',
 

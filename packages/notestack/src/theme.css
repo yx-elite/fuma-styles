@@ -210,6 +210,250 @@ html > body[data-scroll-locked] {
   padding-bottom: 6rem;
 }
 
+/*
+ * Notes read like Clerk's docs: body text a paler grey, so plain white headings,
+ * bold words and links stand out by contrast alone, with no decoration on the
+ * headings. Generous space above each heading separates the sections.
+ */
+.prose {
+  --tw-prose-body: color-mix(in oklab, var(--color-fd-foreground) 64%, transparent);
+  line-height: 1.8;
+}
+
+.prose > h2 {
+  margin-top: 3.5rem;
+  margin-bottom: 1rem;
+  font-size: 1.5rem;
+  font-weight: 600;
+  letter-spacing: -0.02em;
+}
+
+.prose > h3 {
+  margin-top: 2.5rem;
+  margin-bottom: 0.875rem;
+  font-size: 1.25rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+}
+
+/*
+ * Tables: a rounded box with an accent border, the header row tinted with the
+ * accent (one gradient across the row), and rows that light up on hover.
+ */
+.prose table {
+  border-collapse: separate;
+  border-spacing: 0;
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 28%, var(--color-fd-border));
+  border-radius: 0.875rem;
+  overflow: hidden;
+  background: transparent;
+  font-size: 0.875rem;
+}
+
+.prose thead tr {
+  background: linear-gradient(90deg, color-mix(in oklab, var(--ns-accent) 18%, transparent), color-mix(in oklab, var(--ns-accent-2) 10%, transparent));
+}
+
+.prose :is(th, td) {
+  border: 0;
+  text-align: start;
+  vertical-align: top;
+}
+
+.prose :is(th, td)[align='center'] {
+  text-align: center;
+}
+
+.prose :is(th, td)[align='right'] {
+  text-align: end;
+}
+
+.prose th {
+  padding: 0.7rem 1rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--ns-accent) 28%, transparent);
+  background: none;
+  color: color-mix(in oklab, var(--ns-accent) 75%, var(--color-fd-foreground));
+  font-weight: 600;
+}
+
+.prose td {
+  padding: 0.65rem 1rem;
+  border-top: 1px solid color-mix(in oklab, var(--color-fd-foreground) 6%, transparent);
+}
+
+.prose tbody tr:first-child td {
+  border-top: 0;
+}
+
+.prose tbody tr {
+  transition: background-color 0.15s;
+}
+
+.prose tbody tr:hover {
+  background: color-mix(in oklab, var(--ns-accent) 8%, transparent);
+}
+
+.prose td strong {
+  color: var(--ns-accent);
+}
+
+/*
+ * Callouts (Fumadocs <Callout>): the whole box tinted in its colour, a coloured
+ * border, and the title as a pill beside the icon. Fumadocs sets --callout-color
+ * on each callout; its thin left bar is hidden.
+ */
+div[style*='--callout-color']:has(> [role='none']) {
+  gap: 0.75rem;
+  padding: 0.875rem 1rem;
+  border: 1px solid color-mix(in oklab, var(--callout-color) 35%, transparent);
+  border-radius: 1rem;
+  background: color-mix(in oklab, var(--callout-color) 9%, var(--color-fd-background));
+}
+
+div[style*='--callout-color'] > [role='none'] {
+  display: none;
+}
+
+/* the title: a small uppercase label in the callout's colour, then a thin rule fading across */
+div[style*='--callout-color']:has(> [role='none']) p.font-medium {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  min-height: 1.25rem;
+  color: color-mix(in oklab, var(--callout-color) 85%, var(--color-fd-foreground));
+  font-size: 0.6875rem;
+  font-weight: 700;
+  letter-spacing: 0.09em;
+  text-transform: uppercase;
+}
+
+div[style*='--callout-color']:has(> [role='none']) p.font-medium::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, color-mix(in oklab, var(--callout-color) 45%, transparent), transparent);
+}
+
+div[style*='--callout-color']:has(> [role='none']) > div:last-child > div {
+  color: color-mix(in oklab, var(--color-fd-foreground) 82%, transparent);
+}
+
+/* Images in notes: rounded like code blocks and cards (Obsidian-style diagrams have square corners) */
+.prose img {
+  border-radius: 0.75rem;
+}
+
+/*
+ * Cards (Fumadocs <Card>): a soft grey gradient from the top-left corner,
+ * a little brighter on hover.
+ */
+.prose :is(a, div)[class*='bg-fd-card']:has(> h3.not-prose) {
+  border-color: color-mix(in oklab, var(--color-fd-foreground) 10%, transparent);
+  border-radius: 0.875rem;
+  background-color: var(--color-fd-card);
+  background-image: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--color-fd-foreground) 7%, transparent),
+    color-mix(in oklab, var(--color-fd-foreground) 1.5%, transparent) 60%,
+    transparent
+  );
+  transition: border-color 0.25s, background-color 0.25s, translate 0.25s;
+}
+
+a[class*='bg-fd-card']:has(> h3.not-prose):hover {
+  border-color: color-mix(in oklab, var(--color-fd-foreground) 22%, transparent);
+  background-color: color-mix(in oklab, var(--color-fd-foreground) 4%, var(--color-fd-card));
+  translate: 0 -2px;
+}
+
+/*
+ * Steps (Fumadocs <Steps>): numbers in accent-tinted rings on a line that
+ * fades out towards the last step.
+ */
+.fd-steps {
+  border-inline-start: 0;
+}
+
+.fd-steps::before {
+  content: '';
+  position: absolute;
+  inset-block: 1rem 0;
+  inset-inline-start: -1px;
+  width: 2px;
+  border-radius: 9999px;
+  background: linear-gradient(
+    to bottom,
+    color-mix(in oklab, var(--ns-accent) 55%, transparent),
+    color-mix(in oklab, var(--ns-accent-2) 25%, transparent) 70%,
+    transparent
+  );
+}
+
+.fd-step {
+  padding-bottom: 0.5rem;
+}
+
+.fd-step::before {
+  z-index: 1;
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 50%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 14%, var(--color-fd-background));
+  color: var(--ns-accent);
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  font-weight: 600;
+  /* a ring of page colour cuts the line around each number */
+  box-shadow:
+    0 0 0 4px var(--color-fd-background),
+    0 0 1rem -0.25rem color-mix(in oklab, var(--ns-accent) 60%, transparent);
+}
+
+/* Previous / next page: set apart from the note, tinted with the accent */
+#nd-notebook-layout article > div[class~='@container'] {
+  margin-top: clamp(3rem, 6vw, 4.5rem);
+  gap: 1rem;
+}
+
+#nd-notebook-layout article > div[class~='@container'] > a {
+  position: relative;
+  gap: 0.375rem;
+  padding: 1.125rem 1.25rem;
+  border-color: color-mix(in oklab, var(--ns-accent) 28%, var(--color-fd-border));
+  border-radius: 0.75rem;
+  background-image: linear-gradient(
+    135deg,
+    color-mix(in oklab, var(--ns-accent) 16%, transparent),
+    color-mix(in oklab, var(--ns-accent-2) 7%, transparent) 55%,
+    transparent
+  );
+  transition: border-color 0.25s, background-color 0.25s, translate 0.25s;
+}
+
+/* "Next" leans the gradient the other way */
+#nd-notebook-layout article > div[class~='@container'] > a.text-end {
+  background-image: linear-gradient(
+    225deg,
+    color-mix(in oklab, var(--ns-accent) 16%, transparent),
+    color-mix(in oklab, var(--ns-accent-2) 7%, transparent) 55%,
+    transparent
+  );
+}
+
+#nd-notebook-layout article > div[class~='@container'] > a:hover {
+  border-color: color-mix(in oklab, var(--ns-accent) 60%, transparent);
+  background-color: color-mix(in oklab, var(--ns-accent) 6%, transparent);
+  color: inherit;
+  translate: 0 -2px;
+}
+
+#nd-notebook-layout article > div[class~='@container'] > a > :first-child {
+  font-size: 0.9375rem;
+  font-weight: 600;
+}
+
+#nd-notebook-layout article > div[class~='@container'] > a > :first-child svg {
+  color: var(--ns-accent);
+}
+
 .ns-last-updated {
   margin-top: 1.5rem;
   padding-top: 1.25rem;
@@ -241,12 +485,74 @@ html > body[data-scroll-locked] {
 /* GitHub icon at the far right, after the theme switch */
 :is(#nd-subnav, #nd-nav) a[href*='github.com'] {
   order: 1;
-  margin-inline-start: 0.5rem;
 }
 
-:is(#nd-subnav, #nd-nav),
-:is(#nd-subnav, #nd-nav) * {
-  border-color: color-mix(in oklab, var(--color-fd-foreground) 7%, transparent);
+/*
+ * Language and GitHub: plain icons with no button shape. The language button
+ * sits after the theme switch, between it and GitHub.
+ */
+:is(#nd-subnav, #nd-nav) div:has(> [data-theme-toggle]) > button {
+  order: 1;
+}
+
+:is(#nd-subnav, #nd-nav) :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']) {
+  padding: 0.25rem;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  color: var(--color-fd-muted-foreground);
+  transition: color 0.2s;
+}
+
+:is(#nd-subnav, #nd-nav) :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']):hover {
+  background: none;
+  color: var(--color-fd-foreground);
+}
+
+:is(#nd-subnav, #nd-nav) a[href*='github.com'] {
+  margin-inline-start: 0.25rem;
+}
+
+:is(#nd-subnav, #nd-nav) a[href*='github.com'] svg {
+  width: 1.375rem;
+  height: 1.375rem;
+}
+
+/* Language menu: frosted glass with an accent wash, like the accent picker */
+[role='dialog']:has(> button[lang]) {
+  padding: 0.375rem;
+  border-color: color-mix(in oklab, var(--color-fd-foreground) 12%, transparent);
+  border-radius: 1rem;
+  background:
+    linear-gradient(160deg, color-mix(in oklab, var(--ns-accent) 12%, transparent), transparent 60%),
+    color-mix(in oklab, var(--color-fd-popover) 55%, transparent);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 14%, transparent),
+    0 1.25rem 3rem -1rem rgb(0 0 0 / 0.45);
+}
+
+/* items behave like sidebar links: the current one is accent text, hover is a soft fill */
+[role='dialog']:has(> button[lang]) > button {
+  border-radius: 0.5rem;
+  background: none;
+  color: var(--color-fd-muted-foreground);
+}
+
+[role='dialog']:has(> button[lang]) > button:hover {
+  background: color-mix(in oklab, var(--color-fd-accent) 50%, transparent);
+  color: color-mix(in oklab, var(--color-fd-accent-foreground) 80%, transparent);
+}
+
+[role='dialog']:has(> button[lang]) > button[class*='bg-fd-primary'],
+[role='dialog']:has(> button[lang]) > button[class*='bg-fd-primary']:hover {
+  background: none;
+  color: var(--ns-accent);
+}
+
+/* Search box: the same rounding as the search dialog it opens (Fumadocs: 12px) */
+:is(#nd-subnav, #nd-nav) button:has(kbd) {
+  border-radius: 0.75rem;
 }
 
 /* Search box and theme switch: see-through like the header */
@@ -608,6 +914,39 @@ html > body[data-scroll-locked] {
 @keyframes ns-slide-in-right { from { opacity: 0; transform: translateX(3rem); } }
 @keyframes ns-slide-out-right { to { opacity: 0; transform: translateX(3rem); } }
 
+/* ── Phone menu ─────────────────────────────────────────────────────── */
+/* The close button floats in the banner's top-right corner instead of taking a row of its own
+   (Fumadocs puts it in the menu's top block, above the banner) */
+#nd-sidebar-mobile > div:first-child > button[aria-controls='nd-sidebar-mobile'] {
+  position: absolute;
+  top: 0.625rem;
+  inset-inline-end: 0.625rem;
+  z-index: 3;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border: 1px solid color-mix(in oklab, var(--color-fd-foreground) 12%, transparent);
+  border-radius: 9999px;
+  background: color-mix(in oklab, var(--color-fd-background) 45%, transparent);
+  backdrop-filter: blur(12px);
+  color: var(--color-fd-foreground);
+}
+
+/* the language switch is in the phone header (PhoneSearchTrigger), so not in the menu's footer too */
+#nd-sidebar-mobile button:has(> svg.lucide-languages) {
+  display: none;
+}
+
+/* the accent picker would sit on top of the menu's theme switch: hidden while the menu is open */
+.ns-picker {
+  transition: opacity 0.2s;
+}
+
+html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
+  opacity: 0;
+  pointer-events: none;
+}
+
 /* ── Home page ──────────────────────────────────────────────────────── */
 /*
  * Default landing page from <NotesHome />, top to bottom: hero, a live
@@ -735,10 +1074,11 @@ html > body[data-scroll-locked] {
   display: inline-flex;
   align-items: center;
   gap: 0.5rem;
-  height: 2.75rem;
-  padding: 0 1.25rem;
-  border-radius: 0.625rem;
-  font-size: 0.9375rem;
+  /* one height for every landing button, the search one included */
+  height: 2.25rem;
+  padding: 0 1rem;
+  border-radius: 0.5rem;
+  font-size: 0.875rem;
   font-weight: 500;
   transition: opacity 0.2s, background-color 0.2s, border-color 0.2s;
 }
@@ -779,7 +1119,8 @@ html > body[data-scroll-locked] {
 }
 
 .ns-button-keys kbd {
-  padding: 0.0625rem 0.375rem;
+  padding: 0 0.3125rem;
+  line-height: 1.25rem;
   border: 1px solid var(--color-fd-border);
   border-radius: 0.3125rem;
   font-family: inherit;
@@ -806,11 +1147,16 @@ html > body[data-scroll-locked] {
 .ns-home-preview::before {
   content: '';
   position: absolute;
-  inset: 0 6% 30%;
+  inset: 2rem 10% 62%;
   z-index: -1;
+  /* a soft light rising from behind the window's top edge: two accent shapes,
+     blurred out. Static, so the blur is drawn once (the window in front tilts;
+     this layer never moves). */
   background:
-    radial-gradient(ellipse at 30% 30%, color-mix(in oklab, var(--ns-accent) 22%, transparent), transparent 65%),
-    radial-gradient(ellipse at 72% 35%, color-mix(in oklab, var(--ns-accent-2) 18%, transparent), transparent 65%);
+    radial-gradient(closest-side at 32% 55%, color-mix(in oklab, var(--ns-accent) 70%, transparent), transparent),
+    radial-gradient(closest-side at 70% 55%, color-mix(in oklab, var(--ns-accent-2) 60%, transparent), transparent);
+  filter: blur(56px);
+  opacity: 0.85;
   pointer-events: none;
 }
 
@@ -1111,10 +1457,9 @@ html > body[data-scroll-locked] {
   flex-direction: column;
   gap: 0.7em;
   padding: 1em 1.2em;
-  border: 1px solid var(--ns-line);
-  border-inline-start: 0.25em solid var(--ns-accent);
-  border-radius: 0.6em;
-  background: color-mix(in oklab, var(--ns-accent) 5%, transparent);
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 35%, transparent);
+  border-radius: 0.8em;
+  background: color-mix(in oklab, var(--ns-accent) 9%, transparent);
 }
 
 .ns-preview-code {
@@ -1187,7 +1532,7 @@ html > body[data-scroll-locked] {
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  margin-top: clamp(2rem, 5vw, 3rem);
+  margin-top: clamp(3.5rem, 8vw, 7.5rem);
 }
 
 .ns-home-section-head {
@@ -1222,16 +1567,16 @@ html > body[data-scroll-locked] {
   gap: 1rem;
 }
 
+/* Bento: two or three columns; wide cards (the first, and the last of four) span two */
 @media (min-width: 900px) {
-  .ns-home-cards[data-count='2'] { grid-template-columns: repeat(2, 1fr); }
-  .ns-home-cards[data-count='3'] { grid-template-columns: 1.15fr 1fr; }
-  .ns-home-cards[data-count='3'] > :first-child { grid-row: span 2; }
+  .ns-home-cards[data-count='2'],
+  .ns-home-cards[data-count='3'] { grid-template-columns: repeat(2, 1fr); }
   .ns-home-cards[data-count='4'] { grid-template-columns: repeat(3, 1fr); }
+  .ns-card[data-wide] { grid-column: span 2; }
 }
 
-/* Card (Magic UI bento style): a moving list of the section's pages on top,
-   the section below. The border lights up where the mouse is
-   (--ns-mx/--ns-my from <HomeEffects />). */
+/* Card (bento): the section's name and its first pages, still until hovered.
+   The border lights up where the mouse is (--ns-mx/--ns-my from <HomeEffects />). */
 .ns-card {
   position: relative;
   display: flex;
@@ -1274,64 +1619,93 @@ html > body[data-scroll-locked] {
   opacity: 1;
 }
 
-/* The picture: page chips drifting upwards, fading out at both ends, on a faint dot grid */
-.ns-card-visual {
-  position: relative;
-  height: 13rem;
-  padding: 0 1.25rem;
-  border-bottom: 1px solid var(--color-fd-border);
-  border-radius: 1rem 1rem 0 0;
-  background-image: radial-gradient(circle at center, color-mix(in oklab, var(--color-fd-foreground) 12%, transparent) 1px, transparent 1.5px);
-  background-size: 16px 16px;
-}
-
-.ns-home-cards[data-count='3'] > :first-child .ns-card-visual {
+.ns-card-body {
+  display: flex;
   flex: 1;
-  height: auto;
-  min-height: 13rem;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1.25rem 1.25rem 1rem;
 }
 
-/* The moving list must never size the card: only the CSS heights above do */
-.ns-card-visual {
-  contain: size;
+/* The section's pages: numbered rows, two columns on a wide card */
+.ns-card-pages {
+  display: grid;
+  gap: 0.25rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
 }
 
-.ns-page-chip {
+.ns-card[data-wide] .ns-card-pages {
+  grid-template-columns: repeat(auto-fill, minmax(min(100%, 15rem), 1fr));
+  column-gap: 0.75rem;
+}
+
+.ns-card-page {
+  position: relative;
+  z-index: 3;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.5rem 0.625rem;
+  border-radius: 0.625rem;
+  transition: background-color 0.2s;
+}
+
+.ns-card-page:hover {
+  background: color-mix(in oklab, var(--ns-accent) 9%, transparent);
+}
+
+.ns-card-page-number {
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  color: color-mix(in oklab, var(--color-fd-muted-foreground) 70%, transparent);
+  font-variant-numeric: tabular-nums;
+}
+
+.ns-card-page-text {
   display: flex;
   flex-direction: column;
-  gap: 0.125rem;
-  padding: 0.625rem 0.875rem;
-  border: 1px solid var(--color-fd-border);
-  border-radius: 0.75rem;
-  background: var(--color-fd-card);
-  box-shadow: 0 1px 2px rgb(0 0 0 / 0.04);
-  transition: border-color 0.2s, background-color 0.2s;
+  min-width: 0;
 }
 
-.ns-page-chip:hover {
-  border-color: color-mix(in oklab, var(--ns-accent) 50%, transparent);
-}
-
-.ns-page-chip b {
+.ns-card-page-text b {
+  overflow: hidden;
   font-size: 0.875rem;
   font-weight: 500;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.ns-page-chip span {
+.ns-card-page-text small {
+  overflow: hidden;
   font-size: 0.75rem;
   line-height: 1.45;
   color: var(--color-fd-muted-foreground);
-  display: -webkit-box;
-  -webkit-line-clamp: 1;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
-.ns-card-body {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
-  padding: 1.25rem 1.5rem 0;
+.ns-card-page > svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  color: var(--ns-accent);
+  opacity: 0;
+  transform: translateX(-4px);
+  transition: opacity 0.2s, transform 0.2s;
+}
+
+.ns-card-page:hover > svg {
+  opacity: 1;
+  transform: none;
+}
+
+.ns-card-more {
+  margin-top: auto;
+  padding-inline: 0.625rem;
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
 }
 
 .ns-card-head {
@@ -1375,11 +1749,6 @@ html > body[data-scroll-locked] {
   color: var(--color-fd-muted-foreground);
 }
 
-.ns-card-text {
-  font-size: 0.875rem;
-  line-height: 1.55;
-  color: var(--color-fd-muted-foreground);
-}
 
 /* A way in, along the bottom of the card */
 .ns-card-start {
@@ -1388,8 +1757,7 @@ html > body[data-scroll-locked] {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin: 0.25rem -1.5rem 0;
-  padding: 0.875rem 1.5rem;
+  padding: 0.875rem 1.25rem;
   border-top: 1px solid var(--color-fd-border);
   border-radius: 0 0 1rem 1rem;
   font-size: 0.875rem;
@@ -1648,7 +2016,7 @@ html > body[data-scroll-locked] {
   align-items: center;
   justify-content: space-between;
   gap: 1.5rem 2rem;
-  margin-top: clamp(4rem, 9vw, 6rem);
+  margin-top: clamp(4.5rem, 10vw, 8.5rem);
   padding: clamp(1.75rem, 4vw, 3rem);
   border: 1px solid var(--color-fd-border);
   border-radius: 1.25rem;
@@ -1678,7 +2046,7 @@ html > body[data-scroll-locked] {
   align-items: center;
   justify-content: space-between;
   gap: 0.75rem 1.5rem;
-  margin-top: 3rem;
+  margin-top: clamp(3.5rem, 8vw, 6rem);
   padding: 1.75rem 0 2.5rem;
   border-top: 1px solid color-mix(in oklab, var(--color-fd-foreground) 7%, transparent);
   font-size: 0.875rem;
@@ -1700,6 +2068,9 @@ html > body[data-scroll-locked] {
 
 @media (max-width: 639px) {
   .ns-home { padding-inline: 1rem; }
+  /* phones: the docs preview sits close to the hero, without the tall empty band above it */
+  .ns-home-hero { padding-top: 2.5rem; gap: 1rem; }
+  .ns-home-preview { margin-top: 0.75rem; padding-top: 1.75rem; mask-image: linear-gradient(to bottom, transparent, black 1.25rem, black 70%, transparent 98%); }
   .ns-home-actions > * { flex: 1 1 100%; justify-content: center; }
   .ns-home-cta .ns-home-actions { width: 100%; }
   .ns-button-keys { display: none; }
@@ -1729,13 +2100,15 @@ html > body[data-scroll-locked] {
   width: 2.75rem;
   height: 2.75rem;
   border-radius: 9999px;
-  border: 1px solid color-mix(in oklab, var(--ns-accent) 40%, var(--color-fd-border));
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 35%, transparent);
   background:
-    linear-gradient(135deg, color-mix(in oklab, var(--ns-accent) 22%, transparent), color-mix(in oklab, var(--ns-accent-2) 22%, transparent)),
-    color-mix(in oklab, var(--color-fd-background) 85%, transparent);
-  backdrop-filter: blur(10px);
+    linear-gradient(135deg, color-mix(in oklab, var(--ns-accent) 22%, transparent), color-mix(in oklab, var(--ns-accent-2) 18%, transparent)),
+    color-mix(in oklab, var(--color-fd-background) 45%, transparent);
+  backdrop-filter: blur(16px) saturate(1.6);
   color: var(--ns-accent);
-  box-shadow: 0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 18%, transparent),
+    0 0.5rem 1.5rem -0.5rem rgb(0 0 0 / 0.35);
   transition: transform 0.2s;
 }
 
@@ -1754,11 +2127,16 @@ html > body[data-scroll-locked] {
   gap: 0.875rem;
   width: 15.5rem;
   padding: 1rem;
-  border: 1px solid var(--color-fd-border);
-  border-radius: 1rem;
-  background: color-mix(in oklab, var(--color-fd-popover) 92%, transparent);
-  backdrop-filter: blur(12px);
-  box-shadow: 0 1rem 2.5rem -1rem rgb(0 0 0 / 0.4);
+  /* frosted glass: the page shows through, blurred */
+  border: 1px solid color-mix(in oklab, var(--color-fd-foreground) 12%, transparent);
+  border-radius: 1.25rem;
+  background:
+    linear-gradient(160deg, color-mix(in oklab, var(--ns-accent) 10%, transparent), transparent 55%),
+    color-mix(in oklab, var(--color-fd-popover) 55%, transparent);
+  backdrop-filter: blur(24px) saturate(1.6);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 14%, transparent),
+    0 1.25rem 3rem -1rem rgb(0 0 0 / 0.45);
 }
 
 .ns-picker-head {
@@ -1849,7 +2227,8 @@ html > body[data-scroll-locked] {
 }
 
 /* ── Glossary ───────────────────────────────────────────────────────── */
-/* <Glossary terms={…} />: sticky A–Z bar + filter, terms grouped by letter */
+/* <Glossary terms={…} />: a sticky filter + A–Z bar, then each letter: a serif
+   capital over a thin line, and its entries as split rows (headword | definition). */
 
 .ns-glossary {
   display: flex;
@@ -1860,18 +2239,20 @@ html > body[data-scroll-locked] {
 
 .ns-glossary-bar {
   position: sticky;
-  top: 3.5rem; /* below the header */
+  /* below the header (and Fumadocs' "On this page" bar when it shows), with a gap */
+  top: calc(var(--fd-docs-row-3, 3.5rem) + 0.75rem);
   z-index: 5;
   display: flex;
   flex-direction: column;
   gap: 0.75rem;
   margin-inline: -0.75rem;
   padding: 0.75rem;
-  border: 1px solid var(--color-fd-border);
-  border-radius: 0.875rem;
-  /* nearly solid: terms scrolling underneath must not show through the letters */
-  background: color-mix(in oklab, var(--color-fd-background) 94%, transparent);
-  backdrop-filter: blur(16px);
+  border: 1px solid color-mix(in oklab, var(--color-fd-foreground) 10%, transparent);
+  border-radius: 1rem;
+  /* solid, with a light accent wash: terms scrolling underneath never show through */
+  background:
+    linear-gradient(160deg, color-mix(in oklab, var(--ns-accent) 8%, transparent), transparent 55%),
+    var(--color-fd-background);
   box-shadow: 0 8px 24px -12px rgb(0 0 0 / 0.5);
 }
 
@@ -1881,7 +2262,7 @@ html > body[data-scroll-locked] {
   gap: 0.5rem;
   padding: 0 0.75rem;
   height: 2.5rem;
-  border-radius: 0.5rem;
+  border-radius: 0.75rem;
   border: 1px solid var(--color-fd-border);
   background: color-mix(in oklab, var(--color-fd-secondary) 50%, transparent);
   color: var(--color-fd-muted-foreground);
@@ -1922,7 +2303,7 @@ html > body[data-scroll-locked] {
   place-items: center;
   width: 1.875rem;
   height: 1.875rem;
-  border-radius: 0.375rem;
+  border-radius: 9999px;
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
   font-weight: 500;
@@ -1945,49 +2326,75 @@ html > body[data-scroll-locked] {
 }
 
 .ns-glossary-section {
-  display: grid;
-  grid-template-columns: 3rem 1fr;
-  gap: 1rem;
-  scroll-margin-top: 13rem; /* header + sticky letter bar */
-}
-
-.ns-glossary-letter {
-  position: sticky;
-  top: 13rem;
-  align-self: start;
-  font-size: 2rem;
-  font-weight: 700;
-  line-height: 1;
-  color: var(--ns-accent);
-}
-
-.ns-glossary-terms {
   display: flex;
   flex-direction: column;
-  border-top: 1px solid var(--color-fd-border);
+  gap: 1rem;
+  scroll-margin-top: calc(var(--fd-docs-row-3, 3.5rem) + 10.25rem); /* header + gap + sticky bar */
+}
+
+/* the letter: a large serif capital in an accent gradient, over a thin plain line */
+.ns-glossary-letter {
+  margin: 0;
+  padding-bottom: 0.5rem;
+  border-bottom: 1px solid var(--color-fd-border);
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-size: 2.75rem;
+  font-weight: 700;
+  line-height: 1;
+  background: linear-gradient(135deg, var(--ns-accent), var(--ns-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+/*
+ * The entries: one per full-width row, the headword (serif) in a left column and
+ * its definition and link on the right, a faint line between rows. A row lights
+ * up with the accent on hover.
+ */
+.ns-glossary-terms {
+  margin: 0;
 }
 
 .ns-glossary-term {
   display: grid;
-  grid-template-columns: minmax(8rem, 11rem) 1fr;
-  gap: 0.25rem 1.5rem;
-  padding: 1rem 0;
-  border-bottom: 1px solid var(--color-fd-border);
-  scroll-margin-top: 13rem;
+  grid-template-columns: minmax(9rem, 13rem) 1fr;
+  gap: 0.25rem 2rem;
+  padding: 1.125rem 0.75rem;
+  border-bottom: 1px solid color-mix(in oklab, var(--color-fd-foreground) 8%, transparent);
+  line-height: 1.6;
+  scroll-margin-top: calc(var(--fd-docs-row-3, 3.5rem) + 10.25rem);
+  transition: background-color 0.15s;
+}
+
+.ns-glossary-term:hover {
+  background: linear-gradient(to right, color-mix(in oklab, var(--ns-accent) 9%, transparent), transparent 80%);
 }
 
 .ns-glossary-term dt {
-  font-weight: 600;
+  font-family: ui-serif, Georgia, 'Times New Roman', serif;
+  font-size: 1.125rem;
+  font-weight: 700;
   color: var(--color-fd-foreground);
+  transition: color 0.15s;
+}
+
+.ns-glossary-term:hover dt {
+  color: var(--ns-accent);
 }
 
 .ns-glossary-term dd {
   display: flex;
   flex-direction: column;
   align-items: flex-start;
-  gap: 0.375rem;
-  line-height: 1.6;
+  gap: 0.5rem;
+  margin: 0;
+  font-size: 0.9375rem;
   color: var(--color-fd-muted-foreground);
+}
+
+.ns-glossary-term dd p {
+  margin: 0;
 }
 
 .ns-glossary-link {
@@ -2016,16 +2423,11 @@ html > body[data-scroll-locked] {
 }
 
 @media (max-width: 639px) {
-  .ns-glossary-section {
-    grid-template-columns: 1fr;
-    gap: 0.5rem;
-  }
-
   .ns-glossary-letter {
-    position: static;
-    font-size: 1.5rem;
+    font-size: 2.25rem;
   }
 
+  /* phones: the headword above its definition */
   .ns-glossary-term {
     grid-template-columns: 1fr;
   }

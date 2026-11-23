@@ -189,7 +189,15 @@ export function NotesHome({
           </SectionHead>
           <div className="ns-home-cards" data-count={Math.min(groups.length, 4)}>
             {groups.map((group, i) => (
-              <SectionCard key={i} group={group} index={i} text={text} language={language} />
+              <SectionCard
+                key={i}
+                group={group}
+                index={i}
+                // bento: with three sections the first is wide, with four the first and last
+                wide={groups.length >= 3 && (i === 0 || (groups.length === 4 && i === 3))}
+                text={text}
+                language={language}
+              />
             ))}
           </div>
         </section>
@@ -300,42 +308,23 @@ function StackStrip({ items, label }: { items: StackItem[]; label: string }) {
 function SectionCard({
   group,
   index,
+  wide,
   text,
   language,
 }: {
   group: HomeGroup;
   index: number;
+  /** spans two columns, with its pages in two columns */
+  wide: boolean;
   text: NotesText;
   language: string;
 }) {
   const first = group.pages[0];
-  const items = repeat(group.pages, 6);
-  const more = group.pages.length - 3;
-
-  const list = (copy: boolean) => (
-    <ul className="ns-marquee-group" aria-hidden={copy || undefined}>
-      {items.map((page, i) => (
-        <li key={i}>
-          <Link href={page.url} className="ns-page-chip" tabIndex={copy || i >= group.pages.length ? -1 : undefined}>
-            <b>{page.name}</b>
-            {page.description && <span>{page.description}</span>}
-          </Link>
-        </li>
-      ))}
-    </ul>
-  );
+  const shown = group.pages.slice(0, wide ? 6 : 4);
+  const more = group.pages.length - shown.length;
 
   return (
-    <article className="ns-card ns-reveal" style={vars({ '--i': index })}>
-      <div
-        className="ns-card-visual ns-marquee"
-        data-vertical
-        data-reverse={index % 2 === 1 || undefined}
-        style={vars({ '--ns-duration': `${items.length * 3.5}s` })}
-      >
-        {list(false)}
-        {list(true)}
-      </div>
+    <article className="ns-card ns-reveal" data-wide={wide || undefined} style={vars({ '--i': index })}>
       <div className="ns-card-body">
         <div className="ns-card-head">
           <span className="ns-card-icon" data-number={group.icon ? undefined : true}>
@@ -344,23 +333,29 @@ function SectionCard({
           <h3 className="ns-card-title">{group.name}</h3>
           <span className="ns-card-count">{plural(language, group.pages.length, text.pageCount)}</span>
         </div>
-        <p className="ns-card-text">
-          {group.pages.slice(0, 3).map((page, i) => (
-            <span key={i}>
-              {i > 0 && text.listSeparator}
-              {page.name}
-            </span>
+        {/* The section's first pages, ready to open: still until hovered */}
+        <ol className="ns-card-pages">
+          {shown.map((page, i) => (
+            <li key={i}>
+              <Link href={page.url} className="ns-card-page">
+                <span className="ns-card-page-number">{String(i + 1).padStart(2, '0')}</span>
+                <span className="ns-card-page-text">
+                  <b>{page.name}</b>
+                  {page.description && <small>{page.description}</small>}
+                </span>
+                <ArrowRight aria-hidden />
+              </Link>
+            </li>
           ))}
-          {more > 0 && fill(text.andMore, { n: more })}
-          {text.listEnd}
-        </p>
-        {first && (
-          <Link href={first.url} className="ns-card-start">
-            {fillNodes(text.startWith, { page: first.name })}
-            <ArrowRight aria-hidden />
-          </Link>
-        )}
+        </ol>
+        {more > 0 && <p className="ns-card-more">{fill(text.andMore, { n: more }).replace(/^[\s,，、]+/, '')}</p>}
       </div>
+      {first && (
+        <Link href={first.url} className="ns-card-start">
+          {fillNodes(text.startWith, { page: first.name })}
+          <ArrowRight aria-hidden />
+        </Link>
+      )}
     </article>
   );
 }
