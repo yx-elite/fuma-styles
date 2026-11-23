@@ -1,0 +1,117 @@
+---
+title: Installation
+description: Create a Fumadocs app, add the theme, and start writing.
+icon: Download
+---
+
+<Callout type="warn" title="In development">
+`@yx-elite/fuma-styles` and its `init` command are not published yet. The steps below are how installation will work in the first release.
+</Callout>
+
+## Requirements
+
+- [Node.js](https://nodejs.org) 20.9 or later (Next.js 16 needs it).
+- npm, which comes with Node.js.
+- Git, if you want *Last updated* dates on your pages.
+
+## Install
+
+<Steps>
+<Step>
+
+### Create a Fumadocs app
+
+```bash
+npm create fumadocs-app@latest my-notes
+```
+
+When asked, choose **Next.js** as the framework and **Fumadocs MDX** as the content source.
+
+</Step>
+<Step>
+
+### Add the theme
+
+```bash
+cd my-notes
+npm install @yx-elite/fuma-styles
+```
+
+</Step>
+<Step>
+
+### Apply it
+
+```bash
+npx fuma-styles init
+```
+
+This creates `site.config.ts` and points the app's files at the theme. See [what init changes](#what-init-changes).
+
+</Step>
+<Step>
+
+### Start the site
+
+```bash
+npm run dev
+```
+
+Open [localhost:3000](http://localhost:3000). Then edit `site.config.ts` with your notes' name, links and accent: see [Configuration](/docs/configuration).
+
+</Step>
+</Steps>
+
+## What init changes
+
+`init` only touches files that Next.js and Fumadocs need to exist in your app. Each one becomes a few lines that call the theme, so later versions reach your site through `npm update`:
+
+<Files>
+  <File name="site.config.ts" />
+  <Folder name="app" defaultOpen>
+    <File name="global.css" />
+    <File name="layout.tsx" />
+    <Folder name="(home)" defaultOpen>
+      <File name="layout.tsx" />
+      <File name="page.tsx" />
+    </Folder>
+    <Folder name="docs" defaultOpen>
+      <File name="layout.tsx" />
+      <File name="[[...slug]]/page.tsx" />
+    </Folder>
+  </Folder>
+  <Folder name="lib" defaultOpen>
+    <File name="source.ts" />
+  </Folder>
+  <File name="next.config.mjs" />
+</Files>
+
+| File | After `init` |
+| --- | --- |
+| `site.config.ts` | Your site's settings. The only code file you edit. |
+| `app/global.css` | Imports Tailwind CSS and `@yx-elite/fuma-styles/theme.css`. |
+| `app/layout.tsx` | Fonts, the accent from your config, page transitions. |
+| `app/(home)/…` | The landing page, built from your content. |
+| `app/docs/…` | The notes layout and page. |
+| `lib/source.ts` | Your content sources: MDX, an Obsidian vault, or both. |
+| `next.config.mjs` | Static export settings for hosting without a server. |
+
+Your notes in `content/docs/` are never changed.
+
+## Adding an Obsidian vault
+
+To publish an Obsidian vault as well as, or instead of, MDX pages, install Fumadocs' Obsidian integration:
+
+```bash
+npm install fumadocs-obsidian
+```
+
+Then see [Writing notes](/docs/writing-notes#an-obsidian-vault).
+
+## Updating
+
+```bash
+npm update @yx-elite/fuma-styles
+```
+
+Changes are listed in the changelog. A release that needs you to edit a file says so, with the exact edit.

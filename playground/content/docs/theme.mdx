@@ -1,0 +1,54 @@
+---
+title: Theme and accent
+description: Change the accent colour, and fine-tune the glow, grid and widths with CSS variables.
+icon: Palette
+---
+
+## Accent colour
+
+One colour drives the whole look: links, active items, the glow, the border light, the banner, the logo and the landing page. Set it in `site.config.ts`:
+
+```ts title="site.config.ts"
+accent: { light: '#7c3aed', dark: '#c4b5fd' },
+```
+
+The theme turns the accent's hue by 50° to make a second tone, `--fs-accent-2`, and runs gradients from one to the other. Browsers that cannot compute it use the accent for both.
+
+<Callout type="idea" title="Try it here">
+The palette button in the corner of this site applies any accent to every page at once. It only changes your browser; the site's own accent still comes from its config.
+</Callout>
+
+## CSS variables
+
+For finer changes, override these variables in `app/global.css`, after the theme's import:
+
+```css title="app/global.css"
+@import 'tailwindcss';
+@import '@yx-elite/fuma-styles/theme.css';
+
+:root {
+  --fs-glow-strength: 8%;
+}
+```
+
+| Variable | What it changes | Default |
+| --- | --- | --- |
+| `--fs-accent` | The accent colour (set by `site.config.ts`) | Blue |
+| `--fs-accent-2` | The second tone for gradients | Accent, hue +50° |
+| `--fs-glow-strength` | Glow at the top of each page | `14%` |
+| `--fs-glow-fixed-strength` | Glow that stays at the top while scrolling | `5%` light, `7%` dark |
+| `--fs-grid-opacity` | Background grid | `1` light, `0.8` dark |
+| `--fs-header-tint` | Header background once scrolled | `45%` |
+| `--fs-sidebar-width` | Sidebar and *On this page* width | `286px` |
+| `--fs-content-width` | Width of the text column | `768px` |
+| `--fs-home-width` | Width of the landing page and its header | `72rem` |
+
+Set a strength to `0%` to turn that effect off.
+
+## Light and dark mode
+
+Every part of the theme works in both modes, and readers switch with the toggle in the header. Variables can differ per mode: set them under `:root` for light and `.dark` for dark.
+
+## Fonts
+
+The theme uses [Geist](https://vercel.com/font) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code, the same as fumadocs.dev. They load through `next/font` as `--font-sans` and `--font-mono`; set those to use other fonts.

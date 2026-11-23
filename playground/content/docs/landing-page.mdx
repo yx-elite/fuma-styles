@@ -1,0 +1,47 @@
+---
+title: Landing page
+description: What the landing page shows, where its content comes from, and how to change it.
+icon: LayoutTemplate
+---
+
+The landing page is built from your notes and `site.config.ts`, so a new site has a complete one with nothing to write. As notes are added, it updates itself.
+
+## What it shows
+
+| Part | Comes from |
+| --- | --- |
+| Badge, title and description | `tag`, `name` and `description` in the config |
+| Page count, section count, last update | Your notes, and their latest git commit |
+| Docs preview | A live miniature of the docs, drawn from the sidebar, in the current theme and accent |
+| Built with | The libraries every site runs on |
+| What's inside | One card per sidebar section, listing its pages |
+| Get started | `start` in the config |
+| Search | Opens the site search |
+
+Moving from the landing page into the docs, and back, is animated: the header pieces glide to their places and the content flows out and in.
+
+## Get started
+
+By default, the "Get started" section shows how to run the notes on your own machine: clone the repository, install, and run. Set `start` to show your own steps, or `false` to hide it:
+
+```ts title="site.config.ts"
+start: {
+  title: 'Run the notes on your machine',
+  text: 'Three commands, and you can read the notes offline.',
+  steps: [
+    { title: 'Clone', text: 'Get a copy from GitHub.', command: 'git clone https://github.com/you/notes.git' },
+    { title: 'Install', text: 'Install the packages.', command: 'cd notes && npm install' },
+    { title: 'Run', text: 'Open localhost:3000.', command: 'npm run dev' },
+  ],
+},
+```
+
+Each step is shown in the list, and its command is typed into the terminal beside it.
+
+## Sections
+
+The "What's inside" cards follow the section titles in your sidebar (`---Title---` entries in `meta.json`). Rename or reorder sections there and the cards follow.
+
+## Your own landing page
+
+To replace it, write your own `app/(home)/page.tsx`. The header and the page transitions keep working.

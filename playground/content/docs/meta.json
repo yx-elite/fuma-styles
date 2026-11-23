@@ -1,10 +1,14 @@
 {
   "pages": [
-    "---Markdown---",
-    "...markdown",
-    "---Components---",
-    "...components",
-    "---Study notes---",
-    "sample-notes"
+    "---Getting started---",
+    "index",
+    "installation",
+    "configuration",
+    "writing-notes",
+    "---Guides---",
+    "theme",
+    "landing-page",
+    "deployment",
+    "...showcase"
   ]
 }

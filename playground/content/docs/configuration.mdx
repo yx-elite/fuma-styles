@@ -1,0 +1,89 @@
+---
+title: Configuration
+description: Every option in site.config.ts, the one file you edit to make the site yours.
+icon: Settings2
+---
+
+Everything that differs between notes sites lives in `site.config.ts` at the root of your app. The theme reads it for the header, sidebar, landing page and accent colour.
+
+```ts title="site.config.ts"
+import { defineSiteConfig } from '@yx-elite/fuma-styles';
+
+export default defineSiteConfig({
+  name: 'AWS SAA-C03 Notes',
+  author: 'your-name',
+  tag: 'SAA-C03',
+  description: 'Study notes for the AWS Solutions Architect Associate exam.',
+  repo: 'your-name/aws-saa-notes',
+  accent: { light: '#d97706', dark: '#fcd34d' },
+  links: [
+    { text: 'Home', url: '/docs', icon: 'House' },
+    { text: 'Glossary', url: '/docs/glossary', icon: 'BookA' },
+  ],
+});
+```
+
+## Options
+
+<TypeTable
+  type={{
+    name: {
+      description: 'The notes name. Shown in the header, the sidebar banner and the landing page.',
+      type: 'string',
+      required: true,
+    },
+    description: {
+      description: 'One sentence about the notes. Shown in the banner and under the landing page title.',
+      type: 'string',
+      required: true,
+    },
+    repo: {
+      description: 'The GitHub repository, as owner/name. Used for the GitHub links.',
+      type: 'string',
+      required: true,
+    },
+    author: {
+      description: 'Shown in the landing page footer.',
+      type: 'string',
+    },
+    tag: {
+      description: 'A short badge next to the name, such as an exam code.',
+      type: 'string',
+    },
+    branch: {
+      description: 'The branch the notes live on, for links to the source of a page.',
+      type: 'string',
+      default: "'main'",
+    },
+    accent: {
+      description: 'The accent colour for each mode. Links, active items, the glow, the banner and the logo follow it.',
+      type: '{ light: string; dark: string }',
+      default: 'Blue',
+    },
+    links: {
+      description: 'Quick links under the sidebar banner. icon is a Lucide icon name, such as House or BookA.',
+      type: '{ text: string; url: string; icon?: string }[]',
+    },
+    bannerLink: {
+      description: 'The button in the sidebar banner.',
+      type: '{ label: string; href: string }',
+      default: 'View on GitHub',
+    },
+    start: {
+      description: 'The "Get started" section of the landing page. Leave it out to show how to run the repo; false hides it.',
+      type: 'false | StartSection',
+    },
+  }}
+/>
+
+## Accent colours
+
+Pick a deeper shade for light mode and a lighter one for dark mode, so text in the accent colour stays readable on both backgrounds. The theme makes a second tone from it for gradients. Try colours live with the palette button in the corner of this site, then copy the pair you like. More in [Theme and accent](/docs/theme).
+
+## Quick links
+
+Quick links stay fixed under the sidebar banner while the page list scrolls. Use them for the two or three pages readers open most, such as a glossary or an exam overview. Icons come from [Lucide](https://lucide.dev/icons).
+
+## Sidebar order and titles
+
+The order of pages and the section titles in the sidebar come from `meta.json` files next to your notes, and each page's title, description and icon from its frontmatter. Both are standard Fumadocs: see [Organizing pages](https://fumadocs.dev/docs/next/page-conventions).

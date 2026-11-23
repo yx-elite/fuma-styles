@@ -1,0 +1,69 @@
+---
+title: Writing notes
+description: Where your notes go, in MDX or in an Obsidian vault, and where to learn each format.
+icon: PenLine
+---
+
+The theme styles whatever Fumadocs renders, so you write notes the normal Fumadocs way. A site can use either source, or both side by side in one sidebar.
+
+## MDX pages
+
+Put `.mdx` (or `.md`) files in `content/docs/`. MDX is Markdown that can also use components, such as tabs, steps and cards.
+
+<Files>
+  <Folder name="content/docs" defaultOpen>
+    <File name="index.mdx" />
+    <File name="meta.json" />
+    <Folder name="networking" defaultOpen>
+      <File name="vpc.mdx" />
+      <File name="route-53.mdx" />
+    </Folder>
+  </Folder>
+</Files>
+
+Each page starts with frontmatter:
+
+```md title="content/docs/networking/vpc.mdx"
+---
+title: VPC
+description: Private networks in AWS, subnets and routing.
+icon: Network
+---
+
+Your note starts here.
+```
+
+To learn the syntax, see the Fumadocs guide to [writing pages](https://fumadocs.dev/docs/next/markdown). Everything it shows is styled by the theme: see the [Showcase](/docs/showcase/typography).
+
+## An Obsidian vault
+
+Keep writing in [Obsidian](https://obsidian.md), and publish the vault as it is. Wikilinks, image embeds, callouts, block IDs and comments are supported through Fumadocs' official [Obsidian integration](https://fumadocs.dev/docs/next/integrations/content/obsidian).
+
+1. Install it: `npm install fumadocs-obsidian`.
+2. Put the vault (or a copy of it) in `public/vault/`, so its images are served too.
+3. Point the source at it in `lib/source.ts`; `npx fuma-styles init` can do this for you.
+
+Notes keep their Obsidian file names, and get clean URLs: `Block IDs and comments.md` is served at `/docs/…/block-ids-and-comments`.
+
+<Callout type="info" title="Sync with git, not iCloud">
+Keep the vault in the site's Git repository. Commit and push to publish; every change is kept in the history, and the *Last updated* date of each page comes from it.
+</Callout>
+
+To learn Obsidian's syntax, see [Obsidian Help](https://help.obsidian.md). See how the theme shows it on [Obsidian notes](/docs/showcase/obsidian-notes).
+
+## Glossary
+
+The glossary page reads a list of terms from `content/glossary.json`:
+
+```json title="content/glossary.json"
+[
+  {
+    "term": "Subnet",
+    "definition": "A range of addresses inside a VPC.",
+    "href": "/docs/networking/vpc#subnets",
+    "label": "VPC"
+  }
+]
+```
+
+`href` and `label` are optional: they add a link to the note that explains the term. See it on the [Glossary](/docs/showcase/glossary) page.

@@ -1,34 +1,41 @@
 ---
-title: Playground
-description: Sample pages with every Markdown element and Fumadocs component, for styling @yx-elite/fuma-styles.
+title: Introduction
+description: A ready-made theme for study-notes sites built with Fumadocs. Install it once, and every notes site looks and works the same.
 icon: House
 ---
 
-This site holds no real notes. Every page exists to show one group of elements, so each one can be styled and checked in light and dark mode.
+**Fuma Styles** (`@yx-elite/fuma-styles`) is a theme for [Fumadocs](https://fumadocs.dev). It turns a plain Fumadocs app into a notes site with a designed look: header, sidebar, landing page, page transitions and styled content. Your notes stay plain Markdown, MDX or an Obsidian vault.
 
-## Markdown
+<Callout type="warn" title="In development">
+The package is not published yet. These pages describe the first release, and this site is its live demo.
+</Callout>
+
+## Why
+
+Writing notes is the point; setting up a site for them should not be. Fuma Styles keeps the setup to one install and one config file:
+
+- **One config file.** Name, links, accent colour and landing page all come from `site.config.ts`.
+- **Updates through npm.** Design and fixes ship in the package, so every notes site gets them with `npm update`.
+- **Static and cheap to host.** Every site is a static export: plain files on S3 or any static host, no server.
+- **Built on Fumadocs.** Search, the sidebar, MDX and Obsidian support come from Fumadocs itself; the theme only adds the design and a few notes features.
+
+## Features
+
+| Feature | What you get |
+| --- | --- |
+| Design | Black theme, one accent colour with a matching second tone, background grid and glow, Geist and JetBrains Mono fonts |
+| Layout | Full-width notes layout, header on top, sidebar banner and quick links, pinned current page, *On this page* list |
+| Landing page | Built from your content: a live preview of the docs, section cards, a "Get started" section |
+| Motion | Smooth page transitions between the landing page and the docs, tuned for Safari |
+| Notes features | Glossary page, last-updated dates from git, static search |
+| Content | MDX pages, an Obsidian vault, or both in one site |
+| Devices | Phones, tablets (sidebar as a side panel) and desktops, in light and dark mode |
+
+## Next steps
 
 <Cards>
-  <Card title="Typography" href="/docs/markdown/typography" description="Headings, paragraphs, emphasis, inline code, keyboard keys and rules." />
-  <Card title="Lists" href="/docs/markdown/lists" description="Bulleted, numbered, nested and task lists, short and long items." />
-  <Card title="Links and images" href="/docs/markdown/links-and-images" description="Internal and external links, footnotes, images and captions." />
-  <Card title="Code" href="/docs/markdown/code" description="Inline code, code blocks, titles, highlights, diffs and code tabs." />
-  <Card title="Tables" href="/docs/markdown/tables" description="Simple, aligned, wide and content-heavy tables." />
-  <Card title="Quotes and callouts" href="/docs/markdown/quotes-and-callouts" description="Blockquotes, callout types, GitHub alerts and collapsible sections." />
+  <Card title="Installation" href="/docs/installation" description="Create a Fumadocs app and add the theme." />
+  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
+  <Card title="Theme and accent" href="/docs/theme" description="Change the accent colour and fine-tune the look." />
+  <Card title="Showcase" href="/docs/showcase/typography" description="Every element as the theme styles it." />
 </Cards>
-
-## Components
-
-<Cards>
-  <Card title="Cards" href="/docs/components/cards" description="Card grids with and without descriptions." />
-  <Card title="Tabs and steps" href="/docs/components/tabs-and-steps" description="Tabbed content and numbered step-by-step guides." />
-  <Card title="Accordions and files" href="/docs/components/accordions-and-files" description="Collapsible panels and file trees." />
-  <Card title="Type table" href="/docs/components/type-table" description="Property reference tables with types and defaults." />
-</Cards>
-
-## Study notes
-
-Two longer pages written like real notes, for judging reading comfort, spacing and the *On this page* list:
-
-- [Caching basics](/docs/sample-notes/caching-basics)
-- [DNS basics](/docs/sample-notes/dns-basics)
