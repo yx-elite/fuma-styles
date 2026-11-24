@@ -17,6 +17,7 @@ The landing page is built from your notes and `site.config.ts`, so a new site ha
 | What's inside | One card per sidebar section, listing its pages |
 | Get started | `start` in the config |
 | Search | Opens the site search |
+| Footer | `name`, `description`, `repo` and `author`; the sections again, and your `links` |
 
 Moving from the landing page into the docs, and back, is animated: the header pieces glide to their places and the content flows out and in.
 
@@ -36,12 +37,19 @@ start: {
 },
 ```
 
-Each step is shown in the list, and its command is typed into the terminal beside it.
+Each step is shown in the list, and its command is typed into the terminal beside it. After the last command, the terminal shows *Ready on http://localhost:3000*; set `done` in `start` to change that line.
 
 ## Sections
 
-The "What's inside" cards follow the section titles in your sidebar (`---Title---` entries in `meta.json`). Rename or reorder sections there and the cards follow.
+The "What's inside" cards, and the *Notes* column of the footer, follow your sidebar (`content/docs/meta.json`). Rename or reorder it there and the landing page follows:
+
+- Each section heading (`---Title---`) starts a card, with the pages under it.
+- A folder right after a heading belongs to that card. Any other folder gets a card of its own, named after the folder.
+- Pages before the first heading go on a card called *Start here*.
+- *Start reading* opens the first page of the first card, usually `content/docs/index.mdx`.
+
+Up to four sections make a grid with the first card wide; more simply wrap.
 
 ## Your own landing page
 
-To replace it, write your own `app/(home)/page.tsx`. The header and the page transitions keep working.
+To replace it, write your own `app/(home)/page.tsx`. The header and the page transitions keep working. To change only the wording, such as *Start reading* or *What's inside*, set `text` in `site.config.ts`: see [Languages](/docs/languages#built-in-text) for how.

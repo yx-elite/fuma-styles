@@ -88,7 +88,12 @@ git commit -m "My notes"
 <Files>
   <File name="site.config.ts" />
   <Folder name="content" defaultOpen>
-    <Folder name="docs" />
+    <Folder name="docs" defaultOpen>
+      <File name="meta.json" />
+      <File name="index.mdx" />
+      <Folder name="example" />
+      <File name="glossary.mdx" />
+    </Folder>
     <File name="glossary.json" />
   </Folder>
   <Folder name="app" defaultOpen>
@@ -109,7 +114,13 @@ git commit -m "My notes"
     <Folder name="og/docs/[...slug]">
       <File name="route.tsx" />
     </Folder>
-    <Folder name="llms.txt, llms-full.txt, llms.mdx">
+    <Folder name="llms.txt">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="llms-full.txt">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="llms.mdx/[...path]">
       <File name="route.ts" />
     </Folder>
   </Folder>
@@ -117,13 +128,16 @@ git commit -m "My notes"
     <File name="source.ts" />
   </Folder>
   <File name="next.config.mjs" />
+  <File name="postcss.config.mjs" />
+  <File name="tsconfig.json" />
   <File name="package.json" />
+  <File name="README.md" />
 </Files>
 
 | 文件 | 作用 | 需要编辑吗？ |
 | --- | --- | --- |
 | `site.config.ts` | 网站的名称、链接、颜色和语言 | **需要** |
-| `content/docs/` | 你的笔记，以及决定侧边栏顺序的 `meta.json` | **需要** |
+| `content/docs/` | 你的笔记，以及决定侧边栏顺序的 `meta.json`。`index.mdx` 是第一页，`example/` 是示例 | **需要** |
 | `content/glossary.json` | 术语表的术语 | **需要** |
 | `app/icon.svg` | 浏览器标签页图标 | 想换就换 |
 | `app/layout.tsx` | 字体，然后是 `NotesRoot`：强调色、搜索和页面过渡 | 不需要 |
@@ -135,6 +149,7 @@ git commit -m "My notes"
 | `app/llms*/` | 给 AI 助手的纯文本笔记，以及*复制 Markdown* | 不需要 |
 | `lib/source.ts` | 从 `content/docs/` 读取笔记 | 不需要 |
 | `next.config.mjs` | 静态导出设置，无需服务器即可托管 | 不需要 |
+| `postcss.config.mjs`、`tsconfig.json` | Tailwind CSS 和 TypeScript 设置 | 不需要 |
 
 ## 加进已有的 Fumadocs 应用
 
@@ -149,7 +164,7 @@ git commit -m "My notes"
 npm install @yx-elite/notestack
 ```
 
-你的应用需要 `fumadocs-core` 和 `fumadocs-ui` 16、`fumadocs-mdx`、`next` 16、`react` 19 和 Tailwind CSS 4。主题使用你应用里的这些包。
+你的应用需要 `fumadocs-core` 和 `fumadocs-ui` 16、`fumadocs-mdx`、`next` 16、`react` 19 和 Tailwind CSS 4。主题使用你应用里的这些包。和起始模板一样，`fumadocs-ui` 安装 `create-fumadocs-app` 默认的 Base UI 版本：在 `package.json` 中写 `"fumadocs-ui": "npm:@fumadocs/base-ui@16.19.7"`，代码里仍然从 `fumadocs-ui/…` 导入。
 
 </Step>
 <Step>
@@ -171,7 +186,7 @@ export default defineSiteConfig({
 
 ### 替换应用文件
 
-把每个文件换成下面的版本；如果应用里有 `components/`、`lib/shared.ts` 和 `app/(docs)`，删掉它们。
+把每个文件换成下面的版本。如果应用里有以下文件，删掉它们，主题会替代它们：`components/`、`lib/shared.ts`、`lib/layout.shared.tsx`、`app/(docs)/`、`mdx-components.tsx` 和 `source.config.ts`。下面的 `lib/source.ts` 会自己读取笔记，所以不再需要 `source.config.ts`。
 
 <Accordions>
 <Accordion title="app/global.css">

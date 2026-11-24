@@ -68,6 +68,20 @@ What changes for you:
 Turning `languages` on moves every page to a new URL. Links people saved to `/docs/…` stop working. If you might translate later, it's easiest to set it up before you share the site.
 </Callout>
 
+### If you've read Fumadocs' guide
+
+Fumadocs has its own [internationalization guide](https://fumadocs.dev/docs/next/internationalization). Notestack sets most of it up for you and works differently in a few places, because every notes site is a static site with no server. Skip these parts of the Fumadocs guide:
+
+| Fumadocs' guide says | In Notestack |
+| --- | --- |
+| Create `lib/i18n.ts` with `defineI18n()` | List `languages` in `site.config.ts`. `lib/source.ts` already passes `notesLanguages(site)` to Fumadocs |
+| Add `proxy.ts` (middleware) to send `/` to a language | Don't: a static site can't run it, and the build fails. `LanguageRedirect` in `app/(root)/page.tsx` does it in the browser |
+| Hide the default language from URLs (`hideLocale`) | Not possible without a server. Every URL starts with its language |
+| Name translations `page.zh.mdx`, next to the original | One folder per language: `content/docs/zh-CN/page.mdx`. The folder name must match the language in `languages` exactly |
+| Pass `i18n` and translations to `RootProvider` | `NotesRoot language={lang}` does it, with the theme's text and Fumadocs' text for that language |
+| Write the language into links | Write `/docs/…`: the theme adds the page's language |
+| Set up search per language | Already done: one index per language |
+
 ### Set it up
 
 These steps turn a site made with `npm create notestack` into a site with English and Simplified Chinese. Swap in your own languages.
@@ -303,3 +317,11 @@ import terms from '@/content/glossary.zh-CN.json';
 ```
 
 Links in the terms (`href`) stay `/docs/…`; the theme adds the language.
+
+### Add a language later
+
+Add it to `languages` and its text to `translations`, then create its folder, such as `content/docs/ja/`, with a `meta.json`. Pages you haven't translated show the default language's page until you do.
+
+### Known limit
+
+`llms.txt` and `llms-full.txt` list the pages of every language together.

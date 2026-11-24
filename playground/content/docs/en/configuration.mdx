@@ -29,17 +29,17 @@ export default defineSiteConfig({
 <TypeTable
   type={{
     name: {
-      description: 'The notes name. Shown in the header, the sidebar banner and the landing page.',
+      description: 'The notes name. Shown in the header, the sidebar banner, the landing page, the footer and the browser tab (Page · Name).',
       type: 'string',
       required: true,
     },
     description: {
-      description: 'One sentence about the notes. Shown in the banner and under the landing page title.',
+      description: 'One sentence about the notes. Shown in the banner, under the landing page title and in the footer, and used as the description search engines show.',
       type: 'string',
       required: true,
     },
     repo: {
-      description: 'The GitHub repository, as owner/name. Used for the GitHub links.',
+      description: 'The GitHub repository, as owner/name. Used for the GitHub icon in the header, the banner button, Open in GitHub on each page, the footer and the default Get started steps. The site works the same if the repository is private.',
       type: 'string',
       required: true,
     },
@@ -48,7 +48,7 @@ export default defineSiteConfig({
       type: 'string',
     },
     author: {
-      description: 'Shown in the landing page footer.',
+      description: 'Shown in the landing page footer: © 2026 author. Without it, the footer shows name.',
       type: 'string',
     },
     tag: {
@@ -61,12 +61,12 @@ export default defineSiteConfig({
       default: "'main'",
     },
     accent: {
-      description: 'The accent colour for each mode. Links, active items, the glow, the banner and the logo follow it.',
+      description: 'The accent colour for each mode, as any CSS colour. Links, active items, the glow, the banner and the logo follow it.',
       type: '{ light: string; dark: string }',
-      default: 'Blue',
+      default: "{ light: 'hsl(217 100% 58%)', dark: '#a9ceff' } (blue)",
     },
     links: {
-      description: 'Quick links under the sidebar banner. icon is a Lucide icon name, such as House or BookA.',
+      description: 'Quick links under the sidebar banner, also listed in the landing page footer. icon is a Lucide icon name, such as House or BookA.',
       type: '{ text: string; url: string; icon?: string }[]',
     },
     bannerLink: {
@@ -113,20 +113,7 @@ export default defineSiteConfig({
 });
 ```
 
-The theme's own text ships in English and Simplified Chinese. Fumadocs' text also comes in Traditional Chinese and Japanese. For any other language, or to change a single phrase, fill in `text`. Anything you leave out stays in English:
-
-```ts title="site.config.ts"
-export default defineSiteConfig({
-  // …
-  language: 'ms',
-  text: {
-    startReading: 'Mula membaca',
-    pageCount: { other: '{n} halaman' },
-  },
-});
-```
-
-`{n}`, `{date}` and other words in braces are filled in by the theme. A text that depends on a count takes one form per plural category of your language. English uses `one` and `other`, Chinese only `other`.
+The theme's own text ships in English and Simplified Chinese. For any other language, or to change a single phrase, fill in `text`: [Languages](/docs/languages#built-in-text) lists what's built in and how `text` works.
 
 ## Several languages
 
@@ -142,4 +129,61 @@ Quick links stay fixed under the sidebar banner while the page list scrolls. Use
 
 ## Sidebar order and titles
 
-The order of pages and the section titles in the sidebar come from `meta.json` files next to your notes, and each page's title, description and icon from its frontmatter. Both are standard Fumadocs: see [Organizing pages](https://fumadocs.dev/docs/next/page-conventions).
+The order of pages and the section titles in the sidebar come from `meta.json` files next to your notes, and each page's title, description and icon from its frontmatter. See [Writing notes](/docs/writing-notes#the-sidebar).
+
+## Logo and favicon
+
+The logo in the header and the footer is the Notestack mark, drawn in your accent colour. It can't be swapped for an image yet.
+
+The browser-tab icon is `app/icon.svg`. To use your own, replace that file with another SVG, or delete it and add `app/icon.png` (a square PNG, at least 64 by 64 pixels) or `app/favicon.ico`. Next.js picks up whichever is there.
+
+## Options in the app files
+
+A few options live in the files in `app/` rather than in `site.config.ts`, because they need code.
+
+### Your own components
+
+To use a component of your own in notes, write it in your site, then pass it to `createNotesPage` in `app/docs/[[...slug]]/page.tsx`:
+
+```tsx title="components/exam-tip.tsx"
+export function ExamTip({ children }: { children: React.ReactNode }) {
+  return <p className="rounded-lg border p-4">💡 {children}</p>;
+}
+```
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+import { createNotesPage } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+import { ExamTip } from '@/components/exam-tip';
+
+const docs = createNotesPage({ source, site, components: { ExamTip } });
+
+export default docs.Page;
+export const generateStaticParams = docs.generateStaticParams;
+export const generateMetadata = docs.generateMetadata;
+```
+
+Notes can then use `<ExamTip>…</ExamTip>` without importing it. A component with the same name as one of the theme's replaces it.
+
+### A site inside a bigger repository
+
+If the site isn't at the root of its repository, for example in a `site/` folder, *Open in GitHub* links need the folder. Pass it as `repoDir`:
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+const docs = createNotesPage({ source, site, repoDir: 'site' });
+```
+
+### Next.js options
+
+`withNotestack()` in `next.config.mjs` sets what a static site needs. Pass any other Next.js option to it:
+
+```js title="next.config.mjs"
+export default withMDX(
+  withNotestack({
+    env: { NEXT_PUBLIC_EXAM_DATE: '2027-03-01' },
+  }),
+);
+```
+
+It always keeps `output: 'export'`, `trailingSlash: true` and unoptimised images, which the hosting depends on. Don't set `basePath`: the site must be served from the root of a domain, or search stops working.

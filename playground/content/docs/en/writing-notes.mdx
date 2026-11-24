@@ -1,27 +1,31 @@
 ---
 title: Writing notes
-description: Where your notes go, how a page starts, and where to learn the syntax.
+description: Pages and folders, the sidebar order, frontmatter, links, components and images.
 icon: PenLine
 ---
 
-The theme styles whatever Fumadocs renders, so you write notes the normal Fumadocs way.
+Notes are Markdown files in `content/docs/`. The theme styles whatever Fumadocs renders, so anything in the Fumadocs guide to [writing pages](https://fumadocs.dev/docs/next/markdown) works here too.
 
-## MDX pages
+## Pages and folders
 
-Put `.mdx` (or `.md`) files in `content/docs/`. MDX is Markdown that can also use components, such as tabs, steps and cards.
+Each `.mdx` (or `.md`) file is one page, and its path is its address:
 
-<Files>
-  <Folder name="content/docs" defaultOpen>
-    <File name="index.mdx" />
-    <File name="meta.json" />
-    <Folder name="networking" defaultOpen>
-      <File name="vpc.mdx" />
-      <File name="route-53.mdx" />
-    </Folder>
-  </Folder>
-</Files>
+| File | Page |
+| --- | --- |
+| `content/docs/index.mdx` | `/docs` (the first page; *Start reading* opens it) |
+| `content/docs/networking.mdx` | `/docs/networking` |
+| `content/docs/networking/index.mdx` | `/docs/networking` (the folder's own page) |
+| `content/docs/networking/vpc.mdx` | `/docs/networking/vpc` |
 
-Each page starts with frontmatter:
+Use lowercase file names with hyphens (`route-53.mdx`): the name becomes the address. A folder groups pages under one heading in the sidebar.
+
+<Callout type="warn" title="Keep content/docs/index.mdx">
+The landing page's *Start reading* button and the `/docs` address open it. Without it, they show a "page not found".
+</Callout>
+
+## Frontmatter
+
+Every page starts with a few lines between `---`:
 
 ```md title="content/docs/networking/vpc.mdx"
 ---
@@ -33,19 +37,86 @@ icon: Network
 Your note starts here.
 ```
 
-To learn the syntax, see the Fumadocs guide to [writing pages](https://fumadocs.dev/docs/next/markdown). Everything it shows is styled by the theme: see the [Showcase](/docs/showcase/markdown#typography).
+| Field | Needed | What it does |
+| --- | --- | --- |
+| `title` | **Yes** | The page heading, the sidebar entry, the browser tab and the search result |
+| `description` | No | The line under the title, the summary in search and on the landing page, and the text of link previews |
+| `icon` | No | An icon for the sidebar: any [Lucide](https://lucide.dev/icons) icon name, such as `Network` or `Shield` |
+| `full` | No | `full: true` uses the whole width and hides *On this page*. For wide tables or diagrams |
 
-<Callout type="info" title="Keep your notes in git">
-Commit and push to publish. Every change is kept in the history, any computer gets the notes with `git pull`, and the *Last updated* date of each page comes from its latest commit.
+Don't repeat the title as a `# Heading` in the page: the theme already shows it. Start the note with `##` headings; they make up *On this page*.
+
+## The sidebar
+
+A `meta.json` file in a folder sets the order of its pages. The starter's looks like this:
+
+```json title="content/docs/meta.json"
+{
+  "pages": ["---Start here---", "index", "---Notes---", "...example", "...", "---Reference---", "glossary"]
+}
+```
+
+| Entry | What it does |
+| --- | --- |
+| `"index"`, `"glossary"` | A page or folder, by its file name without `.mdx` |
+| `"---Notes---"` | A section heading. On the landing page, each section becomes a card |
+| `"...example"` | Every page of the `example` folder, placed here without the folder around them |
+| `"..."` | Every page and folder not listed anywhere else, A to Z |
+| `"!drafts"` | Leaves `drafts` out of the sidebar |
+
+<Callout type="warn" title="A new page doesn't show up?">
+If a folder's `meta.json` lists its pages and has no `"..."`, pages you add later are left out. Add the page's name to `pages`, or keep `"..."` in the list.
 </Callout>
+
+Without a `meta.json`, a folder lists its pages A to Z. A folder's own `meta.json` can also name and style it:
+
+```json title="content/docs/networking/meta.json"
+{
+  "title": "Networking",
+  "icon": "Network",
+  "defaultOpen": true,
+  "pages": ["index", "vpc", "route-53", "..."]
+}
+```
+
+`defaultOpen` shows the folder expanded in the sidebar. More options are in Fumadocs' [page conventions](https://fumadocs.dev/docs/next/page-conventions).
+
+## Links
+
+Link to another note by its address, or by its file:
+
+```md
+See [subnets](/docs/networking/vpc#subnets).
+See [subnets](./vpc.mdx#subnets).
+```
+
+Every `##` and `###` heading gets an anchor from its text: `## Route tables` is `#route-tables`. Links to other websites open as usual. On a site with several languages, keep writing `/docs/…`: the theme adds the page's language.
+
+## Components
+
+Besides Markdown, notes can use these components without importing them:
+
+| Component | For |
+| --- | --- |
+| `<Callout>` | A tip, warning or note in a coloured box |
+| `<Steps>` and `<Step>` | Numbered steps |
+| `<Tabs>` and `<Tab>` | The same thing shown several ways, such as per operating system |
+| `<Accordions>` and `<Accordion>` | Sections that open on click |
+| `<Cards>` and `<Card>` | Links shown as cards |
+| `<Files>`, `<Folder>` and `<File>` | A file tree |
+| `<TypeTable>` | A table of options with types and defaults |
+| `<Glossary>` | The glossary list (see below) |
+
+Each one is shown, with its code, in the [Showcase](/docs/showcase/components). To add your own components, see [Your own components](/docs/configuration#your-own-components).
 
 ## Images and diagrams
 
-Put images in `public/` and link them from the root:
+There are two places for images:
 
-```md
-![The request path](/diagrams/request-path.svg)
-```
+- **Next to the note**, for an image only one note uses. Put `vpc.png` beside `vpc.mdx` and write `![A VPC with two subnets](./vpc.png)`.
+- **In `public/`**, for images several notes share. Create a `public` folder next to `content`, put the file in it (`public/diagrams/request-path.svg`) and link it from the root: `![The request path](/diagrams/request-path.svg)`.
+
+Readers can click any image to zoom in. Write the text in `![…]` for people who can't see the image: it's also what search engines read.
 
 An image with a transparent background can look wrong in one of the two modes, for example dark lines on the dark page. Make two versions and name them `name.light.svg` and `name.dark.svg`. Place both, one after the other. The theme shows only the one that matches the reader's mode:
 
@@ -58,7 +129,17 @@ The same works for `.png` and `.jpg` files. See it on the [Showcase](/docs/showc
 
 ## Glossary
 
-The glossary page reads a list of terms from `content/glossary.json`:
+The glossary is a normal page, `content/docs/glossary.mdx`, that shows the terms in `content/glossary.json`:
+
+```mdx title="content/docs/glossary.mdx"
+---
+title: Glossary
+---
+
+import terms from '@/content/glossary.json';
+
+<Glossary terms={terms} />
+```
 
 ```json title="content/glossary.json"
 [
@@ -71,4 +152,38 @@ The glossary page reads a list of terms from `content/glossary.json`:
 ]
 ```
 
-`href` and `label` are optional: they add a link to the note that explains the term. See it on the [Glossary](/docs/glossary) page.
+`href` and `label` are optional: they add a link to the note that explains the term. The page sorts the terms A to Z and adds a letter bar.
+
+To link to one term from a note, use `#term-` and the term in lowercase with hyphens: *Subnet* is `/docs/glossary#term-subnet`, and *Route table* is `/docs/glossary#term-route-table`. Try [Frontmatter](/docs/glossary#term-frontmatter) on this site.
+
+## Remove the sample
+
+A new site comes with a short sample. When you're ready to write your own notes:
+
+<Steps>
+<Step>
+
+### Delete the example folder
+
+Delete `content/docs/example/`, then remove `"...example"` from `content/docs/meta.json`.
+
+</Step>
+<Step>
+
+### Rewrite the first page
+
+Replace the text of `content/docs/index.mdx` with your own introduction. Keep the file.
+
+</Step>
+<Step>
+
+### Replace the glossary terms
+
+Put your own terms in `content/glossary.json`. Or, to drop the glossary, delete `content/docs/glossary.mdx` and `content/glossary.json`, and remove `"glossary"` from `meta.json` and from `links` in `site.config.ts`.
+
+</Step>
+</Steps>
+
+## Keep your notes in git
+
+Commit your notes and push them to GitHub. Every change is kept in the history, any computer gets the notes with `git pull`, and the *Last updated* date of each page comes from its latest commit: a page you haven't committed yet shows no date. Putting the site online is a separate step: see [Deployment](/docs/deployment).

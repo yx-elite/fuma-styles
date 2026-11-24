@@ -50,9 +50,12 @@ And its source folders:
 | `src/config/` | The `SiteConfig` type behind `site.config.ts` |
 | `src/layouts/` | The root layout, header, sidebar, banner, landing page and page transitions |
 | `src/routes/` | The docs page and the routes for search, share images and llms.txt |
+| `src/pages/` | The settings of each docs page: *On this page* and the *Last updated* line |
+| `src/source/` | Sidebar icons from frontmatter, and each page's last-updated date from git |
 | `src/components/` | Glossary, search dialog, copy button, accent picker |
 | `src/i18n/` | Every piece of the theme's text, in English and Chinese, and the language helpers |
 | `src/mdx.tsx` | The list of components available in notes |
+| `src/next.ts` | `withNotestack()`, the Next.js settings for a static site |
 
 The theme styles Fumadocs rather than replacing it: search, the sidebar, MDX and page structure come from Fumadocs, and the theme adds the design, the landing page and a few notes features on top.
 

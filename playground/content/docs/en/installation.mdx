@@ -52,7 +52,7 @@ Open `site.config.ts` and set your site's `name`, `description` and `repo`. Ever
 
 ### Write
 
-Add notes to `content/docs/`. The site comes with a short sample (a welcome page, an example topic and a glossary) that shows each feature once; delete it when you're ready. See [Writing notes](/docs/writing-notes).
+Add notes to `content/docs/`. The site comes with a short sample (a welcome page, an example topic and a glossary) that shows each feature once. When you're ready, [remove the sample](/docs/writing-notes#remove-the-sample). See [Writing notes](/docs/writing-notes).
 
 </Step>
 <Step>
@@ -88,7 +88,12 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
 <Files>
   <File name="site.config.ts" />
   <Folder name="content" defaultOpen>
-    <Folder name="docs" />
+    <Folder name="docs" defaultOpen>
+      <File name="meta.json" />
+      <File name="index.mdx" />
+      <Folder name="example" />
+      <File name="glossary.mdx" />
+    </Folder>
     <File name="glossary.json" />
   </Folder>
   <Folder name="app" defaultOpen>
@@ -109,7 +114,13 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
     <Folder name="og/docs/[...slug]">
       <File name="route.tsx" />
     </Folder>
-    <Folder name="llms.txt, llms-full.txt, llms.mdx">
+    <Folder name="llms.txt">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="llms-full.txt">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="llms.mdx/[...path]">
       <File name="route.ts" />
     </Folder>
   </Folder>
@@ -117,13 +128,16 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
     <File name="source.ts" />
   </Folder>
   <File name="next.config.mjs" />
+  <File name="postcss.config.mjs" />
+  <File name="tsconfig.json" />
   <File name="package.json" />
+  <File name="README.md" />
 </Files>
 
 | File | What it does | Edit it? |
 | --- | --- | --- |
 | `site.config.ts` | Your site's name, links, colour and languages | **Yes** |
-| `content/docs/` | Your notes, and `meta.json` files for the sidebar order | **Yes** |
+| `content/docs/` | Your notes, and `meta.json` files for the sidebar order. `index.mdx` is the first page; `example/` is the sample | **Yes** |
 | `content/glossary.json` | Your glossary terms | **Yes** |
 | `app/icon.svg` | The browser-tab icon | If you want your own |
 | `app/layout.tsx` | Fonts, then `NotesRoot`: the accent, search and page transitions | No |
@@ -135,6 +149,7 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
 | `app/llms*/` | Plain-text copies of the notes for AI assistants, and *Copy Markdown* | No |
 | `lib/source.ts` | Reads the notes from `content/docs/` | No |
 | `next.config.mjs` | Static export settings, for hosting without a server | No |
+| `postcss.config.mjs`, `tsconfig.json` | Tailwind CSS and TypeScript settings | No |
 
 ## Add to an existing Fumadocs app
 
@@ -149,7 +164,7 @@ If you already have a Fumadocs app (from `npm create fumadocs-app`, with Next.js
 npm install @yx-elite/notestack
 ```
 
-Your app needs `fumadocs-core` and `fumadocs-ui` 16, `fumadocs-mdx`, `next` 16, `react` 19 and Tailwind CSS 4. The theme uses your app's copies of them.
+Your app needs `fumadocs-core` and `fumadocs-ui` 16, `fumadocs-mdx`, `next` 16, `react` 19 and Tailwind CSS 4. The theme uses your app's copies of them. Like the starter, install `fumadocs-ui` as the Base UI build that `create-fumadocs-app` sets up: `"fumadocs-ui": "npm:@fumadocs/base-ui@16.19.7"` in `package.json`. Keep importing from `fumadocs-ui/…`.
 
 </Step>
 <Step>
@@ -171,7 +186,7 @@ export default defineSiteConfig({
 
 ### Replace the app files
 
-Replace each file with the version below, and delete `components/`, `lib/shared.ts` and `app/(docs)` if your app has them.
+Replace each file with the version below. Then delete these if your app has them, because the theme takes their place: `components/`, `lib/shared.ts`, `lib/layout.shared.tsx`, `app/(docs)/`, `mdx-components.tsx` and `source.config.ts`. `lib/source.ts` below reads the notes itself, so `source.config.ts` isn't needed.
 
 <Accordions>
 <Accordion title="app/global.css">

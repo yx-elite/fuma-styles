@@ -1,0 +1,125 @@
+---
+title: Troubleshooting
+description: Fixes for the problems you're most likely to hit while writing, building and publishing.
+icon: LifeBuoy
+---
+
+Each problem below starts with what you see. If yours isn't here, [open an issue](https://github.com/yx-elite/notestack/issues) with the full error and what you ran.
+
+## While writing
+
+<Accordions>
+<Accordion title="A new page doesn't show up in the sidebar">
+
+The folder's `meta.json` lists its pages, and the new one isn't in the list. Add its file name (without `.mdx`) to `pages`, or add `"..."`, which takes in every page not listed. See [The sidebar](/docs/writing-notes#the-sidebar).
+
+</Accordion>
+<Accordion title="An error stays on screen after you've fixed it, or after npm install">
+
+The dev server keeps a cache in `.next/` and sometimes misses changes, especially packages that `npm install` just added. Stop it with <kbd>Ctrl</kbd> + <kbd>C</kbd>, delete the cache and start again:
+
+```bash
+rm -rf .next && npm run dev
+```
+
+If `npm run build` works but `npm run dev` keeps showing the error, this is the cause.
+
+</Accordion>
+<Accordion title="npm run dev stops straight away with an error">
+
+Another dev server is already running for this site, maybe in a terminal you forgot about. Only one can run per folder. Find that terminal and stop it with <kbd>Ctrl</kbd> + <kbd>C</kbd>, or use the one that's running.
+
+</Accordion>
+<Accordion title="A page shows an MDX or syntax error">
+
+The error names the file and line. The usual causes:
+
+- A `<` or `{` in normal text. MDX reads them as the start of a component or code. Write `&lt;` and `\{`, or put the text in `` `backticks` ``.
+- A component that isn't closed: `<Callout>` needs `</Callout>`.
+- Frontmatter without a `title`, or with a `:` in a value. Put such values in quotes: `title: 'Route 53: DNS'`.
+
+</Accordion>
+<Accordion title="An image doesn't show">
+
+- An image in `public/` is linked from the root, without `public`: `/diagrams/a.svg` for `public/diagrams/a.svg`.
+- An image next to the note is linked with `./`: `./a.png`.
+- Check the capitals. Your computer may not care whether it's `Diagram.png` or `diagram.png`, but most hosts do, so the image breaks only once published.
+
+</Accordion>
+<Accordion title="A page has no Last updated date">
+
+The date comes from the page's latest git commit, so a page you haven't committed yet has none. Commit it. On a published site, see [All pages show the same date](#same-date).
+
+</Accordion>
+</Accordions>
+
+## Installing and updating
+
+<Accordions>
+<Accordion title="npm install fails with ERESOLVE or peer dependency warnings">
+
+The versions of the theme, Fumadocs and Next.js in `package.json` don't match. Install the versions the [changelog](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md) names for your version of the theme. Don't use `--force` or `--legacy-peer-deps`: they install two copies of Fumadocs, and then search, the theme switch and the layout break.
+
+</Accordion>
+<Accordion title="Errors right after an update">
+
+Run the type check. It points at the exact file and line:
+
+```bash
+npm run types:check
+```
+
+If the update was a new middle number (`0.1` to `0.2`), follow its *Migration* steps in the changelog. See [Updates and versions](/docs/updates).
+
+</Accordion>
+<Accordion title="npm or node: command not found, or errors about the Node.js version">
+
+Install [Node.js](https://nodejs.org) 22 or later, then open a new terminal. Check with `node --version`.
+
+</Accordion>
+</Accordions>
+
+## Building and publishing
+
+<Accordions>
+<Accordion title="The build warns that metadataBase is not set">
+
+Link previews need the site's address. Set `url` in `site.config.ts` once the site has one, such as `url: 'https://notes.example.com'`. Until then the warning is harmless.
+
+</Accordion>
+<Accordion id="same-date" title="All pages show the same date, or none">
+
+The host builds from a copy of the repository without its history, so every page gets the date of the last commit, or no date. In GitHub Actions, add `fetch-depth: 0` to the checkout step:
+
+```yaml
+- uses: actions/checkout@v7
+  with:
+    fetch-depth: 0
+```
+
+Hosts that build for you (Cloudflare, Netlify, Vercel) may also clone with little history. Each guide in [Deployment](/docs/deployment) says how to handle it.
+
+</Accordion>
+<Accordion title="Pages work at first, but reloading one shows 'not found'">
+
+The host doesn't serve `docs/x/index.html` for the address `/docs/x/`. Each guide in [Deployment](/docs/deployment) has the setting for its host. Static hosts such as Cloudflare, Netlify, Vercel and GitHub Pages do it by default.
+
+</Accordion>
+<Accordion title="Search finds nothing on the published site">
+
+Search downloads one file, `/api/search`, which has no file extension. Check that the host serves it: open `https://your-site/api/search` and you should see text starting with `{`. On AWS, see [S3 and CloudFront](/docs/deployment/aws-s3-cloudfront). Search also needs the site at the root of its domain, not in a folder such as `example.com/notes/`.
+
+</Accordion>
+<Accordion title="How do I check the site before publishing it?">
+
+Build it, then serve the result locally, exactly as a host would:
+
+```bash
+npm run build
+npm start
+```
+
+`npm start` shows the address to open. Stop it with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+</Accordion>
+</Accordions>
