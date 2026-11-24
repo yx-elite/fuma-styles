@@ -52,6 +52,6 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 ### Package
 
 - Five entry points (`notestack`, `/mdx`, `/source`, `/routes` and `/next`) and `theme.css`, each exporting only what a site's files use. The CSS ships as source, with `@source "../dist"` so Tailwind finds the components' classes.
-- Fumadocs, Next.js and React are peer dependencies, so a site only ever has one copy of each.
+- Fumadocs, Next.js and React are peer dependencies, so a site only ever has one copy of each; `@types/react` and `@types/mdx` are optional peers for the types. Needs Node.js 22 or later (`engines`), and `notestack/package.json` can be imported by tools that read it.
 - The package ships `dist/`, `src/` (so *go to definition* opens the source) and its `LICENSE`. The build clears `dist/` first.
 - `accentPicker` on `NotesRoot`, for demo sites, lets visitors try accent colours.

@@ -44,9 +44,10 @@ Every export, what it does and which file uses it: [API reference](https://githu
 
 Notestack builds its own site with Next.js and Fumadocs MDX, as a static export. It doesn't plug into a Fumadocs app set up another way, such as one with a server, another framework or another content source.
 
-- Node.js 22 or later.
+- Node.js 22 or later (`engines` in `package.json`, so npm warns on an older one).
 - Peer dependencies, which the package uses from your app so there is only ever one copy of each: `fumadocs-core` and `fumadocs-ui` 16.19.7 or later 16.x, `next` 16.4.6 or later 16.x, and `react` and `react-dom` 19.3.1 or later 19.x.
-- Also in your app: `fumadocs-mdx` 15, Tailwind CSS 4 and `@types/mdx`.
+- For TypeScript: `@types/react` and `@types/mdx`, optional peer dependencies that the package's types use.
+- Also in your app: `fumadocs-mdx` 15 and Tailwind CSS 4.
 
 A site made with `npm create notestack` has all of these.
 

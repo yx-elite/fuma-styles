@@ -74,7 +74,7 @@ notestack/
 
 ## Package rules
 
-- **Peer dependencies only** for `fumadocs-ui`, `fumadocs-core`, `fumadocs-mdx`, `next`, `react` and `react-dom`. Never move them to `dependencies`: two copies of fumadocs-ui break the provider, theme and search.
+- **Peer dependencies only** for `fumadocs-ui`, `fumadocs-core`, `next`, `react` and `react-dom`, plus `@types/react` and `@types/mdx` as *optional* peers (the published types import them; Fumadocs lists them the same way). Never move them to `dependencies`: two copies of fumadocs-ui break the provider, theme and search. The package doesn't import `fumadocs-mdx`, so it isn't a peer; sites install it themselves.
 - **Build with `tsc`, no bundler.** One output file per source file in `dist/`, so `"use client"` survives.
 - **CSS is not built.** `exports["./theme.css"]` points at `./src/theme.css` and `files` includes it, so theme edits show in the playground on save. Never point it at `dist/`.
 - **Relative imports end in `.js`** (`import { NotesLogo } from './logo.js'`, even though the file is `logo.tsx`). The `./next` entry is run by plain Node, which needs the extension, and it works under Next.js too.

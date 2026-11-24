@@ -24,6 +24,9 @@
     "directory": "packages/notestack"
   },
   "type": "module",
+  "engines": {
+    "node": ">=22"
+  },
   "sideEffects": [
     "**/*.css"
   ],
@@ -56,7 +59,8 @@
       "types": "./dist/next.d.ts",
       "default": "./dist/next.js"
     },
-    "./theme.css": "./src/theme.css"
+    "./theme.css": "./src/theme.css",
+    "./package.json": "./package.json"
   },
   "scripts": {
     "clean": "node -e \"require('fs').rmSync('dist', { recursive: true, force: true })\"",
@@ -72,11 +76,21 @@
     "lucide-react": "^1.71.0"
   },
   "peerDependencies": {
+    "@types/mdx": "*",
+    "@types/react": "*",
     "fumadocs-core": "^16.19.7",
     "fumadocs-ui": "^16.19.7",
     "next": "^16.4.6",
     "react": "^19.3.1",
     "react-dom": "^19.3.1"
+  },
+  "peerDependenciesMeta": {
+    "@types/mdx": {
+      "optional": true
+    },
+    "@types/react": {
+      "optional": true
+    }
   },
   "devDependencies": {
     "@types/mdx": "^2.0.14",
