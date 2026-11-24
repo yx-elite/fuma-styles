@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `notestack`. Versions follow [semver](https://semver.org); while in `0.x`, a breaking change bumps the minor.
+All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://semver.org); while in `0.x`, a breaking change bumps the minor.
 
 ## Unreleased
 
@@ -14,7 +14,7 @@ The first release, published together with `create-notestack` 0.1.0 (`npm create
 
 - **One config file.** `defineSiteConfig()` in `site.config.ts` sets the site's `name`, `author`, `tag`, `description`, `repo`, `branch`, `url`, `accent`, `bannerLink`, quick `links`, the landing page's `start` section and its languages.
 - **App files are a few lines each.** `NotesRoot` is the whole root layout, and `notesMetadata()` its metadata (`Page · Site` titles, the description, and `url` as the base for share images). `NotesLayout` and `NotesHomeLayout` are the docs and landing-page layouts.
-- **A static export for any file host.** `withNotestack()` (`notestack/next`) sets `output: 'export'`, `trailingSlash` and unoptimised images, and lets phones and tablets on the home network load the dev server.
+- **A static export for any file host.** `withNotestack()` (`@yx-elite/notestack/next`) sets `output: 'export'`, `trailingSlash` and unoptimised images, and lets phones and tablets on the home network load the dev server.
 
 ### Design
 
@@ -27,7 +27,7 @@ The first release, published together with `create-notestack` 0.1.0 (`npm create
 
 ### Writing
 
-- **`getMDXComponents()`** (`notestack/mdx`) gives notes every component without imports: Fumadocs' Tabs, Steps, Cards, Files, TypeTable and Accordions (`type="multiple"` works), plus `Callout` and `Glossary`.
+- **`getMDXComponents()`** (`@yx-elite/notestack/mdx`) gives notes every component without imports: Fumadocs' Tabs, Steps, Cards, Files, TypeTable and Accordions (`type="multiple"` works), plus `Callout` and `Glossary`.
 - **`Callout`** is a tinted box with its icon and title in a pill. It has five types, takes any [Lucide](https://lucide.dev/icons) `icon` by name, and takes a `color`: one of nine named colours tuned for both modes or any CSS colour. `title={false}` drops the pill for a compact aside with the icon before the text.
 - **`Glossary`** shows `content/glossary.json` as a filterable A to Z list with a letter bar. Terms outside A to Z go under `#`, and every term has its own anchor.
 - Sidebar icons come from `icon:` frontmatter (`notesSourcePlugins`), and *Last updated* dates from git. Under each page's previous and next buttons, the date sits on the left and a *Built with Notestack* link on the right.
@@ -40,7 +40,7 @@ The first release, published together with `create-notestack` 0.1.0 (`npm create
 
 ### Search, share images and AI copies
 
-`notestack/routes`, server only:
+`@yx-elite/notestack/routes`, server only:
 
 - `createNotesPage()`: the docs page, its metadata and its static params.
 - `searchRoute()`: a search index built at build time and searched in the browser, one per language.
@@ -55,7 +55,7 @@ The first release, published together with `create-notestack` 0.1.0 (`npm create
 
 ### Package
 
-- Five entry points (`notestack`, `/mdx`, `/source`, `/routes` and `/next`) and `theme.css`, each exporting only what a site's files use. The CSS ships as source, with `@source "../dist"` so Tailwind finds the components' classes.
-- Fumadocs, Next.js and React are peer dependencies, so a site only ever has one copy of each; `@types/react` and `@types/mdx` are optional peers for the types. Needs Node.js 22 or later (`engines`), and `notestack/package.json` can be imported by tools that read it.
+- Five entry points (`@yx-elite/notestack`, `/mdx`, `/source`, `/routes` and `/next`) and `theme.css`, each exporting only what a site's files use. The CSS ships as source, with `@source "../dist"` so Tailwind finds the components' classes.
+- Fumadocs, Next.js and React are peer dependencies, so a site only ever has one copy of each; `@types/react` and `@types/mdx` are optional peers for the types. Needs Node.js 22 or later (`engines`), and `@yx-elite/notestack/package.json` can be imported by tools that read it.
 - The package ships `dist/`, `src/` (so *go to definition* opens the source) and its `LICENSE`. The build clears `dist/` first.
 - `accentPicker` on `NotesRoot`, for demo sites, lets visitors try accent colours.

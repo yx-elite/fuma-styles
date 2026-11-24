@@ -22,7 +22,7 @@ npm run dev
 This copies a small starter app and installs it. The starter's files are a few lines each that call this package, so a new version reaches your site with:
 
 ```bash
-npm update notestack
+npm update @yx-elite/notestack
 ```
 
 The only code file you edit is `site.config.ts`: the site's name, links, accent colour and languages. Notes go in `content/docs/`.
@@ -31,12 +31,12 @@ The only code file you edit is `site.config.ts`: the site's name, links, accent 
 
 | Import | What it holds |
 | --- | --- |
-| `notestack` | Site config, root layout, layouts, landing page, components, language helpers |
-| `notestack/mdx` | `getMDXComponents()`: every component for MDX pages |
-| `notestack/source` | `notesSourcePlugins`: sidebar icons from frontmatter, for `lib/source.ts` |
-| `notestack/routes` | The docs page and the search, share-image and llms.txt routes. Server only |
-| `notestack/next` | `withNotestack()` for `next.config.mjs`: static export settings. No React |
-| `notestack/theme.css` | The theme. Import it after Tailwind |
+| `@yx-elite/notestack` | Site config, root layout, layouts, landing page, components, language helpers |
+| `@yx-elite/notestack/mdx` | `getMDXComponents()`: every component for MDX pages |
+| `@yx-elite/notestack/source` | `notesSourcePlugins`: sidebar icons from frontmatter, for `lib/source.ts` |
+| `@yx-elite/notestack/routes` | The docs page and the search, share-image and llms.txt routes. Server only |
+| `@yx-elite/notestack/next` | `withNotestack()` for `next.config.mjs`: static export settings. No React |
+| `@yx-elite/notestack/theme.css` | The theme. Import it after Tailwind |
 
 Every export, what it does and which file uses it: [API reference](https://github.com/yx-elite/notestack/blob/main/playground/content/docs/en/api.mdx).
 

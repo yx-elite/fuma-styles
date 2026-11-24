@@ -1,8 +1,8 @@
 import { loader } from 'fumadocs-core/source';
 import { defineDocs } from 'fumadocs-mdx/macro';
 import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
-import { notesLanguages } from 'notestack';
-import { notesSourcePlugins } from 'notestack/source';
+import { notesLanguages } from '@yx-elite/notestack';
+import { notesSourcePlugins } from '@yx-elite/notestack/source';
 import site from '@/site.config';
 
 const docs = defineDocs({

@@ -1,4 +1,4 @@
-import { defineSiteConfig } from 'notestack';
+import { defineSiteConfig } from '@yx-elite/notestack';
 
 // The one file that differs per notes site.
 export default defineSiteConfig({
@@ -15,7 +15,7 @@ export default defineSiteConfig({
     title: 'Turn your notes into a site like this',
     text: 'One command makes a Fumadocs site with the theme already set up. Your notes stay plain Markdown.',
     steps: [
-      { title: 'Create the site', text: 'Makes my-notes/ and installs notestack.', command: 'npm create notestack@latest my-notes' },
+      { title: 'Create the site', text: 'Makes my-notes/ and installs @yx-elite/notestack.', command: 'npm create notestack@latest my-notes' },
       { title: 'Start writing', text: 'Open localhost:3000. Edit site.config.ts for your name, links and accent.', command: 'cd my-notes && npm run dev' },
     ],
   },
@@ -30,7 +30,7 @@ export default defineSiteConfig({
         title: '把你的笔记变成这样的网站',
         text: '一条命令即可创建一个已经配置好主题的 Fumadocs 站点。你的笔记仍然是普通的 Markdown。',
         steps: [
-          { title: '创建站点', text: '创建 my-notes/ 并安装 notestack。', command: 'npm create notestack@latest my-notes' },
+          { title: '创建站点', text: '创建 my-notes/ 并安装 @yx-elite/notestack。', command: 'npm create notestack@latest my-notes' },
           { title: '开始写作', text: '打开 localhost:3000。在 site.config.ts 中修改名称、链接和强调色。', command: 'cd my-notes && npm run dev' },
         ],
       },

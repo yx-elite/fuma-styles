@@ -57,7 +57,7 @@ const own = JSON.parse(
 const pkgPath = join(target, "package.json");
 const pkg = JSON.parse(readFileSync(pkgPath, "utf8"));
 pkg.name = slug;
-pkg.dependencies.notestack = `^${own.version}`;
+pkg.dependencies['@yx-elite/notestack'] = `^${own.version}`;
 writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
 
 // 5. site.config.ts: the site's name, from the folder name ("my-notes" → "My Notes")

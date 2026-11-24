@@ -4,10 +4,10 @@ description: How fixes and new features reach your site, how version numbers wor
 icon: RefreshCw
 ---
 
-Your site holds your notes and a few small files that load the theme. Everything else (the design, the components, search, the landing page) lives in the `notestack` package. So one command updates all of it:
+Your site holds your notes and a few small files that load the theme. Everything else (the design, the components, search, the landing page) lives in the `@yx-elite/notestack` package. So one command updates all of it:
 
 ```bash
-npm update notestack
+npm update @yx-elite/notestack
 ```
 
 Then run `npm run dev` and look around, or `npm run build` to check that every page still builds. Commit `package.json` and `package-lock.json`.
@@ -23,7 +23,7 @@ The theme follows [semantic versioning](https://semver.org): `MAJOR.MINOR.PATCH`
 | Breaking: you must edit a file | `1.4.0` → `2.0.0` | Follow the *Migration* steps in the changelog. |
 
 <Callout type="info" title="Before 1.0.0">
-While the version starts with `0.`, a breaking change bumps the middle number instead (`0.1` → `0.2`). `npm update` never crosses that line on its own: install the new version on purpose with `npm install notestack@0.2`, after reading its *Migration* notes.
+While the version starts with `0.`, a breaking change bumps the middle number instead (`0.1` → `0.2`). `npm update` never crosses that line on its own: install the new version on purpose with `npm install @yx-elite/notestack@0.2`, after reading its *Migration* notes.
 </Callout>
 
 Breaking changes are rare by design: they are things like a new file every site needs in `app/`, or a renamed option in `site.config.ts`. Each one comes with the exact edit, in the [changelog](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md).
@@ -41,7 +41,7 @@ updates:
       interval: weekly
     groups:
       notestack:
-        patterns: ['notestack', 'fumadocs-*', 'next', 'react', 'react-dom']
+        patterns: ['@yx-elite/notestack', 'fumadocs-*', 'next', 'react', 'react-dom']
 ```
 
 Each pull request shows what changed. If your site builds on every push (see [Deployment](/docs/deployment)), the check on the pull request tells you whether the update builds before you merge it.

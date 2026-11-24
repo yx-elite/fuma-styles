@@ -108,7 +108,7 @@ On a site with `languages`, the page is `app/[lang]/(home)/page.tsx` and gets th
 
 ```tsx title="app/[lang]/(home)/page.tsx"
 import Link from 'next/link';
-import { siteFor } from 'notestack';
+import { siteFor } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 
@@ -155,7 +155,7 @@ For your own CSS, add it to `app/global.css`, after the two imports. The accent 
 
 ```css title="app/global.css"
 @import 'tailwindcss';
-@import 'notestack/theme.css';
+@import '@yx-elite/notestack/theme.css';
 
 .my-hero-title {
   font-family: var(--ns-font-display);
@@ -170,7 +170,7 @@ Name your classes with your own prefix, not `ns-`: the theme's classes can chang
 Put the theme's page back to get the default landing page again:
 
 ```tsx title="app/(home)/page.tsx"
-import { NotesHome } from 'notestack';
+import { NotesHome } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 

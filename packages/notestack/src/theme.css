@@ -1,8 +1,8 @@
 /*
- * notestack: the shared theme.
+ * @yx-elite/notestack: the shared theme.
  * Import it in app/global.css, right after Tailwind:
  *   @import 'tailwindcss';
- *   @import 'notestack/theme.css';
+ *   @import '@yx-elite/notestack/theme.css';
  *
  * Change the accent for one site by setting --ns-accent after the import:
  *   :root { --ns-accent: #16a34a; }   (light mode)

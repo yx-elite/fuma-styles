@@ -1,6 +1,6 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
 import type { ReactNode } from 'react';
-import { NotesRoot, notesMetadata } from 'notestack';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
 import site from '@/site.config';
 import './global.css';
 

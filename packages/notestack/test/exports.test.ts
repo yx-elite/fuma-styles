@@ -11,7 +11,7 @@ import * as source from '../src/source/index.js';
 const names = (entry: object) => Object.keys(entry).sort();
 
 describe('public exports', () => {
-  it('notestack', () => {
+  it('@yx-elite/notestack', () => {
     expect(names(main)).toEqual([
       'Callout',
       'Glossary',
@@ -28,7 +28,7 @@ describe('public exports', () => {
     ]);
   });
 
-  it('notestack/routes', () => {
+  it('@yx-elite/notestack/routes', () => {
     expect(names(routes)).toEqual([
       'createNotesPage',
       'llmsFullRoute',
@@ -39,7 +39,7 @@ describe('public exports', () => {
     ]);
   });
 
-  it('notestack/mdx, /source and /next', () => {
+  it('@yx-elite/notestack/mdx, /source and /next', () => {
     expect(names(mdx)).toEqual(['getMDXComponents']);
     expect(names(source)).toEqual(['notesSourcePlugins']);
     expect(names(next)).toEqual(['withNotestack']);

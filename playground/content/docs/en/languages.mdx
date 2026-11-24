@@ -173,7 +173,7 @@ The layouts read the language from the URL. Copy these over the moved files:
 
 ```tsx title="app/[lang]/layout.tsx"
 import { Geist, JetBrains_Mono } from 'next/font/google';
-import { NotesRoot, notesMetadata } from 'notestack';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
 import site from '@/site.config';
 import '../global.css';
 
@@ -205,7 +205,7 @@ export default async function Layout({ params, children }: LayoutProps<'/[lang]'
 <Accordion title="app/[lang]/(home)/layout.tsx and page.tsx">
 
 ```tsx title="app/[lang]/(home)/layout.tsx"
-import { NotesHomeLayout, siteFor } from 'notestack';
+import { NotesHomeLayout, siteFor } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 
@@ -220,7 +220,7 @@ export default async function Layout({ params, children }: LayoutProps<'/[lang]'
 ```
 
 ```tsx title="app/[lang]/(home)/page.tsx"
-import { NotesHome, siteFor } from 'notestack';
+import { NotesHome, siteFor } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 
@@ -234,7 +234,7 @@ export default async function HomePage({ params }: PageProps<'/[lang]'>) {
 <Accordion title="app/[lang]/docs/layout.tsx">
 
 ```tsx title="app/[lang]/docs/layout.tsx"
-import { NotesLayout, siteFor } from 'notestack';
+import { NotesLayout, siteFor } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 
@@ -257,7 +257,7 @@ The page at `/`, which sends readers on to their language:
 
 ```tsx title="app/(root)/layout.tsx"
 import type { ReactNode } from 'react';
-import { defaultLanguageOf } from 'notestack';
+import { defaultLanguageOf } from '@yx-elite/notestack';
 import site from '@/site.config';
 import '../global.css';
 
@@ -271,7 +271,7 @@ export default function Layout({ children }: { children: ReactNode }) {
 ```
 
 ```tsx title="app/(root)/page.tsx"
-import { LanguageRedirect } from 'notestack';
+import { LanguageRedirect } from '@yx-elite/notestack';
 import site from '@/site.config';
 
 export default function Page() {

@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { NotesLayout } from 'notestack';
+import { NotesLayout } from '@yx-elite/notestack';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 

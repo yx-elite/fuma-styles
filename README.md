@@ -1,8 +1,8 @@
 # Notestack
 
-[![CI](https://github.com/yx-elite/notestack/actions/workflows/ci.yml/badge.svg)](https://github.com/yx-elite/notestack/actions/workflows/ci.yml) ![npm](https://img.shields.io/badge/npm-notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
+[![CI](https://github.com/yx-elite/notestack/actions/workflows/ci.yml/badge.svg)](https://github.com/yx-elite/notestack/actions/workflows/ci.yml) ![npm](https://img.shields.io/badge/npm-@yx--elite/notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
-A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `notestack`, gives every notes site the same **layout, styles, components and search**, so every notes site reads the same way, and a fix made once reaches all of them.
+A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**, so every notes site reads the same way, and a fix made once reaches all of them.
 
 > [!NOTE]
 > Work in progress. The package is not on npm yet; the [roadmap](#roadmap) lists what comes next.
@@ -40,7 +40,7 @@ Needs **Node.js 22 or newer**. Run everything from the repo root, never inside a
 
 ```bash
 npm install                          # installs every workspace into one node_modules/
-npm run dev -w notestack   # recompiles the package on every save (keep it running)
+npm run dev -w @yx-elite/notestack   # recompiles the package on every save (keep it running)
 npm run dev                          # playground at http://localhost:3000
 npm run dev:starter                  # starter at http://localhost:3001
 npm run build                        # package, then static exports of the playground and the starter
@@ -63,7 +63,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 
 1. **Scaffold** → workspace and playground. ✅
 2. **Design** → the look, layout and landing page, prototyped in the playground. ✅ (mostly)
-3. **Package** → move the prototype code into `notestack`. ✅
+3. **Package** → move the prototype code into `@yx-elite/notestack`. ✅
 4. **Languages** → one language per site, or several with a language switch. ✅
 5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command ✅ (not on npm yet).
 6. **CI and first release** → checks on every push ✅, then `0.1.0` on npm and the docs site deployed.

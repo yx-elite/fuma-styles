@@ -1,5 +1,5 @@
 import { source } from '@/lib/source';
-import { NotesHomeLayout, siteFor } from 'notestack';
+import { NotesHomeLayout, siteFor } from '@yx-elite/notestack';
 import site from '@/site.config';
 
 export default async function Layout({ params, children }: LayoutProps<'/[lang]'>) {

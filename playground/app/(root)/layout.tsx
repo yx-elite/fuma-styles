@@ -1,5 +1,5 @@
 import type { ReactNode } from 'react';
-import { defaultLanguageOf } from 'notestack';
+import { defaultLanguageOf } from '@yx-elite/notestack';
 import site from '@/site.config';
 import '../global.css';
 

@@ -1,4 +1,4 @@
-import { llmsPageRoute } from 'notestack/routes';
+import { llmsPageRoute } from '@yx-elite/notestack/routes';
 import { source } from '@/lib/source';
 
 const pages = llmsPageRoute(source);

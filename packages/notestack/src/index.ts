@@ -1,7 +1,7 @@
-// Everything a notes site imports from 'notestack'.
-// Content-loader plugins live in 'notestack/source',
-// the docs page and the search, share-image and llms.txt routes in 'notestack/routes',
-// MDX components in 'notestack/mdx', the Next.js config helper in 'notestack/next'.
+// Everything a notes site imports from '@yx-elite/notestack'.
+// Content-loader plugins live in '@yx-elite/notestack/source',
+// the docs page and the search, share-image and llms.txt routes in '@yx-elite/notestack/routes',
+// MDX components in '@yx-elite/notestack/mdx', the Next.js config helper in '@yx-elite/notestack/next'.
 //
 // Only what a site's files or the docs use is exported: adding an export later breaks
 // nobody, removing one does. test/exports.test.ts lists them, so a change here is deliberate.
