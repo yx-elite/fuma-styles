@@ -3,8 +3,8 @@ import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import { FullSearchTrigger } from 'fumadocs-ui/layouts/shared/slots/search-trigger';
 import { PhoneSearchTrigger } from './phone-search.js';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { icons } from 'lucide-react';
-import { createElement, type ReactNode } from 'react';
+import type { ReactNode } from 'react';
+import { lucideIcon } from '../icons.js';
 import { NavTitle } from './nav-title.js';
 import { SidebarBanner } from './sidebar-banner.js';
 import { SidebarLinks } from './sidebar-links.js';
@@ -21,12 +21,6 @@ export function baseOptions(site: SiteConfig): BaseLayoutProps {
     themeSwitch: { mode: 'light-dark-system' },
     githubUrl: repoUrl(site),
   };
-}
-
-/** Lucide icon by name, resolved on the server so the icon set is never sent to the browser */
-export function lucideIcon(name?: string) {
-  if (!name || !(name in icons)) return undefined;
-  return createElement(icons[name as keyof typeof icons]);
 }
 
 /**

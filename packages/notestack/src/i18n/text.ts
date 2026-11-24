@@ -72,6 +72,13 @@ export interface NotesText {
   /** `{date}` */
   lastUpdated: string;
 
+  /* Callouts: the label a callout without a title shows, by type */
+  calloutInfo: string;
+  calloutWarning: string;
+  calloutError: string;
+  calloutSuccess: string;
+  calloutIdea: string;
+
   /* Glossary */
   /** `{n}`: number of terms */
   glossaryFilter: string;
@@ -143,6 +150,12 @@ export const en: NotesText = {
   quickLinks: 'Quick links',
   lastUpdated: 'Last updated on {date}',
 
+  calloutInfo: 'Note',
+  calloutWarning: 'Warning',
+  calloutError: 'Error',
+  calloutSuccess: 'Success',
+  calloutIdea: 'Idea',
+
   glossaryFilter: 'Filter {n} terms…',
   glossaryFilterLabel: 'Filter terms',
   glossaryFound: '{n} found',
@@ -206,6 +219,12 @@ export const zhCN: NotesText = {
 
   quickLinks: '快速链接',
   lastUpdated: '最后更新于 {date}',
+
+  calloutInfo: '说明',
+  calloutWarning: '警告',
+  calloutError: '错误',
+  calloutSuccess: '成功',
+  calloutIdea: '技巧',
 
   glossaryFilter: '筛选 {n} 个术语…',
   glossaryFilterLabel: '筛选术语',

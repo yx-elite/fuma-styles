@@ -8,7 +8,8 @@ export type { SiteConfig, SiteTranslation, StartSection } from './config/site.js
 
 export { NotesRoot, notesMetadata } from './layouts/root.js';
 export { NotesProvider } from './layouts/provider.js';
-export { NotesLayout, baseOptions, lucideIcon } from './layouts/layout.js';
+export { NotesLayout, baseOptions } from './layouts/layout.js';
+export { lucideIcon } from './icons.js';
 export { NotesHomeLayout } from './layouts/home-layout.js';
 export { NotesHome, groupPageTree } from './layouts/home.js';
 export type { HomeSource, HomePage, HomeGroup } from './layouts/home.js';
@@ -19,6 +20,8 @@ export type { StackItem } from './layouts/stack.js';
 
 export { AccentPicker, AccentPickerScript, accentSwatches } from './components/accent-picker.js';
 export type { AccentSwatch, AccentPickerText } from './components/accent-picker.js';
+export { Callout, calloutColors } from './components/callout.js';
+export type { CalloutProps, CalloutColor } from './components/callout.js';
 export { CopyButton } from './components/copy-button.js';
 export { Glossary } from './components/glossary.js';
 export type { GlossaryTerm, GlossaryText } from './components/glossary.js';

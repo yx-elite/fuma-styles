@@ -24,13 +24,16 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 - Links written as `/docs/…` in notes, cards, quick links, the banner and the glossary get the page's language added (`localizeHref`). `PageTransitions` takes `languages`, and the header logo goes to the current language's home page.
 - `withoutLanguageFolder(path, site)`: on a site with `languages`, pass `{ ...page, path: withoutLanguageFolder(page.path, site) }` to Fumadocs' `createRelativeLink`, so links between notes by file path (`./other.mdx`) resolve. Fumadocs looks pages up without their language folder but keeps it in `page.path`.
 - Light and dark images: name two versions `name.light.svg` and `name.dark.svg`, place both, and only the one for the reader's mode shows (also `.png`, `.jpg`).
+- `Callout` (also in `getMDXComponents()`): Fumadocs' callout with an `icon` that takes a [Lucide](https://lucide.dev/icons) name, e.g. `<Callout title="Exam tip" icon="GraduationCap">`. A callout without a title shows its type's name (*Note*, *Warning*…). `color` gives a callout its own colour: a named colour tuned for light and dark mode (`accent`, `blue`, `teal`, `green`, `purple`, `pink`, `orange`, `red`, `slate`; `calloutColors` lists them) or any CSS colour. New text keys: `calloutInfo`, `calloutWarning`, `calloutError`, `calloutSuccess` and `calloutIdea`. `lucideIcon()` moved to its own file; its import from `@yx-elite/notestack` is unchanged.
 
 ### Changed
 
 - Landing page: "What's inside" is a still bento grid. Each section's first pages are listed as numbered links (two columns on wide cards), with no moving lists. More space between sections on wide screens; on phones the docs preview sits right under the hero. The glow behind the preview is a soft blurred light with no hard edges.
 - Landing page footer: the site's mark, description and repository, a column of the notes' sections and one of links (`links` from `site.config.ts` and GitHub), then a row with the copyright, the last update and *Back to top*. The site's name is drawn large and faded across the bottom. New text keys: `footerNotes`, `footerLinks` and `backToTop`.
 - Each note's title and the landing page's section titles use Instrument Serif, shipped with the theme (`@fontsource/instrument-serif`), with a serif fallback for Chinese. The site's name and all other text stay in Geist. Change it with `--ns-font-display`.
-- Callouts: the whole box is tinted in its colour with a coloured border; the title is a small uppercase label in that colour, followed by a fading rule.
+- Landing page: each section card lists at most three rows of pages: three pages, or three rows of two on a wide card when it has room for two columns. *And N more* counts the rest.
+- Callouts: the whole box is tinted in its colour with a coloured border. The icon and title sit in a small uppercase pill at the top, and the text runs full width below, with roomier lines and a gap between paragraphs, lists and code.
+- Collapsible sections (`<details>` and `<summary>` in notes) look like accordions: a bordered card with a chevron that turns when it opens, instead of the browser's plain triangle.
 - Cards: a soft grey gradient, lifting slightly on hover.
 - Steps: numbers in accent-tinted rings on a line that fades out towards the last step.
 - Images in notes have rounded corners and are centred (inside a list, in the item's text column). Image captions are centred under them.
@@ -46,6 +49,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ### Fixed
 
+- `<Accordions type="multiple">` opened one panel at a time. Fumadocs' Base UI build only knows `multiple`, so `getMDXComponents()` now turns `type="multiple"` into it. `<Accordions multiple>` works too.
 - Glossary: terms that don't start with A–Z (digits, Chinese and other scripts) get a `#` button in the letter bar, and every term gets its own anchor. Before, they had no button, and non-Latin terms all shared the anchor `#term-`. Accented terms now file under their letter (*É* under E).
 - Tablet menu: finds and shows Fumadocs' menu button by `aria-controls` (in `TabletMenu` and in `theme.css`), so the button stays visible and working when its label is translated.
 - Switching between light and dark mode with the phone menu open no longer flashes the page and its cards over the menu. The page-transition names are now set only while a home ⇄ docs transition runs, not during Fumadocs' theme switch.

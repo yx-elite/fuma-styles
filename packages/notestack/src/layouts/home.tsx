@@ -308,8 +308,11 @@ function SectionCard({
   language: string;
 }) {
   const first = group.pages[0];
-  const shown = group.pages.slice(0, wide ? 6 : 4);
-  const more = group.pages.length - shown.length;
+  // At most three rows: three pages, or three rows of two on a wide card with room for two columns
+  const shown = group.pages.slice(0, wide ? 6 : 3);
+  const moreText = (n: number) => fill(text.andMore, { n }).replace(/^[\s,，、]+/, '');
+  const more = group.pages.length - 3;
+  const moreWide = group.pages.length - shown.length;
 
   return (
     <article className="ns-card ns-reveal" data-wide={wide || undefined} style={vars({ '--i': index })}>
@@ -324,7 +327,7 @@ function SectionCard({
         {/* The section's first pages, ready to open: still until hovered */}
         <ol className="ns-card-pages">
           {shown.map((page, i) => (
-            <li key={i}>
+            <li key={i} data-extra={i >= 3 || undefined}>
               <Link href={page.url} className="ns-card-page">
                 <span className="ns-card-page-number">{String(i + 1).padStart(2, '0')}</span>
                 <span className="ns-card-page-text">
@@ -336,7 +339,17 @@ function SectionCard({
             </li>
           ))}
         </ol>
-        {more > 0 && <p className="ns-card-more">{fill(text.andMore, { n: more }).replace(/^[\s,，、]+/, '')}</p>}
+        {/* a wide card shows one of the two counts, depending on whether its pages fit in two columns */}
+        {more > 0 && (
+          <p className="ns-card-more" data-columns={wide ? '1' : undefined}>
+            {moreText(more)}
+          </p>
+        )}
+        {wide && moreWide > 0 && (
+          <p className="ns-card-more" data-columns="2">
+            {moreText(moreWide)}
+          </p>
+        )}
       </div>
       {first && (
         <Link href={first.url} className="ns-card-start">

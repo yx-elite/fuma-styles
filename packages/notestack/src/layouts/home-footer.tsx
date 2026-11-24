@@ -4,7 +4,7 @@ import type { CSSProperties } from 'react';
 import { repoUrl, type SiteConfig } from '../config/site.js';
 import { fillNodes, formatDate, languageOf, localizeHref, type NotesText } from '../i18n/index.js';
 import type { HomeGroup } from './home.js';
-import { lucideIcon } from './layout.js';
+import { lucideIcon } from '../icons.js';
 import { NotesLogo } from './logo.js';
 
 function GitHubMark() {

@@ -119,7 +119,9 @@ Accordions hide detail until it is needed, which suits practice questions. File 
 
 ### Accordions
 
-<Accordions type="single">
+Opening one panel closes the one that was open.
+
+<Accordions>
   <Accordion title="What is a cache hit?">
     The requested data was found in the cache, so the origin was not asked.
   </Accordion>
@@ -135,8 +137,10 @@ Accordions hide detail until it is needed, which suits practice questions. File 
 
 ### Accordions open together
 
-<Accordions type="multiple">
-  <Accordion title="Question 1">Several panels can be open at the same time.</Accordion>
+With `multiple`, several panels stay open at once. Open both to check.
+
+<Accordions multiple>
+  <Accordion title="Question 1">This one stays open when you open Question 2.</Accordion>
   <Accordion title="Question 2">
     An answer with code:
 

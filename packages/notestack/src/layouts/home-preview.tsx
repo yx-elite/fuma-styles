@@ -2,7 +2,7 @@ import Link from 'fumadocs-core/link';
 import { Search } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { HomeGroup } from './home.js';
-import { lucideIcon } from './layout.js';
+import { lucideIcon } from '../icons.js';
 import { NotesLogo } from './logo.js';
 import type { SiteConfig } from '../config/site.js';
 import { en, type NotesText } from '../i18n/text.js';

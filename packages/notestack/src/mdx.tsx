@@ -7,6 +7,7 @@ import { Tab, Tabs } from 'fumadocs-ui/components/tabs';
 import { TypeTable } from 'fumadocs-ui/components/type-table';
 import type { MDXComponents } from 'mdx/types';
 import type { ComponentProps, ComponentType } from 'react';
+import { Callout, type CalloutProps } from './components/callout.js';
 import { Glossary } from './components/glossary.js';
 import { hasLanguageRoutes, languageOf, localizeHref, notesText, type LanguageConfig } from './i18n/index.js';
 
@@ -25,7 +26,12 @@ export function getMDXComponents(components?: MDXComponents, { site }: { site?: 
     ...defaultMdxComponents,
     img: (props) => <ImageZoom {...(props as any)} />,
     Accordion,
-    Accordions,
+    // Fumadocs' Base UI build opens several panels with `multiple`; `type="multiple"`
+    // (the Radix build's prop, in most Fumadocs examples) is ignored there, so map it
+    Accordions: ({ type, ...props }: ComponentProps<typeof Accordions> & { type?: 'single' | 'multiple' }) => (
+      <Accordions multiple={type === 'multiple' || undefined} {...props} />
+    ),
+    Callout: (props: CalloutProps) => <Callout text={text} {...props} />,
     File,
     Files,
     Folder,

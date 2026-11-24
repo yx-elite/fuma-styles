@@ -1,6 +1,6 @@
 ---
 title: Markdown
-description: "Every Markdown element as the theme styles it: text, lists, links, images, code, tables, quotes and callouts."
+description: "Every Markdown element as the theme styles it: text, lists, links, images, code, tables, quotes, callouts and collapsible sections."
 icon: Type
 ---
 
@@ -419,9 +419,9 @@ Tables compare several things on several points. They must stay readable on a ph
 | Cache-aside | The application checks the cache first. On a miss it reads the origin, then writes the result into the cache for next time. | Read-heavy data that can be a little stale, where only requested items should take up cache space. |
 | Write-through | Every write goes to the cache and the origin together, so the cache is always current. | Data that is read soon after it is written and must not be stale. |
 
-## Quotes and callouts
+## Quotes
 
-Callouts hold the few lines a reader must not miss. Each type needs its own colour and icon, readable in both modes.
+Quotes set apart a definition or a source, without looking like a warning.
 
 ### Blockquote
 
@@ -445,38 +445,9 @@ Callouts hold the few lines a reader must not miss. Each type needs its own colo
 > - The cache is cleared
 > - The DNS record points to the right place
 
-### Callout types
-
-<Callout>A callout with no type set. It uses the default style.</Callout>
-
-<Callout title="Info">The `info` type: background facts and gentle notes.</Callout>
-
-<Callout type="idea" title="Idea">The `idea` type: a tip, shortcut or better way.</Callout>
-
-<Callout type="success" title="Success">The `success` type: a confirmed result or a good practice.</Callout>
-
-<Callout type="warn" title="Warning">The `warn` type: something that can cost money or cause trouble.</Callout>
-
-<Callout type="error" title="Error">The `error` type: something that loses data or cannot be undone.</Callout>
-
-### Callout without a title
-
-<Callout type="warn">A warning with no title, only a body.</Callout>
-
-### Callout with rich content
-
-<Callout type="info" title="Cache headers">
-  Set `Cache-Control` on every response:
-
-  - `max-age`: how long a copy stays fresh
-  - `no-store`: never keep a copy
-
-  See [Deployment](/docs/deployment) for details.
-</Callout>
-
 ### GitHub alert syntax
 
-The syntax used in the old GitHub handbook. Whether these render as callouts or plain quotes shows if the syntax is supported yet.
+GitHub's alert syntax. It isn't turned into callouts yet, so these show as plain quotes; use `<Callout>` instead.
 
 > [!NOTE]
 > Surprising but harmless.
@@ -493,7 +464,77 @@ The syntax used in the old GitHub handbook. Whether these render as callouts or 
 > [!CAUTION]
 > Destructive and hard to undo.
 
-### Collapsible section
+## Callouts
+
+Callouts hold the few lines a reader must not miss. Each type has its own colour and icon, readable in both modes. How to write them: [Callouts](/docs/writing-notes#callouts).
+
+### Types
+
+Each type with no title, so the pill shows the type's name and icon.
+
+<Callout>A callout with no type set. It is an `info` callout.</Callout>
+
+<Callout type="idea">The `idea` type: a tip, shortcut or better way.</Callout>
+
+<Callout type="success">The `success` type: a confirmed result or a good practice.</Callout>
+
+<Callout type="warn">The `warn` type: something that can cost money or cause trouble.</Callout>
+
+<Callout type="error">The `error` type: something that loses data or cannot be undone.</Callout>
+
+### Title
+
+<Callout type="warn" title="Costs money">A NAT gateway is billed for every hour it exists, even with no traffic.</Callout>
+
+### Icon
+
+<Callout title="Exam tip" icon="GraduationCap">Any [Lucide](https://lucide.dev/icons) icon, by name: `icon="GraduationCap"`.</Callout>
+
+<Callout type="success" title="Done" icon="PartyPopper">The type still sets the colour: `type="success"` with `icon="PartyPopper"`.</Callout>
+
+### Colours
+
+Every named colour, then a custom one. Switch between light and dark mode to compare.
+
+<Callout color="accent" title="Accent" icon="Palette">`color="accent"`: the site's accent, so it changes with the accent picker.</Callout>
+
+<Callout color="blue" title="Blue" icon="Droplet">`color="blue"`</Callout>
+
+<Callout color="teal" title="Malaysian angle" icon="MapPin">`color="teal"`</Callout>
+
+<Callout color="green" title="Green" icon="Leaf">`color="green"`</Callout>
+
+<Callout color="purple" title="Exam tip" icon="GraduationCap">`color="purple"`</Callout>
+
+<Callout color="pink" title="Remember" icon="Heart">`color="pink"`</Callout>
+
+<Callout color="orange" title="Orange" icon="Flame">`color="orange"`</Callout>
+
+<Callout color="red" title="Red" icon="Siren">`color="red"`</Callout>
+
+<Callout color="slate" title="Aside" icon="NotebookPen">`color="slate"`: a quiet grey for side notes.</Callout>
+
+<Callout color="#1d9e75" title="Custom" icon="Pipette">`color="#1d9e75"`: any CSS colour, the same in both modes.</Callout>
+
+### Long title
+
+<Callout type="idea" title="A long title that wraps onto a second line on a phone, to check the pill">The pill wraps its text instead of running out of the box.</Callout>
+
+### Rich content
+
+
+<Callout type="info" title="Cache headers">
+  Set `Cache-Control` on every response:
+
+  - `max-age`: how long a copy stays fresh
+  - `no-store`: never keep a copy
+
+  See [Deployment](/docs/deployment) for details.
+</Callout>
+
+## Collapsible sections
+
+Plain HTML `<details>` and `<summary>`, drawn like accordions. For grouped panels and links to a panel, use [Accordions](/docs/showcase/components#accordions).
 
 <details>
   <summary>Show the answer</summary>
