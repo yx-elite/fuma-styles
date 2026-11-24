@@ -62,4 +62,121 @@ A page without an `icon:` shows its number in place of an icon. With fewer than 
 
 ## Your own landing page
 
-To replace it, write your own `app/(home)/page.tsx`. The header and the page transitions keep working. To change only the wording, such as *Start reading* or *What's inside*, set `text` in `site.config.ts`. [Languages](/docs/languages#built-in-text) explains how.
+To change only the wording, such as *Start reading* or *What's inside*, set `text` in `site.config.ts`. [Languages](/docs/languages#built-in-text) explains how.
+
+To change more, write the page yourself. Two files make the landing page:
+
+| File | What it holds | What to do |
+| --- | --- | --- |
+| `app/(home)/layout.tsx` | `NotesHomeLayout`: the header with search, the theme switch, the language switch and GitHub | Keep it |
+| `app/(home)/page.tsx` | `NotesHome`: everything below the header | Replace it |
+
+Keeping the layout keeps the header, search and the animation into the docs working. Everything `NotesHome` draws goes with it: the hero, the docs preview, *Built with*, *What's inside*, *Get started*, the search section and the footer. The footer's *Built with Notestack* link goes too; a link back on your own page is welcome but not required.
+
+### One language
+
+Write the page as a normal React component. It can read `site.config.ts` and your notes through `source`:
+
+```tsx title="app/(home)/page.tsx"
+import Link from 'next/link';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function HomePage() {
+  return (
+    <main className="mx-auto w-full max-w-3xl px-4 py-16">
+      <h1 className="text-4xl font-semibold">{site.name}</h1>
+      <p className="mt-4 text-fd-muted-foreground">{site.description}</p>
+      <p className="mt-2">{source.getPages().length} pages of notes</p>
+      <Link href="/docs" className="mt-6 inline-block font-medium text-fd-primary">
+        Read the notes
+      </Link>
+    </main>
+  );
+}
+```
+
+### Several languages
+
+On a site with `languages`, the page is `app/[lang]/(home)/page.tsx` and gets the reader's language from the URL. Three things change:
+
+1. **Read the language.** Next.js passes it as `lang`: `'en'`, `'zh-CN'`…
+2. **Keep the page's own words in one object**, with an entry per language. A language without an entry falls back to the default.
+3. **Start links with the language**: `/zh-CN/docs`, not `/docs`. Links in the header and in your notes get it added for you; links you write in your own page don't.
+
+`siteFor(site, lang)` gives the config in that language, so `name` and `description` come from `translations`:
+
+```tsx title="app/[lang]/(home)/page.tsx"
+import Link from 'next/link';
+import { siteFor } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+// The page's own words, one entry per language in site.config.ts
+const words = {
+  en: { read: 'Read the notes', pages: 'pages of notes' },
+  'zh-CN': { read: '阅读笔记', pages: '页笔记' },
+};
+
+export default async function HomePage({ params }: PageProps<'/[lang]'>) {
+  const { lang } = await params;
+  const local = siteFor(site, lang);
+  const t = words[lang as keyof typeof words] ?? words.en;
+
+  return (
+    <main className="mx-auto w-full max-w-3xl px-4 py-16">
+      <h1 className="text-4xl font-semibold">{local.name}</h1>
+      <p className="mt-4 text-fd-muted-foreground">{local.description}</p>
+      <p className="mt-2">
+        {source.getPages(lang).length} {t.pages}
+      </p>
+      <Link href={`/${lang}/docs`} className="mt-6 inline-block font-medium text-fd-primary">
+        {t.read}
+      </Link>
+    </main>
+  );
+}
+```
+
+To add a language later, add it to `languages` in `site.config.ts` and an entry to `words`.
+
+### Colours and styles
+
+Tailwind works in your page as it does anywhere in the app. For colours, use Fumadocs' colour classes: they follow the theme and switch with light and dark mode by themselves.
+
+| Class | Colour |
+| --- | --- |
+| `text-fd-foreground` | Main text |
+| `text-fd-muted-foreground` | Quieter text |
+| `text-fd-primary`, `bg-fd-primary` | The site's accent |
+| `bg-fd-card`, `border-fd-border` | Cards and their edges |
+
+For your own CSS, add it to `app/global.css`, after the two imports. The accent is `var(--ns-accent)`, and the serif used for titles is `var(--ns-font-display)`:
+
+```css title="app/global.css"
+@import 'tailwindcss';
+@import '@yx-elite/notestack/theme.css';
+
+.my-hero-title {
+  font-family: var(--ns-font-display);
+  color: var(--ns-accent);
+}
+```
+
+Name your classes with your own prefix, not `ns-`: the theme's classes can change between versions. Check the page in light and dark mode.
+
+### Going back
+
+Put the theme's page back to get the default landing page again:
+
+```tsx title="app/(home)/page.tsx"
+import { NotesHome } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function HomePage() {
+  return <NotesHome site={site} source={source} />;
+}
+```
+
+On a site with `languages`, pass `siteFor(site, lang)` as `site`, as in [Languages](/docs/languages#update-the-layouts).
