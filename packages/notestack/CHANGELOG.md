@@ -16,7 +16,7 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 
 - Fumadocs' Black preset with one accent colour and a second tone derived from it, a background grid and glow, and Geist and JetBrains Mono. Page and section titles use Instrument Serif, shipped with the theme, with a serif fallback for Chinese. Change it with `--ns-font-display`.
 - Notes read by contrast: paler body text, and plain white headings with space above them. A heading that opens a page sits as close to the divider as a paragraph does.
-- Styled content: tables with an accent header row, rounded and centred images that zoom on click, captions, cards, steps on a fading line, `<details>` that look like accordions, and accent-tinted previous and next buttons.
+- Styled content: tables with an accent header row whose headers stay on one line, rounded and centred images that zoom on click, captions, cards, steps on a fading line, `<details>` that look like accordions, and accent-tinted previous and next buttons.
 - A header with search, the theme switch, the language switch and GitHub. Phones and tablets get their own menu.
 - Smooth page transitions between the landing page and the docs, using the View Transitions API and tuned for Safari.
 - Light and dark mode for every part, and light and dark image pairs: name two files `name.light.svg` and `name.dark.svg` (also `.png` and `.jpg`), place both, and only the one for the reader's mode shows.
@@ -26,7 +26,7 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 - **`getMDXComponents()`** (`@yx-elite/notestack/mdx`) gives notes every component without imports: Fumadocs' Tabs, Steps, Cards, Files, TypeTable and Accordions (`type="multiple"` works), plus `Callout` and `Glossary`.
 - **`Callout`** is a tinted box with its icon and title in a pill. It has five types, takes any [Lucide](https://lucide.dev/icons) `icon` by name, and takes a `color`: one of nine named colours tuned for both modes (`calloutColors`) or any CSS colour. `title={false}` drops the pill for a compact aside with the icon before the text.
 - **`Glossary`** shows `content/glossary.json` as a filterable A to Z list with a letter bar. Terms outside A to Z go under `#`, and every term has its own anchor.
-- Sidebar icons come from `icon:` frontmatter (`notesSourcePlugins`), and *Last updated* dates from git (`pageLastModified()`, `LastUpdated`).
+- Sidebar icons come from `icon:` frontmatter (`notesSourcePlugins`), and *Last updated* dates from git (`pageLastModified()`, `LastUpdated`). Under each page's previous and next buttons, the date sits on the left and a *Built with Notestack* link on the right.
 
 ### Landing page
 

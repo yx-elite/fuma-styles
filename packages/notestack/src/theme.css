@@ -303,6 +303,9 @@ html > body[data-scroll-locked] {
   background: none;
   color: color-mix(in oklab, var(--ns-accent) 75%, var(--color-fd-foreground));
   font-weight: 600;
+  /* Headers stay on one line, so each column is at least as wide as its header
+     and the long cells wrap instead. A table too wide for a phone scrolls in its box. */
+  white-space: nowrap;
 }
 
 .prose td {
@@ -643,12 +646,47 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
   color: var(--ns-accent);
 }
 
-.ns-last-updated {
+/* Under the previous/next buttons: last updated on the left, "Built with …" on the right */
+.ns-page-footer {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: baseline;
+  gap: 0.5rem 1.5rem;
   margin-top: 1.5rem;
   padding-top: 1.25rem;
   border-top: 1px solid var(--color-fd-border);
   font-size: 0.8125rem;
   color: var(--color-fd-muted-foreground);
+}
+
+.ns-last-updated {
+  margin: 0;
+}
+
+.ns-page-footer .ns-credit {
+  margin-inline-start: auto;
+}
+
+/* Credit: "Built with Notestack", with the mark drawn in the text's colour
+   (the accent swapped for currentColor), so it dims and brightens with the link */
+.ns-credit {
+  /* Inline, not flex: its words then share the baseline of the text around them */
+  transition: color 0.15s;
+}
+
+.ns-credit:hover {
+  color: var(--color-fd-foreground);
+}
+
+/* Two classes, so it beats `.ns-footer svg` on the landing page */
+.ns-credit .ns-credit-mark {
+  --ns-accent: currentColor;
+  --ns-accent-2: currentColor;
+  display: inline-block;
+  width: 1.25em;
+  height: 1.25em;
+  margin-inline-end: 0.375em;
+  vertical-align: -0.3em;
 }
 
 /*
@@ -2513,6 +2551,11 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   padding-top: 1.25rem;
   border-top: 1px solid color-mix(in oklab, var(--color-fd-foreground) 7%, transparent);
   font-size: 0.8125rem;
+}
+
+/* The dot between the copyright and the credit: the same room on both sides */
+.ns-footer-sep {
+  margin-inline: 0.625em;
 }
 
 .ns-footer-status {
