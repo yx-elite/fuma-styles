@@ -115,13 +115,16 @@ npm run dev                                   # playground at localhost:3000
 npm run dev:starter                           # starter at localhost:3001
 npm run build                                 # package, then static export of the playground and the starter
 npm run typecheck                             # package build, then type-check the playground and the starter
+npm test                                      # the package's unit tests (Vitest, packages/notestack/test/)
 ```
 
 The playground reads the package's compiled `dist/`, so while developing keep `npm run dev -w @yx-elite/notestack` running next to `npm run dev`.
 
 **Stale dev cache.** Turbopack keeps its dev cache on disk in `playground/.next/`, across restarts, and doesn't notice packages appearing in `node_modules` (e.g. after `npm install` links a workspace). If the dev server keeps showing an error that a fresh `npm run build` doesn't, stop it, delete `playground/.next/` and start again. Don't add config to work around it.
 
-Before calling a change done, everything that exists from this list must pass: the package build, the type check, and the static export of the playground and the starter.
+Before calling a change done, everything that exists from this list must pass: the package build, the type check, the unit tests, and the static export of the playground and the starter.
+
+**Unit tests** cover the package's plain functions (language helpers, URLs, config helpers, the landing page's sections): one file per area in `packages/notestack/test/`, outside `src/` so they are neither compiled into `dist/` nor published. Test what a caller sees (inputs and return values), with expected values taken from what the docs promise, not copied from the code's output. Components and CSS are checked in the playground, in light and dark mode, not with unit tests.
 
 ## Versions and publishing
 

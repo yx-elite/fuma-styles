@@ -41,7 +41,7 @@ export interface SiteConfig {
    * English unless you fill in `text`.
    */
   language?: string;
-  /** Change any of Notestack's text, e.g. { startReading: 'Read the notes' } */
+  /** Change any of Notestack's text, e.g. { startReading: 'Read the notes' }. With `languages`, for the default language only. */
   text?: Partial<NotesText>;
   /**
    * Several languages in one site, e.g. ['en', 'zh-CN']; the first is the default.
@@ -50,7 +50,12 @@ export interface SiteConfig {
    * Leave it out for a site in one language (see `language`).
    */
   languages?: string[];
-  /** Per-language versions of the site's own text, e.g. { 'zh-CN': { name: '网络笔记' } }. Anything left out uses the default language's value. */
+  /**
+   * Per-language versions of the site's own text, e.g. { 'zh-CN': { name: '网络笔记' } }.
+   * Anything left out uses the default language's value, except `text`: the top-level
+   * `text` changes the default language only, and each other language keeps the theme's
+   * own text for it unless its translation sets `text`.
+   */
   translations?: Record<string, SiteTranslation>;
 }
 

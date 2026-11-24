@@ -95,6 +95,19 @@ export default defineSiteConfig({
 
 `translations` can hold `name`, `author`, `tag`, `description`, `links`, `bannerLink`, `start` and `text`.
 
+`text` is the one exception to "anything you leave out uses the default language's value". `text` at the top of the config changes the default language only, so a Chinese page never shows an English phrase you renamed. To change the same phrase in another language, set `text` in that language's `translations`:
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  // …
+  languages: ['en', 'zh-CN'],
+  text: { startReading: 'Open the notes' }, // English pages
+  translations: {
+    'zh-CN': { text: { startReading: '打开笔记' } }, // Chinese pages; leave it out to keep 开始阅读
+  },
+});
+```
+
 </Step>
 <Step>
 
