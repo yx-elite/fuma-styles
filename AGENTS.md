@@ -132,7 +132,8 @@ Before calling a change done, everything that exists from this list must pass: t
 - Semver. While in `0.x`, a breaking change bumps the minor.
 - Never bump the version, run `npm publish` or create tags unless the maintainer asks.
 - Every user-visible change gets a line in `packages/notestack/CHANGELOG.md` under *Unreleased*.
-- Until the first release (`0.1.0`), *Unreleased* is a summary of what that release contains. Edit it in place so it describes the package as it is now, instead of adding *Changed* or *Fixed* lines about versions nobody installed.
+- Since `0.1.0`, each release gets its own section (`## 0.2.0 (date)`), with *Added*, *Changed*, *Fixed* and *Migration* as needed. Lines collect under *Unreleased* until then.
+- `notestack` and `create-notestack` always share a version number and are published together: `create-notestack` installs `notestack` at `^` its own version.
 - The reusable deploy workflow is pinned by notes repos to a major tag (`@v1`). Changing its inputs is a breaking change.
 
 ## Commit messages

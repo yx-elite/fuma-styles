@@ -17,7 +17,12 @@ import { hasLanguageRoutes, languageOf, localizeHref, notesText, type LanguageCo
  * so text follows the site's language and `/docs/…` links in notes get the page's
  * language added (`/zh-CN/docs/…`).
  */
-export function getMDXComponents(components?: MDXComponents, { site }: { site?: LanguageConfig } = {}) {
+// The return type is written out on purpose: left to TypeScript, the published
+// mdx.d.ts spelled out every component's full type and grew to over 700 kB.
+export function getMDXComponents(
+  components?: MDXComponents,
+  { site }: { site?: LanguageConfig } = {},
+): MDXComponents {
   const text = notesText(site);
   const language = languageOf(site);
   const localize = (href: string | undefined) => localizeHref(href, site);

@@ -4,7 +4,11 @@ All notable changes to `notestack`. Versions follow [semver](https://semver.org)
 
 ## Unreleased
 
-The first release, `0.1.0`. Until it's published, this section describes what it contains and is edited in place. From `0.1.0` on, each release lists its own changes under *Added*, *Changed*, *Fixed* and *Migration*.
+Nothing yet.
+
+## 0.1.0 (2026-11-25)
+
+The first release, published together with `create-notestack` 0.1.0 (`npm create notestack@latest my-notes`). From here on, each release lists its own changes under *Added*, *Changed*, *Fixed* and *Migration*.
 
 ### Setup
 

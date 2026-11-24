@@ -1,6 +1,6 @@
 {
   "name": "create-notestack",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Create a Notestack study-notes site: npm create notestack@latest my-notes",
   "keywords": [
     "notestack",
@@ -22,7 +22,7 @@
   },
   "type": "module",
   "bin": {
-    "create-notestack": "./index.js"
+    "create-notestack": "index.js"
   },
   "files": [
     "index.js",
