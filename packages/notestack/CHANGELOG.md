@@ -30,7 +30,7 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 
 ### Landing page
 
-- **`NotesHome`** builds the landing page from the notes and the config: a hero with page and section counts and the last update, a live docs preview, a "Built with" strip, "What's inside", "Get started" (`start`, or `false` to hide it), a search section, and a footer with the sections, links and *Back to top*.
+- **`NotesHome`** builds the landing page from the notes and the config: a hero with page and section counts and the last update, a live docs preview, a "Built with" strip led by Notestack, "What's inside", "Get started" (`start`, or `false` to hide it), a search section, and a footer with the sections, links, *Back to top* and a *Built with Notestack* link to the theme's repo.
 - **"What's inside"** is a mosaic of cards in different sizes. The first section is a feature card, and the others show overlapping icons, a stacked list, a large page count or one-line strips. It fits any number of sections and stacks on phones.
 - Sections rise in as they scroll into view, each card's contents follow one by one, and numbers count up. With *reduce motion* on, nothing moves.
 

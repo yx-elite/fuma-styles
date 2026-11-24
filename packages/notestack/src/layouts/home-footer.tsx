@@ -2,10 +2,11 @@ import Link from 'fumadocs-core/link';
 import { ArrowUp } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { repoUrl, type SiteConfig } from '../config/site.js';
-import { fillNodes, formatDate, languageOf, localizeHref, type NotesText } from '../i18n/index.js';
+import { fill, fillNodes, formatDate, languageOf, localizeHref, type NotesText } from '../i18n/index.js';
 import type { HomeGroup } from './home.js';
 import { lucideIcon } from '../icons.js';
 import { NotesLogo } from './logo.js';
+import { stackFor } from './stack.js';
 
 function GitHubMark() {
   return (
@@ -36,6 +37,8 @@ export function HomeFooter({
   const sections = groups.filter((group) => group.pages.length > 0).slice(0, 6);
   const links = site.links ?? [];
   const year = (updated ?? new Date()).getUTCFullYear();
+  // Notestack on notes sites, Fumadocs on Notestack's own docs site
+  const credit = stackFor(site)[0];
 
   return (
     <footer className="ns-footer" style={{ '--ns-name-length': Math.max(site.name.length, 4) } as CSSProperties}>
@@ -90,8 +93,8 @@ export function HomeFooter({
       <div className="ns-footer-bottom">
         <span>
           © {year} {site.author ?? site.name} ·{' '}
-          <a href="https://fumadocs.dev" target="_blank" rel="noreferrer">
-            {text.builtWithFumadocs}
+          <a href={credit.href} target="_blank" rel="noreferrer">
+            {fill(text.footerCredit, { name: credit.name })}
           </a>
         </span>
         {updated && (

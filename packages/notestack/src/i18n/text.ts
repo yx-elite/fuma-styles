@@ -47,7 +47,8 @@ export interface NotesText {
   searchButton: string;
   /** `{author}` */
   byAuthor: string;
-  builtWithFumadocs: string;
+  /** `{name}`: Notestack, or Fumadocs on Notestack's own docs site */
+  footerCredit: string;
   footerNav: string;
   footerNotes: string;
   footerLinks: string;
@@ -128,7 +129,7 @@ export const en: NotesText = {
   searchText: 'Every page is searchable. Search runs in your browser, so results show as you type.',
   searchButton: 'Search the notes',
   byAuthor: 'by {author}',
-  builtWithFumadocs: 'Built with Fumadocs',
+  footerCredit: 'Built with {name}',
   footerNav: 'Footer',
   footerNotes: 'Notes',
   footerLinks: 'Links',
@@ -198,7 +199,7 @@ export const zhCN: NotesText = {
   searchText: '每一页都可以搜索。搜索在浏览器中运行，输入时即显示结果。',
   searchButton: '搜索笔记',
   byAuthor: '作者：{author}',
-  builtWithFumadocs: '基于 Fumadocs 构建',
+  footerCredit: '基于 {name} 构建',
   footerNav: '页脚',
   footerNotes: '笔记',
   footerLinks: '链接',

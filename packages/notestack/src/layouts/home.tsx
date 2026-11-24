@@ -21,7 +21,8 @@ import {
   pluralForm,
   type NotesText,
 } from '../i18n/index.js';
-import { notesStack, type StackItem } from './stack.js';
+import { NotesLogo } from './logo.js';
+import { notestack, stackFor, type StackItem } from './stack.js';
 
 /** The parts of a Fumadocs `loader()` source the home page reads. */
 export interface HomeSource {
@@ -179,7 +180,7 @@ export function NotesHome({
         <DocsPreview site={site} groups={groups} href={firstUrl} text={text} />
       </div>
 
-      <StackStrip items={notesStack} label={text.builtWith} />
+      <StackStrip items={stackFor(site)} label={text.builtWith} />
 
       {groups.length > 0 && (
         <section className="ns-home-section" aria-labelledby="ns-home-contents">
@@ -235,6 +236,7 @@ function SectionHead({ id, eyebrow, title, children }: { id: string; eyebrow: st
 /* ── Built with: library logos flowing sideways ──────────────────────── */
 
 function StackLogo({ item }: { item: StackItem }) {
+  if (item === notestack) return <NotesLogo />;
   if (item.path)
     return (
       <svg viewBox="0 0 24 24" aria-hidden>
