@@ -1,7 +1,5 @@
-import { docsLlms } from '@/lib/source';
+import { llmsFullRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
 
 export const revalidate = false;
-
-export async function GET() {
-  return (await docsLlms.serve('/llms-full.txt'))!;
-}
+export const GET = llmsFullRoute(source);

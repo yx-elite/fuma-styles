@@ -1,15 +1,5 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
-import { Provider } from '@/components/provider';
-import {
-  AccentPicker,
-  AccentPickerScript,
-  notesI18n,
-  notesText,
-  PageTransitions,
-  RememberLanguage,
-  siteFor,
-  SiteStyle,
-} from '@yx-elite/notestack';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
 import site from '@/site.config';
 import '../global.css';
 
@@ -23,23 +13,17 @@ export function generateStaticParams() {
   return (site.languages ?? []).map((lang) => ({ lang }));
 }
 
+export async function generateMetadata({ params }: LayoutProps<'/[lang]'>) {
+  const { lang } = await params;
+  return notesMetadata(site, lang);
+}
+
 export default async function Layout({ params, children }: LayoutProps<'/[lang]'>) {
   const { lang } = await params;
-  const local = siteFor(site, lang);
-
   return (
-    <html lang={lang} className={`${sans.variable} ${mono.variable}`} suppressHydrationWarning>
-      <body className="flex flex-col min-h-screen">
-        <AccentPickerScript />
-        <SiteStyle site={local} />
-        <Provider i18n={notesI18n(local)}>
-          <RememberLanguage language={lang} />
-          <PageTransitions languages={site.languages} />
-          {children}
-          {/* demo only: lets visitors try other accents; notes sites leave this out */}
-          <AccentPicker text={notesText(local)} />
-        </Provider>
-      </body>
-    </html>
+    // accentPicker: demo only, lets visitors try other accents; notes sites leave it out
+    <NotesRoot site={site} language={lang} className={`${sans.variable} ${mono.variable}`} accentPicker>
+      {children}
+    </NotesRoot>
   );
 }
