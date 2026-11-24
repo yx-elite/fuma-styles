@@ -27,7 +27,7 @@ A notes site is a copy of the starter. Its files in `app/` are a few lines each 
 4. **Draws a share image** (PNG) for each note.
 5. **Writes plain-text copies** of the notes: `llms.txt`, `llms-full.txt` and one Markdown file per page.
 
-Everything lands in `out/` as plain files. No server runs after that, which is why any static host works.
+Everything lands in `out/` as plain files. No server runs after that, which is why any static host works. What steps 3 to 5 make, and what each needs, is on [Built-in features](/docs/features).
 
 ## Inside the package
 
@@ -38,7 +38,7 @@ The package has six entry points. Each is something a site imports:
 | `@yx-elite/notestack` | Layouts, `site.config.ts` | `defineSiteConfig`, `NotesRoot`, `NotesLayout`, `NotesHome`, components, language helpers |
 | `@yx-elite/notestack/routes` | Files in `app/` | The docs page and the search, share-image and llms.txt routes. Server only |
 | `@yx-elite/notestack/source` | `lib/source.ts` | Loader plugins (sidebar icons) and last-updated dates. Build time only |
-| `@yx-elite/notestack/mdx` | Notes | `getMDXComponents()`: every component a note can use |
+| `@yx-elite/notestack/mdx` | `createNotesPage`, the docs page route | `getMDXComponents()`: every component a note can use |
 | `@yx-elite/notestack/next` | `next.config.mjs` | `withNotestack()`: static export settings |
 | `@yx-elite/notestack/theme.css` | `app/global.css` | The whole design, as CSS |
 
@@ -52,7 +52,7 @@ And its source folders:
 | `src/routes/` | The docs page and the routes for search, share images and llms.txt |
 | `src/pages/` | The settings of each docs page: *On this page* and the *Last updated* line |
 | `src/source/` | Sidebar icons from frontmatter, and each page's last-updated date from git |
-| `src/components/` | Glossary, search dialog, copy button, accent picker |
+| `src/components/` | Callout, Glossary, search button and dialog, copy button, accent picker |
 | `src/i18n/` | Every piece of the theme's text, in English and Chinese, and the language helpers |
 | `src/mdx.tsx` | The list of components available in notes |
 | `src/next.ts` | `withNotestack()`, the Next.js settings for a static site |
@@ -64,4 +64,4 @@ The theme styles Fumadocs rather than replacing it: search, the sidebar, MDX and
 - **Static only.** Every site is a static export, so hosting is cheap or free and nothing can go down. That rules out anything that needs a server: no login, no comments, no server-side search.
 - **Thin site files.** A site's files are copied once and never updated by the theme. Keeping them to a few lines means almost every change can ship through `npm update` instead.
 - **One accent colour.** The whole look comes from one colour per mode, so a site needs no design work to look finished.
-- **Two image files for diagrams.** An image can't see the page's dark mode, so a diagram comes in a light and a dark version and the theme shows the right one. See [Writing notes](/docs/writing-notes#images-and-diagrams).
+- **Two image files for diagrams.** An image can't see the page's dark mode, so a diagram comes in a light and a dark version and the theme shows the right one. See [Images and diagrams](/docs/images#light-and-dark-versions).

@@ -1,0 +1,65 @@
+---
+title: Built-in features
+description: What search, last-updated dates, share images, AI copies and page transitions do, and what each needs.
+icon: Layers
+---
+
+Every notes site has these features. The build makes everything ahead of time, so they all work on a static host.
+
+| Feature | Comes from | Needs |
+| --- | --- | --- |
+| [Search](#search) | `app/api/search/route.ts` | The site at the root of its domain |
+| [Last updated dates](#last-updated-dates) | `lastModified: true` in `lib/source.ts` | Committed pages, and the full git history when the site builds |
+| [Share images](#share-images) | `app/og/docs/[...slug]/route.tsx` | `url` in `site.config.ts` |
+| [Copies for AI assistants](#copies-for-ai-assistants) | The `app/llms.txt/`, `app/llms-full.txt/` and `app/llms.mdx/` routes | `postprocess: { includeProcessedMarkdown: true }` in `lib/source.ts` |
+| [Page transitions](#page-transitions) | `NotesRoot` in `app/layout.tsx` | A browser with the View Transitions API |
+
+The starter has every file and setting in this table.
+
+## Search
+
+Readers open search with the search box in the header, or with <kbd>Ctrl</kbd> + <kbd>K</kbd> (<kbd>⌘</kbd> + <kbd>K</kbd> on a Mac). It finds pages by their title, headings and text.
+
+At build time, `searchRoute` writes the whole index to one file, `/api/search`. The browser downloads that file and searches it on its own, so no search server is involved. A site with several languages has one index per language, and search looks in the page's language. Chinese and other languages without spaces are split into words correctly.
+
+Search needs two things from the host:
+
+- It must serve `/api/search`, a file with no extension. If search finds nothing on the published site, see [Troubleshooting](/docs/troubleshooting#building-and-publishing).
+- The site must be at the root of its domain, such as `https://notes.example.com/`, not in a folder. See [Deployment](/docs/deployment).
+
+## Last updated dates
+
+Each note shows *Last updated on* and a date below its previous and next buttons, in the site's language. The landing page shows the newest of these dates.
+
+The date is the page's latest git commit. Fumadocs MDX reads it at build time, because `lib/source.ts` sets `lastModified: true`. Without that line, pages show no date.
+
+- A page you haven't committed yet has no date. Commit it.
+- The build needs the full git history. With only the latest commit, every page shows that commit's date. On GitHub Actions, add `fetch-depth: 0` to the checkout step. Hosts that build for you clone in their own way. [Last updated dates](/docs/deployment#last-updated-dates) in the deployment guide covers each one.
+
+## Share images
+
+A link to a note, pasted into a chat app or a social post, shows a preview with an image. The image holds the note's title, its description and the site's name.
+
+`ogImageRoute` makes one PNG per page at build time, such as `/og/docs/networking/vpc/image.png`. Each page's metadata points to its image.
+
+Link previews need the full address of the image, so set `url` in `site.config.ts` once the site has an address (see [Site address](/docs/configuration#site-address)). Until then, the build warns that `metadataBase` is not set, and everything else works the same.
+
+## Copies for AI assistants
+
+The build writes plain-text copies of the notes, following the [llms.txt](https://llmstxt.org) convention:
+
+| File | Holds |
+| --- | --- |
+| `/llms.txt` | An index of every page, with links |
+| `/llms-full.txt` | Every page in one file |
+| `/llms.mdx/docs/<page>.md` | One page as Markdown, such as `/llms.mdx/docs/networking/vpc.md` |
+
+Each note has a *Copy Markdown* button under its title, which copies the page's Markdown. The menu beside it opens the Markdown copy, opens the page's source on GitHub, or opens the page in an AI chat app such as ChatGPT or Claude. The GitHub link uses `repo` and `branch` from `site.config.ts`. For a site in a subfolder of its repository, see [Advanced](/docs/advanced#a-site-inside-a-bigger-repository).
+
+The copies need `postprocess: { includeProcessedMarkdown: true }` in `lib/source.ts`. On a site with several languages, `llms.txt` and `llms-full.txt` list the pages of every language together.
+
+## Page transitions
+
+Moving from the landing page into the docs, and back, is animated. The header pieces glide to their new places, the landing page fades and rises away, and the docs flow up into place: the sidebar from the left, *On this page* from the right. Going back home plays the reverse. Links between two docs pages change the page as usual.
+
+`NotesRoot` runs the animation with the browser's View Transitions API. Browsers without the API, and readers who turn on *reduce motion* in their system settings, change pages without the animation. There is no setting for it. It keeps working with [your own landing page](/docs/landing-page#your-own-landing-page).

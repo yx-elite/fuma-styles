@@ -1,0 +1,112 @@
+---
+title: Pages and sidebar
+description: Pages and folders, frontmatter, the sidebar order, links between notes, and the components a note can use.
+icon: FileText
+---
+
+Notes are Markdown files in `content/docs/`. The theme styles whatever Fumadocs renders, so anything in the Fumadocs guide to [writing pages](https://fumadocs.dev/docs/next/markdown) works here too.
+
+## Pages and folders
+
+Each `.mdx` (or `.md`) file is one page, and its path is its address:
+
+| File | Page |
+| --- | --- |
+| `content/docs/index.mdx` | `/docs`, the first page. *Start reading* opens it |
+| `content/docs/networking.mdx` | `/docs/networking` |
+| `content/docs/networking/index.mdx` | `/docs/networking` (the folder's own page) |
+| `content/docs/networking/vpc.mdx` | `/docs/networking/vpc` |
+
+Use lowercase file names with hyphens, such as `dns-records.mdx`, because the name becomes the address. A folder groups pages under one heading in the sidebar.
+
+<Callout type="warn" title="Keep content/docs/index.mdx">
+The landing page's *Start reading* button and the `/docs` address open it. Without it, they show a "page not found".
+</Callout>
+
+## Frontmatter
+
+Every page starts with a few lines between `---`:
+
+```md title="content/docs/networking/vpc.mdx"
+---
+title: VPC
+description: Private networks, subnets and routing.
+icon: Network
+---
+
+Your note starts here.
+```
+
+| Field | Needed | What it does |
+| --- | --- | --- |
+| `title` | **Yes** | The page heading, the sidebar entry, the browser tab and the search result |
+| `description` | No | The line under the title, the summary in search and on the landing page, and the text of link previews |
+| `icon` | No | An icon for the sidebar: any [Lucide](https://lucide.dev/icons) icon name, such as `Network` or `Shield` |
+| `full` | No | `full: true` uses the whole width and hides *On this page*. For wide tables or diagrams |
+
+Don't repeat the title as a `# Heading` in the page, because the theme already shows it. Start the note with `##` headings. They make up *On this page*.
+
+## The sidebar
+
+A `meta.json` file in a folder sets the order of its pages. The starter's looks like this:
+
+```json title="content/docs/meta.json"
+{
+  "pages": ["---Start here---", "index", "---Notes---", "...example", "...", "---Reference---", "glossary"]
+}
+```
+
+| Entry | What it does |
+| --- | --- |
+| `"index"`, `"glossary"` | A page or folder, by its file name without `.mdx` |
+| `"---Notes---"` | A section heading. On the landing page, each section becomes a card |
+| `"...example"` | Every page of the `example` folder, placed here without the folder around them |
+| `"..."` | Every page and folder not listed anywhere else, A to Z |
+| `"!drafts"` | Leaves `drafts` out of the sidebar |
+
+<Callout type="warn" title="A new page doesn't show up?">
+If a folder's `meta.json` lists its pages and has no `"..."`, pages you add later are left out. Add the page's name to `pages`, or keep `"..."` in the list.
+</Callout>
+
+Without a `meta.json`, a folder lists its pages A to Z. A folder's own `meta.json` can also name and style it:
+
+```json title="content/docs/networking/meta.json"
+{
+  "title": "Networking",
+  "icon": "Network",
+  "defaultOpen": true,
+  "pages": ["index", "vpc", "dns-records", "..."]
+}
+```
+
+`defaultOpen` shows the folder expanded in the sidebar. More options are in Fumadocs' [page conventions](https://fumadocs.dev/docs/next/page-conventions). How the sections become cards on the landing page is in [Landing page](/docs/landing-page#sections).
+
+## Links
+
+Link to another note by its address, or by its file:
+
+```md
+See [subnets](/docs/networking/vpc#subnets).
+See [subnets](./vpc.mdx#subnets).
+```
+
+Every heading gets an anchor from its text, so `## Route tables` is `#route-tables`. Links to other websites open as usual. On a site with several languages, keep writing `/docs/…`, and the theme adds the page's language.
+
+## Components
+
+Besides Markdown, notes can use these components without importing them:
+
+| Component | For | How to use it |
+| --- | --- | --- |
+| `<Callout>` | A tip, warning or note in a coloured box | [Callouts and collapsibles](/docs/callouts) |
+| `<Accordions>` and `<Accordion>` | Sections that open on click | [Callouts and collapsibles](/docs/callouts#accordions-for-groups-and-links) |
+| `<Glossary>` | The A to Z list of terms | [Glossary](/docs/glossary) |
+| `<Steps>` and `<Step>` | Numbered steps | [Steps](https://fumadocs.dev/docs/ui/components/steps) in Fumadocs' docs |
+| `<Tabs>` and `<Tab>` | The same thing shown several ways, such as per operating system | [Tabs](https://fumadocs.dev/docs/ui/components/tabs) in Fumadocs' docs |
+| `<Cards>` and `<Card>` | Links shown as cards | [Cards](https://fumadocs.dev/docs/next/markdown#cards) in Fumadocs' docs |
+| `<Files>`, `<Folder>` and `<File>` | A file tree | [Files](https://fumadocs.dev/docs/ui/components/files) in Fumadocs' docs |
+| `<TypeTable>` | A table of options with types and defaults | [Type Table](https://fumadocs.dev/docs/ui/components/type-table) in Fumadocs' docs |
+
+Code blocks take options too, such as `title=`, `lineNumbers`, `// [!code ...]` notes, code tabs and ```` ```npm ```` blocks. Fumadocs' [Markdown guide](https://fumadocs.dev/docs/next/markdown) explains each one.
+
+To see how each component looks in this theme, open the [Showcase](/docs/showcase/components). To add your own components, see [Advanced](/docs/advanced#your-own-components).

@@ -1,21 +1,84 @@
 ---
 title: Components
-description: "Every component a note can use: cards, tabs, steps, accordions, files and type tables."
+description: "Every component a note can use, as the theme draws it: callouts, cards, tabs, steps, accordions, file trees and type tables."
 icon: Blocks
 ---
 
+Each component appears once, with its edge cases. [Pages and sidebar](/docs/pages#components) lists them and links to how to write each one. The glossary has its own page, [Glossary](/docs/glossary).
+
+## Callouts
+
+Every prop, and the table of colours, is on [Callouts and collapsibles](/docs/callouts).
+
+### Types
+
+None of these has a `title`, so each pill shows the type's name.
+
+<Callout>`type="info"`, the default.</Callout>
+
+<Callout type="idea">`type="idea"`</Callout>
+
+<Callout type="success">`type="success"`</Callout>
+
+<Callout type="warn">`type="warn"`</Callout>
+
+<Callout type="error">`type="error"`</Callout>
+
+<Callout title={false}>`title={false}`, with no pill and the icon before the text.</Callout>
+
+<Callout type="warn" title={false}>A longer one, to check how the text wraps under the first line while the icon stays beside it. It should line up with the first line, not the middle of the box.</Callout>
+
+### Colours
+
+The named colours, in the order of the [colours table](/docs/callouts#colours), then a custom colour.
+
+<Callout color="accent" title="Accent" icon="Palette">`color="accent"`</Callout>
+
+<Callout color="blue" title="Blue" icon="Palette">`color="blue"`</Callout>
+
+<Callout color="teal" title="Teal" icon="Palette">`color="teal"`</Callout>
+
+<Callout color="green" title="Green" icon="Palette">`color="green"`</Callout>
+
+<Callout color="purple" title="Purple" icon="Palette">`color="purple"`</Callout>
+
+<Callout color="pink" title="Pink" icon="Palette">`color="pink"`</Callout>
+
+<Callout color="orange" title="Orange" icon="Palette">`color="orange"`</Callout>
+
+<Callout color="red" title="Red" icon="Palette">`color="red"`</Callout>
+
+<Callout color="slate" title="Slate" icon="Palette">`color="slate"`</Callout>
+
+<Callout color="#1d9e75" title="Custom" icon="Palette">`color="#1d9e75"`, the same value in both modes.</Callout>
+
+### Long title
+
+<Callout type="idea" title="A long title that wraps onto a second line on a phone, to check the pill">The pill wraps its text instead of running out of the box.</Callout>
+
+### Rich content
+
+<Callout title="Cache headers">
+  Set `Cache-Control` on every response:
+
+  - `max-age`: how long a copy stays fresh
+  - `no-store`: never keep a copy
+
+  See [Deployment](/docs/deployment) for details.
+</Callout>
+
 ## Cards
 
-Cards work as a visual index: the topic pages and the home page use them to point to the next thing to read.
+### With descriptions
 
-### Cards with descriptions
+An internal link and an external link.
 
 <Cards>
-  <Card title="Installation" href="/docs/installation" description="Add the theme to a new Fumadocs app in four steps." />
-  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
+  <Card title="Installation" href="/docs/installation" description="Create a notes site with one command." />
+  <Card title="Fumadocs" href="https://fumadocs.dev" description="The documentation framework these sites are built on." />
 </Cards>
 
-### Cards without descriptions
+### Titles only
 
 <Cards>
   <Card title="Typography" href="/docs/showcase/markdown#typography" />
@@ -24,120 +87,74 @@ Cards work as a visual index: the topic pages and the home page use them to poin
   <Card title="Tables" href="/docs/showcase/markdown#tables" />
 </Cards>
 
-### External link cards
+### No link
+
+A single card with body text and no link. It should not look clickable.
 
 <Cards>
-  <Card title="Fumadocs" href="https://fumadocs.dev" description="The documentation framework these sites are built on." />
-  <Card title="Tailwind CSS" href="https://tailwindcss.com" description="The CSS framework behind the theme." />
+  <Card title="Not a link">A card with body text and no link.</Card>
 </Cards>
 
-### Card with no link
+## Tabs
 
-<Cards>
-  <Card title="Not a link">A card with body text and no link. It should not look clickable.</Card>
-</Cards>
-
-### Single card
-
-<Cards>
-  <Card title="Read next: Tabs and steps" href="/docs/showcase/components#tabs-and-steps" description="One card on its own, as at the end of a note." />
-</Cards>
-
-## Tabs and steps
-
-Tabs show alternatives side by side. Steps guide a reader through a process in order.
-
-### Tabs
-
-<Tabs items={['Console', 'CLI', 'Terraform']}>
-  <Tab value="Console">
-    Open the **S3** page, choose **Create bucket**, enter a name and keep the default settings.
+<Tabs items={['Text', 'Code', 'List']}>
+  <Tab value="Text">
+    A tab holds anything a note can. Choose a tab to switch.
   </Tab>
-  <Tab value="CLI">
+  <Tab value="Code">
     ```bash
-    aws s3 mb s3://example-bucket --region ap-southeast-1
+    dig +short example.com
     ```
   </Tab>
-  <Tab value="Terraform">
-    ```hcl
-    resource "aws_s3_bucket" "example" {
-      bucket = "example-bucket"
-    }
-    ```
-  </Tab>
-</Tabs>
-
-### Tabs with longer content
-
-<Tabs items={['Strengths', 'Weaknesses']}>
-  <Tab value="Strengths">
+  <Tab value="List">
     - Fast reads for repeated requests
     - Less load on the origin
-    - Lower cost per request
 
     A cache pays off most when the same data is read many times.
   </Tab>
-  <Tab value="Weaknesses">
-    - Stale data until the copy expires
-    - Extra moving parts to monitor
-    - Cold start after a restart
-  </Tab>
 </Tabs>
 
-### Steps
+## Steps
 
 <Steps>
   <Step>
-    ### Create the bucket
-
-    Pick a name that is unique across all accounts, and the Region closest to users.
-  </Step>
-  <Step>
-    ### Upload the site
-
-    Upload the static files, keeping the folder structure:
+    ### Create the site
 
     ```bash
-    aws s3 sync out/ s3://example-bucket --delete
+    npm create notestack@latest my-notes
     ```
   </Step>
   <Step>
-    ### Point the domain at it
+    ### Write a note
 
-    Add a DNS record for the domain. The change can take a few minutes to reach every resolver.
+    Add a `.mdx` file to `content/docs/`. The site updates as you save.
   </Step>
   <Step>
-    ### Check it works
+    ### Publish it
 
-    Open the site in a private window, so no old copy from the browser cache is shown.
+    Build the site and copy `out/` to a host.
   </Step>
 </Steps>
 
-## Accordions and files
+## Accordions
 
-Accordions hide detail until it is needed, which suits practice questions. File trees show how a project is laid out.
+### One open at a time
 
-### Accordions
-
-Opening one panel closes the one that was open.
+Opening one panel closes the other. The second has an `id`, so it gets a button that copies a link to it.
 
 <Accordions>
   <Accordion title="What is a cache hit?">
     The requested data was found in the cache, so the origin was not asked.
   </Accordion>
-  <Accordion title="Why can a cache return old data?">
-    Because the cached copy stays valid until its TTL runs out, even if the original has changed.
-  </Accordion>
-  <Accordion title="How can stale data be avoided?">
+  <Accordion title="How can stale data be avoided?" id="avoid-stale-data">
     - Use a shorter TTL
     - Clear the cached copy when the original changes
-    - Version file names, so new content gets a new URL
   </Accordion>
 </Accordions>
 
-### Accordions open together
+### Several open
 
-With `multiple`, several panels stay open at once. Open both to check.
+With `multiple`, panels stay open together. Open both to check.
 
 <Accordions multiple>
   <Accordion title="Question 1">This one stays open when you open Question 2.</Accordion>
@@ -150,7 +167,7 @@ With `multiple`, several panels stay open at once. Open both to check.
   </Accordion>
 </Accordions>
 
-### File tree
+## File tree
 
 <Files>
   <Folder name="app" defaultOpen>
@@ -175,29 +192,29 @@ With `multiple`, several panels stay open at once. Open both to check.
 
 ## Type table
 
-Type tables list the options of something, with their types and defaults.
+The fields of `start` in `site.config.ts`, as an example.
 
 <TypeTable
   type={{
     title: {
-      description: 'The site name, shown in the sidebar and browser tab.',
+      description: 'The heading of the "Get started" section.',
       type: 'string',
       required: true,
     },
-    subdomain: {
-      description: 'Where the site is hosted, e.g. saa for saa.example.com.',
+    text: {
+      description: 'The sentence under the heading.',
       type: 'string',
       required: true,
     },
-    accent: {
-      description: 'The accent colour for links, active items and the page glow.',
-      type: 'string',
-      default: "'hsl(217, 100%, 58%)'",
+    steps: {
+      description: 'The numbered steps. Each command is typed into the terminal beside them.',
+      type: '{ title: string; text: string; command: string }[]',
+      required: true,
     },
-    showGrid: {
-      description: 'Whether the decorative grid is drawn behind the top of each page.',
-      type: 'boolean',
-      default: 'true',
+    done: {
+      description: 'The last line of the terminal, after the commands.',
+      type: 'string',
+      default: "'Ready on http://localhost:3000'",
     },
   }}
 />

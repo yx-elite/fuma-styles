@@ -1,0 +1,69 @@
+---
+title: Advanced
+description: Add your own components, set a repository subfolder and pass Next.js options in the app files.
+icon: Wrench
+---
+
+A few options live in the files in `app/` and in `next.config.mjs` instead of `site.config.ts`, because they need code.
+
+## Your own components
+
+To use a component of your own in notes, write it in your site, then pass it to `createNotesPage` in `app/docs/[[...slug]]/page.tsx`:
+
+```tsx title="components/youtube.tsx"
+export function YouTube({ id }: { id: string }) {
+  return (
+    <div className="aspect-video overflow-hidden rounded-lg">
+      <iframe
+        className="size-full"
+        src={`https://www.youtube-nocookie.com/embed/${id}`}
+        title="YouTube video"
+        allow="encrypted-media; picture-in-picture"
+        allowFullScreen
+      />
+    </div>
+  );
+}
+```
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+import { createNotesPage } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+import { YouTube } from '@/components/youtube';
+
+const docs = createNotesPage({ source, site, components: { YouTube } });
+
+export default docs.Page;
+export const generateStaticParams = docs.generateStaticParams;
+export const generateMetadata = docs.generateMetadata;
+```
+
+Notes can then use `<YouTube id="…" />` without importing it. The video keeps a 16:9 shape at any width. A component with the same name as one of the theme's replaces it.
+
+## A site inside a bigger repository
+
+If the site isn't at the root of its repository, for example in a `site/` folder, *Open in GitHub* links need the folder. Pass it as `repoDir`:
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+const docs = createNotesPage({ source, site, repoDir: 'site' });
+```
+
+## Next.js options
+
+`withNotestack()` in `next.config.mjs` sets what a static site needs. Pass any other Next.js option to it:
+
+```js title="next.config.mjs"
+import { createMDX } from 'fumadocs-mdx/next';
+import { withNotestack } from '@yx-elite/notestack/next';
+
+const withMDX = createMDX();
+
+export default withMDX(
+  withNotestack({
+    env: { NEXT_PUBLIC_EXAM_DATE: '2027-03-01' },
+  }),
+);
+```
+
+It always keeps `output: 'export'`, `trailingSlash: true` and unoptimised images, which the hosting depends on. Don't set `basePath`. The site must be served from the root of a domain, or search stops working.

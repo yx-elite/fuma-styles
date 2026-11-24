@@ -13,18 +13,16 @@ A notes site is in English unless you say otherwise. There are two levels:
 
 ## One language
 
-Set `language` to the language your notes are written in, as a [language tag](https://www.w3.org/International/articles/language-tags/) such as `zh-CN`, `ja` or `ms`:
+Set `language` to the language your notes are written in, as a [language tag](https://www.w3.org/International/articles/language-tags/) such as `zh-CN`, `ja` or `fr`:
 
 ```ts title="site.config.ts"
 export default defineSiteConfig({
-  name: '股票交易笔记',
-  description: '技术分析与风险管理笔记。',
-  repo: 'your-name/trading-notes',
+  // …
   language: 'zh-CN',
 });
 ```
 
-That's all. The page language, date formats and all the text the theme shows follow it: the landing page, the glossary, *Last updated*, and Fumadocs' own search box, *On this page* and page buttons.
+The page language, date formats and all the text the theme shows follow it: the landing page, the glossary, *Last updated*, and Fumadocs' own search box, *On this page* and page buttons.
 
 ### Built-in text
 
@@ -41,16 +39,16 @@ To translate the theme's text into another language, or to change one phrase, fi
 ```ts title="site.config.ts"
 export default defineSiteConfig({
   // …
-  language: 'ms',
+  language: 'fr',
   text: {
-    startReading: 'Mula membaca',
-    pageCount: { other: '{n} halaman' },
-    lastUpdated: 'Kemas kini terakhir {date}',
+    startReading: 'Commencer la lecture',
+    pageCount: { one: '{n} page', other: '{n} pages' },
+    lastUpdated: 'Mis à jour le {date}',
   },
 });
 ```
 
-Words in braces, such as `{n}` and `{date}`, are filled in by the theme. A text that depends on a number takes one form per plural category of the language: English uses `one` and `other`, Chinese and Malay only `other`. The full list of keys is the `NotesText` type in the package ([source](https://github.com/yx-elite/notestack/blob/main/packages/notestack/src/i18n/text.ts)).
+Words in braces, such as `{n}` and `{date}`, are filled in by the theme. A text that depends on a number takes one form per plural category of the language: English and French use `one` and `other`, Chinese only `other`. The full list of keys is the `NotesText` type in the package ([source](https://github.com/yx-elite/notestack/blob/main/packages/notestack/src/i18n/text.ts)).
 
 ## Several languages
 
@@ -58,31 +56,16 @@ With `languages`, each page exists once per language, and readers switch between
 
 What changes for you:
 
-- **One folder of notes per language**: `content/docs/en/`, `content/docs/zh-CN/`, each with its own `meta.json`.
 - **Translate one page at a time.** A page missing in a language shows the default language's page.
 - **URLs start with the language**, because a static site can't hide it. Opening `/` sends readers to the language they read last, else the one their browser prefers, else the default.
 - **Links stay the same.** Keep writing `/docs/…` in notes, cards, quick links and the glossary: the theme adds the page's language.
-- **Search** keeps one index per language and searches the page's language. Chinese is split into words correctly.
+- **Search** keeps one index per language and searches the page's language. See [Search](/docs/features#search).
 
 <Callout type="warn" title="Decide early">
 Turning `languages` on moves every page to a new URL. Links people saved to `/docs/…` stop working. If you might translate later, it's easiest to set it up before you share the site.
 </Callout>
 
-### If you've read Fumadocs' guide
-
-Fumadocs has its own [internationalization guide](https://fumadocs.dev/docs/next/internationalization). Notestack sets most of it up for you and works differently in a few places, because every notes site is a static site with no server. Skip these parts of the Fumadocs guide:
-
-| Fumadocs' guide says | In Notestack |
-| --- | --- |
-| Create `lib/i18n.ts` with `defineI18n()` | List `languages` in `site.config.ts`. `lib/source.ts` already passes `notesLanguages(site)` to Fumadocs |
-| Add `proxy.ts` (middleware) to send `/` to a language | Don't: a static site can't run it, and the build fails. `LanguageRedirect` in `app/(root)/page.tsx` does it in the browser |
-| Hide the default language from URLs (`hideLocale`) | Not possible without a server. Every URL starts with its language |
-| Name translations `page.zh.mdx`, next to the original | One folder per language: `content/docs/zh-CN/page.mdx`. The folder name must match the language in `languages` exactly |
-| Pass `i18n` and translations to `RootProvider` | `NotesRoot language={lang}` does it, with the theme's text and Fumadocs' text for that language |
-| Write the language into links | Write `/docs/…`: the theme adds the page's language |
-| Set up search per language | Already done: one index per language |
-
-### Set it up
+## Set up several languages
 
 These steps turn a site made with `npm create notestack` into a site with English and Simplified Chinese. Swap in your own languages.
 
@@ -91,19 +74,19 @@ These steps turn a site made with `npm create notestack` into a site with Englis
 
 ### List the languages
 
-The first one is the default. Put the site's own text for the other languages in `translations`; anything you leave out uses the default language's value.
+The first one is the default. Put the site's own text for the other languages in `translations`. Anything you leave out uses the default language's value.
 
 ```ts title="site.config.ts"
 export default defineSiteConfig({
-  name: 'Stock Trading Notes',
-  description: 'Notes on technical analysis and risk.',
-  repo: 'your-name/trading-notes',
+  name: 'Networking Notes',
+  description: 'Study notes for an introductory networking course.',
+  repo: 'your-name/networking-notes',
   links: [{ text: 'Glossary', url: '/docs/glossary', icon: 'BookA' }],
   languages: ['en', 'zh-CN'],
   translations: {
     'zh-CN': {
-      name: '股票交易笔记',
-      description: '技术分析与风险管理笔记。',
+      name: '网络笔记',
+      description: '网络入门课程的学习笔记。',
       links: [{ text: '术语表', url: '/docs/glossary', icon: 'BookA' }],
     },
   },
@@ -124,7 +107,7 @@ Move everything in `content/docs/` into `content/docs/en/`. Then create `content
     <Folder name="en" defaultOpen>
       <File name="meta.json" />
       <File name="index.mdx" />
-      <File name="risk.mdx" />
+      <File name="subnets.mdx" />
     </Folder>
     <Folder name="zh-CN" defaultOpen>
       <File name="meta.json" />
@@ -133,7 +116,7 @@ Move everything in `content/docs/` into `content/docs/en/`. Then create `content
   </Folder>
 </Files>
 
-Here `risk.mdx` isn't translated yet, so Chinese readers see the English page. Each folder's `meta.json` sets that language's sidebar order and section names.
+Here `subnets.mdx` isn't translated yet, so Chinese readers see the English page. Each folder's `meta.json` sets that language's sidebar order and section names.
 
 </Step>
 <Step>
@@ -302,6 +285,18 @@ Open [localhost:3000](http://localhost:3000): it should send you to `/en/`. Swit
 </Step>
 </Steps>
 
+### If you've read Fumadocs' guide
+
+Fumadocs has its own [internationalization guide](https://fumadocs.dev/docs/next/internationalization). Notestack sets most of it up for you, and differs in a few places because a notes site has no server. Skip these parts of the Fumadocs guide:
+
+| Fumadocs' guide says | In Notestack |
+| --- | --- |
+| Create `lib/i18n.ts` with `defineI18n()` | List `languages` in `site.config.ts` |
+| Add `proxy.ts` (middleware) to send `/` to a language | Don't: a static site can't run it, and the build fails. `LanguageRedirect` in `app/(root)/page.tsx` does it in the browser |
+| Hide the default language from URLs (`hideLocale`) | Not possible without a server. Every URL starts with its language |
+| Name translations `page.zh.mdx`, next to the original | One folder per language: `content/docs/zh-CN/page.mdx`. The folder name must match the language in `languages` exactly |
+| Pass `i18n` and translations to `RootProvider` | `NotesRoot language={lang}` does it, with the theme's text and Fumadocs' text for that language |
+
 ### A glossary per language
 
 The glossary page is a note like any other, so each language has its own. Keep the terms in one file per language and import the right one:
@@ -316,7 +311,7 @@ import terms from '@/content/glossary.zh-CN.json';
 <Glossary terms={terms} />
 ```
 
-Links in the terms (`href`) stay `/docs/…`; the theme adds the language.
+Links in the terms (`href`) stay `/docs/…`, and the theme adds the language. How to fill in the terms is on [Glossary](/docs/glossary).
 
 ### Add a language later
 
@@ -324,4 +319,4 @@ Add it to `languages` and its text to `translations`, then create its folder, su
 
 ### Known limit
 
-`llms.txt` and `llms-full.txt` list the pages of every language together.
+`llms.txt` and `llms-full.txt` list the pages of every language together. See [Copies for AI assistants](/docs/features#copies-for-ai-assistants).

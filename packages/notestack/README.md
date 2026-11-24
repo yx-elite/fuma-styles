@@ -29,23 +29,6 @@ npm update @yx-elite/notestack
 
 The only code file you edit is `site.config.ts`: the site's name, links, accent colour and languages. Notes go in `content/docs/`.
 
-## Add it to an existing Fumadocs app
-
-Install it next to the Fumadocs and Next.js packages your app already has:
-
-```bash
-npm install @yx-elite/notestack
-```
-
-Then import the theme after Tailwind in `app/global.css`:
-
-```css
-@import 'tailwindcss';
-@import '@yx-elite/notestack/theme.css';
-```
-
-The full setup (layouts, pages, search and `next.config.mjs`) is in the docs site's installation guide. The starter is the reference for every file.
-
 ## Import paths
 
 | Import | What it holds |
@@ -58,6 +41,8 @@ The full setup (layouts, pages, search and `next.config.mjs`) is in the docs sit
 | `@yx-elite/notestack/theme.css` | The theme. Import it after Tailwind |
 
 ## Requirements
+
+Notestack builds its own site with Next.js and Fumadocs MDX, as a static export. It doesn't plug into a Fumadocs app set up another way, such as one with a server, another framework or another content source.
 
 - Node.js 22 or later.
 - In your app: `fumadocs-core` and `fumadocs-ui` 16, `fumadocs-mdx`, `next` 16, `react` and `react-dom` 19, Tailwind CSS 4.

@@ -1,85 +1,21 @@
 ---
-title: Roadmap and contributing
-description: What's coming next, and how to suggest a change or send a pull request.
+title: Roadmap
+description: What's planned for Notestack, from the first release to later ideas.
 icon: Map
 ---
 
-Notestack is young and changing quickly. This page lists what's planned, and how you can help.
+Notestack is young and changing quickly. This page lists what's planned. To suggest something or help build it, see [Contributing](/docs/contributing).
 
 ## Coming next
 
-| | What | Status |
-| --- | --- | --- |
-| 📦 | First release on npm, and `npm create notestack` | In progress |
-| ⚙️ | Builds checked on every push, and a ready-made deploy workflow for notes repos | Planned |
-| 🪨 | **Obsidian**: write notes in an Obsidian vault and publish them with the theme, including wikilinks, embeds and `> [!note]` callouts | Coming later |
-| 🧩 | More note components: checklists that remember ticks, worked calculations, terms that show their definition on hover | Ideas |
-| 🌏 | More built-in languages for the theme's text | Open to contributions |
+| What | Status |
+| --- | --- |
+| First release on npm, and `npm create notestack` | In progress |
+| Builds checked on every push, and a ready-made deploy workflow for notes repos | Planned |
+| **Obsidian**: write notes in an Obsidian vault and publish them with the theme, including wikilinks, embeds and `> [!note]` callouts | Coming later |
+| More note components: checklists that remember ticks, worked calculations, terms that show their definition on hover | Ideas |
+| More built-in languages for the theme's text | Open to contributions |
 
 <Callout type="info" title="About Obsidian">
-Publishing an Obsidian vault as it is was tried early on and set aside: the tools for it needed too many workarounds to keep the promise. It will come back once it can work properly. Until then, notes are Markdown files in `content/docs/`, which Obsidian can also open and edit.
+Publishing an Obsidian vault as it is was tried early on and set aside, because the tools for it needed too many workarounds to keep the promise. It will come back once it can work properly. Until then, notes are Markdown files in `content/docs/`, which Obsidian can also open and edit.
 </Callout>
-
-## Contributing
-
-Ideas, bug reports and pull requests are welcome.
-
-- **Found a bug or have an idea?** [Open an issue](https://github.com/yx-elite/notestack/issues) with what you expected, what happened, and a screenshot if it's visual. Mention your browser and whether it's light or dark mode.
-- **Want to fix or build something?** Open an issue first for anything bigger than a small fix, so we can agree on the approach before you spend time on it.
-
-### Set up the repository
-
-<Steps>
-<Step>
-
-### Clone and install
-
-```bash
-git clone https://github.com/yx-elite/notestack.git
-cd notestack
-npm install
-```
-
-One install covers the package, this docs site and the starter (npm workspaces).
-
-</Step>
-<Step>
-
-### Start the package and this site
-
-In two terminals:
-
-```bash
-npm run dev -w @yx-elite/notestack
-```
-
-```bash
-npm run dev
-```
-
-The first recompiles the package on every save; the second runs this site at [localhost:3000](http://localhost:3000). Changes to `theme.css` show straight away. To try the starter instead, run `npm run dev:starter` (port 3001).
-
-</Step>
-<Step>
-
-### Check before you send it
-
-```bash
-npm run typecheck
-npm run build
-```
-
-Both must pass. Check your change in light and dark mode, on a phone width, and in Safari if it animates anything.
-
-</Step>
-</Steps>
-
-### Guidelines
-
-The full rules are in [AGENTS.md](https://github.com/yx-elite/notestack/blob/main/AGENTS.md). The ones that matter most:
-
-- **Logic goes in the package.** Files in `starter/` stay a few lines that import from the package.
-- **No subject content in the package.** Names, links and terms come from each site's config and notes.
-- **Every component is wired in three places:** exported from `src/index.ts`, added to `src/mdx.tsx`, and shown on a page of this site.
-- **Add a line to the changelog** (`packages/notestack/CHANGELOG.md`, under *Unreleased*) for anything a site would notice.
-- **Commit messages** follow `<emoji> type(scope): what changed`, such as `✨ feat(pkg): add Checklist component`.

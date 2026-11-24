@@ -1,236 +1,162 @@
 ---
 title: Markdown
-description: "Every Markdown element as the theme styles it: text, lists, links, images, code, tables, quotes, callouts and collapsible sections."
+description: "Every Markdown element as the theme styles it, with its edge cases: text, lists, links, images, code, tables, quotes and collapsible sections."
 icon: Type
 ---
 
-## Typography
+Each element appears once, with the edge cases the theme must handle. Switch between light and dark mode to compare. Components, callouts included, are on [Components](/docs/showcase/components).
 
-Plain text in all its forms. Most of a study note is paragraphs and headings, so these matter more than any component.
+## Typography
 
 ### Heading level 3
 
-A level-3 heading splits a section into parts. It is also listed in *On this page*, indented under its parent.
+Listed in *On this page*, indented under its `##` heading.
 
 #### Heading level 4
 
-A level-4 heading is for small groups inside a part. It is not listed in *On this page* by default.
+Not listed in *On this page*.
 
 ##### Heading level 5
 
-Level 5 is rare in notes, but it should still look like a heading and not like bold text.
+Should still look like a heading, not like bold text.
 
 ###### Heading level 6
 
-Level 6 is the smallest heading. It often looks close to body text, so it needs a clear style of its own.
+The smallest heading, close to body text in size.
 
 ### Paragraphs
 
-A single paragraph of a reasonable length. Body text should be comfortable to read for a long time: a line length of roughly 60 to 80 characters, enough space between lines, and a colour with good contrast that is not pure white on pure black.
+A paragraph of normal length. Body text should be comfortable to read for a long time, with enough space between lines.
 
-A second paragraph follows straight after. The space between paragraphs should make the break clear without breaking the flow. Study notes often have several short paragraphs in a row, each covering one idea, so this spacing shows up everywhere.
-
-A very long paragraph, to check how dense text reads when it runs on. Caches keep a copy of data closer to where it is used, so later reads are faster and cheaper. The trade-off is freshness: a cached copy can become stale when the original changes, and every caching design has to decide how stale is acceptable. Some systems expire entries after a fixed time, some remove entries when the original changes, and some do both. Choosing well depends on how often the data changes, how expensive a miss is, and how much harm an old value can do. A product price that is a minute old is usually fine; a bank balance that is a minute old may not be.
+A long paragraph, to check how dense text reads. Caches keep a copy of data close to where it is used, so later reads are faster and cheaper. The trade-off is freshness: a cached copy can become stale when the original changes. Some systems expire entries after a fixed time, some remove them when the original changes, and some do both. The right choice depends on how often the data changes and how much harm an old value can do.
 
 Short line.
 
 ### Emphasis
 
-Text can be **bold** for key terms, *italic* for gentle emphasis or titles, and ***bold italic*** when both apply. ~~Strikethrough~~ marks something removed or outdated. Bold can also sit inside a sentence: the **origin** is where the original data lives.
-
-Mixed in one paragraph: a **cache hit** is fast, a *cache miss* is slow, and an ~~eviction~~ *expiry* removes old entries. Some notes use <mark>highlighted text</mark> for the one thing to remember.
+**Bold**, *italic*, ***bold italic***, ~~strikethrough~~ and <mark>highlighted text</mark>. Bold inside a sentence: the **origin** is where the original data lives.
 
 ### Inline code
 
-Inline code marks names, values and commands: set `Cache-Control` to `max-age=3600`, or run `dig example.com` to look up a domain. Long inline code should wrap or scroll sensibly: `arn:aws:s3:::example-bucket-with-a-very-long-name/path/to/an/object.json`.
+Set `Cache-Control` to `max-age=3600`. Long inline code must wrap: `content/docs/networking/routing/static-and-dynamic-routes/index.mdx`. Inside bold and a link: **`TTL` means time to live**, and see [the `create` command](/docs/installation).
 
-Inline code inside bold and links: **`TTL` means time to live**, and see [the `create` command](/docs/installation).
+### Small elements
 
-### Keyboard keys and small text
-
-Press <kbd>Cmd</kbd> + <kbd>K</kbd> to search, or <kbd>Ctrl</kbd> + <kbd>Shift</kbd> + <kbd>P</kbd> in an editor.
-
-Chemical and maths notation uses subscript and superscript: H<sub>2</sub>O, 2<sup>10</sup> = 1,024, and 10<sup>-3</sup> seconds.
-
-<abbr title="Time to live">TTL</abbr> is an abbreviation with a hover title.
+Press <kbd>Ctrl</kbd> + <kbd>K</kbd> to search. H<sub>2</sub>O and 2<sup>10</sup> = 1,024. <abbr title="Time to live">TTL</abbr> has a title on hover.
 
 <small>Small print for a side remark or a source note.</small>
 
-### Line breaks
+### Line break and rule
 
 A line can end with a hard break  
-so the next line starts below it without a new paragraph.  
-Useful for addresses or short stacked facts.
-
-### Horizontal rule
-
-Text above the rule.
+so the next line starts below it, in the same paragraph.
 
 ---
 
-Text below the rule. A rule separates parts of a page that have no heading between them.
+A rule separates parts of a page that have no heading between them.
 
 ## Lists
 
-Lists carry most of the facts in study notes. They need clear markers, even spacing and readable nesting.
-
 ### Bulleted list
 
-- Regions are separate geographic areas.
-- Availability Zones are isolated groups of data centres.
-- Edge locations sit close to users.
+- `TTL`: a list item that starts with inline code.
+- **Write-through:** a list item that starts with bold.
+- A long item that wraps over several lines. The wrapped text should line up with the first word, not with the bullet, so a long item still reads as one block.
 
-### Numbered list
+### Numbered list starting at 9
 
-1. Check the cache.
-2. On a miss, ask the origin.
-3. Store the answer in the cache.
-4. Return the answer to the client.
+9. The marker gets wider at 10.
+10. Tenth item.
+11. Eleventh item.
 
-### Numbered list starting at 7
-
-7. Seventh item.
-8. Eighth item.
-9. Ninth item.
-10. Tenth item, where the marker gets wider.
-
-### Nested lists
-
-- Storage
-  - Block storage
-    - Fast, attached to one machine
-    - Good for databases
-  - File storage
-  - Object storage
-- Compute
-  - Virtual machines
-  - Containers
-  - Functions
+### Nested list
 
 1. Plan
-   1. Pick a Region
-   2. Estimate the cost
+   - Pick an address range
+     - Leave room to grow
+   - Estimate the cost
 2. Build
-   - Network first
-   - Then servers
-3. Check
-   1. Run the tests
-   2. Review the bill
+   1. Network first
+   2. Then servers
 
-### Term and meaning lists
+### Blocks inside a list item
 
-The format used across the notes: a term in code, then what it means.
+- An item with two paragraphs.
 
-- `TTL`: how long a cached answer stays valid.
-- `hit`: the answer was found in the cache.
-- `miss`: the answer had to come from the origin.
-- `eviction`: an entry was removed to make space.
+  The second paragraph belongs to the same item.
 
-The same with bold terms:
-
-- **Write-through:** every write goes to the cache and the origin at once.
-- **Write-back:** writes go to the cache first and reach the origin later.
-- **Cache-aside:** the application reads the cache and fills it on a miss.
-
-### Long items
-
-- A long list item that wraps over several lines. It checks the indent of the second line: the wrapped text should line up with the first word, not with the bullet, so a long item still reads as one block.
-- A list item with two paragraphs.
-
-  The second paragraph belongs to the same item. It needs the same indent and a little space above it.
-
-- A list item with a code block inside:
+- An item with a code block:
 
   ```bash
   dig +short example.com
   ```
 
-- A list item with a quote inside:
+- An item with a quote:
 
   > Quoted text inside a list item.
 
 ### Task list
 
 - [x] Read the chapter
-- [x] Write the notes
-- [ ] Draw the diagram
 - [ ] Do the practice questions
   - [x] Set 1
   - [ ] Set 2
 
-### Exam scenarios
+## Links
 
-The pattern used at the end of each note:
-
-- **Users worldwide, one Region, slow pages** → cache content at the edge, because it moves copies closer to users.
-- **Data must survive a data centre failure** → spread across at least two zones, because one zone can fail on its own.
-- **Old prices shown after an update** → shorten the TTL or clear the cache on change, because the cached copy is stale.
-
-## Links and images
-
-Links connect notes to each other and to sources. Images and diagrams explain what text cannot.
-
-### Links
-
-- An internal link to [Lists](/docs/showcase/markdown#lists).
-- A relative link to the [Code page](./code).
-- A link to a heading on another page: [term and meaning lists](/docs/showcase/markdown#term-and-meaning-lists).
+- A link to a heading on another page: [Steps](/docs/showcase/components#steps).
+- A relative link to a file: [Components](./components.mdx).
 - A link to a heading on this page: [Images](#images).
-- An external link to [the Fumadocs documentation](https://fumadocs.dev).
+- An external link: [the Fumadocs documentation](https://fumadocs.dev).
 - An autolink: https://example.com
 - A link with a title on hover: [Example](https://example.com "Example domain").
 
-Links inside a paragraph should be easy to spot without shouting: the [installation guide](/docs/installation) comes first, and [configuration](/docs/configuration) lists every option. A **[bold link](/docs/showcase/markdown#typography)** and a link with `[inline code](/docs/showcase/markdown#code)` look like [`this`](/docs/showcase/markdown#code).
+A link in running text, such as the [installation guide](/docs/installation), should stand out from the words around it. A **[bold link](/docs/showcase/markdown#typography)**, and a link in code: [`this`](/docs/showcase/markdown#code).
 
 ### Footnotes
 
-Caches trade freshness for speed[^1]. DNS answers are cached at several levels[^dns], each with its own expiry.
+Caches trade freshness for speed[^1]. DNS answers are cached at several levels[^dns].
 
 [^1]: A stale entry is one whose original has changed since it was cached.
 
 [^dns]: The browser, the operating system and the resolver can all hold a copy.
 
-### Images
+## Images
 
-A plain image (click it to zoom). A diagram comes in two files, one per mode; place both and only the one for the current mode shows:
+Click an image to zoom. Each diagram here is two files, one per mode, and only the one for the current mode shows. [Images and diagrams](/docs/images) explains how to add them.
 
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
+### Image
+
+![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
 ### Image with a caption
 
 <figure>
 
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
-![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
+![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
-<figcaption>CloudFront answers from its cache; on a miss it reads the file from the private S3 bucket.</figcaption>
+<figcaption>CloudFront answers from its cache. On a miss, it reads the file from the private S3 bucket.</figcaption>
 
 </figure>
 
 ### Image inside a list
 
 1. A reader asks for a page.
-2. CloudFront answers from its cache, or reads the file from S3:
+2. The cache answers, or reads the file from the bucket:
 
-   ![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
-   ![Readers reach a private S3 bucket through CloudFront; each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
+   ![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.light.svg)
+   ![Readers reach a private S3 bucket through CloudFront. Each push to GitHub builds the site and syncs it to the bucket](/diagrams/notes-site-architecture.dark.svg)
 
 3. The reader gets the page.
 
 ## Code
 
-Code blocks appear in labs and reference notes. They need a clear frame, readable colours in both modes, and a copy button.
-
-### Inline code
-
-Run `npm install` from the repo root, then open `http://localhost:3000`.
-
 ### Plain code block
 
 ```
 No language set, so no colours.
-Just monospaced text in a box.
 ```
 
 ### Languages
@@ -238,58 +164,20 @@ Just monospaced text in a box.
 ```bash
 # Look up a domain and show only the answer
 dig +short example.com
-aws s3 ls s3://example-bucket --region ap-southeast-1
 ```
 
 ```ts
-type CacheEntry<T> = {
-  value: T;
-  expiresAt: number;
-};
+type CacheEntry<T> = { value: T; expiresAt: number };
 
 export function isFresh<T>(entry: CacheEntry<T>, now = Date.now()): boolean {
   return entry.expiresAt > now;
 }
 ```
 
-```tsx
-export function Badge({ label }: { label: string }) {
-  return <span className="rounded-md border px-2 py-0.5 text-sm">{label}</span>;
-}
-```
-
 ```json
 {
-  "Version": "2012-10-17",
-  "Statement": [
-    {
-      "Effect": "Allow",
-      "Action": "s3:GetObject",
-      "Resource": "arn:aws:s3:::example-bucket/*"
-    }
-  ]
+  "pages": ["index", "---Notes---", "..."]
 }
-```
-
-```yaml
-name: deploy
-on:
-  push:
-    branches: [main]
-jobs:
-  build:
-    runs-on: ubuntu-latest
-```
-
-```css
-:root {
-  --ns-accent: hsl(217, 100%, 58%);
-}
-```
-
-```python
-def is_fresh(expires_at: float, now: float) -> bool:
-    return expires_at > now
 ```
 
 ### Title
@@ -303,16 +191,14 @@ export const DEFAULT_TTL_SECONDS = 300;
 ```ts lineNumbers
 const a = 1;
 const b = 2;
-const c = a + b;
-console.log(c);
+console.log(a + b);
 ```
 
-### Highlighted lines
+### Highlighted line
 
 ```ts
 const ttl = 300;
 const maxAge = ttl * 2; // [!code highlight]
-const staleWhileRevalidate = 60;
 ```
 
 ### Highlighted word
@@ -336,26 +222,22 @@ function getTtl() {
 
 ```ts
 const config = {
-  region: 'ap-southeast-1',
+  host: 'notes.example.com',
   ttl: 300, // [!code focus]
   retries: 3,
 };
 ```
 
-### Long lines
+### Long line
 
 ```bash
-aws cloudfront create-invalidation --distribution-id EXAMPLE123456 --paths "/docs/*" "/index.html" "/assets/*" --output json
+curl --silent --show-error --location --header "Accept: application/json" "https://notes.example.com/api/search?query=routing&limit=20"
 ```
 
 ### Code tabs
 
 ```ts tab="TypeScript"
 const ttl: number = 300;
-```
-
-```js tab="JavaScript"
-const ttl = 300;
 ```
 
 ```python tab="Python"
@@ -370,47 +252,30 @@ npm install @yx-elite/notestack
 
 ## Tables
 
-Tables compare several things on several points. They must stay readable on a phone, which usually means scrolling sideways inside the table, not the page.
-
-### Simple table
-
-| Term | Meaning |
-| --- | --- |
-| Hit | Found in the cache |
-| Miss | Fetched from the origin |
-| Eviction | Removed to make space |
-
 ### Column alignment
 
 | Left | Centre | Right |
 | :--- | :---: | ---: |
-| Region | 3 zones | 0.023 |
-| Zone | 1+ data centres | 0.0125 |
-| Edge location | Many cities | 0.0004 |
-
-### Comparison table
-
-| Storage type | Attached to | Shared | Typical use | Speed |
-| --- | --- | --- | --- | --- |
-| Block | One machine | No | Databases, boot disks | Fastest |
-| File | Many machines | Yes | Shared folders | Fast |
-| Object | Nothing (HTTP) | Yes | Backups, media, static sites | Good |
+| Hits | Cache | 1,024 |
+| Misses | Origin | 37 |
 
 ### Rich content in cells
 
 | Setting | Example | Notes |
 | --- | --- | --- |
 | `Cache-Control` | `max-age=3600` | Seconds a copy stays fresh. See [Configuration](/docs/configuration). |
-| `ETag` | `"33a64df5"` | A version tag; **changes** when the content changes. |
+| `ETag` | `"33a64df5"` | A version tag. It **changes** when the content changes. |
 | `Vary` | `Accept-Encoding` | Keeps a separate copy per value. ~~Rarely~~ often needed. |
 
 ### Wide table
 
-| Name | Type | Default | Region scope | Billing | Free tier | Encryption | Backups | Notes |
-| --- | --- | --- | --- | --- | --- | --- | --- | --- |
-| Example A | Block | 8 GiB | Zone | Per GiB-month | 30 GiB | Optional | Snapshots | Attached to one instance at a time |
-| Example B | File | Elastic | Region | Per GiB used | 5 GiB | On by default | Automatic | Mounted by many instances at once |
-| Example C | Object | Unlimited | Region | Per GiB + requests | 5 GiB | On by default | Versioning | Accessed over HTTPS, not mounted |
+On a phone, the table scrolls sideways, not the page.
+
+| Protocol | Layer | Port | Transport | Encrypted | Typical use | Example | Notes |
+| --- | --- | --- | --- | --- | --- | --- | --- |
+| HTTP | Application | 80 | TCP | No | Web pages | `curl http://example.com` | Plain text on the wire |
+| HTTPS | Application | 443 | TCP | Yes | Web pages | `curl https://example.com` | HTTP inside TLS |
+| DNS | Application | 53 | UDP, or TCP for large answers | No | Name lookups | `dig example.com` | Answers are cached at several levels |
 
 ### Long text in cells
 
@@ -421,125 +286,33 @@ Tables compare several things on several points. They must stay readable on a ph
 
 ## Quotes
 
-Quotes set apart a definition or a source, without looking like a warning.
-
 ### Blockquote
 
-> A blockquote for a quoted definition or a source.
+A quote with a second paragraph, a list and a nested quote:
 
-> A longer blockquote over several lines. It should be set apart from body text by an indent or a bar, without looking like a warning.
->
-> It can have a second paragraph.
-
-### Nested blockquote
-
-> Outer quote.
->
-> > Inner quote.
-
-### Blockquote with a list
-
-> Things to check before deploying:
+> Things to check before deploying.
 >
 > - The build passes
-> - The cache is cleared
 > - The DNS record points to the right place
+>
+> > A nested quote.
 
 ### GitHub alert syntax
 
-GitHub's alert syntax. It isn't turned into callouts yet, so these show as plain quotes; use `<Callout>` instead.
-
-> [!NOTE]
-> Surprising but harmless.
-
-> [!TIP]
-> A better or cheaper way.
-
-> [!IMPORTANT]
-> Outdated or easily confused.
+GitHub's alert syntax isn't turned into a callout yet, so it shows as a plain quote. Use `<Callout>` instead.
 
 > [!WARNING]
 > Can lose data or cost money.
 
-> [!CAUTION]
-> Destructive and hard to undo.
-
-## Callouts
-
-Callouts hold the few lines a reader must not miss. Each type has its own colour and icon, readable in both modes. How to write them: [Callouts](/docs/writing-notes#callouts).
-
-### Types
-
-Each type with no title, so the pill shows the type's name and icon.
-
-<Callout>A callout with no type set. It is an `info` callout.</Callout>
-
-<Callout type="idea">The `idea` type: a tip, shortcut or better way.</Callout>
-
-<Callout type="success">The `success` type: a confirmed result or a good practice.</Callout>
-
-<Callout type="warn">The `warn` type: something that can cost money or cause trouble.</Callout>
-
-<Callout type="error">The `error` type: something that loses data or cannot be undone.</Callout>
-
-### Title
-
-<Callout type="warn" title="Costs money">A NAT gateway is billed for every hour it exists, even with no traffic.</Callout>
-
-### Icon
-
-<Callout title="Exam tip" icon="GraduationCap">Any [Lucide](https://lucide.dev/icons) icon, by name: `icon="GraduationCap"`.</Callout>
-
-<Callout type="success" title="Done" icon="PartyPopper">The type still sets the colour: `type="success"` with `icon="PartyPopper"`.</Callout>
-
-### Colours
-
-Every named colour, then a custom one. Switch between light and dark mode to compare.
-
-<Callout color="accent" title="Accent" icon="Palette">`color="accent"`: the site's accent, so it changes with the accent picker.</Callout>
-
-<Callout color="blue" title="Blue" icon="Droplet">`color="blue"`</Callout>
-
-<Callout color="teal" title="Malaysian angle" icon="MapPin">`color="teal"`</Callout>
-
-<Callout color="green" title="Green" icon="Leaf">`color="green"`</Callout>
-
-<Callout color="purple" title="Exam tip" icon="GraduationCap">`color="purple"`</Callout>
-
-<Callout color="pink" title="Remember" icon="Heart">`color="pink"`</Callout>
-
-<Callout color="orange" title="Orange" icon="Flame">`color="orange"`</Callout>
-
-<Callout color="red" title="Red" icon="Siren">`color="red"`</Callout>
-
-<Callout color="slate" title="Aside" icon="NotebookPen">`color="slate"`: a quiet grey for side notes.</Callout>
-
-<Callout color="#1d9e75" title="Custom" icon="Pipette">`color="#1d9e75"`: any CSS colour, the same in both modes.</Callout>
-
-### Long title
-
-<Callout type="idea" title="A long title that wraps onto a second line on a phone, to check the pill">The pill wraps its text instead of running out of the box.</Callout>
-
-### Rich content
-
-
-<Callout type="info" title="Cache headers">
-  Set `Cache-Control` on every response:
-
-  - `max-age`: how long a copy stays fresh
-  - `no-store`: never keep a copy
-
-  See [Deployment](/docs/deployment) for details.
-</Callout>
-
 ## Collapsible sections
 
-Plain HTML `<details>` and `<summary>`, drawn like accordions. For grouped panels and links to a panel, use [Accordions](/docs/showcase/components#accordions).
+Two `<details>` in a row, the second with Markdown inside. Accordions are on [Components](/docs/showcase/components#accordions).
 
 <details>
   <summary>Show the answer</summary>
 
   The cache returns a stale copy because the TTL has not expired yet.
+
 </details>
 
 <details>
@@ -553,4 +326,5 @@ Plain HTML `<details>` and `<summary>`, drawn like accordions. For grouped panel
   ```bash
   dig +short example.com
   ```
+
 </details>

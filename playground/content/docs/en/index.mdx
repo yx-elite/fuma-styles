@@ -6,28 +6,30 @@ icon: House
 
 **Notestack** (`@yx-elite/notestack`) is a theme for [Fumadocs](https://fumadocs.dev). It turns a plain Fumadocs app into a notes site with a designed look: header, sidebar, landing page, page transitions and styled content. Your notes stay plain Markdown or MDX.
 
+A notes site has three parts. Your notes are Markdown files in `content/docs/`. `site.config.ts` holds the name, links and colour. Everything else comes from the `@yx-elite/notestack` package, so `npm update` brings each new version to every site.
+
 <Callout type="warn" title="In development">
 The package is not published yet. These pages describe the first release, and this site is its live demo.
 </Callout>
 
-## Why
+## Why Notestack
 
-Writing notes is the point; setting up a site for them should not be. Notestack keeps the setup to one install and one config file:
+Writing notes is the point. Setting up a site for them should not be. Notestack keeps the setup to one install and one config file:
 
 - **One config file.** Name, links, accent colour and landing page all come from `site.config.ts`.
 - **Updates through npm.** Design and fixes ship in the package, so every notes site gets them with `npm update`.
-- **Static and cheap to host.** Every site is a static export: plain files on S3 or any static host, no server.
-- **Built on Fumadocs.** Search, the sidebar and MDX come from Fumadocs itself; the theme only adds the design and a few notes features.
+- **Static and cheap to host.** Every site is a static export of plain files. S3 or any static host serves it, with no server.
+- **Built on Fumadocs.** Search, the sidebar and MDX come from Fumadocs itself. The theme only adds the design and a few notes features.
 
 ## Features
 
 | Feature | What you get |
 | --- | --- |
-| Design | Black theme, one accent colour with a matching second tone, background grid and glow, Geist and JetBrains Mono fonts |
+| Design | Fumadocs' Black colour preset, one accent colour with a matching second tone, background grid and glow, Geist and JetBrains Mono fonts |
 | Layout | Full-width notes layout, header on top, sidebar banner and quick links, pinned current page, *On this page* list |
 | Landing page | Built from your content: a live preview of the docs, section cards, a "Get started" section |
 | Motion | Smooth page transitions between the landing page and the docs, tuned for Safari |
-| Notes features | Glossary page, last-updated dates from git, static search, share images, plain-text copies for AI assistants (llms.txt) |
+| Notes features | A [glossary](/docs/glossary) page, static search, last-updated dates from git, share images and plain-text copies for AI assistants (llms.txt). See [Built-in features](/docs/features). |
 | Content | Markdown and MDX pages, with components such as tabs, steps and cards |
 | Languages | One language per site, or several with a language switch |
 | Devices | Phones, tablets (sidebar as a side panel) and desktops, in light and dark mode |
@@ -35,11 +37,13 @@ Writing notes is the point; setting up a site for them should not be. Notestack 
 
 ## Next steps
 
+Each card below opens one section of the sidebar.
+
 <Cards>
-  <Card title="Installation" href="/docs/installation" description="Create a notes site with one command." />
-  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
-  <Card title="Theme and accent" href="/docs/theme" description="Change the accent colour and fine-tune the look." />
-  <Card title="Deployment" href="/docs/deployment" description="Put the site online, step by step, on the host you choose." />
-  <Card title="How it works" href="/docs/how-it-works" description="The parts of Notestack and what happens when a site builds." />
-  <Card title="Showcase" href="/docs/showcase/markdown#typography" description="Every element as the theme styles it." />
+  <Card title="Getting started" href="/docs/installation" description="Create a notes site with one command and set it up." />
+  <Card title="Writing" href="/docs/pages" description="Write notes with pages, callouts, images and a glossary." />
+  <Card title="Customising" href="/docs/theme" description="Change the theme, the landing page and the languages." />
+  <Card title="Publishing" href="/docs/deployment" description="Put the site online, keep it updated and fix problems." />
+  <Card title="Showcase" href="/docs/showcase/markdown" description="Every element and component as the theme draws it." />
+  <Card title="Project" href="/docs/how-it-works" description="How Notestack is built, what's planned and how to help." />
 </Cards>

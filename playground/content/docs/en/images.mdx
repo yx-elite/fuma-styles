@@ -1,0 +1,45 @@
+---
+title: Images and diagrams
+description: Where to put images, how to write their alt text, and diagrams with a light and a dark version.
+icon: Image
+---
+
+## Add an image
+
+There are two places for images:
+
+- **Next to the note**, for an image only one note uses. Put `vpc.png` beside `vpc.mdx` and write `![A VPC with two subnets](./vpc.png)`.
+- **In `public/`**, for images several notes share. Create a `public` folder next to `content`, put the file in it (`public/diagrams/request-path.svg`) and link it from the root: `![The request path](/diagrams/request-path.svg)`.
+
+Readers can click any image to zoom in. Write the text in `![…]` for people who can't see the image. Search engines read it too.
+
+## Light and dark versions
+
+An image with a transparent background can look wrong in one of the two modes, for example dark lines on the dark page. Make two versions and name them `name.light.svg` and `name.dark.svg`. Place both, one after the other. The theme shows only the one that matches the reader's mode:
+
+```md
+![The request path](/diagrams/request-path.light.svg)
+![The request path](/diagrams/request-path.dark.svg)
+```
+
+The same works for `.png` and `.jpg` files.
+
+## Captions
+
+Wrap the image in `<figure>` and add a `<figcaption>`. The theme centres the caption under the image. Keep the empty lines, as in this example:
+
+```mdx
+<figure>
+
+![The request path](/diagrams/request-path.svg)
+
+<figcaption>A request goes to the cache first, then to the origin.</figcaption>
+
+</figure>
+```
+
+## Wide diagrams
+
+For a diagram that needs more room, add `full: true` to the page's [frontmatter](/docs/pages#frontmatter). The page then uses the whole width and hides *On this page*.
+
+Every case above is shown live in the [Showcase](/docs/showcase/markdown#images). If an image doesn't show, see [Troubleshooting](/docs/troubleshooting#while-writing).

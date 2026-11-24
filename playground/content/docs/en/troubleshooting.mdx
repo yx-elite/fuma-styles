@@ -11,7 +11,7 @@ Each problem below starts with what you see. If yours isn't here, [open an issue
 <Accordions>
 <Accordion title="A new page doesn't show up in the sidebar">
 
-The folder's `meta.json` lists its pages, and the new one isn't in the list. Add its file name (without `.mdx`) to `pages`, or add `"..."`, which takes in every page not listed. See [The sidebar](/docs/writing-notes#the-sidebar).
+The folder's `meta.json` lists its pages, and the new one isn't in the list. Add its file name (without `.mdx`) to `pages`, or add `"..."`, which takes in every page not listed. See [The sidebar](/docs/pages#the-sidebar).
 
 </Accordion>
 <Accordion title="An error stays on screen after you've fixed it, or after npm install">
@@ -36,7 +36,7 @@ The error names the file and line. The usual causes:
 
 - A `<` or `{` in normal text. MDX reads them as the start of a component or code. Write `&lt;` and `\{`, or put the text in `` `backticks` ``.
 - A component that isn't closed: `<Callout>` needs `</Callout>`.
-- Frontmatter without a `title`, or with a `:` in a value. Put such values in quotes: `title: 'Route 53: DNS'`.
+- Frontmatter without a `title`, or with a `:` in a value. Put such values in quotes: `title: 'DNS: names to addresses'`.
 
 </Accordion>
 <Accordion title="An image doesn't show">
@@ -45,10 +45,12 @@ The error names the file and line. The usual causes:
 - An image next to the note is linked with `./`: `./a.png`.
 - Check the capitals. Your computer may not care whether it's `Diagram.png` or `diagram.png`, but most hosts do, so the image breaks only once published.
 
+See [Images and diagrams](/docs/images).
+
 </Accordion>
 <Accordion title="A page has no Last updated date">
 
-The date comes from the page's latest git commit, so a page you haven't committed yet has none. Commit it. On a published site, see [All pages show the same date](#same-date).
+The date comes from the page's latest git commit, so a page you haven't committed yet has none. Commit it. On a published site, see [All pages show the same date](#same-date). [Last updated dates](/docs/features#last-updated-dates) explains how dates work.
 
 </Accordion>
 </Accordions>

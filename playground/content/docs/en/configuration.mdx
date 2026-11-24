@@ -10,12 +10,12 @@ Everything that differs between notes sites lives in `site.config.ts` at the roo
 import { defineSiteConfig } from '@yx-elite/notestack';
 
 export default defineSiteConfig({
-  name: 'AWS SAA-C03 Notes',
+  name: 'Networking Notes',
   author: 'your-name',
-  tag: 'SAA-C03',
-  description: 'Study notes for the AWS Solutions Architect Associate exam.',
-  repo: 'your-name/aws-saa-notes',
-  url: 'https://saa.example.com',
+  tag: 'NET-101',
+  description: 'Study notes for an introductory networking course.',
+  repo: 'your-name/networking-notes',
+  url: 'https://notes.example.com',
   accent: { light: '#d97706', dark: '#fcd34d' },
   links: [
     { text: 'Home', url: '/docs', icon: 'House' },
@@ -39,7 +39,7 @@ export default defineSiteConfig({
       required: true,
     },
     repo: {
-      description: 'The GitHub repository, as owner/name. Used for the GitHub icon in the header, the banner button, Open in GitHub on each page, the footer and the default Get started steps. The site works the same if the repository is private.',
+      description: 'The GitHub repository, as owner/name. Used for the GitHub icon in the header, the banner button, Open in GitHub on each page, the footer and the default Get started steps. For readers without access to a private repository, these links lead to a 404 page.',
       type: 'string',
       required: true,
     },
@@ -48,11 +48,11 @@ export default defineSiteConfig({
       type: 'string',
     },
     author: {
-      description: 'Shown in the landing page footer: © 2026 author. Without it, the footer shows name.',
+      description: 'Shown in the landing page footer as © <year> author, with the current year. Without it, the footer shows name.',
       type: 'string',
     },
     tag: {
-      description: 'A short badge next to the name, such as an exam code.',
+      description: 'A short badge next to the name, such as a course code.',
       type: 'string',
     },
     branch: {
@@ -75,7 +75,7 @@ export default defineSiteConfig({
       default: 'View on GitHub',
     },
     start: {
-      description: 'The "Get started" section of the landing page. Leave it out to show how to run the repo; false hides it.',
+      description: 'The "Get started" section of the landing page. Leave it out to show how to run the repo. false hides it.',
       type: 'false | StartSection',
     },
     language: {
@@ -100,90 +100,27 @@ export default defineSiteConfig({
 
 ## Accent colours
 
-Pick a deeper shade for light mode and a lighter one for dark mode, so text in the accent colour stays readable on both backgrounds. The theme makes a second tone from it for gradients. Try colours live with the palette button in the corner of this site, then copy the pair you like. More in [Theme and accent](/docs/theme).
+[Theme and accent](/docs/theme#accent-colour) explains how to pick the light and dark pair and try colours live.
 
 ## Language
 
-Set `language` to the language your notes are written in. The page's `lang`, dates and every piece of text the theme shows follow it, including Fumadocs' search box, *On this page* and page buttons.
-
-```ts title="site.config.ts"
-export default defineSiteConfig({
-  // …
-  language: 'zh-CN',
-});
-```
-
-The theme's own text ships in English and Simplified Chinese. For any other language, or to change a single phrase, fill in `text`: [Languages](/docs/languages#built-in-text) lists what's built in and how `text` works.
-
-## Several languages
-
-To publish the same notes in more than one language, list them in `languages` (the first is the default) and put each language's text in `translations`. URLs then start with the language (`/en/docs/…`), notes live in one folder per language, and a language switch appears in the header. It needs a few more files in `app/`: the [Languages](/docs/languages) guide walks through it.
+Set `language` for a site in one language other than English, or `languages` and `translations` for several. [Languages](/docs/languages) explains both.
 
 ## Site address
 
-Set `url` once the site has an address. A link to one of your notes, pasted into a chat app or a social post, then shows a preview with the note's title. Without it, everything else works the same.
+Set `url` once the site has an address. A link to one of your notes, pasted into a chat app or a social post, then shows a preview with the note's title. Without it, everything else works the same. See [Share images](/docs/features#share-images).
 
 ## Quick links
 
-Quick links stay fixed under the sidebar banner while the page list scrolls. Use them for the two or three pages readers open most, such as a glossary or an exam overview. Icons come from [Lucide](https://lucide.dev/icons).
+Quick links stay fixed under the sidebar banner while the page list scrolls. Use them for the two or three pages readers open most, such as a glossary or a course overview. Icons come from [Lucide](https://lucide.dev/icons).
 
-## Sidebar order and titles
+## Set elsewhere
 
-The order of pages and the section titles in the sidebar come from `meta.json` files next to your notes, and each page's title, description and icon from its frontmatter. See [Writing notes](/docs/writing-notes#the-sidebar).
+A few things aren't in `site.config.ts`:
 
-## Logo and favicon
-
-The logo in the header and the footer is the Notestack mark, drawn in your accent colour. It can't be swapped for an image yet.
-
-The browser-tab icon is `app/icon.svg`. To use your own, replace that file with another SVG, or delete it and add `app/icon.png` (a square PNG, at least 64 by 64 pixels) or `app/favicon.ico`. Next.js picks up whichever is there.
-
-## Options in the app files
-
-A few options live in the files in `app/` rather than in `site.config.ts`, because they need code.
-
-### Your own components
-
-To use a component of your own in notes, write it in your site, then pass it to `createNotesPage` in `app/docs/[[...slug]]/page.tsx`:
-
-```tsx title="components/exam-tip.tsx"
-export function ExamTip({ children }: { children: React.ReactNode }) {
-  return <p className="rounded-lg border p-4">💡 {children}</p>;
-}
-```
-
-```tsx title="app/docs/[[...slug]]/page.tsx"
-import { createNotesPage } from '@yx-elite/notestack/routes';
-import { source } from '@/lib/source';
-import site from '@/site.config';
-import { ExamTip } from '@/components/exam-tip';
-
-const docs = createNotesPage({ source, site, components: { ExamTip } });
-
-export default docs.Page;
-export const generateStaticParams = docs.generateStaticParams;
-export const generateMetadata = docs.generateMetadata;
-```
-
-Notes can then use `<ExamTip>…</ExamTip>` without importing it. A component with the same name as one of the theme's replaces it.
-
-### A site inside a bigger repository
-
-If the site isn't at the root of its repository, for example in a `site/` folder, *Open in GitHub* links need the folder. Pass it as `repoDir`:
-
-```tsx title="app/docs/[[...slug]]/page.tsx"
-const docs = createNotesPage({ source, site, repoDir: 'site' });
-```
-
-### Next.js options
-
-`withNotestack()` in `next.config.mjs` sets what a static site needs. Pass any other Next.js option to it:
-
-```js title="next.config.mjs"
-export default withMDX(
-  withNotestack({
-    env: { NEXT_PUBLIC_EXAM_DATE: '2027-03-01' },
-  }),
-);
-```
-
-It always keeps `output: 'export'`, `trailingSlash: true` and unoptimised images, which the hosting depends on. Don't set `basePath`: the site must be served from the root of a domain, or search stops working.
+| To change | See |
+| --- | --- |
+| The sidebar order, section titles, and each page's title and icon | [Pages and sidebar](/docs/pages#the-sidebar) |
+| The logo and the browser-tab icon | [Theme and accent](/docs/theme#logo-and-favicon) |
+| Glow, grid, widths and fonts | [Theme and accent](/docs/theme#css-variables) |
+| Your own components, a site in a subfolder, Next.js options | [Advanced](/docs/advanced) |

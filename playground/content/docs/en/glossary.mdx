@@ -1,9 +1,61 @@
 ---
 title: Glossary
-description: The Glossary component, filled with the terms used in these docs. Each notes site lists its own terms in content/glossary.json.
+description: List terms in content/glossary.json and show them as a filterable A to Z list.
 icon: BookA
 ---
 
 import terms from '@/content/glossary.json';
+
+The glossary is a normal page, `content/docs/glossary.mdx`, that shows the terms in `content/glossary.json`. The `<Glossary>` component sorts them A to Z, groups them by first letter, and adds a filter box and a letter bar. The [example](#example) at the end of this page lists the terms used in these docs.
+
+## Add terms
+
+Each term is one entry in `content/glossary.json`:
+
+```json title="content/glossary.json"
+[
+  {
+    "term": "Subnet",
+    "definition": "A range of addresses inside a VPC.",
+    "href": "/docs/networking/vpc#subnets",
+    "label": "VPC"
+  }
+]
+```
+
+| Field | Needed | What it does |
+| --- | --- | --- |
+| `term` | **Yes** | The word or phrase. It also sets the term's anchor |
+| `definition` | **Yes** | What the term means, in a sentence or two |
+| `href` | No | A link to the note that explains the term |
+| `label` | No | The text of that link. Without it, the link says *Read more* |
+
+Terms that don't start with a letter from A to Z, such as numbers or Chinese terms, go in a last group, `#`.
+
+## Show the list
+
+The starter already has this page. To add it to another site, create it:
+
+```mdx title="content/docs/glossary.mdx"
+---
+title: Glossary
+---
+
+import terms from '@/content/glossary.json';
+
+<Glossary terms={terms} />
+```
+
+On a site with several languages, each language has its own glossary page and terms file. See [Languages](/docs/languages#a-glossary-per-language).
+
+## Link to a term
+
+Each term has an anchor: `#term-` and the term in lowercase, with hyphens between words. *Subnet* is `/docs/glossary#term-subnet`, and *Route table* is `/docs/glossary#term-route-table`. Accents are dropped, so *Résumé* is `#term-resume`. Try [Frontmatter](/docs/glossary#term-frontmatter) on this page.
+
+## Remove the glossary
+
+Delete `content/docs/glossary.mdx` and `content/glossary.json`. Then remove `"glossary"` from `content/docs/meta.json`, and from `links` in `site.config.ts` if you added it there.
+
+## Example
 
 <Glossary terms={terms} />

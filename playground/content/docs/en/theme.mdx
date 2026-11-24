@@ -1,6 +1,6 @@
 ---
 title: Theme and accent
-description: Change the accent colour, and fine-tune the glow, grid and widths with CSS variables.
+description: Change the accent colour, fine-tune the glow, grid, widths and fonts with CSS variables, and set the browser-tab icon.
 icon: Palette
 ---
 
@@ -12,10 +12,12 @@ One colour drives the whole look: links, active items, the glow, the border ligh
 accent: { light: '#7c3aed', dark: '#c4b5fd' },
 ```
 
+Pick a deeper shade for light mode and a lighter one for dark mode, so text in the accent colour stays readable on both backgrounds.
+
 The theme turns the accent's hue by 50° to make a second tone, `--ns-accent-2`, and runs gradients from one to the other. Browsers that cannot compute it use the accent for both.
 
 <Callout type="idea" title="Try it here">
-The palette button in the corner of this site applies any accent to every page at once. It only changes your browser; the site's own accent still comes from its config.
+The palette button in the corner of this site applies any accent to every page at once. It only changes your browser. The site's own accent still comes from its config.
 </Callout>
 
 ## CSS variables
@@ -52,6 +54,12 @@ Every part of the theme works in both modes, and readers switch with the toggle 
 
 ## Fonts
 
-The theme uses [Geist](https://vercel.com/font) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code, the same as fumadocs.dev. They load through `next/font` as `--font-sans` and `--font-mono`; set those to use other fonts.
+The theme uses [Geist](https://vercel.com/font) for text and [JetBrains Mono](https://www.jetbrains.com/lp/mono/) for code, the same as fumadocs.dev. They load through `next/font` as `--font-sans` and `--font-mono`. Set those to use other fonts.
 
 Each note's title and the landing page's section titles use [Instrument Serif](https://fonts.google.com/specimen/Instrument+Serif), which the theme ships, so there is nothing to load. Chinese titles use Songti on Apple devices and Noto Serif SC elsewhere. The site's name stays in Geist. To use another font for these titles, set `--ns-font-display` in `app/global.css`.
+
+## Logo and favicon
+
+The logo in the header and the footer is the Notestack mark, drawn in your accent colour. It can't be swapped for an image yet.
+
+The browser-tab icon is `app/icon.svg`. To use your own, replace that file with another SVG, or delete it and add `app/icon.png` (a square PNG, at least 64 by 64 pixels) or `app/favicon.ico`. Next.js picks up whichever is there.

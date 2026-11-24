@@ -1,0 +1,193 @@
+---
+title: Callouts and collapsibles
+description: Callouts for tips and warnings, and sections that open on click with details or accordions.
+icon: MessageSquareText
+---
+
+## Callouts
+
+A callout sets a few lines apart in a coloured box: a tip, a warning, a fact readers must not miss. A pill at the top holds its icon and title, and the text runs full width below:
+
+```mdx
+<Callout type="warn" title="Check first">
+Changing the subnet mask on a remote machine can lock you out of it.
+</Callout>
+```
+
+<Callout type="warn" title="Check first">
+Changing the subnet mask on a remote machine can lock you out of it.
+</Callout>
+
+Every part is optional. `<Callout>Text</Callout>` alone is a blue *Note*. The sections below change one thing each. Every type and colour is shown side by side in the [Showcase](/docs/showcase/components#callouts).
+
+### Types
+
+`type` says what kind of callout it is. It sets the colour, the icon and the name shown when there's no title:
+
+| Type | Name in the pill | Icon | For |
+| --- | --- | --- | --- |
+| `info` (default) | Note | Info | Background facts and side notes |
+| `idea` | Idea | Lightbulb | A tip, shortcut or better way |
+| `success` | Success | CircleCheck | A confirmed result or good practice |
+| `warn` | Warning | TriangleExclamationPoint | Something that costs money or causes trouble |
+| `error` | Error | CircleX | Something that loses data or can't be undone |
+
+Keep `warn` and `error` rare, so they still stand out.
+
+On a site in another language, the type names follow it (Chinese ships built in). To change them, set `calloutInfo`, `calloutIdea`, `calloutSuccess`, `calloutWarning` and `calloutError` in `text`. See [Languages](/docs/languages#built-in-text).
+
+### Titles
+
+`title` replaces the type's name in the pill. Keep it to a few words, because the pill shows it in capitals.
+
+```mdx
+<Callout type="idea">Shown as IDEA.</Callout>
+<Callout type="idea" title="Shortcut">Shown as SHORTCUT.</Callout>
+```
+
+<Callout type="idea">Shown as IDEA.</Callout>
+
+<Callout type="idea" title="Shortcut">Shown as SHORTCUT.</Callout>
+
+`title={false}` drops the pill and puts the icon before the text. Use it for a one-line aside that needs no label. `type`, `icon` and `color` work as usual.
+
+```mdx
+<Callout type="warn" title={false}>
+  If a folder's `meta.json` lists its pages and has no `"..."`, pages you add later are left out.
+</Callout>
+```
+
+<Callout type="warn" title={false}>
+  If a folder's `meta.json` lists its pages and has no `"..."`, pages you add later are left out.
+</Callout>
+
+### Icons
+
+`icon` replaces the type's icon with any [Lucide](https://lucide.dev/icons) icon. Find the icon on lucide.dev and write its name in PascalCase: `map-pin` is `MapPin`, and `graduation-cap` is `GraduationCap`. These are the same names as `icon:` in frontmatter.
+
+```mdx
+<Callout title="Exam tip" icon="GraduationCap">
+If a question mentions port 53, think DNS.
+</Callout>
+```
+
+<Callout title="Exam tip" icon="GraduationCap">
+If a question mentions port 53, think DNS.
+</Callout>
+
+A name that isn't a Lucide icon falls back to the type's icon. If yours doesn't show, check the spelling and the capitals. Old names that lucide.dev lists as aliases, such as `TriangleAlert`, also fall back.
+
+### Colours
+
+`color` gives the callout its own colour, for a kind of note the five types don't cover, such as exam tips or real-world notes. The type still sets the default icon and name.
+
+```mdx
+<Callout title="Real-world note" icon="Globe" color="teal">
+Most home routers hand out addresses from `192.168.0.0/16`.
+</Callout>
+```
+
+<Callout title="Real-world note" icon="Globe" color="teal">
+Most home routers hand out addresses from `192.168.0.0/16`.
+</Callout>
+
+Use a named colour where you can. Each one has a shade for light mode and a lighter one for dark mode, so it reads well in both:
+
+| `color` | Notes |
+| --- | --- |
+| `accent` | The site's accent colour (`accent` in `site.config.ts`) |
+| `blue`, `teal`, `green`, `purple`, `pink`, `orange`, `red` | Fixed colours |
+| `slate` | A quiet grey, for asides |
+
+Any CSS colour works too: `color="#1d9e75"` or `color="hsl(160 70% 37%)"`. One value is used in both modes, so check the callout in light and dark mode. A mid-tone colour usually works in both.
+
+<Callout type="idea" title="Give each colour one meaning">
+Use the same colour and icon for the same kind of note across the whole site, such as purple with `GraduationCap` for every exam tip. Readers learn what each colour means and spot them at a glance.
+</Callout>
+
+### What a callout can hold
+
+Anything a note can: lists, code, links, tables, images, even other components. Keep it short, though. A callout that holds half the page is no longer set apart.
+
+### All props
+
+<TypeTable
+  type={{
+    type: {
+      description: 'The kind of callout: sets the colour, the icon and the name in the pill.',
+      type: "'info' | 'idea' | 'success' | 'warn' | 'error'",
+      default: "'info'",
+    },
+    title: {
+      description: "The text in the pill. Without it, the pill shows the type's name. false drops the pill and puts the icon before the text.",
+      type: 'string | false',
+    },
+    icon: {
+      description: "A Lucide icon name, such as 'MapPin', in place of the type's icon.",
+      type: 'string',
+    },
+    color: {
+      description: "A named colour (accent, blue, teal, green, purple, pink, orange, red, slate) or any CSS colour, in place of the type's colour.",
+      type: 'string',
+    },
+  }}
+/>
+
+## Collapsible sections
+
+Hide an answer or a long detail until the reader asks for it. The two ways below look the same. Accordions give you more control.
+
+### `<details>` for one hidden part
+
+Plain HTML, so it also works on GitHub and in most Markdown editors:
+
+```mdx
+<details>
+<summary>Show the answer</summary>
+
+The cache returns a stale copy because the TTL hasn't expired yet.
+
+</details>
+```
+
+<details>
+<summary>Show the answer</summary>
+
+The cache returns a stale copy because the TTL hasn't expired yet.
+
+</details>
+
+Leave an empty line after `<summary>…</summary>` and before `</details>`. Without them, Markdown inside (lists, code, links) shows as plain text.
+
+### `<Accordions>` for groups and links
+
+Accordions join several panels in one box, which suits practice questions:
+
+```mdx
+<Accordions>
+  <Accordion title="What is a cache hit?">
+    The data was found in the cache, so the origin wasn't asked.
+  </Accordion>
+  <Accordion title="Why can a cache return old data?" id="stale-data">
+    The cached copy stays valid until its TTL runs out.
+  </Accordion>
+</Accordions>
+```
+
+<Accordions>
+  <Accordion title="What is a cache hit?">
+    The data was found in the cache, so the origin wasn't asked.
+  </Accordion>
+  <Accordion title="Why can a cache return old data?" id="stale-data">
+    The cached copy stays valid until its TTL runs out.
+  </Accordion>
+</Accordions>
+
+| | `<details>` | `<Accordions>` |
+| --- | --- | --- |
+| Several in a row | Separate boxes | Joined in one box |
+| Opening one | Leaves the others as they are | Closes the open one. Add `multiple` to keep several open |
+| Linking to one | No | `id="stale-data"` makes `#stale-data` open that panel, and adds a button that copies the link |
+| Outside the site (GitHub, Obsidian) | Works | Shows as plain text |
+
+`<Accordions type="multiple">`, as in Fumadocs' own examples, works too.
