@@ -4,7 +4,7 @@ Rules for anyone, human or coding agent, working in this repo. The plan and its 
 
 ## What this repo is
 
-**Notestack** is a shared theme for [Fumadocs](https://fumadocs.dev) study-notes sites, published to npm as **`@yx-elite/notestack`**. Every notes repo (AWS SAA, Linux, and later ones) installs it, so they all look and behave the same. This repo holds **no study notes**.
+**Notestack** is a shared theme for [Fumadocs](https://fumadocs.dev) study-notes sites, published to npm as **`@yx-elite/notestack`**. Every notes repo (one per subject) installs it, so they all look and behave the same. This repo holds **no study notes**.
 
 It has three parts, and each has one job:
 
@@ -128,6 +128,7 @@ Before calling a change done, everything that exists from this list must pass: t
 - Semver. While in `0.x`, a breaking change bumps the minor.
 - Never bump the version, run `npm publish` or create tags unless the maintainer asks.
 - Every user-visible change gets a line in `packages/notestack/CHANGELOG.md` under *Unreleased*.
+- Until the first release (`0.1.0`), *Unreleased* is a summary of what that release contains. Edit it in place so it describes the package as it is now, instead of adding *Changed* or *Fixed* lines about versions nobody installed.
 - The reusable deploy workflow is pinned by notes repos to a major tag (`@v1`). Changing its inputs is a breaking change.
 
 ## Commit messages
