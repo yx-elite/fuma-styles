@@ -9,6 +9,9 @@ import type { NextConfig } from 'next';
 export function withNotestack(config: NextConfig = {}): NextConfig {
   return {
     reactStrictMode: true,
+    // Dev server only: lets phones and tablets on the home network load the dev scripts.
+    // Without it Next.js blocks them, and buttons stay dead when testing on a phone.
+    allowedDevOrigins: ['192.168.*.*', '10.*.*.*'],
     ...config,
     output: 'export',
     // S3 serves docs/x/index.html for /docs/x/

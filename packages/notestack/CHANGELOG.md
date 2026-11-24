@@ -7,6 +7,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 ### Added
 
 - `@yx-elite/notestack`: `defineSiteConfig`, `SiteStyle`, `NotesLayout`, `NotesHomeLayout`, `NotesHome`, `NotesLogo`, `PageTransitions`, `AccentPicker`, `CopyButton`, `Glossary`, `SearchButton`, `notesPageProps` and `LastUpdated`.
+- `NotesRoot`: the whole root layout (`<html>`, `<body>`, accent, Fumadocs' provider with static search, page transitions; `accentPicker` for demo sites). `notesMetadata(site)`: the site name as the title (`Page · Site` on every page), the description, and `url` as the base for share-image links. `NotesProvider` and `StaticSearchDialog` for sites that build their own root layout.
+- `@yx-elite/notestack/routes` (server only): `createNotesPage()` (the docs page, its metadata and static params), `searchRoute()`, `ogImageRoute()`, `llmsTxtRoute()`, `llmsFullRoute()` and `llmsPageRoute()`. Each file in `app/` is now a few lines that call one of them.
+- `url` in `site.config.ts` (optional): the address the site is served from, so link previews work.
+- `withNotestack()` lets phones and tablets on the home network (`192.168.*`, `10.*`) load the dev server.
 - `@yx-elite/notestack/mdx`: `getMDXComponents()`, with fumadocs-ui's components and `Glossary`.
 - `@yx-elite/notestack/source`: `notesSourcePlugins` (Lucide icons from `icon:` frontmatter) and `pageLastModified()`.
 - `@yx-elite/notestack/next`: `withNotestack()`, which sets static export, `trailingSlash` and unoptimized images.

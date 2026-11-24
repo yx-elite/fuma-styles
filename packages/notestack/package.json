@@ -48,6 +48,10 @@
       "types": "./dist/source/index.d.ts",
       "default": "./dist/source/index.js"
     },
+    "./routes": {
+      "types": "./dist/routes/index.d.ts",
+      "default": "./dist/routes/index.js"
+    },
     "./next": {
       "types": "./dist/next.d.ts",
       "default": "./dist/next.js"

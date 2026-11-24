@@ -10,6 +10,12 @@ export interface SiteConfig {
   tag?: string;
   /** One sentence about the subject: the same text as the GitHub repo description */
   description: string;
+  /**
+   * The address the site is served from, e.g. "https://saa.example.com".
+   * Used for links to share images (the preview a link gets in chat apps); leave it
+   * out until the site has an address, everything else works without it.
+   */
+  url?: string;
   /** GitHub repo as "owner/name" */
   repo: string;
   /** Branch the notes live on, for "edit on GitHub" links */

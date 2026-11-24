@@ -1,10 +1,13 @@
 // Everything a notes site imports from '@yx-elite/notestack'.
 // Content-loader helpers (sidebar icons, last-updated dates) live in '@yx-elite/notestack/source',
+// the docs page and the search, share-image and llms.txt routes in '@yx-elite/notestack/routes',
 // MDX components in '@yx-elite/notestack/mdx', the Next.js config helper in '@yx-elite/notestack/next'.
 
 export { defineSiteConfig, repoUrl, SiteStyle } from './config/site.js';
 export type { SiteConfig, SiteTranslation, StartSection } from './config/site.js';
 
+export { NotesRoot, notesMetadata } from './layouts/root.js';
+export { NotesProvider } from './layouts/provider.js';
 export { NotesLayout, baseOptions, lucideIcon } from './layouts/layout.js';
 export { NotesHomeLayout } from './layouts/home-layout.js';
 export { NotesHome, groupPageTree } from './layouts/home.js';
@@ -20,6 +23,7 @@ export { CopyButton } from './components/copy-button.js';
 export { Glossary } from './components/glossary.js';
 export type { GlossaryTerm, GlossaryText } from './components/glossary.js';
 export { SearchButton } from './components/search-button.js';
+export { StaticSearchDialog } from './components/search-dialog.js';
 
 export { LastUpdated, notesPageProps } from './pages/page.js';
 

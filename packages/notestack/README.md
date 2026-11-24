@@ -50,9 +50,10 @@ The full setup (layouts, pages, search and `next.config.mjs`) is in the docs sit
 
 | Import | What it holds |
 | --- | --- |
-| `@yx-elite/notestack` | Site config, layouts, landing page, components, page props, language helpers |
+| `@yx-elite/notestack` | Site config, root layout, layouts, landing page, components, language helpers |
 | `@yx-elite/notestack/mdx` | `getMDXComponents()`: every component for MDX pages |
 | `@yx-elite/notestack/source` | Loader plugins and last-updated dates. Build time only (uses `node:` modules) |
+| `@yx-elite/notestack/routes` | The docs page and the search, share-image and llms.txt routes. Server only |
 | `@yx-elite/notestack/next` | `withNotestack()` for `next.config.mjs`: static export settings. No React |
 | `@yx-elite/notestack/theme.css` | The theme. Import it after Tailwind |
 
