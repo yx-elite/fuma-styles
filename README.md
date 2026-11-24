@@ -1,6 +1,6 @@
 # Notestack
 
-![npm](https://img.shields.io/badge/npm-notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
+[![CI](https://github.com/yx-elite/notestack/actions/workflows/ci.yml/badge.svg)](https://github.com/yx-elite/notestack/actions/workflows/ci.yml) ![npm](https://img.shields.io/badge/npm-notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
 A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `notestack`, gives every notes site the same **layout, styles, components and search**, so every notes site reads the same way, and a fix made once reaches all of them.
 
@@ -66,7 +66,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 3. **Package** → move the prototype code into `notestack`. ✅
 4. **Languages** → one language per site, or several with a language switch. ✅
 5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command next.
-6. **CI and first release** → `0.1.0` on npm, docs site deployed.
+6. **CI and first release** → checks on every push ✅, then `0.1.0` on npm and the docs site deployed.
 7. **First real site** → the first notes site built on the published package.
 
 Later: more note components. Publishing an Obsidian vault as it is was tried and dropped; notes are Markdown files that Obsidian can still open.

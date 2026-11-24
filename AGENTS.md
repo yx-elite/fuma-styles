@@ -15,7 +15,7 @@ It has three parts, and each has one job:
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: the package, `playground/` and `starter/` exist; `create-notestack` and CI are planned. See `PRD.md`.
+Status: the package, `playground/`, `starter/` and CI (`.github/workflows/ci.yml`) exist; `create-notestack` and the deploy workflow are planned. See `PRD.md`.
 
 ## Fumadocs docs
 
@@ -50,9 +50,9 @@ notestack/
 ├── package.json              ← private npm workspaces root
 ├── AGENTS.md · CLAUDE.md · README.md · LICENSE
 ├── PRD.md                    ← local only, not committed
-├── .github/workflows/        ← (planned)
-│   ├── ci.yml                ← builds package, playground and starter on every push
-│   └── deploy-s3.yml         ← reusable deploy workflow that notes repos call
+├── .github/workflows/
+│   ├── ci.yml                ← on every push and pull request, Node 22 and 24: install, test, type-check, build, pack --dry-run
+│   └── deploy-s3.yml         ← (planned) reusable deploy workflow that notes repos call
 ├── packages/create-notestack/ ← (planned) the `npm create notestack` command
 ├── packages/notestack/       ← notestack
 │   ├── package.json · tsconfig.json · README.md · CHANGELOG.md
