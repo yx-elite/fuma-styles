@@ -21,8 +21,8 @@ export type CalloutColor = (typeof calloutColors)[number];
 export interface CalloutProps extends Omit<ComponentProps<'div'>, 'title'> {
   /** `info` (default), `warn`, `error`, `success` or `idea`; sets the colour, icon and label */
   type?: 'info' | 'warn' | 'warning' | 'error' | 'success' | 'idea';
-  /** Shown in the pill at the top. Without it, the pill shows the type's name ("Warning") */
-  title?: ReactNode;
+  /** Shown in the pill at the top. Without it, the pill shows the type's name ("Warning"). `false` drops the pill and puts the icon before the text */
+  title?: ReactNode | false;
   /** A Lucide icon name, e.g. "MapPin" (lucide.dev/icons), or any element. Without it, the type's icon */
   icon?: string | ReactNode;
   /**
@@ -37,7 +37,8 @@ export interface CalloutProps extends Omit<ComponentProps<'div'>, 'title'> {
 /**
  * Fumadocs' callout with the icon and title in a pill at the top and the text
  * full width below. In notes: <Callout type="warn" title="Costs money" icon="Wallet">,
- * or with its own colour: <Callout title="Exam tip" icon="GraduationCap" color="purple">.
+ * or with its own colour: <Callout title="Exam tip" icon="GraduationCap" color="purple">,
+ * or with no pill, the icon before the text: <Callout title={false}>.
  */
 export function Callout({
   type = 'info',
@@ -59,11 +60,21 @@ export function Callout({
 
   return (
     // icon={false}: the icon goes in the pill instead of Fumadocs' column beside the text
-    <CalloutContainer type={type} icon={false} style={{ ...colorStyle, ...style }} {...props}>
-      <CalloutTitle className="ns-callout-title">
-        {shownIcon}
-        <span>{title ?? text[kind.label]}</span>
-      </CalloutTitle>
+    <CalloutContainer
+      type={type}
+      icon={false}
+      style={{ ...colorStyle, ...style }}
+      data-ns-plain={title === false || undefined}
+      {...props}
+    >
+      {title === false ? (
+        <span className="ns-callout-icon">{shownIcon}</span>
+      ) : (
+        <CalloutTitle className="ns-callout-title">
+          {shownIcon}
+          <span>{title ?? text[kind.label]}</span>
+        </CalloutTitle>
+      )}
       <CalloutDescription>{children}</CalloutDescription>
     </CalloutContainer>
   );

@@ -7,7 +7,7 @@ const ease = (t: number) => 1 - (1 - t) ** 3;
  * The landing page's motion, in one small client component (the page itself stays a server component):
  * - `.ns-reveal` elements rise into view the first time they scroll in
  * - the docs preview (`.ns-home-preview`) starts tilted back and lies flat as it scrolls up
- * - `[data-ns-count]` numbers count up from zero
+ * - `[data-ns-count]` numbers count up from zero when they scroll into view
  * - `.ns-card` borders glow where the mouse is
  * All of it is skipped for "reduce motion"; the page reads the same without JavaScript.
  * Styles in theme.css (Home page).
@@ -61,25 +61,35 @@ export function HomeEffects() {
       });
     }
 
-    // Count up the hero numbers
+    // Count up numbers (the hero's, a section's page count) when they scroll into view
+    const counters = new IntersectionObserver((entries) => {
+      for (const entry of entries) {
+        if (!entry.isIntersecting) continue;
+        counters.unobserve(entry.target);
+        const el = entry.target as HTMLElement;
+        const target = Number(el.dataset.nsCount);
+        const start = performance.now() + 350; // wait for the number to rise in
+        const duration = 1100;
+        const step = (now: number) => {
+          const t = Math.min(1, Math.max(0, (now - start) / duration));
+          el.textContent = String(Math.round(target * ease(t)));
+          if (t < 1) frames.set(el, requestAnimationFrame(step));
+        };
+        frames.set(el, requestAnimationFrame(step));
+      }
+    });
+    const frames = new Map<HTMLElement, number>();
     for (const el of home.querySelectorAll<HTMLElement>('[data-ns-count]')) {
       const target = Number(el.dataset.nsCount);
       if (!Number.isFinite(target) || target <= 0) continue;
-      const start = performance.now() + 350; // wait for the hero to rise in
-      const duration = 1100;
-      let frame = 0;
-      const step = (now: number) => {
-        const t = Math.min(1, Math.max(0, (now - start) / duration));
-        el.textContent = String(Math.round(target * ease(t)));
-        if (t < 1) frame = requestAnimationFrame(step);
-      };
       el.textContent = '0';
-      frame = requestAnimationFrame(step);
+      counters.observe(el);
       cleanups.push(() => {
-        cancelAnimationFrame(frame);
+        cancelAnimationFrame(frames.get(el) ?? 0);
         el.textContent = String(target);
       });
     }
+    cleanups.push(() => counters.disconnect());
 
     // Card glow follows the mouse
     if (window.matchMedia('(hover: hover) and (pointer: fine)').matches) {

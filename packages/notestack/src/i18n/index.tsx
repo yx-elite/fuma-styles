@@ -44,7 +44,7 @@ export function notesText(site?: LanguageConfig): NotesText {
 
 /**
  * Adds the page's language to a link inside the notes, so notes can link to `/docs/…`
- * and the link works in every language: `/docs/risk` → `/zh-CN/docs/risk`.
+ * and the link works in every language: `/docs/networking` → `/zh-CN/docs/networking`.
  * The home page `/` becomes `/zh-CN/`. Other links (files, other sites, already
  * prefixed ones) and every link on a one-language site are left as they are.
  */
@@ -104,10 +104,15 @@ export function fillNodes(template: string, values: Record<string, ReactNode>): 
   });
 }
 
+/** The right plural form for `n` in this language, with `{n}` still in it, e.g. to fill with an element */
+export function pluralForm(language: string, n: number, forms: Plural): string {
+  const category = new Intl.PluralRules(language).select(n) as keyof Plural;
+  return forms[category] ?? forms.other;
+}
+
 /** The right plural form for `n` in this language, with `{n}` filled in */
 export function plural(language: string, n: number, forms: Plural): string {
-  const category = new Intl.PluralRules(language).select(n) as keyof Plural;
-  return fill(forms[category] ?? forms.other, { n });
+  return fill(pluralForm(language, n, forms), { n });
 }
 
 /**

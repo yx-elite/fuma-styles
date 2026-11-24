@@ -18,6 +18,7 @@ import {
   localizeHref,
   notesText,
   plural,
+  pluralForm,
   type NotesText,
 } from '../i18n/index.js';
 import { notesStack, type StackItem } from './stack.js';
@@ -154,9 +155,9 @@ export function NotesHome({
           </a>
         </div>
         <p className="ns-home-stats">
-          <span>{fillNodes(plural(language, pageCount, text.pageCount), { n: <b data-ns-count={pageCount}>{pageCount}</b> })}</span>
+          <span>{fillNodes(pluralForm(language, pageCount, text.pageCount), { n: <b data-ns-count={pageCount}>{pageCount}</b> })}</span>
           <span>
-            {fillNodes(plural(language, groups.length, text.sectionCount), {
+            {fillNodes(pluralForm(language, groups.length, text.sectionCount), {
               n: <b data-ns-count={groups.length}>{groups.length}</b>,
             })}
           </span>
@@ -188,17 +189,9 @@ export function NotesHome({
               sections: plural(language, groups.length, text.sectionCount),
             })}
           </SectionHead>
-          <div className="ns-home-cards" data-count={Math.min(groups.length, 4)}>
-            {groups.map((group, i) => (
-              <SectionCard
-                key={i}
-                group={group}
-                index={i}
-                // bento: with three sections the first is wide, with four the first and last
-                wide={groups.length >= 3 && (i === 0 || (groups.length === 4 && i === 3))}
-                text={text}
-                language={language}
-              />
+          <div className="ns-mosaic">
+            {mosaic(groups.length).map((tile, i) => (
+              <SectionCard key={i} group={groups[i]} index={i} tile={tile} text={text} language={language} />
             ))}
           </div>
         </section>
@@ -293,69 +286,181 @@ function StackStrip({ items, label }: { items: StackItem[]; label: string }) {
 
 /* ── Section card: a moving list of the section's pages, then its name ─── */
 
+/** How a section card looks: each shows the same section a different way, so neighbours never match */
+type TileStyle = 'feature' | 'cluster' | 'stack' | 'stat' | 'strip';
+
+interface Tile {
+  style: TileStyle;
+  /** grid-area on the six-column grid of wide screens; phones stack the cards */
+  area: string;
+}
+
+/**
+ * The mosaic: the first section a tall feature on the left, up to three tiles of
+ * different shapes on its right, then the rest as strips, two to a row (the last
+ * one full width when it is on its own).
+ */
+function mosaic(count: number): Tile[] {
+  if (count === 1) return [{ style: 'feature', area: '1 / 1 / 2 / 7' }];
+  if (count === 2) {
+    return [
+      { style: 'feature', area: '1 / 1 / 3 / 4' },
+      { style: 'stack', area: '1 / 4 / 3 / 7' },
+    ];
+  }
+  if (count === 3) {
+    return [
+      { style: 'feature', area: '1 / 1 / 3 / 4' },
+      { style: 'cluster', area: '1 / 4 / 2 / 7' },
+      { style: 'cluster', area: '2 / 4 / 3 / 7' },
+    ];
+  }
+  const tiles: Tile[] = [
+    { style: 'feature', area: '1 / 1 / 4 / 4' },
+    { style: 'cluster', area: '1 / 4 / 2 / 7' },
+    { style: 'stack', area: '2 / 4 / 4 / 6' },
+    { style: 'stat', area: '2 / 6 / 4 / 7' },
+  ];
+  for (let i = 4; i < count; i++) {
+    const row = 4 + Math.floor((i - 4) / 2);
+    const left = (i - 4) % 2 === 0;
+    const alone = left && i === count - 1;
+    tiles.push({ style: 'strip', area: `${row} / ${alone ? 1 : left ? 1 : 4} / ${row + 1} / ${alone || !left ? 7 : 4}` });
+  }
+  return tiles;
+}
+
 function SectionCard({
   group,
   index,
-  wide,
+  tile,
   text,
   language,
 }: {
   group: HomeGroup;
   index: number;
-  /** spans two columns, with its pages in two columns */
-  wide: boolean;
+  tile: Tile;
   text: NotesText;
   language: string;
 }) {
   const first = group.pages[0];
-  // At most three rows: three pages, or three rows of two on a wide card with room for two columns
-  const shown = group.pages.slice(0, wide ? 6 : 3);
-  const moreText = (n: number) => fill(text.andMore, { n }).replace(/^[\s,，、]+/, '');
-  const more = group.pages.length - 3;
-  const moreWide = group.pages.length - shown.length;
+  const number = String(index + 1).padStart(2, '0');
+  const count = group.pages.length;
+  const more = (shown: number) =>
+    count > shown ? <span className="ns-tile-more">{fill(text.andMore, { n: count - shown }).replace(/^[\s,，、]+/, '')}</span> : null;
+  // The page's own icon, or its number when it has none
+  const badge = (page: HomePage, i: number) => (
+    <span className="ns-tile-badge" data-number={page.icon ? undefined : true}>
+      {page.icon ?? String(i + 1).padStart(2, '0')}
+    </span>
+  );
+  const chips = (shown: number) => (
+    <ul className="ns-tile-chips">
+      {group.pages.slice(0, shown).map((page, i) => (
+        <li key={i} style={vars({ '--j': i })}>
+          <Link href={page.url} className="ns-tile-chip">
+            {page.icon}
+            {page.name}
+          </Link>
+        </li>
+      ))}
+      {count > shown && <li style={vars({ '--j': shown })}>{more(shown)}</li>}
+    </ul>
+  );
 
   return (
-    <article className="ns-card ns-reveal" data-wide={wide || undefined} style={vars({ '--i': index })}>
-      <div className="ns-card-body">
-        <div className="ns-card-head">
-          <span className="ns-card-icon" data-number={group.icon ? undefined : true}>
-            {group.icon ?? String(index + 1).padStart(2, '0')}
+    <article
+      className="ns-card ns-tile ns-reveal"
+      data-style={tile.style}
+      style={vars({ '--i': index, '--ns-area': tile.area })}
+    >
+      <span className="ns-tile-meta">
+        {number}
+        {tile.style !== 'stat' && <> · {plural(language, count, text.pageCount)}</>}
+      </span>
+
+      {tile.style === 'stat' && (
+        <p className="ns-tile-stat">
+          {fillNodes(pluralForm(language, count, text.pageCount), { n: <b data-ns-count={count}>{count}</b> })}
+        </p>
+      )}
+
+      {/* The title's link covers the whole card; page links inside sit above it */}
+      <h3 className="ns-tile-title">
+        {first ? (
+          <Link href={first.url} className="ns-tile-link">
+            {group.name}
+          </Link>
+        ) : (
+          group.name
+        )}
+      </h3>
+
+      {tile.style === 'feature' && (
+        <>
+          {first?.description && <p className="ns-tile-text">{first.description}</p>}
+          {chips(6)}
+          {first && (
+            <span className="ns-tile-start">
+              {fillNodes(text.startWith, { page: first.name })}
+              <ArrowRight aria-hidden />
+            </span>
+          )}
+          <span className="ns-tile-ghost" aria-hidden>
+            {number}
           </span>
-          <h3 className="ns-card-title">{group.name}</h3>
-          <span className="ns-card-count">{plural(language, group.pages.length, text.pageCount)}</span>
-        </div>
-        {/* The section's first pages, ready to open: still until hovered */}
-        <ol className="ns-card-pages">
-          {shown.map((page, i) => (
-            <li key={i} data-extra={i >= 3 || undefined}>
-              <Link href={page.url} className="ns-card-page">
-                <span className="ns-card-page-number">{String(i + 1).padStart(2, '0')}</span>
-                <span className="ns-card-page-text">
-                  <b>{page.name}</b>
-                  {page.description && <small>{page.description}</small>}
-                </span>
-                <ArrowRight aria-hidden />
+        </>
+      )}
+
+      {tile.style === 'cluster' && (
+        <ul className="ns-tile-cluster">
+          {group.pages.slice(0, 5).map((page, i) => (
+            <li key={i} style={vars({ '--j': i })}>
+              <Link href={page.url} title={typeof page.name === 'string' ? page.name : undefined}>
+                {badge(page, i)}
+                <span className="sr-only">{page.name}</span>
               </Link>
             </li>
           ))}
-        </ol>
-        {/* a wide card shows one of the two counts, depending on whether its pages fit in two columns */}
-        {more > 0 && (
-          <p className="ns-card-more" data-columns={wide ? '1' : undefined}>
-            {moreText(more)}
-          </p>
-        )}
-        {wide && moreWide > 0 && (
-          <p className="ns-card-more" data-columns="2">
-            {moreText(moreWide)}
-          </p>
-        )}
-      </div>
-      {first && (
-        <Link href={first.url} className="ns-card-start">
-          {fillNodes(text.startWith, { page: first.name })}
-          <ArrowRight aria-hidden />
-        </Link>
+          {count > 5 && (
+            <li className="ns-tile-badge ns-tile-badge-more" style={vars({ '--j': 5 })}>
+              +{count - 5}
+            </li>
+          )}
+        </ul>
+      )}
+
+      {tile.style === 'stack' && (
+        <>
+          <ul className="ns-tile-stack">
+            {group.pages.slice(0, 4).map((page, i) => (
+              <li key={i} style={vars({ '--j': i })}>
+                <Link href={page.url}>
+                  {badge(page, i)}
+                  <span>{page.name}</span>
+                </Link>
+              </li>
+            ))}
+          </ul>
+          {more(4)}
+        </>
+      )}
+
+      {tile.style === 'stat' && first && (
+        <p className="ns-tile-text">
+          {group.pages
+            .slice(0, 2)
+            .map((page) => page.name)
+            .filter((name): name is string => typeof name === 'string')
+            .join(' · ')}
+        </p>
+      )}
+
+      {tile.style === 'strip' && (
+        <>
+          {chips(5)}
+          <ArrowRight className="ns-tile-arrow" aria-hidden />
+        </>
       )}
     </article>
   );
