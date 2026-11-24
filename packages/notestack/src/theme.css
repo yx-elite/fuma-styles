@@ -332,10 +332,11 @@ html > body[data-scroll-locked] {
 /*
  * Callouts (<Callout>, src/components/callout.tsx): the whole box tinted in its
  * colour with a coloured border, a pill at the top holding the icon and the
- * title, and the text full width below. Fumadocs sets --callout-color on each
- * callout; its thin left bar is hidden.
+ * title, and the text full width below. The component gives the box the class
+ * ns-callout and its text ns-callout-body; Fumadocs sets --callout-color on the
+ * box, and its thin left bar (the first child, role="none") is hidden.
  */
-div[style*='--callout-color']:has(> [role='none']) {
+.ns-callout {
   gap: 0.75rem;
   padding: 0.875rem 1rem 1.125rem;
   border: 1px solid color-mix(in oklab, var(--callout-color) 35%, transparent);
@@ -343,7 +344,7 @@ div[style*='--callout-color']:has(> [role='none']) {
   background: color-mix(in oklab, var(--callout-color) 9%, var(--color-fd-background));
 }
 
-div[style*='--callout-color'] > [role='none'] {
+.ns-callout > [role='none'] {
   display: none;
 }
 
@@ -371,7 +372,8 @@ div[style*='--callout-color'] > [role='none'] {
   --ns-callout-slate: #94a3b8;
 }
 
-div[style*='--callout-color']:has(> [role='none']) > div:last-child {
+/* Fumadocs' column holding the pill and the text */
+.ns-callout > div:last-child {
   gap: 0.75rem;
 }
 
@@ -401,17 +403,17 @@ div[style*='--callout-color']:has(> [role='none']) > div:last-child {
 }
 
 /* <Callout title={false}>: no pill, the icon sits before the text on its first line */
-div[style*='--callout-color'][data-ns-plain] {
+.ns-callout[data-ns-plain] {
   padding-block: 0.75rem;
 }
 
-div[style*='--callout-color'][data-ns-plain] > div:last-child {
+.ns-callout[data-ns-plain] > div:last-child {
   flex-direction: row;
   align-items: flex-start;
   gap: 0.625rem;
 }
 
-div[style*='--callout-color'][data-ns-plain] > div:last-child > div {
+.ns-callout[data-ns-plain] .ns-callout-body {
   flex: 1;
   min-width: 0;
 }
@@ -431,17 +433,17 @@ div[style*='--callout-color'][data-ns-plain] > div:last-child > div {
 }
 
 /* the text: roomier lines than Fumadocs' tight text-sm, and a gap between paragraphs, lists and code */
-div[style*='--callout-color']:has(> [role='none']) > div:last-child > div {
+.ns-callout-body {
   color: color-mix(in oklab, var(--color-fd-foreground) 82%, transparent);
   line-height: 1.85;
 }
 
-div[style*='--callout-color']:has(> [role='none']) > div:last-child > div > * + * {
+.ns-callout-body > * + * {
   margin-top: 0.75em;
 }
 
 /* inline code: slimmer chips, so a chip on one line doesn't touch the line below */
-div[style*='--callout-color']:has(> [role='none']) :not(pre) > code {
+.ns-callout :not(pre) > code {
   padding-block: 0.0625rem;
 }
 

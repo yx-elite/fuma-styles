@@ -46,6 +46,7 @@ export function Callout({
   icon,
   color,
   text = notesText(),
+  className,
   style,
   children,
   ...props
@@ -59,10 +60,12 @@ export function Callout({
     : undefined;
 
   return (
-    // icon={false}: the icon goes in the pill instead of Fumadocs' column beside the text
+    // icon={false}: the icon goes in the pill instead of Fumadocs' column beside the text.
+    // ns-callout and ns-callout-body are what theme.css styles (section Callouts).
     <CalloutContainer
       type={type}
       icon={false}
+      className={className ? `ns-callout ${className}` : 'ns-callout'}
       style={{ ...colorStyle, ...style }}
       data-ns-plain={title === false || undefined}
       {...props}
@@ -75,7 +78,7 @@ export function Callout({
           <span>{title ?? text[kind.label]}</span>
         </CalloutTitle>
       )}
-      <CalloutDescription>{children}</CalloutDescription>
+      <CalloutDescription className="ns-callout-body">{children}</CalloutDescription>
     </CalloutContainer>
   );
 }
