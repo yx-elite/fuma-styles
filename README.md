@@ -57,7 +57,7 @@ cd my-notes
 npm run dev
 ```
 
-Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export that any static host can serve (Cloudflare, GitHub Pages, Netlify, Vercel, S3); the docs site has a guide for each.
+Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export that any static host can serve (Cloudflare, GitHub Pages, Netlify, Vercel, S3); the docs site has a [guide for each](https://github.com/yx-elite/notestack/tree/main/playground/content/docs/en/deployment).
 
 ## Roadmap
 
@@ -69,7 +69,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 6. **CI and first release** → `0.1.0` on npm, docs site deployed.
 7. **First real site** → the first notes site built on the published package.
 
-Later: publishing an **Obsidian** vault with the theme (wikilinks, embeds, callouts), and more note components.
+Later: more note components. Publishing an Obsidian vault as it is was tried and dropped; notes are Markdown files that Obsidian can still open.
 
 ## Contributing
 
