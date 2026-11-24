@@ -1,20 +1,21 @@
 ---
 title: 安装
-description: 用一条命令创建笔记网站，然后开始写作。
+description: 用一条命令创建笔记网站，或者把主题加进已有的 Fumadocs 应用。
 icon: Download
 ---
 
 <Callout type="warn" title="开发中">
-`@yx-elite/notestack` 和 `create-notestack` 还没有发布。下面的步骤是第一个正式版本中的安装方式。
+`@yx-elite/notestack` 和 `create-notestack` 还没有发布。下面是第一个正式版本中的安装方式。在那之前，[仓库](https://github.com/yx-elite/notestack)里的 `starter/` 文件夹就是同一个网站。
 </Callout>
 
 ## 环境要求
 
-- [Node.js](https://nodejs.org) 22 或更高版本。
+- [Node.js](https://nodejs.org) 22 或更高版本。用 `node --version` 查看。
 - npm，随 Node.js 一起安装。
-- Git，如果你想在页面上显示*最后更新*日期。
+- [Git](https://git-scm.com)，用于*最后更新*日期和发布笔记。
+- 一个代码编辑器，例如 [VS Code](https://code.visualstudio.com)。
 
-## 安装
+## 创建网站
 
 <Steps>
 <Step>
@@ -25,67 +26,349 @@ icon: Download
 npm create notestack@latest my-notes
 ```
 
-这会新建一个 `my-notes` 文件夹，里面是一个已经配置好主题的 Fumadocs 应用，并安装好依赖。
+这会新建一个 `my-notes` 文件夹，里面是一个已经配置好主题的笔记网站，并安装好所需的一切。文件夹名称可以随意取。
 
 </Step>
 <Step>
 
-### 启动网站
+### 启动
 
 ```bash
 cd my-notes
 npm run dev
 ```
 
-打开 [localhost:3000](http://localhost:3000)。然后在 `site.config.ts` 中填写笔记的名称、链接和强调色：见[配置](/docs/configuration)。
+打开 [localhost:3000](http://localhost:3000)。保存文件后网站会自动更新。按 <kbd>Ctrl</kbd> + <kbd>C</kbd> 停止。
+
+</Step>
+<Step>
+
+### 改成你自己的
+
+打开 `site.config.ts`，填写网站的 `name`、`description` 和 `repo`。所有选项见[配置](/docs/configuration)。
 
 </Step>
 <Step>
 
 ### 写作
 
-把笔记放进 `content/docs/`。见[写笔记](/docs/writing-notes)。
+把笔记放进 `content/docs/`。网站自带一份简短的示例（欢迎页、一个示例主题和术语表），每个功能展示一次；准备好后删掉即可。见[写笔记](/docs/writing-notes)。
+
+</Step>
+<Step>
+
+### 保存到 GitHub
+
+```bash
+git init
+git add .
+git commit -m "My notes"
+```
+
+然后在 GitHub 上新建一个空仓库，按照它的提示推送。发布网站见[部署](/docs/deployment)。
 
 </Step>
 </Steps>
 
-## 你会得到什么
+## 常用命令
 
-只有 Next.js 和 Fumadocs 要求应用中必须存在的文件。每个文件只有几行，调用主题，所以以后的版本通过 `npm update` 就能到达你的网站：
+在网站文件夹中运行：
+
+| 命令 | 作用 |
+| --- | --- |
+| `npm run dev` | 写作时在 localhost:3000 启动网站 |
+| `npm run build` | 把整个网站构建成 `out/` 里的普通文件 |
+| `npm start` | 在本机查看构建好的 `out/`，和发布后完全一样 |
+| `npm run types:check` | 检查代码错误（更新之后很有用） |
+
+## 网站里有什么
+
+只有 Next.js 和 Fumadocs 要求必须存在的文件。每个文件只有几行，调用主题，所以以后的新版本通过 `npm update` 就能到达你的网站：
 
 <Files>
   <File name="site.config.ts" />
   <Folder name="content" defaultOpen>
     <Folder name="docs" />
+    <File name="glossary.json" />
   </Folder>
   <Folder name="app" defaultOpen>
-    <File name="global.css" />
     <File name="layout.tsx" />
-    <Folder name="(home)" defaultOpen>
+    <File name="global.css" />
+    <File name="icon.svg" />
+    <Folder name="(home)">
       <File name="layout.tsx" />
       <File name="page.tsx" />
     </Folder>
-    <Folder name="docs" defaultOpen>
+    <Folder name="docs">
       <File name="layout.tsx" />
       <File name="[[...slug]]/page.tsx" />
     </Folder>
+    <Folder name="api/search">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="og/docs/[...slug]">
+      <File name="route.tsx" />
+    </Folder>
+    <Folder name="llms.txt, llms-full.txt, llms.mdx">
+      <File name="route.ts" />
+    </Folder>
   </Folder>
-  <Folder name="lib" defaultOpen>
+  <Folder name="lib">
     <File name="source.ts" />
   </Folder>
   <File name="next.config.mjs" />
+  <File name="package.json" />
 </Files>
 
-| 文件 | 作用 |
-| --- | --- |
-| `site.config.ts` | 网站设置。唯一需要你编辑的代码文件。 |
-| `content/docs/` | 你的笔记。 |
-| `app/global.css` | 引入 Tailwind CSS 和 `@yx-elite/notestack/theme.css`。 |
-| `app/layout.tsx` | 字体、配置中的强调色、页面过渡。 |
-| `app/(home)/…` | 首页，由你的内容生成。 |
-| `app/docs/…` | 笔记布局和页面。 |
-| `lib/source.ts` | 笔记的读取位置：`content/docs/`。 |
-| `next.config.mjs` | 静态导出设置，无需服务器即可托管。 |
+| 文件 | 作用 | 需要编辑吗？ |
+| --- | --- | --- |
+| `site.config.ts` | 网站的名称、链接、颜色和语言 | **需要** |
+| `content/docs/` | 你的笔记，以及决定侧边栏顺序的 `meta.json` | **需要** |
+| `content/glossary.json` | 术语表的术语 | **需要** |
+| `app/icon.svg` | 浏览器标签页图标 | 想换就换 |
+| `app/layout.tsx` | 字体，然后是 `NotesRoot`：强调色、搜索和页面过渡 | 不需要 |
+| `app/global.css` | 加载 Tailwind CSS 和主题 | 不需要 |
+| `app/(home)/` | 首页，由你的笔记生成 | 不需要 |
+| `app/docs/` | 笔记布局和每篇笔记的页面 | 不需要 |
+| `app/api/search/` | 搜索索引，构建时生成，在浏览器中搜索 | 不需要 |
+| `app/og/docs/` | 分享图片：链接在聊天应用中显示的预览图 | 不需要 |
+| `app/llms*/` | 给 AI 助手的纯文本笔记，以及*复制 Markdown* | 不需要 |
+| `lib/source.ts` | 从 `content/docs/` 读取笔记 | 不需要 |
+| `next.config.mjs` | 静态导出设置，无需服务器即可托管 | 不需要 |
+
+## 加进已有的 Fumadocs 应用
+
+如果你已经有一个 Fumadocs 应用（用 `npm create fumadocs-app` 创建，使用 Next.js 和 Fumadocs MDX），可以手动换成这个主题。以起始模板为准：下面每个文件都是它的副本。
+
+<Steps>
+<Step>
+
+### 安装主题
+
+```bash
+npm install @yx-elite/notestack
+```
+
+你的应用需要 `fumadocs-core` 和 `fumadocs-ui` 16、`fumadocs-mdx`、`next` 16、`react` 19 和 Tailwind CSS 4。主题使用你应用里的这些包。
+
+</Step>
+<Step>
+
+### 添加 site.config.ts
+
+```ts title="site.config.ts"
+import { defineSiteConfig } from '@yx-elite/notestack';
+
+export default defineSiteConfig({
+  name: 'My Notes',
+  description: 'My study notes.',
+  repo: 'your-name/my-notes',
+});
+```
+
+</Step>
+<Step>
+
+### 替换应用文件
+
+把每个文件换成下面的版本；如果应用里有 `components/`、`lib/shared.ts` 和 `app/(docs)`，删掉它们。
+
+<Accordions>
+<Accordion title="app/global.css">
+
+```css title="app/global.css"
+@import 'tailwindcss';
+@import '@yx-elite/notestack/theme.css';
+```
+
+</Accordion>
+<Accordion title="app/layout.tsx">
+
+```tsx title="app/layout.tsx"
+import { Geist, JetBrains_Mono } from 'next/font/google';
+import type { ReactNode } from 'react';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
+import site from '@/site.config';
+import './global.css';
+
+const sans = Geist({ subsets: ['latin'], variable: '--font-sans' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+export const metadata = notesMetadata(site);
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesRoot site={site} className={`${sans.variable} ${mono.variable}`}>
+      {children}
+    </NotesRoot>
+  );
+}
+```
+
+</Accordion>
+<Accordion title="lib/source.ts">
+
+```ts title="lib/source.ts"
+import { loader } from 'fumadocs-core/source';
+import { defineDocs } from 'fumadocs-mdx/macro';
+import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
+import { notesLanguages } from '@yx-elite/notestack';
+import { notesSourcePlugins } from '@yx-elite/notestack/source';
+import site from '@/site.config';
+
+const docs = defineDocs({
+  dir: 'content/docs',
+  docs: {
+    schema: pageSchema,
+    lastModified: true,
+    postprocess: { includeProcessedMarkdown: true },
+  },
+  meta: { schema: metaSchema },
+});
+
+export const source = loader({
+  i18n: notesLanguages(site),
+  baseUrl: '/docs',
+  source: docs.toFumadocsSource(),
+  plugins: notesSourcePlugins,
+});
+```
+
+</Accordion>
+<Accordion title="app/(home)/layout.tsx and page.tsx">
+
+```tsx title="app/(home)/layout.tsx"
+import type { ReactNode } from 'react';
+import { NotesHomeLayout } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesHomeLayout site={site} tree={source.getPageTree()}>
+      {children}
+    </NotesHomeLayout>
+  );
+}
+```
+
+```tsx title="app/(home)/page.tsx"
+import { NotesHome } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function HomePage() {
+  return <NotesHome site={site} source={source} />;
+}
+```
+
+</Accordion>
+<Accordion title="app/docs/layout.tsx and [[...slug]]/page.tsx">
+
+```tsx title="app/docs/layout.tsx"
+import type { ReactNode } from 'react';
+import { NotesLayout } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesLayout site={site} tree={source.getPageTree()}>
+      {children}
+    </NotesLayout>
+  );
+}
+```
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+import { createNotesPage } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+const docs = createNotesPage({ source, site });
+
+export default docs.Page;
+export const generateStaticParams = docs.generateStaticParams;
+export const generateMetadata = docs.generateMetadata;
+```
+
+</Accordion>
+<Accordion title="Search, share images and llms.txt routes">
+
+```ts title="app/api/search/route.ts"
+import { searchRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = searchRoute(source);
+```
+
+```tsx title="app/og/docs/[...slug]/route.tsx"
+import { ogImageRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+const og = ogImageRoute({ source, site });
+
+export const revalidate = false;
+export const GET = og.GET;
+export const generateStaticParams = og.generateStaticParams;
+```
+
+```ts title="app/llms.txt/route.ts"
+import { llmsTxtRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = llmsTxtRoute(source);
+```
+
+```ts title="app/llms-full.txt/route.ts"
+import { llmsFullRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = llmsFullRoute(source);
+```
+
+```ts title="app/llms.mdx/[...path]/route.ts"
+import { llmsPageRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+const pages = llmsPageRoute(source);
+
+export const revalidate = false;
+export const dynamicParams = false;
+export const GET = pages.GET;
+export const generateStaticParams = pages.generateStaticParams;
+```
+
+带普通值的 `export const` 行（`revalidate`、`dynamicParams`）必须留在每个文件里：Next.js 不运行代码就直接读取它们。
+
+</Accordion>
+<Accordion title="next.config.mjs">
+
+```js title="next.config.mjs"
+import { createMDX } from 'fumadocs-mdx/next';
+import { withNotestack } from '@yx-elite/notestack/next';
+
+export default createMDX()(withNotestack());
+```
+
+</Accordion>
+</Accordions>
+
+</Step>
+<Step>
+
+### 启动
+
+```bash
+npm run dev
+```
+
+</Step>
+</Steps>
 
 ## 更新
 
@@ -93,4 +376,13 @@ npm run dev
 npm update @yx-elite/notestack
 ```
 
-更新内容列在更新日志中。如果某个版本需要你修改文件，会写明具体要改什么。
+新版本带来修复、新组件和设计改进，你这边无需改动。极少数需要你修改文件的版本，会在[更新日志](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md)中写明具体改法。见[更新与版本](/docs/updates)。
+
+## 下一步
+
+<Cards>
+  <Card title="配置" href="/docs/configuration" description="site.config.ts 中的每个选项。" />
+  <Card title="写笔记" href="/docs/writing-notes" description="页面、文件夹、组件和图片。" />
+  <Card title="多语言" href="/docs/languages" description="用多种语言发布你的笔记。" />
+  <Card title="部署" href="/docs/deployment" description="把网站发布到你选择的托管服务。" />
+</Cards>

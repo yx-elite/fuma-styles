@@ -15,7 +15,7 @@ It has three parts, and each has one job:
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: the package and `playground/` exist; `starter/`, `create-notestack` and CI are planned. The rest is planned; see `PRD.md`.
+Status: the package, `playground/` and `starter/` exist; `create-notestack` and CI are planned. See `PRD.md`.
 
 ## Fumadocs docs
 
@@ -57,17 +57,19 @@ notestack/
 ├── packages/notestack/       ← @yx-elite/notestack
 │   ├── package.json · tsconfig.json · README.md · CHANGELOG.md
 │   └── src/
-│       ├── theme.css         ← tokens, fonts, numbered headings, @source for Tailwind
+│       ├── theme.css         ← tokens, fonts, styles for every component, @source for Tailwind
 │       ├── components/       ← Glossary and other MDX components
-│       ├── layouts/          ← notes layout, home layout, landing page, banner, links
-│       ├── pages/            ← docs page factory (page, metadata, static params)
+│       ├── layouts/          ← root layout (NotesRoot), notes layout, home layout, landing page, banner, links
+│       ├── pages/            ← docs page props ("On this page", last updated)
+│       ├── routes/           ← docs page, search, share images, llms.txt; server only  (@yx-elite/notestack/routes)
+│       ├── i18n/             ← languages: Notestack's text, Fumadocs' text, language helpers
 │       ├── source/           ← loader plugins, last-updated dates  (@yx-elite/notestack/source)
 │       ├── config/           ← SiteConfig, defineSiteConfig, SiteStyle
 │       ├── mdx.tsx           ← getMDXComponents(): every component for MDX  (@yx-elite/notestack/mdx)
 │       ├── next.ts           ← withNotestack(): Next.js config, no React  (@yx-elite/notestack/next)
 │       └── index.ts          ← public exports  (@yx-elite/notestack)
 ├── playground/               ← docs site; consumes the package via the workspace
-└── starter/                  ← (planned) thin shell for new notes repos
+└── starter/                  ← thin shell for new notes repos (one language, clean URLs)
 ```
 
 ## Package rules
@@ -76,7 +78,8 @@ notestack/
 - **Build with `tsc`, no bundler.** One output file per source file in `dist/`, so `"use client"` survives.
 - **CSS is not built.** `exports["./theme.css"]` points at `./src/theme.css` and `files` includes it, so theme edits show in the playground on save. Never point it at `dist/`.
 - **Relative imports end in `.js`** (`import { NotesLogo } from './logo.js'`, even though the file is `logo.tsx`). The `./next` entry is run by plain Node, which needs the extension, and it works under Next.js too.
-- **Server-only code stays out of the main entry.** Anything that uses `node:*` goes in `src/source/` (`@yx-elite/notestack/source`), never re-exported from `src/index.ts`.
+- **Server-only code stays out of the main entry.** Anything that uses `node:*` goes in `src/source/` (`@yx-elite/notestack/source`, for `lib/source.ts`) or `src/routes/` (`@yx-elite/notestack/routes`, for files in `app/`), never re-exported from `src/index.ts`.
+- **Route segment config stays in the app.** `revalidate`, `dynamicParams` and `dynamic` must be literals in each route file (Next.js reads them without running the code); helpers in `src/routes/` return the handlers and `generateStaticParams`, never these.
 - **`"use client"` goes on the first line** of any component that uses state, effects, browser APIs or event handlers. Keep everything else a server component.
 - **Every component is wired in three places** in the same change: exported from `src/index.ts`, added to `getMDXComponents()` in `src/mdx.tsx`, and shown on a playground page.
 - **Separate entry point for non-React code.** `next.config.mjs` in notes repos imports from `@yx-elite/notestack/next`. That entry point must never import React or a `.css` file.
@@ -109,11 +112,12 @@ npm install                                   # install every workspace
 npm run build -w @yx-elite/notestack          # compile the package to dist/ (tsc)
 npm run dev -w @yx-elite/notestack            # recompile the package on every save (tsc --watch)
 npm run dev                                   # playground at localhost:3000
-npm run build                                 # package, then static export of the playground
-npm run typecheck                             # package build, then type-check the playground
+npm run dev:starter                           # starter at localhost:3001
+npm run build                                 # package, then static export of the playground and the starter
+npm run typecheck                             # package build, then type-check the playground and the starter
 ```
 
-The playground reads the package's compiled `dist/`, so while developing keep `npm run dev -w @yx-elite/notestack` running next to `npm run dev`. Once the starter exists, `build` and `typecheck` also cover it.
+The playground reads the package's compiled `dist/`, so while developing keep `npm run dev -w @yx-elite/notestack` running next to `npm run dev`.
 
 **Stale dev cache.** Turbopack keeps its dev cache on disk in `playground/.next/`, across restarts, and doesn't notice packages appearing in `node_modules` (e.g. after `npm install` links a workspace). If the dev server keeps showing an error that a fresh `npm run build` doesn't, stop it, delete `playground/.next/` and start again. Don't add config to work around it.
 

@@ -1,0 +1,14 @@
+{
+  "title": "Deployment",
+  "icon": "CloudUpload",
+  "pages": [
+    "index",
+    "cloudflare",
+    "github-pages",
+    "netlify",
+    "vercel",
+    "aws-s3-cloudflare",
+    "aws-s3-cloudfront",
+    "aws-github-actions"
+  ]
+}

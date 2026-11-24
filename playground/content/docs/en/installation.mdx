@@ -1,20 +1,21 @@
 ---
 title: Installation
-description: Create a notes site with one command, and start writing.
+description: Create a notes site with one command, or add the theme to a Fumadocs app you already have.
 icon: Download
 ---
 
 <Callout type="warn" title="In development">
-`@yx-elite/notestack` and `create-notestack` are not published yet. The steps below are how installation will work in the first release.
+`@yx-elite/notestack` and `create-notestack` are not published yet. The steps below are how installation works from the first release. Until then, the `starter/` folder of the [repository](https://github.com/yx-elite/notestack) is the same site.
 </Callout>
 
 ## Requirements
 
-- [Node.js](https://nodejs.org) 22 or later.
+- [Node.js](https://nodejs.org) 22 or later. Check with `node --version`.
 - npm, which comes with Node.js.
-- Git, if you want *Last updated* dates on your pages.
+- [Git](https://git-scm.com), for *Last updated* dates and to publish your notes.
+- A code editor, such as [VS Code](https://code.visualstudio.com).
 
-## Install
+## Create a site
 
 <Steps>
 <Step>
@@ -25,31 +26,62 @@ icon: Download
 npm create notestack@latest my-notes
 ```
 
-This makes a new folder, `my-notes`, with a Fumadocs app already set up to use the theme, and installs its dependencies.
+This makes a new folder, `my-notes`, with a notes site already set up to use the theme, and installs everything it needs. Use any folder name you like.
 
 </Step>
 <Step>
 
-### Start the site
+### Start it
 
 ```bash
 cd my-notes
 npm run dev
 ```
 
-Open [localhost:3000](http://localhost:3000). Then edit `site.config.ts` with your notes' name, links and accent: see [Configuration](/docs/configuration).
+Open [localhost:3000](http://localhost:3000). The site updates as you save files. Stop it with <kbd>Ctrl</kbd> + <kbd>C</kbd>.
+
+</Step>
+<Step>
+
+### Make it yours
+
+Open `site.config.ts` and set your site's `name`, `description` and `repo`. Every option is on the [Configuration](/docs/configuration) page.
 
 </Step>
 <Step>
 
 ### Write
 
-Add notes to `content/docs/`. See [Writing notes](/docs/writing-notes).
+Add notes to `content/docs/`. The site comes with a short sample (a welcome page, an example topic and a glossary) that shows each feature once; delete it when you're ready. See [Writing notes](/docs/writing-notes).
+
+</Step>
+<Step>
+
+### Save it to GitHub
+
+```bash
+git init
+git add .
+git commit -m "My notes"
+```
+
+Then create an empty repository on GitHub and follow its instructions to push. Publishing the site comes later: see [Deployment](/docs/deployment).
 
 </Step>
 </Steps>
 
-## What you get
+## Commands
+
+Run these in your site's folder:
+
+| Command | What it does |
+| --- | --- |
+| `npm run dev` | Starts the site at localhost:3000 while you write |
+| `npm run build` | Builds the whole site as plain files in `out/` |
+| `npm start` | Shows the built `out/` folder locally, exactly as it will be published |
+| `npm run types:check` | Checks the code for mistakes (useful after an update) |
+
+## What's in the site
 
 Only the files that Next.js and Fumadocs need to exist in your app. Each one is a few lines that call the theme, so later versions reach your site through `npm update`:
 
@@ -57,35 +89,286 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
   <File name="site.config.ts" />
   <Folder name="content" defaultOpen>
     <Folder name="docs" />
+    <File name="glossary.json" />
   </Folder>
   <Folder name="app" defaultOpen>
-    <File name="global.css" />
     <File name="layout.tsx" />
-    <Folder name="(home)" defaultOpen>
+    <File name="global.css" />
+    <File name="icon.svg" />
+    <Folder name="(home)">
       <File name="layout.tsx" />
       <File name="page.tsx" />
     </Folder>
-    <Folder name="docs" defaultOpen>
+    <Folder name="docs">
       <File name="layout.tsx" />
       <File name="[[...slug]]/page.tsx" />
     </Folder>
+    <Folder name="api/search">
+      <File name="route.ts" />
+    </Folder>
+    <Folder name="og/docs/[...slug]">
+      <File name="route.tsx" />
+    </Folder>
+    <Folder name="llms.txt, llms-full.txt, llms.mdx">
+      <File name="route.ts" />
+    </Folder>
   </Folder>
-  <Folder name="lib" defaultOpen>
+  <Folder name="lib">
     <File name="source.ts" />
   </Folder>
   <File name="next.config.mjs" />
+  <File name="package.json" />
 </Files>
 
-| File | What it does |
-| --- | --- |
-| `site.config.ts` | Your site's settings. The only code file you edit. |
-| `content/docs/` | Your notes. |
-| `app/global.css` | Imports Tailwind CSS and `@yx-elite/notestack/theme.css`. |
-| `app/layout.tsx` | Fonts, the accent from your config, page transitions. |
-| `app/(home)/…` | The landing page, built from your content. |
-| `app/docs/…` | The notes layout and page. |
-| `lib/source.ts` | Where the notes are read from: `content/docs/`. |
-| `next.config.mjs` | Static export settings for hosting without a server. |
+| File | What it does | Edit it? |
+| --- | --- | --- |
+| `site.config.ts` | Your site's name, links, colour and languages | **Yes** |
+| `content/docs/` | Your notes, and `meta.json` files for the sidebar order | **Yes** |
+| `content/glossary.json` | Your glossary terms | **Yes** |
+| `app/icon.svg` | The browser-tab icon | If you want your own |
+| `app/layout.tsx` | Fonts, then `NotesRoot`: the accent, search and page transitions | No |
+| `app/global.css` | Loads Tailwind CSS and the theme | No |
+| `app/(home)/` | The landing page, built from your notes | No |
+| `app/docs/` | The notes layout and each note's page | No |
+| `app/api/search/` | The search index, built once and searched in the browser | No |
+| `app/og/docs/` | Share images: the picture a link to a note gets in chat apps | No |
+| `app/llms*/` | Plain-text copies of the notes for AI assistants, and *Copy Markdown* | No |
+| `lib/source.ts` | Reads the notes from `content/docs/` | No |
+| `next.config.mjs` | Static export settings, for hosting without a server | No |
+
+## Add to an existing Fumadocs app
+
+If you already have a Fumadocs app (from `npm create fumadocs-app`, with Next.js and Fumadocs MDX), you can switch it to the theme by hand. The starter is the reference: each file below is a copy of it.
+
+<Steps>
+<Step>
+
+### Install the theme
+
+```bash
+npm install @yx-elite/notestack
+```
+
+Your app needs `fumadocs-core` and `fumadocs-ui` 16, `fumadocs-mdx`, `next` 16, `react` 19 and Tailwind CSS 4. The theme uses your app's copies of them.
+
+</Step>
+<Step>
+
+### Add site.config.ts
+
+```ts title="site.config.ts"
+import { defineSiteConfig } from '@yx-elite/notestack';
+
+export default defineSiteConfig({
+  name: 'My Notes',
+  description: 'My study notes.',
+  repo: 'your-name/my-notes',
+});
+```
+
+</Step>
+<Step>
+
+### Replace the app files
+
+Replace each file with the version below, and delete `components/`, `lib/shared.ts` and `app/(docs)` if your app has them.
+
+<Accordions>
+<Accordion title="app/global.css">
+
+```css title="app/global.css"
+@import 'tailwindcss';
+@import '@yx-elite/notestack/theme.css';
+```
+
+</Accordion>
+<Accordion title="app/layout.tsx">
+
+```tsx title="app/layout.tsx"
+import { Geist, JetBrains_Mono } from 'next/font/google';
+import type { ReactNode } from 'react';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
+import site from '@/site.config';
+import './global.css';
+
+const sans = Geist({ subsets: ['latin'], variable: '--font-sans' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+export const metadata = notesMetadata(site);
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesRoot site={site} className={`${sans.variable} ${mono.variable}`}>
+      {children}
+    </NotesRoot>
+  );
+}
+```
+
+</Accordion>
+<Accordion title="lib/source.ts">
+
+```ts title="lib/source.ts"
+import { loader } from 'fumadocs-core/source';
+import { defineDocs } from 'fumadocs-mdx/macro';
+import { metaSchema, pageSchema } from 'fumadocs-core/source/schema';
+import { notesLanguages } from '@yx-elite/notestack';
+import { notesSourcePlugins } from '@yx-elite/notestack/source';
+import site from '@/site.config';
+
+const docs = defineDocs({
+  dir: 'content/docs',
+  docs: {
+    schema: pageSchema,
+    lastModified: true,
+    postprocess: { includeProcessedMarkdown: true },
+  },
+  meta: { schema: metaSchema },
+});
+
+export const source = loader({
+  i18n: notesLanguages(site),
+  baseUrl: '/docs',
+  source: docs.toFumadocsSource(),
+  plugins: notesSourcePlugins,
+});
+```
+
+</Accordion>
+<Accordion title="app/(home)/layout.tsx and page.tsx">
+
+```tsx title="app/(home)/layout.tsx"
+import type { ReactNode } from 'react';
+import { NotesHomeLayout } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesHomeLayout site={site} tree={source.getPageTree()}>
+      {children}
+    </NotesHomeLayout>
+  );
+}
+```
+
+```tsx title="app/(home)/page.tsx"
+import { NotesHome } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function HomePage() {
+  return <NotesHome site={site} source={source} />;
+}
+```
+
+</Accordion>
+<Accordion title="app/docs/layout.tsx and [[...slug]]/page.tsx">
+
+```tsx title="app/docs/layout.tsx"
+import type { ReactNode } from 'react';
+import { NotesLayout } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <NotesLayout site={site} tree={source.getPageTree()}>
+      {children}
+    </NotesLayout>
+  );
+}
+```
+
+```tsx title="app/docs/[[...slug]]/page.tsx"
+import { createNotesPage } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+const docs = createNotesPage({ source, site });
+
+export default docs.Page;
+export const generateStaticParams = docs.generateStaticParams;
+export const generateMetadata = docs.generateMetadata;
+```
+
+</Accordion>
+<Accordion title="Search, share images and llms.txt routes">
+
+```ts title="app/api/search/route.ts"
+import { searchRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = searchRoute(source);
+```
+
+```tsx title="app/og/docs/[...slug]/route.tsx"
+import { ogImageRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+const og = ogImageRoute({ source, site });
+
+export const revalidate = false;
+export const GET = og.GET;
+export const generateStaticParams = og.generateStaticParams;
+```
+
+```ts title="app/llms.txt/route.ts"
+import { llmsTxtRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = llmsTxtRoute(source);
+```
+
+```ts title="app/llms-full.txt/route.ts"
+import { llmsFullRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+export const revalidate = false;
+export const GET = llmsFullRoute(source);
+```
+
+```ts title="app/llms.mdx/[...path]/route.ts"
+import { llmsPageRoute } from '@yx-elite/notestack/routes';
+import { source } from '@/lib/source';
+
+const pages = llmsPageRoute(source);
+
+export const revalidate = false;
+export const dynamicParams = false;
+export const GET = pages.GET;
+export const generateStaticParams = pages.generateStaticParams;
+```
+
+The `export const` lines with plain values (`revalidate`, `dynamicParams`) must stay in each file: Next.js reads them without running the code.
+
+</Accordion>
+<Accordion title="next.config.mjs">
+
+```js title="next.config.mjs"
+import { createMDX } from 'fumadocs-mdx/next';
+import { withNotestack } from '@yx-elite/notestack/next';
+
+export default createMDX()(withNotestack());
+```
+
+</Accordion>
+</Accordions>
+
+</Step>
+<Step>
+
+### Start it
+
+```bash
+npm run dev
+```
+
+</Step>
+</Steps>
 
 ## Updating
 
@@ -93,4 +376,13 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
 npm update @yx-elite/notestack
 ```
 
-Changes are listed in the changelog. A release that needs you to edit a file says so, with the exact edit.
+New versions bring fixes, new components and design changes, with no edits on your side. The rare version that needs you to change a file says so in the [changelog](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md), with the exact edit. See [Updates and versions](/docs/updates).
+
+## Next steps
+
+<Cards>
+  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
+  <Card title="Writing notes" href="/docs/writing-notes" description="Pages, folders, components and images." />
+  <Card title="Languages" href="/docs/languages" description="Publish your notes in more than one language." />
+  <Card title="Deployment" href="/docs/deployment" description="Put the site online, on the host of your choice." />
+</Cards>

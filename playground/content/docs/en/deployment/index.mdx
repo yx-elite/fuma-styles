@@ -1,0 +1,124 @@
+---
+title: Overview
+description: What a static export is, how to check it before publishing, and which host to pick.
+---
+
+Publishing your notes means copying the built site to a host: a company that keeps the files online and sends them to anyone who opens your address. This page explains what gets published and helps you pick a host. Each host then has its own step-by-step guide.
+
+## What a static export is
+
+A notes site has no server of its own. `npm run build` turns your notes into plain files: HTML pages, CSS, JavaScript and images. A host only has to hand those files out, which is why hosting is free or close to it.
+
+Everything is made ahead of time, at build time:
+
+- **Pages.** Every page is a folder with an `index.html`. The page `/docs/vpc/` is the file `out/docs/vpc/index.html`.
+- **Search.** The search index is one prebuilt file, `out/api/search`. The browser downloads it and searches it on its own; no search server is involved.
+- **Share images.** The preview image for each note, shown when you paste a link into a chat app, is a file under `out/og/docs/`.
+- **Copies for AI assistants.** `out/llms.txt`, `out/llms-full.txt` and the files under `out/llms.mdx/` are plain-text versions of your notes.
+- **Code and styles.** Everything under `out/_next/static/` has a fingerprint in its file name, so it never changes once published.
+
+## Build the site
+
+In your site's folder, run:
+
+```bash
+npm run build
+```
+
+It takes a minute or so and ends with a list of the pages it made. The result is a new folder, `out/`:
+
+<Files>
+  <Folder name="out" defaultOpen>
+    <File name="index.html" />
+    <File name="404.html" />
+    <Folder name="docs" defaultOpen>
+      <File name="index.html" />
+      <Folder name="vpc">
+        <File name="index.html" />
+      </Folder>
+    </Folder>
+    <Folder name="api">
+      <File name="search" />
+    </Folder>
+    <Folder name="og" />
+    <Folder name="_next" />
+    <File name="llms.txt" />
+    <File name="llms-full.txt" />
+  </Folder>
+</Files>
+
+That folder is the whole website. Every guide in this section publishes it.
+
+## Check it before you publish
+
+```bash
+npm start
+```
+
+This serves `out/` on your computer exactly as a host would. Open the address it prints (usually [localhost:3000](http://localhost:3000)) and check a few pages, the search box and a link that doesn't exist (you should see the 404 page). Stop it with <kbd>Ctrl</kbd>+<kbd>C</kbd>.
+
+If it works here, it will work on any of the hosts below.
+
+<Callout type="warn" title="Serve the site from the root of a domain">
+The site expects to live at the root of its address, such as `https://notes.example.com/`. It does not work yet from a sub-path such as `https://your-name.github.io/my-notes/`: links, the search index and styles all point at `/`. Every guide here uses a root address.
+</Callout>
+
+## Last updated dates
+
+Each page shows when it last changed. That date comes from your git history, so the build needs the full history of your repository.
+
+On GitHub Actions, `actions/checkout` fetches only the latest commit unless you ask for more. Without the fix below, every page shows the date of your latest commit. The workflows in these guides already include it:
+
+```yaml title=".github/workflows/deploy.yml"
+- uses: actions/checkout@v7
+  with:
+    fetch-depth: 0
+```
+
+Hosts that build the site for you (Cloudflare, Netlify, Vercel) clone your repository their own way. Vercel fetches only the last 10 commits, so a page you haven't touched in a while may show a newer date than it should. After your first deploy, check the date on a page you haven't edited recently.
+
+## Compare the hosts
+
+All six options serve the same files, and all give you HTTPS (the padlock in the browser). They differ in cost, limits and how much setup they take.
+
+| Host | Cost for a small notes site | Custom domain | HTTPS | Deploys when you push | Exact *Last updated* dates | Setup |
+| --- | --- | --- | --- | --- | --- | --- |
+| [Cloudflare](/docs/deployment/cloudflare) | Free. Static files are served with no request limit | Yes. The domain's DNS must be on Cloudflare | Automatic | Yes | Check after the first deploy | Easy |
+| [GitHub Pages](/docs/deployment/github-pages) | Free for public repositories | Yes | Automatic | Yes, with a workflow file | Yes | Easy, with one limit: see the guide |
+| [Netlify](/docs/deployment/netlify) | Free plan: 300 credits a month, 15 per deploy | Yes | Automatic | Yes | Check after the first deploy | Easy |
+| [Vercel](/docs/deployment/vercel) | Free Hobby plan, for personal non-commercial sites | Yes | Automatic | Yes | Only for recent changes | Easiest |
+| [AWS S3 + Cloudflare](/docs/deployment/aws-s3-cloudflare) | A few cents a month on AWS. Cloudflare is free | Required. DNS on Cloudflare | Between visitors and Cloudflare only | Yes, with a workflow file | Yes | Medium |
+| [AWS S3 + CloudFront](/docs/deployment/aws-s3-cloudfront) | A few cents a month. CloudFront has a free allowance | Optional. Any DNS provider | Automatic, end to end | Yes, with a workflow file | Yes | Harder |
+
+Every option except AWS S3 + Cloudflare works without a domain of your own: the host gives you a free address to start with. A domain is something you rent from a registrar, usually by the year; you can add one later.
+
+## Which should I pick?
+
+- **Your first site, and you just want it online:** [Cloudflare](/docs/deployment/cloudflare). It's free, has no traffic limit for a site like this, gives you an address straight away and lets you add a domain later. [Vercel](/docs/deployment/vercel) is just as quick if the site is personal and non-commercial.
+- **You want everything to stay on GitHub:** [GitHub Pages](/docs/deployment/github-pages), as long as you use a custom domain or a repository named `your-name.github.io`.
+- **You're studying AWS, or already use it:** [AWS S3 + CloudFront](/docs/deployment/aws-s3-cloudfront). It takes longer to set up, but your bucket stays private and the connection is encrypted all the way. [AWS S3 + Cloudflare](/docs/deployment/aws-s3-cloudflare) is simpler and cheaper, with a trade-off explained in its guide.
+- **Netlify** works well too, as long as you publish fewer than about 20 times a month on the free plan.
+
+You can move later. The site is the same `out/` folder everywhere, so switching hosts means following another guide and pointing your domain at the new host.
+
+## Once it's online
+
+When your site has its final address, set it as `url` in `site.config.ts` and push:
+
+```ts title="site.config.ts"
+url: 'https://notes.example.com',
+```
+
+Link previews in chat apps then show the right image for each note. See [Configuration](/docs/configuration#site-address).
+
+## Guides
+
+<Cards>
+  <Card title="Cloudflare" href="/docs/deployment/cloudflare" description="Free, fast and no traffic limit. The recommended start." />
+  <Card title="GitHub Pages" href="/docs/deployment/github-pages" description="Free hosting next to your repository, built by GitHub Actions." />
+  <Card title="Netlify" href="/docs/deployment/netlify" description="Connect the repository and it deploys on every push." />
+  <Card title="Vercel" href="/docs/deployment/vercel" description="The quickest setup, for personal non-commercial sites." />
+  <Card title="AWS S3 + Cloudflare" href="/docs/deployment/aws-s3-cloudflare" description="A public S3 bucket behind Cloudflare. Very low cost." />
+  <Card title="AWS S3 + CloudFront" href="/docs/deployment/aws-s3-cloudfront" description="A private S3 bucket behind CloudFront, HTTPS all the way." />
+  <Card title="Deploy to AWS from GitHub" href="/docs/deployment/aws-github-actions" description="The GitHub Actions workflow both AWS setups use." />
+</Cards>

@@ -1,0 +1,239 @@
+---
+title: AWS S3 + Cloudflare
+description: Serve the site from an Amazon S3 bucket, with Cloudflare in front for your domain, HTTPS and caching.
+---
+
+This is the setup Notestack's own sites use, and one of the cheapest: Amazon S3 stores the files and serves them as a website, and Cloudflare sits in front to give your domain HTTPS and cache the files around the world. You pay AWS a few cents a month; Cloudflare's free plan covers the rest.
+
+It has one trade-off you should understand before you start: see [The Flexible SSL trade-off](#the-flexible-ssl-trade-off).
+
+## How it fits together
+
+```text
+Visitor ──HTTPS──▶ Cloudflare ──HTTP──▶ S3 website endpoint (public bucket)
+```
+
+- **S3** keeps the files of `out/` in a *bucket* and serves them through a *website endpoint*, an address such as `http://notes.example.com.s3-website-us-east-1.amazonaws.com`. It serves `docs/vpc/index.html` when someone asks for `/docs/vpc/`.
+- **Cloudflare** answers for your domain. Visitors connect to Cloudflare over HTTPS; Cloudflare fetches the page from S3 and passes it on.
+
+## What you need
+
+- Your notes site in a GitHub repository.
+- An [AWS account](https://aws.amazon.com/free/).
+- A free [Cloudflare account](https://dash.cloudflare.com/sign-up).
+- A domain whose DNS is managed by Cloudflare. If you bought it elsewhere, [add it to Cloudflare](https://developers.cloudflare.com/fundamentals/manage-domains/add-site/) first; Cloudflare shows you how to change its nameservers.
+
+This guide uses `notes.example.com` as the site's address. Replace it with yours everywhere.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Create the bucket
+
+1. Open the [S3 console](https://console.aws.amazon.com/s3/) and select **Create bucket**.
+2. For **Bucket name**, enter your site's full address: `notes.example.com`. The name must match exactly, because S3 picks the bucket by the address the visitor asked for.
+3. Pick a **Region** close to you or your readers, such as `us-east-1`. Note it down.
+4. Leave the other settings as they are and select **Create bucket**.
+
+</Step>
+<Step>
+
+### Turn on static website hosting
+
+1. Open the bucket and go to the **Properties** tab.
+2. Scroll to **Static website hosting** and select **Edit**.
+3. Choose **Enable**, and choose to host a static website (not to redirect requests).
+4. For **Index document**, enter `index.html`.
+5. For **Error document**, enter `404.html`.
+6. Select **Save changes**.
+
+Back on the **Properties** tab, under **Static website hosting**, copy the **Bucket website endpoint**. You'll need it in the Cloudflare step.
+
+</Step>
+<Step>
+
+### Make the bucket readable
+
+A website endpoint only serves files that anyone can read, so this bucket has to be public. That's fine for notes you're publishing anyway, but never put private files in it.
+
+1. Go to the **Permissions** tab.
+2. Under **Block public access (bucket settings)**, select **Edit**, clear **Block *all* public access**, select **Save changes** and confirm. This changes only this bucket.
+3. Under **Bucket policy**, select **Edit** and paste:
+
+```json title="Bucket policy"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "PublicReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::notes.example.com/*"
+    }
+  ]
+}
+```
+
+Replace `notes.example.com` with your bucket's name, then select **Save changes**.
+
+If saving fails with *Access denied*, public access is also blocked for your whole AWS account. Turn that off in the S3 console under **Block Public Access settings for this account**, then try again.
+
+</Step>
+<Step>
+
+### Point your domain at the bucket
+
+In the [Cloudflare dashboard](https://dash.cloudflare.com), open your domain, go to **DNS** > **Records** and select **Add record**:
+
+| Field | Value |
+| --- | --- |
+| Type | `CNAME` |
+| Name | `notes` (the part before your domain) |
+| Target | The bucket website endpoint, without `http://`, such as `notes.example.com.s3-website-us-east-1.amazonaws.com` |
+| Proxy status | **Proxied** (orange cloud) |
+
+Select **Save**. The proxy must be on: that's what puts Cloudflare, and HTTPS, in front of S3.
+
+</Step>
+<Step>
+
+### Set Cloudflare's SSL mode to Flexible for this address
+
+S3 website endpoints only speak plain HTTP. Cloudflare's SSL mode decides how Cloudflare talks to the server behind it, and only **Flexible** connects over HTTP. With any other mode, visitors get an error page.
+
+Set it for this one address with a Configuration Rule, so other sites on the same domain keep a stricter mode:
+
+1. Go to **Rules** > **Overview**, select **Create rule** and choose **Configuration Rule**.
+2. **Rule name**: `S3 notes site`.
+3. Under **When incoming requests match**, choose a custom filter: **Hostname** **equals** `notes.example.com`.
+4. Under **Then the settings are**, add **SSL** and choose **Flexible**.
+5. Select **Deploy**.
+
+If this domain hosts nothing else, you can instead set the mode for the whole domain on the **SSL/TLS** > **Overview** page.
+
+</Step>
+<Step>
+
+### Send everyone to HTTPS
+
+Go to **SSL/TLS** > **Edge Certificates** and turn on **Always Use HTTPS**. Visitors who type `http://` are then moved to `https://`.
+
+</Step>
+<Step>
+
+### Deploy from GitHub
+
+Follow [Deploy to AWS from GitHub](/docs/deployment/aws-github-actions). It sets up a workflow that builds the site and uploads `out/` to the bucket on every push. Leave `CLOUDFRONT_DISTRIBUTION_ID` out; this setup doesn't use CloudFront.
+
+When the first run finishes, open `https://notes.example.com`.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push.
+
+</Step>
+</Steps>
+
+### Uploading by hand
+
+The workflow is the easy way. If you'd like to upload from your own computer instead, install the [AWS CLI](https://docs.aws.amazon.com/cli/latest/userguide/getting-started-install.html), sign in, and run:
+
+```bash
+npm run build
+aws s3 sync out/ s3://notes.example.com --delete
+```
+
+`sync` uploads new and changed files, and `--delete` removes files from the bucket that are no longer in `out/`.
+
+## The Flexible SSL trade-off
+
+With Flexible mode, the connection from the visitor to Cloudflare is encrypted, but the connection from Cloudflare to S3 is not. The browser still shows a padlock.
+
+- **What it means for you.** The pages travel unencrypted between Cloudflare and AWS. Someone in a position to watch or change traffic on that stretch of the internet could, in principle, read or alter a page. For public study notes there's nothing secret to read, so the main risk is tampering, which is unlikely but possible.
+- **Never use Flexible for anything private.** No logins, forms or personal data. A notes site has none, which is why this setup is acceptable for it.
+- **The bucket is public.** Anyone who finds the S3 endpoint can download the files directly, skipping Cloudflare. The files are public anyway, but that traffic isn't cached by Cloudflare and AWS bills it to you.
+
+You can narrow the bucket so it only answers Cloudflare: add a condition to the bucket policy that allows only [Cloudflare's IP addresses](https://www.cloudflare.com/ips/). The list changes from time to time, and you have to keep the policy up to date yourself.
+
+```json title="Bucket policy, Cloudflare only"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "CloudflareReadGetObject",
+      "Effect": "Allow",
+      "Principal": "*",
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::notes.example.com/*",
+      "Condition": {
+        "IpAddress": {
+          "aws:SourceIp": [
+            "paste every IPv4 and IPv6 range from cloudflare.com/ips here"
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+
+If you'd rather have encryption all the way and a private bucket, use [AWS S3 + CloudFront](/docs/deployment/aws-s3-cloudfront) or [Cloudflare](/docs/deployment/cloudflare) on its own.
+
+## Publishing updates
+
+Push to `main`. The workflow builds the site and syncs it to the bucket. Cloudflare doesn't cache your HTML pages by default, so changes show straight away. The workflow marks the fingerprinted files in `_next/static/` as cacheable forever and everything else as "check for a newer version first", so Cloudflare and browsers never keep an old page.
+
+If an old image or file still shows after a deploy, use **Purge Cache** in Cloudflare's **Caching** settings.
+
+## Cost
+
+- **Cloudflare:** the free plan is enough.
+- **S3:** storage and requests for a notes site of a few megabytes cost cents a month. Downloads from S3 to the internet are free for the first 100 GB a month across your AWS account, and Cloudflare's cache means most visits never reach S3.
+- **New AWS accounts** get Free Tier credits for their first months.
+- **Domain:** whatever your registrar charges per year.
+
+Check [S3 pricing](https://aws.amazon.com/s3/pricing/) for your Region.
+
+## Common problems
+
+<Accordions>
+<Accordion title="Cloudflare shows one of its own error pages (5xx)">
+
+Most often the SSL mode isn't Flexible for this address, so Cloudflare tries HTTPS on an endpoint that only has HTTP. Check the Configuration Rule's hostname, and that its **SSL** setting is **Flexible**.
+
+</Accordion>
+<Accordion title="S3 says NoSuchBucket">
+
+The bucket name doesn't match the address exactly. A bucket can't be renamed: create a new one named exactly like the address, and update the CNAME record and the workflow's `S3_BUCKET` variable.
+
+</Accordion>
+<Accordion title="403 Forbidden on every page">
+
+The bucket isn't public yet. Check **Block public access** on the bucket (and on the account), and that the bucket policy's `Resource` has your bucket's name followed by `/*`.
+
+</Accordion>
+<Accordion title="Every page shows the same Last updated date">
+
+The `fetch-depth: 0` line is missing from the workflow's checkout step.
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [Hosting a static website on S3](https://docs.aws.amazon.com/AmazonS3/latest/userguide/HostingWebsiteOnS3Setup.html)
+- [Website endpoints](https://docs.aws.amazon.com/AmazonS3/latest/userguide/WebsiteEndpoints.html) (HTTP only, and how they differ from the REST endpoint)
+- [Index documents and folders](https://docs.aws.amazon.com/AmazonS3/latest/userguide/IndexDocumentSupport.html)
+- [S3 pricing](https://aws.amazon.com/s3/pricing/)
+- [Cloudflare: Flexible SSL mode](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/flexible/) and [all SSL modes](https://developers.cloudflare.com/ssl/origin-configuration/ssl-modes/)
+- [Cloudflare: Configuration Rules](https://developers.cloudflare.com/rules/configuration-rules/create-dashboard/) and [their settings](https://developers.cloudflare.com/rules/configuration-rules/settings/)
+- [Cloudflare: Always Use HTTPS](https://developers.cloudflare.com/ssl/edge-certificates/additional-options/always-use-https/)
+- [Cloudflare: DNS records](https://developers.cloudflare.com/dns/manage-dns-records/how-to/create-dns-records/)
+- [Cloudflare: Default cache behavior](https://developers.cloudflare.com/cache/concepts/default-cache-behavior/) (HTML is not cached by default)
+- [Cloudflare IP ranges](https://www.cloudflare.com/ips/)

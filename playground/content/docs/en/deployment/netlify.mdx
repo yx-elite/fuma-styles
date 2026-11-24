@@ -1,0 +1,172 @@
+---
+title: Netlify
+description: Host the site on Netlify, built and deployed every time you push to GitHub.
+---
+
+Netlify connects to your GitHub repository, builds the site on every push and serves `out/` from its network. Setup takes a few minutes. The free plan works on monthly credits, and each deploy uses some of them, so it suits a site you publish a few times a week.
+
+## What you need
+
+- Your notes site in a GitHub repository. See [Installation](/docs/installation) if it isn't there yet.
+- A free [Netlify account](https://app.netlify.com/signup). Signing up with GitHub saves a step.
+- Optional: a domain. Netlify gives you a free `netlify.app` address to start with.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Add a Netlify config file
+
+Create this file in the root of your repository, next to `package.json`:
+
+```toml title="netlify.toml"
+[build]
+  command = "npm run build"
+  publish = "out"
+
+[build.environment]
+  NODE_VERSION = "24"
+  # Publish out/ as plain files. Without this, Netlify runs its
+  # Next.js adapter, which is meant for sites with a server.
+  NETLIFY_NEXT_PLUGIN_SKIP = "true"
+```
+
+Settings in this file override the ones in Netlify's dashboard, so the build is the same every time. Commit the file and push it.
+
+</Step>
+<Step>
+
+### Import the repository
+
+1. Sign in to [Netlify](https://app.netlify.com) and open your team's dashboard.
+2. Select **Add new project**, then **Import a Git repository** (it may read **Import an existing project**).
+3. Choose **GitHub**. The first time, Netlify asks you to authorise it on GitHub and choose which repositories it may read.
+4. Select your notes repository.
+
+</Step>
+<Step>
+
+### Check the settings and deploy
+
+Netlify reads `netlify.toml` and fills in the settings for you. They should read:
+
+| Setting | Value |
+| --- | --- |
+| Base directory | Empty |
+| Build command | `npm run build` |
+| Publish directory | `out` |
+
+Select the deploy button at the bottom of the page. The first build takes a few minutes; you can follow it in the deploy log.
+
+</Step>
+<Step>
+
+### Open your site
+
+When the deploy is done, Netlify shows your address, such as `https://my-notes-1234.netlify.app`. You can change the first part by renaming the project in **Project configuration**.
+
+</Step>
+</Steps>
+
+## Add your own domain
+
+<Steps>
+<Step>
+
+### Add the domain to the project
+
+1. Open your project and select **Domain management**.
+2. Select **Add a domain**, then **Add a domain you already own**.
+3. Enter the address, such as `notes.example.com`, and confirm.
+
+</Step>
+<Step>
+
+### Point the domain at Netlify
+
+Netlify offers to manage the domain's DNS for you (Netlify DNS), which is its recommended option. If you'd rather keep your DNS where it is, add a record there instead:
+
+| Type | Name | Target |
+| --- | --- | --- |
+| `CNAME` | `notes` | `my-notes-1234.netlify.app` |
+
+Use your project's own `netlify.app` address as the target. For a bare domain such as `example.com`, Netlify's docs give an `ALIAS` record pointing to `apex-loadbalancer.netlify.com`, or, if your DNS provider can't do that, an `A` record pointing to `75.2.60.5`.
+
+DNS changes can take up to 48 hours to reach everyone, though it's usually much faster.
+
+</Step>
+<Step>
+
+### HTTPS
+
+Netlify gets a free HTTPS certificate for the domain automatically once the DNS record works. Its status is shown on the **Domain management** page.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push.
+
+</Step>
+</Steps>
+
+## Publishing updates
+
+Every push to your main branch builds and publishes the site again. Pull requests get a *deploy preview*: a separate address where you can check the change before merging. A failed build leaves the live site as it was.
+
+## Cost
+
+The Free plan costs nothing and includes 300 credits a month. Netlify's price list counts:
+
+| What | Credits |
+| --- | --- |
+| Each production deploy (each push to your main branch) | 15 |
+| Each GB of traffic | 20 |
+| Every 10,000 requests | 2 |
+
+Deploy previews, branch deploys and failed deploys use no credits.
+
+So 300 credits is about 20 pushes a month if nothing else used them. Traffic uses some too, so plan on fewer. When the credits run out, Netlify pauses your sites until the next month starts, and visitors see a "Site not available" page. To avoid that, collect several changes into one push, or pick [Cloudflare](/docs/deployment/cloudflare), which doesn't count deploys.
+
+## Common problems
+
+<Accordions>
+<Accordion title='"Your publish directory does not contain expected Next.js build output"'>
+
+Netlify's Next.js adapter ran instead of publishing `out/`. Check that `NETLIFY_NEXT_PLUGIN_SKIP = "true"` is in `netlify.toml` under `[build.environment]`, and that the file is in the root of the repository.
+
+</Accordion>
+<Accordion title="The build fails on the Node.js version">
+
+The site needs Node.js 22 or later. Check `NODE_VERSION` in `netlify.toml`. A `.nvmrc` or `.node-version` file in the repository also sets the version.
+
+</Accordion>
+<Accordion title="The site is paused">
+
+The month's credits ran out. Wait for the next month, or upgrade. Your team's usage and billing pages show where the credits went.
+
+</Accordion>
+<Accordion title="Every page shows the same Last updated date">
+
+The build had only part of the git history. Check one page you haven't edited recently after the first deploy. If the dates matter, [GitHub Pages](/docs/deployment/github-pages) and the AWS guides build on GitHub Actions with the full history.
+
+</Accordion>
+<Accordion title="The domain shows a certificate error">
+
+Netlify hasn't issued the certificate yet, usually because the DNS record isn't visible yet. Check the record, wait, and look at the certificate status on the **Domain management** page.
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [Deploy from a repository](https://docs.netlify.com/start/quickstarts/deploy-from-repository/)
+- [Build configuration](https://docs.netlify.com/build/configure-builds/overview/)
+- [Build environment variables](https://docs.netlify.com/build/configure-builds/environment-variables/) (including `NETLIFY_NEXT_PLUGIN_SKIP`)
+- [Node.js version](https://docs.netlify.com/build/configure-builds/manage-dependencies/)
+- [Next.js static export settings](https://www.netlify.com/knowledge-base/how-to-deploy-nextjs-astro-nuxt-or-sveltekit-to-netlify/)
+- [Custom domains](https://docs.netlify.com/manage/domains/get-started-with-domains/)
+- [Pricing](https://www.netlify.com/pricing/) and [credit-based plans](https://docs.netlify.com/manage/accounts-and-billing/billing/billing-for-credit-based-plans/credit-based-pricing-plans/)
+- [Paused projects](https://docs.netlify.com/manage/accounts-and-billing/billing/resume-paused-projects/)

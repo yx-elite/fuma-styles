@@ -8,9 +8,14 @@
     "---Guides---",
     "theme",
     "landing-page",
+    "languages",
     "deployment",
     "glossary",
+    "updates",
     "---Showcase---",
-    "...showcase"
+    "...showcase",
+    "---Project---",
+    "how-it-works",
+    "roadmap"
   ]
 }

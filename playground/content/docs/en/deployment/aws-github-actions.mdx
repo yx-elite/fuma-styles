@@ -1,0 +1,301 @@
+---
+title: Deploy to AWS from GitHub
+description: A GitHub Actions workflow that builds the site and uploads it to S3 on every push, signing in to AWS without stored keys.
+---
+
+Both AWS guides, [S3 + Cloudflare](/docs/deployment/aws-s3-cloudflare) and [S3 + CloudFront](/docs/deployment/aws-s3-cloudfront), publish the site with the workflow on this page. On every push to `main`, GitHub Actions builds the site, uploads `out/` to your bucket and, with CloudFront, clears its cache.
+
+## How the workflow signs in to AWS
+
+The workflow needs permission to write to your bucket. The old way is to create an AWS access key and store it in GitHub. That key never expires, so if it leaks, anyone can use it until you notice.
+
+This guide uses **OpenID Connect (OIDC)** instead, which AWS and GitHub both recommend. You tell AWS to trust GitHub, and create an IAM *role* that only workflows from your repository's `main` branch may use. Each run gets short-lived credentials that expire on their own. There's no key to store, rotate or leak.
+
+You set this up once per repository.
+
+## What you need
+
+- The bucket from your AWS guide, and its Region.
+- For S3 + CloudFront: the distribution ID.
+- Your AWS account ID: the 12-digit number in the account menu at the top right of the AWS console.
+- Your GitHub username (or organisation) and the repository name, such as `your-name` and `my-notes`.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Tell AWS to trust GitHub
+
+1. Open the [IAM console](https://console.aws.amazon.com/iam/) and select **Identity providers**, then **Add provider**.
+2. Choose **OpenID Connect**.
+3. **Provider URL**: `https://token.actions.githubusercontent.com`
+4. **Audience**: `sts.amazonaws.com`
+5. Select **Add provider**.
+
+Each AWS account needs this only once. If `token.actions.githubusercontent.com` is already in the list, skip this step.
+
+</Step>
+<Step>
+
+### Create the role
+
+1. In IAM, select **Roles**, then **Create role**.
+2. For the trusted entity type, choose **Custom trust policy** and replace the text with:
+
+```json title="Trust policy"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Effect": "Allow",
+      "Principal": {
+        "Federated": "arn:aws:iam::111122223333:oidc-provider/token.actions.githubusercontent.com"
+      },
+      "Action": "sts:AssumeRoleWithWebIdentity",
+      "Condition": {
+        "StringEquals": {
+          "token.actions.githubusercontent.com:aud": "sts.amazonaws.com"
+        },
+        "StringLike": {
+          "token.actions.githubusercontent.com:sub": [
+            "repo:your-name/my-notes:ref:refs/heads/main",
+            "repo:your-name@*/my-notes@*:ref:refs/heads/main"
+          ]
+        }
+      }
+    }
+  ]
+}
+```
+
+Replace `111122223333` with your AWS account ID, `your-name` with your GitHub username or organisation, and `my-notes` with the repository name (in both lines).
+
+The two `sub` lines say "only the `main` branch of this one repository". GitHub writes that identity in two formats: repositories created from 15 July 2026 add numeric IDs after the names (`your-name@123/my-notes@456`), older ones don't. Listing both means the policy works either way.
+
+3. Select **Next**. Skip the permissions page for now with **Next**.
+4. **Role name**: `github-deploy-my-notes`. Select **Create role**.
+5. Open the new role and copy its **ARN**, such as `arn:aws:iam::111122223333:role/github-deploy-my-notes`.
+
+</Step>
+<Step>
+
+### Give the role permission to deploy
+
+On the role's page, open the **Permissions** tab, then **Add permissions** > **Create inline policy**. Switch the editor to **JSON** and paste the version for your setup:
+
+<Tabs items={['S3 + Cloudflare', 'S3 + CloudFront']}>
+<Tab value="S3 + Cloudflare">
+
+```json title="Permissions policy"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListTheBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::notes.example.com"
+    },
+    {
+      "Sid": "WriteTheFiles",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::notes.example.com/*"
+    }
+  ]
+}
+```
+
+Replace `notes.example.com` (twice) with your bucket's name.
+
+</Tab>
+<Tab value="S3 + CloudFront">
+
+```json title="Permissions policy"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "ListTheBucket",
+      "Effect": "Allow",
+      "Action": "s3:ListBucket",
+      "Resource": "arn:aws:s3:::my-notes-site-2026"
+    },
+    {
+      "Sid": "WriteTheFiles",
+      "Effect": "Allow",
+      "Action": ["s3:PutObject", "s3:DeleteObject"],
+      "Resource": "arn:aws:s3:::my-notes-site-2026/*"
+    },
+    {
+      "Sid": "ClearTheCache",
+      "Effect": "Allow",
+      "Action": "cloudfront:CreateInvalidation",
+      "Resource": "arn:aws:cloudfront::111122223333:distribution/E1A2B3C4D5E6F7"
+    }
+  ]
+}
+```
+
+Replace the bucket name (twice), your account ID and the distribution ID.
+
+</Tab>
+</Tabs>
+
+Select **Next**, name the policy `deploy-notes`, and select **Create policy**.
+
+The role can now list the bucket, upload and delete files in it and, for CloudFront, clear that one distribution's cache. Nothing else.
+
+</Step>
+<Step>
+
+### Save the settings in GitHub
+
+In your GitHub repository, open **Settings** > **Secrets and variables** > **Actions**, go to the **Variables** tab and add these with **New repository variable**:
+
+| Name | Value |
+| --- | --- |
+| `AWS_ROLE_ARN` | The role ARN you copied |
+| `AWS_REGION` | The bucket's Region, such as `us-east-1` |
+| `S3_BUCKET` | The bucket name |
+| `CLOUDFRONT_DISTRIBUTION_ID` | The distribution ID. **S3 + CloudFront only**; leave it out for S3 + Cloudflare |
+
+None of these are secret: they say where to deploy, not how to get in. That's why they're variables rather than secrets.
+
+</Step>
+<Step>
+
+### Add the workflow
+
+Create this file in your repository:
+
+```yaml title=".github/workflows/deploy.yml"
+name: Deploy to AWS
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  id-token: write # lets the workflow sign in to AWS with OIDC
+
+# Never run two deploys at once
+concurrency:
+  group: deploy
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full git history, for "Last updated" dates
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      # Fingerprinted code and styles never change: cache them for a year
+      - name: Upload _next/static
+        run: >
+          aws s3 sync out/_next/static "s3://${{ vars.S3_BUCKET }}/_next/static"
+          --cache-control "public, max-age=31536000, immutable"
+
+      # Pages and everything else: browsers and CDNs check for a newer version first
+      - name: Upload the rest
+        run: >
+          aws s3 sync out/ "s3://${{ vars.S3_BUCKET }}" --delete
+          --exclude "_next/static/*"
+          --cache-control "public, max-age=0, must-revalidate"
+
+      # The search index has no file extension, so give it its type by hand
+      - name: Mark the search index as JSON
+        run: >
+          aws s3 cp out/api/search "s3://${{ vars.S3_BUCKET }}/api/search"
+          --content-type application/json
+          --cache-control "public, max-age=0, must-revalidate"
+
+      - name: Clear the CloudFront cache
+        if: vars.CLOUDFRONT_DISTRIBUTION_ID != ''
+        run: >
+          aws cloudfront create-invalidation
+          --distribution-id "${{ vars.CLOUDFRONT_DISTRIBUTION_ID }}"
+          --paths "/*"
+```
+
+If your main branch has another name, change it on the `branches:` line and in the trust policy.
+
+</Step>
+<Step>
+
+### Push and watch it run
+
+Commit the file and push. Open the **Actions** tab: a run called *Deploy to AWS* appears. When it has a green tick, open your site.
+
+</Step>
+</Steps>
+
+## What the workflow does
+
+1. **Checks out the full history** (`fetch-depth: 0`), so each page's *Last updated* date is right.
+2. **Builds the site** with Node.js 24 (any version from 22 works).
+3. **Signs in to AWS** by exchanging GitHub's short-lived token for temporary credentials of your role. The AWS CLI is already installed on GitHub's runners.
+4. **Uploads `_next/static/` first**, with `Cache-Control: public, max-age=31536000, immutable`. These files have a fingerprint in their names, so a changed file always gets a new name and can be cached for a year.
+5. **Uploads everything else** with `Cache-Control: public, max-age=0, must-revalidate`: HTML pages, the search index, share images and `llms.txt` are checked for a newer version on every visit. `--delete` removes files you've deleted from your notes. The new code from step 4 is already in place before any page that needs it appears.
+6. **Clears CloudFront's cache** with one `/*` invalidation, only when `CLOUDFRONT_DISTRIBUTION_ID` is set.
+
+Old files under `_next/static/` are not deleted, so a visitor with a page open from before the deploy can keep using it. They're small; delete the folder in the S3 console now and then if you like, and the next deploy uploads what's needed.
+
+## Common problems
+
+<Accordions>
+<Accordion title='"Not authorized to perform sts:AssumeRoleWithWebIdentity"'>
+
+The trust policy doesn't match the run. Check the account ID, your username and repository name (spelling and capitals), and the branch. The workflow must run on `main`, and must not use a GitHub `environment:`, which changes the identity GitHub sends.
+
+</Accordion>
+<Accordion title='"Credentials could not be loaded" or no OIDC token'>
+
+The `id-token: write` permission is missing from the workflow, or `AWS_ROLE_ARN` isn't set as a repository **variable** (not a secret).
+
+</Accordion>
+<Accordion title="AccessDenied on s3 sync">
+
+The role's permissions policy names a different bucket, or is missing `s3:ListBucket` on the bucket itself (without `/*`).
+
+</Accordion>
+<Accordion title="AccessDenied on create-invalidation">
+
+The `cloudfront:CreateInvalidation` statement is missing, or has the wrong account ID or distribution ID.
+
+</Accordion>
+<Accordion title="Every page shows the same Last updated date">
+
+The `fetch-depth: 0` line is missing from the checkout step.
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [GitHub: Configuring OpenID Connect in AWS](https://docs.github.com/en/actions/how-tos/secure-your-work/security-harden-deployments/oidc-in-aws)
+- [GitHub changelog: subject claims with IDs, from 15 July 2026](https://github.blog/changelog/2026-04-23-immutable-subject-claims-for-github-actions-oidc-tokens/)
+- [AWS: Create an OIDC identity provider](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_providers_create_oidc.html)
+- [AWS: Create a role for OIDC, and limiting it to a GitHub repository](https://docs.aws.amazon.com/IAM/latest/UserGuide/id_roles_create_for-idp_oidc.html)
+- [aws-actions/configure-aws-credentials](https://github.com/aws-actions/configure-aws-credentials)
+- [AWS CLI: s3 sync](https://docs.aws.amazon.com/cli/latest/reference/s3/sync.html) and [cloudfront create-invalidation](https://docs.aws.amazon.com/cli/latest/reference/cloudfront/create-invalidation.html)
+- [Paying for CloudFront invalidations](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PayingForInvalidation.html)
+- Actions used: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node)

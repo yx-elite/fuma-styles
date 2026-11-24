@@ -1,0 +1,56 @@
+---
+title: Updates and versions
+description: How fixes and new features reach your site, how version numbers work, and how to update safely.
+icon: RefreshCw
+---
+
+Your site holds your notes and a few small files that load the theme. Everything else (the design, the components, search, the landing page) lives in the `@yx-elite/notestack` package. So one command updates all of it:
+
+```bash
+npm update @yx-elite/notestack
+```
+
+Then run `npm run dev` and look around, or `npm run build` to check that every page still builds. Commit `package.json` and `package-lock.json`.
+
+## Version numbers
+
+The theme follows [semantic versioning](https://semver.org): `MAJOR.MINOR.PATCH`.
+
+| Change | Example | What you do |
+| --- | --- | --- |
+| Patch: fixes | `0.1.0` → `0.1.1` | Nothing. `npm update` brings it in. |
+| Minor: new features | `0.1.0` → `0.2.0` | Nothing, from `1.0.0` on. |
+| Breaking: you must edit a file | `1.4.0` → `2.0.0` | Follow the *Migration* steps in the changelog. |
+
+<Callout type="info" title="Before 1.0.0">
+While the version starts with `0.`, a breaking change bumps the middle number instead (`0.1` → `0.2`). `npm update` never crosses that line on its own: install the new version on purpose with `npm install @yx-elite/notestack@0.2`, after reading its *Migration* notes.
+</Callout>
+
+Breaking changes are rare by design: they are things like a new file every site needs in `app/`, or a renamed option in `site.config.ts`. Each one comes with the exact edit, in the [changelog](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md).
+
+## Get notified
+
+Let GitHub open a pull request in your notes repo whenever a new version is out. Add this file and push it:
+
+```yaml title=".github/dependabot.yml"
+version: 2
+updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    groups:
+      notestack:
+        patterns: ['@yx-elite/notestack', 'fumadocs-*', 'next', 'react', 'react-dom']
+```
+
+Each pull request shows what changed. If your site builds on every push (see [Deployment](/docs/deployment)), the check on the pull request tells you whether the update builds before you merge it.
+
+## Fumadocs and Next.js
+
+The theme is built on [Fumadocs](https://fumadocs.dev) and Next.js, which your site installs too (one copy each, shared with the theme). Their versions in your `package.json` are fixed, so nothing changes under you.
+
+- **A Fumadocs or Next.js update within the same major version** (16.x) usually just works. The group in the Dependabot file above updates them together with the theme.
+- **A new major version** of Fumadocs or Next.js arrives with a new version of the theme that supports it. Its changelog entry lists the exact versions to install.
+
+If `npm install` prints `ERESOLVE` or *peer dependency* warnings after an update, the theme and Fumadocs versions don't match: install the versions the changelog names.

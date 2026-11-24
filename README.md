@@ -7,7 +7,7 @@ A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.
 > [!NOTE]
 > Work in progress. The package is not on npm yet; the [roadmap](#roadmap) lists what comes next.
 
-[How it works](#how-it-works) · [Layout](#repository-layout) · [Develop](#develop-locally) · [New notes site](#start-a-new-notes-site) · [Roadmap](#roadmap) · [License](#license)
+[How it works](#how-it-works) · [Layout](#repository-layout) · [Develop](#develop-locally) · [New notes site](#start-a-new-notes-site) · [Roadmap](#roadmap) · [Contributing](#contributing) · [License](#license)
 
 ## How it works
 
@@ -27,10 +27,11 @@ notestack/
 ├── LICENSE
 ├── AGENTS.md                 ← working rules for this repo
 ├── CLAUDE.md
+├── CONTRIBUTING.md
 ├── package.json              ← npm workspaces root (private)
-├── playground/               ← docs site and test site
-├── packages/notestack/       ← the npm package (theme.css so far)
-└── starter/                  ← template for new notes sites (planned)
+├── playground/               ← docs site and test site (English + Chinese)
+├── packages/notestack/       ← the npm package: theme, layouts, components, routes
+└── starter/                  ← template for new notes sites (one language)
 ```
 
 ## Develop locally
@@ -38,9 +39,12 @@ notestack/
 Needs **Node.js 22 or newer**. Run everything from the repo root, never inside a sub-folder:
 
 ```bash
-npm install        # installs every workspace into one node_modules/
-npm run dev        # playground at http://localhost:3000
-npm run build      # static export of the playground into playground/out/
+npm install                          # installs every workspace into one node_modules/
+npm run dev -w @yx-elite/notestack   # recompiles the package on every save (keep it running)
+npm run dev                          # playground at http://localhost:3000
+npm run dev:starter                  # starter at http://localhost:3001
+npm run build                        # package, then static exports of the playground and the starter
+npm run typecheck                    # package, then type-checks the playground and the starter
 ```
 
 ## Start a new notes site
@@ -53,17 +57,23 @@ cd my-notes
 npm run dev
 ```
 
-Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export, hosted on S3 behind Cloudflare.
+Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export that any static host can serve (Cloudflare, GitHub Pages, Netlify, Vercel, S3); the docs site has a guide for each.
 
 ## Roadmap
 
 1. **Scaffold** → workspace and playground. ✅
 2. **Design** → the look, layout and landing page, prototyped in the playground. ✅ (mostly)
-3. **Package** → move the prototype code into `@yx-elite/notestack`.
-4. **Languages** → optional translations, English only by default.
-5. **Starter and `npm create notestack`** → a new site in one command.
+3. **Package** → move the prototype code into `@yx-elite/notestack`. ✅
+4. **Languages** → one language per site, or several with a language switch. ✅
+5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command next.
 6. **CI and first release** → `0.1.0` on npm, docs site deployed.
 7. **First real site** → the AWS SAA handbook.
+
+Later: publishing an **Obsidian** vault with the theme (wikilinks, embeds, callouts), and more note components.
+
+## Contributing
+
+Issues and pull requests are welcome: see [CONTRIBUTING.md](CONTRIBUTING.md).
 
 ## License
 

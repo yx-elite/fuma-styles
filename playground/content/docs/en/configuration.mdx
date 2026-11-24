@@ -15,6 +15,7 @@ export default defineSiteConfig({
   tag: 'SAA-C03',
   description: 'Study notes for the AWS Solutions Architect Associate exam.',
   repo: 'your-name/aws-saa-notes',
+  url: 'https://saa.example.com',
   accent: { light: '#d97706', dark: '#fcd34d' },
   links: [
     { text: 'Home', url: '/docs', icon: 'House' },
@@ -41,6 +42,10 @@ export default defineSiteConfig({
       description: 'The GitHub repository, as owner/name. Used for the GitHub links.',
       type: 'string',
       required: true,
+    },
+    url: {
+      description: 'The address the site is served from, such as https://notes.example.com. Links to share images use it, so link previews in chat apps work. Leave it out until the site has an address.',
+      type: 'string',
     },
     author: {
       description: 'Shown in the landing page footer.',
@@ -125,38 +130,11 @@ export default defineSiteConfig({
 
 ## Several languages
 
-To publish the same notes in more than one language, list the languages. The first one is the default:
+To publish the same notes in more than one language, list them in `languages` (the first is the default) and put each language's text in `translations`. URLs then start with the language (`/en/docs/…`), notes live in one folder per language, and a language switch appears in the header. It needs a few more files in `app/`: the [Languages](/docs/languages) guide walks through it.
 
-```ts title="site.config.ts"
-export default defineSiteConfig({
-  name: 'Stock Trading Notes',
-  description: 'Notes on technical analysis and risk.',
-  links: [{ text: 'Glossary', url: '/docs/glossary', icon: 'BookA' }],
-  languages: ['en', 'zh-CN'],
-  translations: {
-    'zh-CN': {
-      name: '股票交易笔记',
-      description: '技术分析与风险管理笔记。',
-      links: [{ text: '术语表', url: '/docs/glossary', icon: 'BookA' }],
-    },
-  },
-});
-```
+## Site address
 
-What changes:
-
-- **One folder per language.** Notes go in `content/docs/en/` and `content/docs/zh-CN/`, each with its own `meta.json` for the sidebar.
-- **Missing pages fall back.** A page that has no translation yet shows the default language's page, so you can translate one page at a time.
-- **URLs start with the language.** `/en/docs/…` and `/zh-CN/docs/…`. A static site can't hide it. Opening `/` sends readers to the language their browser prefers, or the one they read last.
-- **Links stay simple.** Keep writing `/docs/…` in notes, cards, quick links and the glossary: the theme adds the page's language.
-- **A language switch** appears in the header.
-- **`translations`** holds the site's own text per language. Anything you leave out uses the default language's value.
-
-`language` is not needed with `languages`: each page takes the language from its URL.
-
-<Callout title="Changing an existing site">
-Turning `languages` on moves every page to a new URL and needs the app's pages in an `app/[lang]/` folder. Decide early. `npm create notestack` will ask.
-</Callout>
+Set `url` once the site has an address. A link to one of your notes, pasted into a chat app or a social post, then shows a preview with the note's title. Without it, everything else works the same.
 
 ## Quick links
 

@@ -1,0 +1,142 @@
+---
+title: Vercel
+description: Host the site on Vercel, the company behind Next.js, with almost no setup.
+---
+
+Vercel makes Next.js, the framework your notes site is built on, so it recognises the project by itself. You connect the repository, select **Deploy**, and the site is online. Every push publishes it again.
+
+<Callout type="info" title="Personal, non-commercial sites only on the free plan">
+Vercel's free **Hobby** plan is for personal, non-commercial use. Your own study notes are fine. If the site makes money, for example through ads or donations, Vercel counts that as commercial use, which needs the paid Pro plan. In that case, [Cloudflare](/docs/deployment/cloudflare) is a free alternative.
+</Callout>
+
+## What you need
+
+- Your notes site in a GitHub repository. See [Installation](/docs/installation) if it isn't there yet.
+- A free [Vercel account](https://vercel.com/signup) on the Hobby plan. Signing up with GitHub saves a step.
+- Optional: a domain. Vercel gives you a free `vercel.app` address to start with.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Import the repository
+
+1. Sign in to [Vercel](https://vercel.com) and, on your dashboard, select **New Project** (it may be under an **Add New…** menu).
+2. Connect your GitHub account if Vercel asks, and choose which repositories it may read.
+3. Find your notes repository in the list and select **Import**.
+
+</Step>
+<Step>
+
+### Leave the settings as they are
+
+Vercel detects the project and fills in the settings:
+
+| Setting | Value |
+| --- | --- |
+| Framework Preset | Next.js (detected) |
+| Root Directory | Leave as it is (the repository root) |
+| Build Command | Leave the default (it runs your `build` script) |
+| Output Directory | Leave the default |
+
+Don't set the output directory to `out` yourself: with the Next.js preset, Vercel notices that the site is a static export and publishes `out/` on its own. You don't need any environment variables.
+
+Select **Deploy**.
+
+</Step>
+<Step>
+
+### Open your site
+
+The first build takes a minute or two. Vercel then shows your address, such as `https://my-notes.vercel.app`, with a preview of the home page.
+
+</Step>
+</Steps>
+
+### Node.js version
+
+New Vercel projects use the latest Node.js version Vercel offers, which is newer than the 22 the site needs, so there's nothing to do. To pick another, open the project's **Settings** > **Build and Deployment** > **Node.js Version**.
+
+## Add your own domain
+
+<Steps>
+<Step>
+
+### Add the domain to the project
+
+1. Open the project, then **Settings** > **Domains**.
+2. Select **Add Existing** and enter the address, such as `notes.example.com`.
+
+</Step>
+<Step>
+
+### Point the domain at Vercel
+
+Vercel shows the DNS record to add at the company that manages your domain:
+
+- For a subdomain such as `notes.example.com`: a `CNAME` record. Each project gets its own target value; copy it from Vercel.
+- For a bare domain such as `example.com`: an `A` record, with the value Vercel shows.
+
+When the record works, the domain shows as valid in **Settings** > **Domains**. Vercel creates the HTTPS certificate by itself.
+
+If your DNS is on Cloudflare, set the record's proxy status to **DNS only**, so visitors reach Vercel directly.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push.
+
+</Step>
+</Steps>
+
+## Publishing updates
+
+Every push to `main` creates a new production deployment. Pushes to other branches and pull requests get a *preview deployment* with its own address, so you can check a change before it goes live. If a deployment turns out wrong, you can roll back to an earlier one from the **Deployments** list.
+
+## Cost
+
+The Hobby plan is free. Its monthly allowances include:
+
+- 100 GB of data transfer
+- 1,000,000 CDN requests
+- 100 deployments a day
+
+A notes site stays far below these. If you go over a limit, Vercel pauses that feature, in most cases for up to 30 days, rather than charging you.
+
+## Common problems
+
+<Accordions>
+<Accordion title="Last updated dates are wrong on older pages">
+
+Vercel clones only the last 10 commits of your repository. A page whose last change is older than that shows the date of the oldest commit Vercel has. Pages you changed recently show the right date. If exact dates matter to you, [GitHub Pages](/docs/deployment/github-pages) and the AWS guides build with the full history.
+
+</Accordion>
+<Accordion title="Vercel won't deploy from my organisation's private repository">
+
+On the Hobby plan, Vercel can't deploy a private repository that belongs to a GitHub organisation. Use a repository under your personal account, make it public, or upgrade.
+
+</Accordion>
+<Accordion title="The build fails or the site shows 404 everywhere">
+
+Check that **Framework Preset** is **Next.js** and that you haven't overridden the Output Directory. Then open the deployment's build log to see where it stopped.
+
+</Accordion>
+<Accordion title="The domain says Invalid Configuration">
+
+The DNS record doesn't match what Vercel expects yet. Compare it with the value in **Settings** > **Domains**, remove any other `A`, `AAAA` or `CNAME` record for the same name, and give DNS some time to update.
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [Deploying Git repositories](https://vercel.com/docs/git)
+- [Configuring a build](https://vercel.com/docs/builds/configure-a-build) (framework preset, output directory, shallow clone)
+- [Node.js versions](https://vercel.com/docs/functions/runtimes/node-js/node-js-versions)
+- [Adding a custom domain](https://vercel.com/docs/domains/working-with-domains/add-a-domain)
+- [Hobby plan](https://vercel.com/docs/plans/hobby) and [fair use guidelines](https://vercel.com/docs/limits/fair-use-guidelines)
+- [Terms of Service](https://vercel.com/legal/terms) (Hobby is for personal or non-commercial use)
+- [How Vercel builds a static export](https://github.com/vercel/vercel/blob/main/packages/next/src/index.ts) (source code of the Next.js builder)

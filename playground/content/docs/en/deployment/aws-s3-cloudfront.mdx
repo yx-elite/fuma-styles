@@ -1,0 +1,259 @@
+---
+title: AWS S3 + CloudFront
+description: Serve the site from a private S3 bucket through Amazon CloudFront, with HTTPS all the way and your own domain.
+---
+
+This is the full AWS setup: the files sit in a **private** S3 bucket, and Amazon CloudFront, AWS's content delivery network, serves them to visitors over HTTPS from locations around the world. Nobody can reach the bucket except your CloudFront distribution.
+
+It takes more steps than the other guides, and it's a good way to learn the AWS pieces a real website uses. If you only want the site online, [Cloudflare](/docs/deployment/cloudflare) is quicker.
+
+## How it fits together
+
+```text
+Visitor ──HTTPS──▶ CloudFront ──HTTPS, signed──▶ S3 bucket (private)
+                      │
+                      └─ CloudFront Function: /docs/vpc/ → /docs/vpc/index.html
+```
+
+- **S3** stores the files of `out/`. The bucket stays private, with all of S3's *Block Public Access* settings on.
+- **CloudFront** serves the files. It reads the bucket through **Origin Access Control (OAC)**: the bucket policy lets in only your distribution.
+- **A CloudFront Function** fixes one thing: unlike S3's website hosting, CloudFront reading a bucket directly doesn't know that `/docs/vpc/` means `docs/vpc/index.html`. Without the function, the home page works and every other page returns *Access Denied*.
+- **AWS Certificate Manager (ACM)** provides the free HTTPS certificate for your domain.
+
+## What you need
+
+- Your notes site in a GitHub repository.
+- An [AWS account](https://aws.amazon.com/free/).
+- Optional: a domain. You can start with CloudFront's own address, such as `https://d111111abcdef8.cloudfront.net`, and add a domain later. Your DNS can be anywhere: Route 53, Cloudflare or your registrar.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Create a private bucket
+
+1. Open the [S3 console](https://console.aws.amazon.com/s3/) and select **Create bucket**.
+2. Enter a **Bucket name**. Any unique name works here, such as `my-notes-site-2026`; it doesn't have to match your domain.
+3. Pick a **Region** and note it down.
+4. Leave everything else as it is, including **Block *all* public access** (on), and select **Create bucket**.
+
+Don't turn on *Static website hosting*. CloudFront reads the bucket directly.
+
+</Step>
+<Step>
+
+### Create the distribution
+
+1. Open the [CloudFront console](https://console.aws.amazon.com/cloudfront/v4/home) and select **Create distribution**.
+2. If the console asks you to pick a pricing plan, see [Cost](#cost) below. Either the free flat-rate plan or pay-as-you-go works.
+3. Enter a **Distribution name**, such as `my-notes`.
+4. Choose **Single website or app** and select **Next**. You can skip the domain for now and select **Next** again.
+5. For **Origin type**, choose **Amazon S3**.
+6. For **S3 origin**, select **Browse S3** and choose your bucket.
+7. Under **Settings**, choose **Use recommended origin settings**. This sets up Origin Access Control, redirects HTTP to HTTPS and turns on compression.
+8. Select **Next**. On **Enable security protections**, choose whether to turn on AWS WAF (see [Cost](#cost)), then **Next**.
+9. Select **Create distribution**.
+
+CloudFront updates the bucket policy for you so that the distribution, and only it, can read the bucket. It takes a few minutes to deploy. On the distribution page, note two things:
+
+- The **Distribution domain name**, such as `d111111abcdef8.cloudfront.net`.
+- The **ID**, such as `E1A2B3C4D5E6F7`. The deploy workflow needs it.
+
+</Step>
+<Step>
+
+### Add the index.html function
+
+1. In the CloudFront console, select **Functions**, then **Create function**.
+2. **Name**: `notes-index-html`. Keep the default runtime. Select **Create function**.
+3. Replace the code in the editor with:
+
+```js title="notes-index-html"
+function handler(event) {
+  var request = event.request;
+  var uri = request.uri;
+
+  if (uri.endsWith('/')) {
+    // /docs/vpc/ → /docs/vpc/index.html
+    request.uri += 'index.html';
+  } else if (uri.split('/').pop().indexOf('.') === -1 && uri !== '/api/search') {
+    // /docs/vpc → /docs/vpc/index.html
+    // Files with an extension (/llms.txt, images) and the search index
+    // /api/search, which has no extension, are left as they are.
+    request.uri += '/index.html';
+  }
+
+  return request;
+}
+```
+
+4. Select **Save changes**.
+5. Open the **Publish** tab and select **Publish function**.
+6. Still on the **Publish** tab, select **Add association**: choose your distribution, **Event type** **Viewer Request**, and the default cache behavior (`Default (*)`). Select **Add association**.
+
+This is AWS's own example function, with one change: it leaves `/api/search` alone, because the search index is a file without an extension.
+
+</Step>
+<Step>
+
+### Show your 404 page
+
+When a file doesn't exist, the private bucket answers *Access Denied* (403) rather than *Not Found*, because CloudFront isn't allowed to list the bucket. Turn that into your site's 404 page:
+
+1. Open the distribution and go to the **Error Pages** tab.
+2. Select **Create Custom Error Response**.
+3. **HTTP error code**: `403: Forbidden`.
+4. **Customize error response**: **Yes**. **Response page path**: `/404.html`. **HTTP Response code**: `404: Not Found`.
+5. Select **Create**.
+
+</Step>
+<Step>
+
+### Deploy from GitHub
+
+Follow [Deploy to AWS from GitHub](/docs/deployment/aws-github-actions). It sets up a workflow that builds the site, uploads `out/` to the bucket and clears CloudFront's cache on every push. Set `CLOUDFRONT_DISTRIBUTION_ID` to your distribution's ID.
+
+When the first run finishes, open `https://d111111abcdef8.cloudfront.net` (your own distribution domain name). Check a page deep in the sidebar, the search box and a link that doesn't exist.
+
+</Step>
+</Steps>
+
+## Add your own domain
+
+<Steps>
+<Step>
+
+### Add the domain to the distribution
+
+1. Open the distribution. On the **General** tab, select **Add a domain**.
+2. Enter your address, such as `notes.example.com`, and select **Next**.
+3. For **TLS certificate**, let CloudFront create one. CloudFront certificates must live in the `us-east-1` Region (N. Virginia); CloudFront takes care of that when it creates the certificate. If you'd rather make it yourself in the [ACM console](https://console.aws.amazon.com/acm/home), switch to `us-east-1` first.
+
+</Step>
+<Step>
+
+### Prove you own the domain
+
+CloudFront shows a `CNAME` record for validating the certificate. Add it at your DNS provider exactly as shown. On Cloudflare, set that record to **DNS only**.
+
+Back in CloudFront, select **Validate certificate**. When the certificate is issued, select **Next**, review, and select **Add domains**. Wait until the distribution's status is **Deployed**.
+
+</Step>
+<Step>
+
+### Point the domain at CloudFront
+
+Add a second record at your DNS provider:
+
+| Type | Name | Target |
+| --- | --- | --- |
+| `CNAME` | `notes` | Your distribution domain name, such as `d111111abcdef8.cloudfront.net` |
+
+- **Route 53:** create an *alias* record to the distribution instead. It also works for a bare domain such as `example.com`.
+- **Cloudflare:** set the proxy status to **DNS only**. CloudFront already caches and handles HTTPS; a second proxy in front only adds confusion.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push.
+
+</Step>
+</Steps>
+
+## Publishing updates
+
+Push to `main`. The workflow uploads the new files and then asks CloudFront to forget its cached copies (an *invalidation* of `/*`), so visitors get the new version within a minute or two. Fingerprinted files in `_next/static/` are marked as cacheable forever, and pages are marked to be checked every time, so a browser never mixes an old page with new code.
+
+## Cost
+
+You pay for S3 storage and requests, which for a notes site is a few cents a month. CloudFront itself can cost nothing; when you create the distribution, the console offers two ways to pay:
+
+| | Free flat-rate plan | Pay-as-you-go |
+| --- | --- | --- |
+| Monthly price | $0 | Per use, after a free allowance |
+| Included each month | 1 million requests, 100 GB of data transfer | 1 TB of data transfer, 10 million requests, 2 million CloudFront Function runs |
+| Over the allowance | No overage charges; AWS may slow delivery if you stay far above it | You pay for the extra |
+| AWS WAF security rules | Included, and required | Optional, billed separately |
+
+A notes site fits comfortably in either. AWS's docs list a few limits for flat-rate plans: at most three free plans per account, and accounts still on the AWS Free Tier can't subscribe yet. If the plan isn't offered to you, choose pay-as-you-go and skip WAF.
+
+Other costs:
+
+- **Invalidations:** the first 1,000 paths a month are free, and `/*` counts as one path. One deploy a day uses about 30.
+- **Certificate:** ACM certificates used with CloudFront are free.
+- **Domain:** whatever your registrar charges per year. Route 53 hosted zones cost extra if you use them; Cloudflare's DNS is free.
+
+## Common problems
+
+<Accordions>
+<Accordion title="The home page works, but other pages show AccessDenied">
+
+The CloudFront Function isn't running. Check that it's published (the **Publish** tab) and associated with the distribution as **Viewer Request** on the default behavior. After a change, wait for the distribution to show **Deployed**.
+
+</Accordion>
+<Accordion title="Every page, including the home page, shows AccessDenied">
+
+CloudFront can't read the bucket. Open the bucket's **Permissions** tab and check that the bucket policy allows `cloudfront.amazonaws.com` to `s3:GetObject`, for your distribution's ARN:
+
+```json title="Bucket policy"
+{
+  "Version": "2012-10-17",
+  "Statement": [
+    {
+      "Sid": "AllowCloudFrontServicePrincipalReadOnly",
+      "Effect": "Allow",
+      "Principal": { "Service": "cloudfront.amazonaws.com" },
+      "Action": "s3:GetObject",
+      "Resource": "arn:aws:s3:::my-notes-site-2026/*",
+      "Condition": {
+        "StringEquals": {
+          "AWS:SourceArn": "arn:aws:cloudfront::111122223333:distribution/E1A2B3C4D5E6F7"
+        }
+      }
+    }
+  ]
+}
+```
+
+Replace the bucket name, your 12-digit AWS account ID and the distribution ID. Also check that the bucket isn't empty: the deploy workflow must have run.
+
+</Accordion>
+<Accordion title="Search finds nothing">
+
+The function must leave `/api/search` alone. Compare it with the code above, save, and publish it again.
+
+</Accordion>
+<Accordion title="The site still shows the old version">
+
+The invalidation didn't run. Check that the repository variable `CLOUDFRONT_DISTRIBUTION_ID` is set and that the workflow's role is allowed `cloudfront:CreateInvalidation`. You can also clear the cache by hand: **Invalidations** tab > **Create invalidation** > `/*`.
+
+</Accordion>
+<Accordion title="The certificate stays in Pending validation">
+
+The validation `CNAME` record is missing, mistyped, or proxied through Cloudflare. Check it against the value CloudFront shows. ACM keeps trying for 72 hours; after that, request the certificate again.
+
+</Accordion>
+<Accordion title="The domain shows an error, but the cloudfront.net address works">
+
+The domain isn't attached to the distribution, or the distribution is still deploying. Check that it's listed on the distribution's **General** tab and that the status is **Deployed**.
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [Get started with a CloudFront distribution and an S3 origin](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/GettingStarted.SimpleDistribution.html)
+- [Restrict access to an S3 origin (Origin Access Control)](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/private-content-restricting-access-to-s3.html)
+- [Recommended settings for an S3 origin](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/template-preconfigured-origin-settings.html)
+- [Example function: add index.html to URLs](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/example-function-add-index.html)
+- [Create a CloudFront Function](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/functions-tutorial.html)
+- [Custom error responses](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/custom-error-pages-procedure.html)
+- [Add a domain to a distribution](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/CreatingCNAME.html)
+- [Request a public certificate in ACM](https://docs.aws.amazon.com/acm/latest/userguide/acm-public-certificates.html)
+- [ACM pricing](https://aws.amazon.com/certificate-manager/pricing/)
+- [Paying for invalidations](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/PayingForInvalidation.html)
+- [CloudFront pricing](https://aws.amazon.com/cloudfront/pricing/), [pay-as-you-go](https://aws.amazon.com/cloudfront/pricing/pay-as-you-go/) and [flat-rate plans](https://docs.aws.amazon.com/AmazonCloudFront/latest/DeveloperGuide/flat-rate-pricing-plan.html)
+- [S3 pricing](https://aws.amazon.com/s3/pricing/)

@@ -1,0 +1,217 @@
+---
+title: GitHub Pages
+description: Host the site for free on GitHub Pages, built by a GitHub Actions workflow on every push.
+---
+
+GitHub Pages hosts websites straight from a GitHub repository. A small workflow file builds your site on GitHub's machines every time you push, then publishes `out/`. It's free for public repositories and keeps everything in one place.
+
+<Callout type="warn" title="Read this first: your site needs a root address">
+A notes site must be served from the root of its address. GitHub Pages gives an ordinary repository an address with the repository's name after a slash, such as `https://your-name.github.io/my-notes/`, and the site does **not** work there yet: styles, links and search all look for files at `/`.
+
+Use one of these instead:
+
+- **A custom domain**, such as `notes.example.com`. Works with any repository name.
+- **A user site**: rename the repository to `your-name.github.io` (your GitHub username, exactly). The site is then served at `https://your-name.github.io/`. Each account has only one user site.
+</Callout>
+
+## What you need
+
+- A GitHub account, and your notes site in a GitHub repository. See [Installation](/docs/installation) if it isn't there yet.
+- A **public** repository. On the free GitHub plan, Pages only works for public repositories; GitHub Pro and other paid plans can publish from private ones.
+- One of the two root addresses above: a domain of your own, or a repository named `your-name.github.io`.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Choose the address
+
+- **User site:** on GitHub, open the repository, go to **Settings** and change **Repository name** to `your-name.github.io`. GitHub forwards the old repository address to the new one, so pushing from your computer keeps working.
+- **Custom domain:** keep the repository name. You'll connect the domain in [Add your own domain](#add-your-own-domain) below.
+
+</Step>
+<Step>
+
+### Turn on GitHub Pages
+
+1. In the repository, open **Settings**.
+2. In the sidebar, under **Code, planning, and automation**, select **Pages**.
+3. Under **Build and deployment**, set **Source** to **GitHub Actions**.
+
+GitHub may suggest ready-made workflows. Ignore them; you'll add your own in the next step.
+
+</Step>
+<Step>
+
+### Add the workflow
+
+Create this file in your repository. The folder names must be exactly `.github/workflows/`:
+
+```yaml title=".github/workflows/deploy.yml"
+name: Deploy to GitHub Pages
+
+on:
+  push:
+    branches: [main]
+  workflow_dispatch: # adds a "Run workflow" button in the Actions tab
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+# Never run two deploys at once
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full git history, for "Last updated" dates
+
+      - uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: npm
+
+      - uses: actions/configure-pages@v6
+
+      - run: npm ci
+      - run: npm run build
+
+      - uses: actions/upload-pages-artifact@v5
+        with:
+          path: out
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - id: deployment
+        uses: actions/deploy-pages@v5
+```
+
+What it does: the `build` job installs your dependencies, builds the site and packs `out/` for GitHub Pages. The `deploy` job then publishes it. If your main branch is called something other than `main`, change it on the `branches:` line.
+
+</Step>
+<Step>
+
+### Push and watch it run
+
+Commit the file and push it. Open the **Actions** tab of your repository: a run called *Deploy to GitHub Pages* appears. When both jobs have a green tick (after two or three minutes), the address of your site is shown on the `deploy` job and under **Settings** > **Pages**.
+
+</Step>
+</Steps>
+
+## Add your own domain
+
+<Steps>
+<Step>
+
+### Enter the domain on GitHub
+
+In **Settings** > **Pages**, under **Custom domain**, type your address, such as `notes.example.com`, and select **Save**. Do this before you change your DNS. GitHub recommends [verifying the domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages) for your account first, which stops anyone else from claiming it.
+
+With a workflow like the one above you don't need a `CNAME` file in your repository; GitHub ignores it.
+
+</Step>
+<Step>
+
+### Point the domain at GitHub
+
+At the company that manages your domain's DNS, add a record:
+
+| Type | Name | Target |
+| --- | --- | --- |
+| `CNAME` | `notes` | `your-name.github.io` |
+
+Use your username (or organisation name) only, without the repository name.
+
+For a bare domain such as `example.com`, GitHub's docs list four `A` records instead: `185.199.108.153`, `185.199.109.153`, `185.199.110.153` and `185.199.111.153`.
+
+If your DNS is on Cloudflare, set the record's proxy status to **DNS only**, so visitors reach GitHub directly and GitHub can check the domain and issue its certificate.
+
+</Step>
+<Step>
+
+### Turn on HTTPS
+
+Back in **Settings** > **Pages**, tick **Enforce HTTPS**. The option can take up to 24 hours to become available after you add the domain, while GitHub gets a certificate.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push.
+
+</Step>
+</Steps>
+
+## Publishing updates
+
+Every push to `main` runs the workflow again and publishes the new version. You can also run it by hand from the **Actions** tab with **Run workflow**. If a run fails, the site keeps showing the last good version.
+
+## Cost
+
+Free for public repositories. GitHub's limits for Pages:
+
+- The published site can be up to 1 GB.
+- A soft limit of 100 GB of traffic a month.
+- A deploy fails if it takes longer than 10 minutes.
+
+GitHub Pages isn't meant for running an online business or selling things; personal notes are fine.
+
+## Common problems
+
+<Accordions>
+<Accordion title="The page loads without styles, or links go to 404">
+
+The site is being served from a sub-path such as `your-name.github.io/my-notes/`. Use a custom domain or rename the repository to `your-name.github.io` (see the box at the top).
+
+</Accordion>
+<Accordion title='configure-pages fails with "Get Pages site failed"'>
+
+GitHub Pages isn't turned on for the repository yet. In **Settings** > **Pages**, set **Source** to **GitHub Actions**, then re-run the workflow.
+
+</Accordion>
+<Accordion title="The deploy job says the branch is not allowed to deploy">
+
+The `github-pages` environment has protection rules that can limit which branches may deploy. Check the allowed branches in **Settings** > **Environments** > **github-pages**, and push to one of them (normally your default branch).
+
+</Accordion>
+<Accordion title="Enforce HTTPS is greyed out">
+
+GitHub is still getting a certificate for your domain. Check that the DNS record is right and wait; it can take up to 24 hours.
+
+</Accordion>
+<Accordion title="Every page shows the same Last updated date">
+
+The `fetch-depth: 0` line is missing from the `actions/checkout` step.
+
+</Accordion>
+<Accordion title="The repository is private and Pages isn't available">
+
+On the free GitHub plan, Pages needs a public repository. Make it public, upgrade to a paid plan, or use another host such as [Cloudflare](/docs/deployment/cloudflare).
+
+</Accordion>
+</Accordions>
+
+## Official docs
+
+- [What is GitHub Pages?](https://docs.github.com/en/pages/getting-started-with-github-pages/what-is-github-pages)
+- [Configuring a publishing source](https://docs.github.com/en/pages/getting-started-with-github-pages/configuring-a-publishing-source-for-your-github-pages-site)
+- [Managing a custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/managing-a-custom-domain-for-your-github-pages-site)
+- [Verifying your custom domain](https://docs.github.com/en/pages/configuring-a-custom-domain-for-your-github-pages-site/verifying-your-custom-domain-for-github-pages)
+- [GitHub Pages limits](https://docs.github.com/en/pages/getting-started-with-github-pages/github-pages-limits)
+- [GitHub's plans](https://docs.github.com/en/get-started/learning-about-github/githubs-plans)
+- Actions used: [checkout](https://github.com/actions/checkout), [setup-node](https://github.com/actions/setup-node), [configure-pages](https://github.com/actions/configure-pages), [upload-pages-artifact](https://github.com/actions/upload-pages-artifact), [deploy-pages](https://github.com/actions/deploy-pages)
+- [GitHub's own Next.js Pages workflow](https://github.com/actions/starter-workflows/blob/main/pages/nextjs.yml), which this one is based on

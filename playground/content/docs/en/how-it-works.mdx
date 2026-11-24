@@ -1,0 +1,64 @@
+---
+title: How it works
+description: The parts of Notestack, what happens when a site builds, and where each piece of code lives.
+icon: Workflow
+---
+
+Notestack is built so that a notes site holds almost no code. This page explains how the parts fit together, for anyone who wants to change the theme or understand a notes site.
+
+## The parts
+
+| Part | Where | What it is |
+| --- | --- | --- |
+| The theme | `packages/notestack/` | The npm package `@yx-elite/notestack`: all styles, layouts, components and helpers |
+| The starter | `starter/` | A complete notes site with a small sample, the template for new sites |
+| The create command | `packages/create-notestack/` | `npm create notestack`: copies the starter into a new folder (planned) |
+| This site | `playground/` | The theme's docs, and the test site for every change |
+
+A notes site is a copy of the starter. Its files in `app/` are a few lines each that call the theme, so a new version of the theme reaches every site through `npm update`. Only `site.config.ts`, `content/` and `package.json` are the site's own.
+
+## What happens when a site builds
+
+`npm run build` runs Next.js, which:
+
+1. **Reads the notes.** `lib/source.ts` asks [Fumadocs MDX](https://fumadocs.dev/docs/mdx) to compile every `.mdx` file in `content/docs/`, and Fumadocs' `loader()` turns the folders and `meta.json` files into the sidebar.
+2. **Renders every page to HTML**, once per language: the landing page, each note, the glossary.
+3. **Builds the search index**, a JSON file that the browser downloads and searches.
+4. **Draws a share image** (PNG) for each note.
+5. **Writes plain-text copies** of the notes: `llms.txt`, `llms-full.txt` and one Markdown file per page.
+
+Everything lands in `out/` as plain files. No server runs after that, which is why any static host works.
+
+## Inside the package
+
+The package has six entry points. Each is something a site imports:
+
+| Import | For | Holds |
+| --- | --- | --- |
+| `@yx-elite/notestack` | Layouts, `site.config.ts` | `defineSiteConfig`, `NotesRoot`, `NotesLayout`, `NotesHome`, components, language helpers |
+| `@yx-elite/notestack/routes` | Files in `app/` | The docs page and the search, share-image and llms.txt routes. Server only |
+| `@yx-elite/notestack/source` | `lib/source.ts` | Loader plugins (sidebar icons) and last-updated dates. Build time only |
+| `@yx-elite/notestack/mdx` | Notes | `getMDXComponents()`: every component a note can use |
+| `@yx-elite/notestack/next` | `next.config.mjs` | `withNotestack()`: static export settings |
+| `@yx-elite/notestack/theme.css` | `app/global.css` | The whole design, as CSS |
+
+And its source folders:
+
+| Folder | Holds |
+| --- | --- |
+| `src/theme.css` | Colours, fonts, and the styles of every part of the site, light and dark |
+| `src/config/` | The `SiteConfig` type behind `site.config.ts` |
+| `src/layouts/` | The root layout, header, sidebar, banner, landing page and page transitions |
+| `src/routes/` | The docs page and the routes for search, share images and llms.txt |
+| `src/components/` | Glossary, search dialog, copy button, accent picker |
+| `src/i18n/` | Every piece of the theme's text, in English and Chinese, and the language helpers |
+| `src/mdx.tsx` | The list of components available in notes |
+
+The theme styles Fumadocs rather than replacing it: search, the sidebar, MDX and page structure come from Fumadocs, and the theme adds the design, the landing page and a few notes features on top.
+
+## Why some things are the way they are
+
+- **Static only.** Every site is a static export, so hosting is cheap or free and nothing can go down. That rules out anything that needs a server: no login, no comments, no server-side search.
+- **Thin site files.** A site's files are copied once and never updated by the theme. Keeping them to a few lines means almost every change can ship through `npm update` instead.
+- **One accent colour.** The whole look comes from one colour per mode, so a site needs no design work to look finished.
+- **Two image files for diagrams.** An image can't see the page's dark mode, so a diagram comes in a light and a dark version and the theme shows the right one. See [Writing notes](/docs/writing-notes#images-and-diagrams).

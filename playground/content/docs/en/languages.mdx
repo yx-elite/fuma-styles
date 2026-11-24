@@ -1,0 +1,305 @@
+---
+title: Languages
+description: Publish your notes in one language other than English, or in several languages with a language switch.
+icon: Languages
+---
+
+A notes site is in English unless you say otherwise. There are two levels:
+
+| You want | Set | URLs | Extra files |
+| --- | --- | --- | --- |
+| The whole site in one language, such as Chinese | `language: 'zh-CN'` | `/docs/…` | None |
+| The same notes in several languages, with a switch | `languages: ['en', 'zh-CN']` | `/en/docs/…`, `/zh-CN/docs/…` | Yes, see below |
+
+## One language
+
+Set `language` to the language your notes are written in, as a [language tag](https://www.w3.org/International/articles/language-tags/) such as `zh-CN`, `ja` or `ms`:
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  name: '股票交易笔记',
+  description: '技术分析与风险管理笔记。',
+  repo: 'your-name/trading-notes',
+  language: 'zh-CN',
+});
+```
+
+That's all. The page language, date formats and all the text the theme shows follow it: the landing page, the glossary, *Last updated*, and Fumadocs' own search box, *On this page* and page buttons.
+
+### Built-in text
+
+| Language | Theme's text | Fumadocs' text |
+| --- | --- | --- |
+| English (`en`) | Yes | Yes |
+| Simplified Chinese (`zh-CN`) | Yes | Yes |
+| Traditional Chinese (`zh-TW`) | English, unless you fill in `text` | Yes |
+| Japanese (`ja`) | English, unless you fill in `text` | Yes |
+| Any other | English, unless you fill in `text` | English |
+
+To translate the theme's text into another language, or to change one phrase, fill in `text`. Anything you leave out stays in English:
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  // …
+  language: 'ms',
+  text: {
+    startReading: 'Mula membaca',
+    pageCount: { other: '{n} halaman' },
+    lastUpdated: 'Kemas kini terakhir {date}',
+  },
+});
+```
+
+Words in braces, such as `{n}` and `{date}`, are filled in by the theme. A text that depends on a number takes one form per plural category of the language: English uses `one` and `other`, Chinese and Malay only `other`. The full list of keys is the `NotesText` type in the package ([source](https://github.com/yx-elite/notestack/blob/main/packages/notestack/src/i18n/text.ts)).
+
+## Several languages
+
+With `languages`, each page exists once per language, and readers switch between them in the header. This site is set up this way: try the language button at the top.
+
+What changes for you:
+
+- **One folder of notes per language**: `content/docs/en/`, `content/docs/zh-CN/`, each with its own `meta.json`.
+- **Translate one page at a time.** A page missing in a language shows the default language's page.
+- **URLs start with the language**, because a static site can't hide it. Opening `/` sends readers to the language they read last, else the one their browser prefers, else the default.
+- **Links stay the same.** Keep writing `/docs/…` in notes, cards, quick links and the glossary: the theme adds the page's language.
+- **Search** keeps one index per language and searches the page's language. Chinese is split into words correctly.
+
+<Callout type="warn" title="Decide early">
+Turning `languages` on moves every page to a new URL. Links people saved to `/docs/…` stop working. If you might translate later, it's easiest to set it up before you share the site.
+</Callout>
+
+### Set it up
+
+These steps turn a site made with `npm create notestack` into a site with English and Simplified Chinese. Swap in your own languages.
+
+<Steps>
+<Step>
+
+### List the languages
+
+The first one is the default. Put the site's own text for the other languages in `translations`; anything you leave out uses the default language's value.
+
+```ts title="site.config.ts"
+export default defineSiteConfig({
+  name: 'Stock Trading Notes',
+  description: 'Notes on technical analysis and risk.',
+  repo: 'your-name/trading-notes',
+  links: [{ text: 'Glossary', url: '/docs/glossary', icon: 'BookA' }],
+  languages: ['en', 'zh-CN'],
+  translations: {
+    'zh-CN': {
+      name: '股票交易笔记',
+      description: '技术分析与风险管理笔记。',
+      links: [{ text: '术语表', url: '/docs/glossary', icon: 'BookA' }],
+    },
+  },
+});
+```
+
+`translations` can hold `name`, `author`, `tag`, `description`, `links`, `bannerLink`, `start` and `text`.
+
+</Step>
+<Step>
+
+### Move the notes into language folders
+
+Move everything in `content/docs/` into `content/docs/en/`. Then create `content/docs/zh-CN/` and add translated pages with the **same file names**:
+
+<Files>
+  <Folder name="content/docs" defaultOpen>
+    <Folder name="en" defaultOpen>
+      <File name="meta.json" />
+      <File name="index.mdx" />
+      <File name="risk.mdx" />
+    </Folder>
+    <Folder name="zh-CN" defaultOpen>
+      <File name="meta.json" />
+      <File name="index.mdx" />
+    </Folder>
+  </Folder>
+</Files>
+
+Here `risk.mdx` isn't translated yet, so Chinese readers see the English page. Each folder's `meta.json` sets that language's sidebar order and section names.
+
+</Step>
+<Step>
+
+### Move the pages into app/[lang]/
+
+Next.js needs the language as the first part of every page's URL, so the pages move into a folder named `[lang]` (with the square brackets). The search and llms routes and the icon stay where they are:
+
+<Files>
+  <Folder name="app" defaultOpen>
+    <Folder name="(root)" defaultOpen>
+      <File name="layout.tsx" />
+      <File name="page.tsx" />
+    </Folder>
+    <Folder name="[lang]" defaultOpen>
+      <File name="layout.tsx" />
+      <Folder name="(home)" />
+      <Folder name="docs" />
+      <Folder name="og" />
+    </Folder>
+    <Folder name="api" />
+    <Folder name="llms.txt, llms-full.txt, llms.mdx" />
+    <File name="global.css" />
+    <File name="icon.svg" />
+  </Folder>
+</Files>
+
+1. Move `app/(home)/`, `app/docs/` and `app/og/` into `app/[lang]/`.
+2. Move `app/layout.tsx` to `app/[lang]/layout.tsx`, and change it as shown in the next step.
+3. Create `app/(root)/` with the two files below.
+
+</Step>
+<Step>
+
+### Update the layouts
+
+The layouts read the language from the URL. Copy these over the moved files:
+
+<Accordions>
+<Accordion title="app/[lang]/layout.tsx">
+
+```tsx title="app/[lang]/layout.tsx"
+import { Geist, JetBrains_Mono } from 'next/font/google';
+import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
+import site from '@/site.config';
+import '../global.css';
+
+const sans = Geist({ subsets: ['latin'], variable: '--font-sans' });
+const mono = JetBrains_Mono({ subsets: ['latin'], variable: '--font-mono' });
+
+// One copy of the site per language in site.config.ts
+export const dynamicParams = false;
+export function generateStaticParams() {
+  return (site.languages ?? []).map((lang) => ({ lang }));
+}
+
+export async function generateMetadata({ params }: LayoutProps<'/[lang]'>) {
+  const { lang } = await params;
+  return notesMetadata(site, lang);
+}
+
+export default async function Layout({ params, children }: LayoutProps<'/[lang]'>) {
+  const { lang } = await params;
+  return (
+    <NotesRoot site={site} language={lang} className={`${sans.variable} ${mono.variable}`}>
+      {children}
+    </NotesRoot>
+  );
+}
+```
+
+</Accordion>
+<Accordion title="app/[lang]/(home)/layout.tsx and page.tsx">
+
+```tsx title="app/[lang]/(home)/layout.tsx"
+import { NotesHomeLayout, siteFor } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default async function Layout({ params, children }: LayoutProps<'/[lang]'>) {
+  const { lang } = await params;
+  return (
+    <NotesHomeLayout site={siteFor(site, lang)} tree={source.getPageTree(lang)}>
+      {children}
+    </NotesHomeLayout>
+  );
+}
+```
+
+```tsx title="app/[lang]/(home)/page.tsx"
+import { NotesHome, siteFor } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default async function HomePage({ params }: PageProps<'/[lang]'>) {
+  const { lang } = await params;
+  return <NotesHome site={siteFor(site, lang)} source={source} />;
+}
+```
+
+</Accordion>
+<Accordion title="app/[lang]/docs/layout.tsx">
+
+```tsx title="app/[lang]/docs/layout.tsx"
+import { NotesLayout, siteFor } from '@yx-elite/notestack';
+import { source } from '@/lib/source';
+import site from '@/site.config';
+
+export default async function Layout({ params, children }: LayoutProps<'/[lang]/docs'>) {
+  const { lang } = await params;
+  return (
+    <NotesLayout site={siteFor(site, lang)} tree={source.getPageTree(lang)}>
+      {children}
+    </NotesLayout>
+  );
+}
+```
+
+The page file, `app/[lang]/docs/[[...slug]]/page.tsx`, and the share-image route stay exactly as they are: they read the language themselves.
+
+</Accordion>
+<Accordion title="app/(root)/layout.tsx and page.tsx">
+
+The page at `/`, which sends readers on to their language:
+
+```tsx title="app/(root)/layout.tsx"
+import type { ReactNode } from 'react';
+import { defaultLanguageOf } from '@yx-elite/notestack';
+import site from '@/site.config';
+import '../global.css';
+
+export default function Layout({ children }: { children: ReactNode }) {
+  return (
+    <html lang={defaultLanguageOf(site)}>
+      <body>{children}</body>
+    </html>
+  );
+}
+```
+
+```tsx title="app/(root)/page.tsx"
+import { LanguageRedirect } from '@yx-elite/notestack';
+import site from '@/site.config';
+
+export default function Page() {
+  return <LanguageRedirect site={site} />;
+}
+```
+
+</Accordion>
+</Accordions>
+
+`lib/source.ts` needs no change: it already passes `notesLanguages(site)` to Fumadocs.
+
+</Step>
+<Step>
+
+### Check it
+
+```bash
+npm run dev
+```
+
+Open [localhost:3000](http://localhost:3000): it should send you to `/en/`. Switch language with the button in the header, then run `npm run build` to check that every page builds.
+
+</Step>
+</Steps>
+
+### A glossary per language
+
+The glossary page is a note like any other, so each language has its own. Keep the terms in one file per language and import the right one:
+
+```mdx title="content/docs/zh-CN/glossary.mdx"
+---
+title: 术语表
+---
+
+import terms from '@/content/glossary.zh-CN.json';
+
+<Glossary terms={terms} />
+```
+
+Links in the terms (`href`) stay `/docs/…`; the theme adds the language.

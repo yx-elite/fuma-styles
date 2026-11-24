@@ -1,0 +1,173 @@
+---
+title: Cloudflare
+description: Host the site for free on Cloudflare Workers, built and deployed every time you push to GitHub.
+---
+
+Cloudflare builds your site from GitHub and serves it from its network around the world. Serving static files is free and has no request limit, so this is the recommended host for a first site.
+
+Cloudflare has two products that can host a static site: **Workers** and **Pages**. Cloudflare's own docs now say to start new projects with Workers, so this guide uses Workers. Pages still works; see [Using Cloudflare Pages instead](#using-cloudflare-pages-instead) at the end.
+
+## What you need
+
+- Your notes site in a GitHub repository. See [Installation](/docs/installation) if it isn't there yet.
+- A free [Cloudflare account](https://dash.cloudflare.com/sign-up).
+- Optional: a domain. You can start without one; Cloudflare gives you a free `workers.dev` address.
+
+## Set it up
+
+<Steps>
+<Step>
+
+### Add a Wrangler config file
+
+Wrangler is Cloudflare's deploy tool. This file tells it to upload the `out/` folder and nothing else. Create it in the root of your repository, next to `package.json`:
+
+```jsonc title="wrangler.jsonc"
+{
+  "name": "my-notes",
+  "compatibility_date": "2026-11-24",
+  "assets": {
+    "directory": "./out",
+    "not_found_handling": "404-page"
+  }
+}
+```
+
+- `name` is your project's name on Cloudflare and the first part of its address. Use lowercase letters, numbers and dashes.
+- `compatibility_date` can be today's date.
+- `not_found_handling` makes Cloudflare show your site's `404.html` for links that don't exist.
+
+Commit the file and push it to GitHub. Without this file, Cloudflare tries to set the project up as a full Next.js server app, which a notes site doesn't need.
+
+</Step>
+<Step>
+
+### Connect the repository
+
+1. Sign in to the [Cloudflare dashboard](https://dash.cloudflare.com) and open **Workers & Pages**.
+2. Select **Create application**.
+3. Choose to import a repository from **GitHub**. The first time, Cloudflare asks you to sign in to GitHub and choose which repositories it may read.
+4. Select your notes repository.
+
+</Step>
+<Step>
+
+### Enter the build settings
+
+| Setting | Value |
+| --- | --- |
+| Project name | The same as `name` in `wrangler.jsonc`, such as `my-notes` |
+| Build command | `npm run build` |
+| Deploy command | `npx wrangler deploy` (the default) |
+| Root directory | Leave empty |
+
+Cloudflare installs your dependencies by itself before the build command runs. Its build image uses Node.js 24 by default, which is fine: the site needs 22 or later.
+
+Select **Deploy** (it may be labelled **Save and Deploy**).
+
+<Callout type="warn" title="The names must match">
+The project name in the dashboard must be the same as `name` in `wrangler.jsonc`, or the build fails.
+</Callout>
+
+</Step>
+<Step>
+
+### Open your site
+
+The first build takes a few minutes. When it finishes, your site is live at:
+
+```text
+https://my-notes.<your-subdomain>.workers.dev
+```
+
+Cloudflare shows the exact address on the project page. Open it and check a few pages and the search box.
+
+</Step>
+</Steps>
+
+## Add your own domain
+
+Cloudflare can only attach a domain to a Worker if the domain's DNS is managed by Cloudflare. If you bought the domain elsewhere, first [add it to Cloudflare](https://developers.cloudflare.com/fundamentals/manage-domains/add-site/): Cloudflare walks you through changing the domain's nameservers at the company you bought it from. This is free.
+
+<Steps>
+<Step>
+
+### Attach the domain
+
+1. In **Workers & Pages**, open your project.
+2. Go to **Settings** > **Domains & Routes** and select **Add**, then **Custom Domain**.
+3. Enter the address you want, such as `notes.example.com`, and select **Add Custom Domain**.
+
+Cloudflare creates the DNS record and the HTTPS certificate for you. If the address already has a `CNAME` record in your DNS settings, delete that record first.
+
+</Step>
+<Step>
+
+### Tell the site its address
+
+Set `url: 'https://notes.example.com'` in `site.config.ts` and push, so link previews use the new address.
+
+</Step>
+</Steps>
+
+## Publishing updates
+
+Push to your main branch and Cloudflare builds and deploys the site again. Each build appears under your project's **Deployments** tab, with its log. Pushes to other branches create a preview version with its own address instead of changing the live site.
+
+## Cost
+
+On the free Workers plan:
+
+- Requests for static files are free and unlimited. A notes site is only static files.
+- Up to 20,000 files per deploy, each up to 25 MiB.
+- Builds: 3,000 build minutes a month, one build at a time, up to 20 minutes each.
+
+A domain is the only thing you pay for, and only if you want one.
+
+## Common problems
+
+<Accordions>
+<Accordion title="The build fails with a project name error">
+
+The project name in the dashboard and `name` in `wrangler.jsonc` are different. Make them the same and push again.
+
+</Accordion>
+<Accordion title="Cloudflare opened a pull request to add configuration">
+
+This happens when `wrangler.jsonc` is missing: Cloudflare tries to set the project up for you, as a server app. Close that pull request and add the `wrangler.jsonc` from step 1 instead.
+
+</Accordion>
+<Accordion title="Every page shows the same Last updated date">
+
+Cloudflare doesn't document how much git history its builds fetch. If all pages show the date of your latest commit, the build only had recent history. The dates are the only thing affected. If they matter to you, [GitHub Pages](/docs/deployment/github-pages) and the AWS guides build on GitHub Actions with the full history.
+
+</Accordion>
+<Accordion title="A page shows Cloudflare's own 404 page">
+
+Check that `not_found_handling` is set to `"404-page"` in `wrangler.jsonc`, and that `npm run build` ran (the deploy uploads whatever is in `out/`).
+
+</Accordion>
+<Accordion title="Custom Domain can't be added">
+
+The domain must be an active site in your Cloudflare account, with Cloudflare's nameservers. Changing nameservers can take a few hours to take effect. Also remove any existing `CNAME` record for the same address.
+
+</Accordion>
+</Accordions>
+
+## Using Cloudflare Pages instead
+
+Cloudflare Pages also hosts static sites for free and doesn't need `wrangler.jsonc`. It can also attach a domain whose DNS stays at another company, which Workers can't. To use it, choose **Pages** when you create the application, connect the repository, and enter `npm run build` as the build command and `out` as the build output directory. Cloudflare calls Workers its primary platform and recommends it for new projects, which is why this guide uses it.
+
+## Official docs
+
+- [Cloudflare Pages: "Start new projects with Workers"](https://developers.cloudflare.com/pages/)
+- [Workers static assets](https://developers.cloudflare.com/workers/static-assets/)
+- [Static site routing and 404 pages](https://developers.cloudflare.com/workers/static-assets/routing/static-site-generation/)
+- [Trailing slashes and HTML handling](https://developers.cloudflare.com/workers/static-assets/routing/advanced/html-handling/)
+- [Workers Builds](https://developers.cloudflare.com/workers/ci-cd/builds/) and [build settings](https://developers.cloudflare.com/workers/ci-cd/builds/configuration/)
+- [Build image and Node.js version](https://developers.cloudflare.com/workers/ci-cd/builds/build-image/)
+- [Custom Domains](https://developers.cloudflare.com/workers/configuration/routing/custom-domains/)
+- [workers.dev addresses](https://developers.cloudflare.com/workers/configuration/routing/workers-dev/)
+- [Pricing](https://developers.cloudflare.com/workers/platform/pricing/), [limits](https://developers.cloudflare.com/workers/platform/limits/) and [build limits](https://developers.cloudflare.com/workers/ci-cd/builds/limits-and-pricing/)
+- [Workers vs. Pages](https://developers.cloudflare.com/workers/static-assets/compatibility-matrix/)
+- [Add a domain to Cloudflare](https://developers.cloudflare.com/fundamentals/manage-domains/add-site/)

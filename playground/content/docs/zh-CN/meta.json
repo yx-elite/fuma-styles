@@ -9,9 +9,14 @@
     "---指南---",
     "theme",
     "landing-page",
+    "languages",
     "deployment",
     "glossary",
+    "updates",
     "---组件展示---",
-    "...showcase"
+    "...showcase",
+    "---项目---",
+    "how-it-works",
+    "roadmap"
   ]
 }
