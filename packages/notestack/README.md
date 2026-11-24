@@ -2,8 +2,6 @@
 
 A [Fumadocs](https://fumadocs.dev) theme for study notes. It gives a notes site its layout, landing page, styles, components and static-export settings. Every site that uses it reads the same way, and gets fixes and new features through `npm update`.
 
-> Not published yet. The first release comes with `npm create notestack@latest my-notes`.
-
 ## What you get
 
 - **A landing page built from your notes**: a hero with a live preview of the docs, a contents grid of every section, search, and a "run it yourself" guide.
@@ -35,7 +33,7 @@ The only code file you edit is `site.config.ts`: the site's name, links, accent 
 | --- | --- |
 | `@yx-elite/notestack` | Site config, root layout, layouts, landing page, components, language helpers |
 | `@yx-elite/notestack/mdx` | `getMDXComponents()`: every component for MDX pages |
-| `@yx-elite/notestack/source` | Loader plugins and last-updated dates. Build time only (uses `node:` modules) |
+| `@yx-elite/notestack/source` | Loader plugins and last-updated dates, for `lib/source.ts` |
 | `@yx-elite/notestack/routes` | The docs page and the search, share-image and llms.txt routes. Server only |
 | `@yx-elite/notestack/next` | `withNotestack()` for `next.config.mjs`: static export settings. No React |
 | `@yx-elite/notestack/theme.css` | The theme. Import it after Tailwind |
@@ -45,9 +43,10 @@ The only code file you edit is `site.config.ts`: the site's name, links, accent 
 Notestack builds its own site with Next.js and Fumadocs MDX, as a static export. It doesn't plug into a Fumadocs app set up another way, such as one with a server, another framework or another content source.
 
 - Node.js 22 or later.
-- In your app: `fumadocs-core` and `fumadocs-ui` 16, `fumadocs-mdx`, `next` 16, `react` and `react-dom` 19, Tailwind CSS 4.
+- Peer dependencies, which the package uses from your app so there is only ever one copy of each: `fumadocs-core` and `fumadocs-ui` 16.19.7 or later 16.x, `next` 16.4.6 or later 16.x, and `react` and `react-dom` 19.3.1 or later 19.x.
+- Also in your app: `fumadocs-mdx` 15, Tailwind CSS 4 and `@types/mdx`.
 
-These are peer dependencies: the package uses your app's copies, so there is only ever one Fumadocs in the site.
+A site made with `npm create notestack` has all of these.
 
 ## Versions
 
