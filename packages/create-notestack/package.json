@@ -1,0 +1,39 @@
+{
+  "name": "create-notestack",
+  "version": "0.0.0",
+  "description": "Create a Notestack study-notes site: npm create notestack@latest my-notes",
+  "keywords": [
+    "notestack",
+    "fumadocs",
+    "create",
+    "starter",
+    "study-notes"
+  ],
+  "homepage": "https://github.com/yx-elite/notestack#readme",
+  "bugs": {
+    "url": "https://github.com/yx-elite/notestack/issues"
+  },
+  "license": "MIT",
+  "author": "Yi Xian Lan <exian0716@gmail.com> (https://github.com/yx-elite)",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/yx-elite/notestack.git",
+    "directory": "packages/create-notestack"
+  },
+  "type": "module",
+  "bin": {
+    "create-notestack": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "template",
+    "LICENSE"
+  ],
+  "engines": {
+    "node": ">=22"
+  },
+  "scripts": {
+    "template": "node scripts/copy-starter.js",
+    "prepack": "npm run template"
+  }
+}

@@ -12,7 +12,7 @@ Notestack is built so that a notes site holds almost no code. This page explains
 | --- | --- | --- |
 | The theme | `packages/notestack/` | The npm package `notestack`: all styles, layouts, components and helpers |
 | The starter | `starter/` | A complete notes site with a small sample, the template for new sites |
-| The create command | `packages/create-notestack/` | `npm create notestack`: copies the starter into a new folder (planned) |
+| The create command | `packages/create-notestack/` | `npm create notestack`: copies the starter into a new folder, names the site after it and installs it |
 | This site | `playground/` | The theme's docs, and the test site for every change |
 
 A notes site is a copy of the starter. Its files in `app/` are a few lines each that call the theme, so a new version of the theme reaches every site through `npm update`. Only `site.config.ts`, `content/` and `package.json` are the site's own.

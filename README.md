@@ -65,7 +65,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 2. **Design** → the look, layout and landing page, prototyped in the playground. ✅ (mostly)
 3. **Package** → move the prototype code into `notestack`. ✅
 4. **Languages** → one language per site, or several with a language switch. ✅
-5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command next.
+5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command ✅ (not on npm yet).
 6. **CI and first release** → checks on every push ✅, then `0.1.0` on npm and the docs site deployed.
 7. **First real site** → the first notes site built on the published package.
 
