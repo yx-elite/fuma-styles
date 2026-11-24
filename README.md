@@ -2,7 +2,7 @@
 
 ![npm](https://img.shields.io/badge/npm-@yx--elite/notestack-CB3837?logo=npm&logoColor=white) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white)
 
-A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**, so my handbooks (AWS SAA, Linux and later ones) all read the same way, and a fix made once reaches all of them.
+A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**, so every notes site reads the same way, and a fix made once reaches all of them.
 
 > [!NOTE]
 > Work in progress. The package is not on npm yet; the [roadmap](#roadmap) lists what comes next.
@@ -67,7 +67,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 4. **Languages** → one language per site, or several with a language switch. ✅
 5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command next.
 6. **CI and first release** → `0.1.0` on npm, docs site deployed.
-7. **First real site** → the AWS SAA handbook.
+7. **First real site** → the first notes site built on the published package.
 
 Later: publishing an **Obsidian** vault with the theme (wikilinks, embeds, callouts), and more note components.
 

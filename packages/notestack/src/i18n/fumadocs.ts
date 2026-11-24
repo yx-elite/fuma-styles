@@ -15,7 +15,7 @@ function fumadocsPreset(language: string): TranslationPreset<string> | undefined
   return undefined;
 }
 
-/** A language's name in itself, for the language switch: "English", "简体中文", "Bahasa Melayu" */
+/** A language's name in itself, for the language switch: "English", "简体中文", "Français" */
 export function languageName(language: string): string {
   const fromPreset = (fumadocsPreset(language)?.value as { displayName?: string } | undefined)?.displayName;
   if (fromPreset) return fromPreset;

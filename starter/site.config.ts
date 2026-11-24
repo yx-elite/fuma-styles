@@ -17,6 +17,6 @@ export default defineSiteConfig({
   // A colour for each mode: links, the active page, the glow and the banner follow it
   // accent: { light: '#0092b3', dark: '#3ad1ff' },
 
-  // A small badge next to the name, e.g. an exam code
-  // tag: 'SAA-C03',
+  // A small badge next to the name, e.g. a course code
+  // tag: 'NET-101',
 });

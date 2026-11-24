@@ -2,16 +2,16 @@ import type { NotesText } from '../i18n/text.js';
 
 /** Everything that differs between notes sites. Lives in each repo's site.config.ts. */
 export interface SiteConfig {
-  /** Notes name, shown in the header and the sidebar banner, e.g. "AWS SAA-C03 Handbook" */
+  /** Notes name, shown in the header and the sidebar banner, e.g. "Networking Notes" */
   name: string;
   /** Shown in the landing page footer: "© 2026 <author>". Without it, the footer uses `name` */
   author?: string;
-  /** Small badge next to the name in the banner, e.g. the exam code "SAA-C03" */
+  /** Small badge next to the name in the banner, e.g. a course code "NET-101" */
   tag?: string;
   /** One sentence about the subject: the same text as the GitHub repo description */
   description: string;
   /**
-   * The address the site is served from, e.g. "https://saa.example.com".
+   * The address the site is served from, e.g. "https://notes.example.com".
    * Used for links to share images (the preview a link gets in chat apps); leave it
    * out until the site has an address, everything else works without it.
    */
@@ -50,7 +50,7 @@ export interface SiteConfig {
    * Leave it out for a site in one language (see `language`).
    */
   languages?: string[];
-  /** Per-language versions of the site's own text, e.g. { 'zh-CN': { name: '股票交易笔记' } }. Anything left out uses the default language's value. */
+  /** Per-language versions of the site's own text, e.g. { 'zh-CN': { name: '网络笔记' } }. Anything left out uses the default language's value. */
   translations?: Record<string, SiteTranslation>;
 }
 
