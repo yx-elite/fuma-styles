@@ -27,7 +27,7 @@ export function YouTube({ id }: { id: string }) {
 ```
 
 ```tsx title="app/docs/[[...slug]]/page.tsx"
-import { createNotesPage } from '@yx-elite/notestack/routes';
+import { createNotesPage } from 'notestack/routes';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 import { YouTube } from '@/components/youtube';
@@ -55,7 +55,7 @@ const docs = createNotesPage({ source, site, repoDir: 'site' });
 
 ```js title="next.config.mjs"
 import { createMDX } from 'fumadocs-mdx/next';
-import { withNotestack } from '@yx-elite/notestack/next';
+import { withNotestack } from 'notestack/next';
 
 const withMDX = createMDX();
 

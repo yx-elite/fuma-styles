@@ -1,5 +1,5 @@
 import { Geist, JetBrains_Mono } from 'next/font/google';
-import { NotesRoot, notesMetadata } from '@yx-elite/notestack';
+import { NotesRoot, notesMetadata } from 'notestack';
 import site from '@/site.config';
 import '../global.css';
 

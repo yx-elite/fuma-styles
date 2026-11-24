@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { pageImage, pageMarkdownUrl } from '../src/routes/urls.js';
-import { pageLastModified } from '../src/source/index.js';
+import { pageLastModified } from '../src/source/last-modified.js';
 
 describe('pageImage', () => {
   it('puts each page share image under /og/docs', () => {

@@ -16,7 +16,7 @@ import { repoUrl, type SiteConfig } from '../config/site.js';
 import { siteFor, withoutLanguageFolder } from '../i18n/index.js';
 import { getMDXComponents } from '../mdx.js';
 import { notesPageProps } from '../pages/page.js';
-import { pageLastModified } from '../source/index.js';
+import { pageLastModified } from '../source/last-modified.js';
 import type { NotesLoaderConfig } from './types.js';
 import { pageImage, pageMarkdownUrl } from './urls.js';
 

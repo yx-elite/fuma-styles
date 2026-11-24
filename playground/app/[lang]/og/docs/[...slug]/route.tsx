@@ -1,4 +1,4 @@
-import { ogImageRoute } from '@yx-elite/notestack/routes';
+import { ogImageRoute } from 'notestack/routes';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 

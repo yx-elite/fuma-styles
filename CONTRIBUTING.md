@@ -11,7 +11,7 @@ Ideas, bug reports and pull requests are welcome.
 git clone https://github.com/yx-elite/notestack.git
 cd notestack
 npm install
-npm run dev -w @yx-elite/notestack   # terminal 1: recompiles the package on save
+npm run dev -w notestack   # terminal 1: recompiles the package on save
 npm run dev                          # terminal 2: the docs site at localhost:3000
 ```
 

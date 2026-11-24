@@ -7,7 +7,7 @@ import { DocsPreview } from './home-preview.js';
 import { HomeEffects } from './home-effects.js';
 import { HomeFooter } from './home-footer.js';
 import { SearchButton } from '../components/search-button.js';
-import { pageLastModified } from '../source/index.js';
+import { pageLastModified } from '../source/last-modified.js';
 import { repoUrl, type SiteConfig, type StartSection } from '../config/site.js';
 import {
   fill,

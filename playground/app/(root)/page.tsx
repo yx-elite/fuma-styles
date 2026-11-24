@@ -1,4 +1,4 @@
-import { LanguageRedirect } from '@yx-elite/notestack';
+import { LanguageRedirect } from 'notestack';
 import site from '@/site.config';
 
 export default function Page() {

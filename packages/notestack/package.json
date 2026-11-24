@@ -1,5 +1,5 @@
 {
-  "name": "@yx-elite/notestack",
+  "name": "notestack",
   "version": "0.0.0",
   "description": "A Fumadocs theme for study notes",
   "keywords": [
@@ -17,7 +17,7 @@
     "url": "https://github.com/yx-elite/notestack/issues"
   },
   "license": "MIT",
-  "author": "yx-elite <exian0716@gmail.com>",
+  "author": "Yi Xian Lan <exian0716@gmail.com> (https://github.com/yx-elite)",
   "repository": {
     "type": "git",
     "url": "git+https://github.com/yx-elite/notestack.git",

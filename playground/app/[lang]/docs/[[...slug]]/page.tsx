@@ -1,4 +1,4 @@
-import { createNotesPage } from '@yx-elite/notestack/routes';
+import { createNotesPage } from 'notestack/routes';
 import { source } from '@/lib/source';
 import site from '@/site.config';
 

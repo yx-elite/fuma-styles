@@ -1,4 +1,4 @@
-import { defineSiteConfig } from '@yx-elite/notestack';
+import { defineSiteConfig } from 'notestack';
 
 // Your site's settings: the only code file you need to edit.
 // Every option is explained in the Notestack docs:

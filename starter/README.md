@@ -34,7 +34,7 @@ Upload `out/` to any static host. The Notestack docs have a [step-by-step guide 
 ## Update the theme
 
 ```bash
-npm update @yx-elite/notestack
+npm update notestack
 ```
 
 New versions bring fixes and new features. A version that needs you to change a file says so in the [changelog](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md), with the exact edit.

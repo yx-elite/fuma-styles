@@ -1,5 +1,5 @@
 import { createMDX } from 'fumadocs-mdx/next';
-import { withNotestack } from '@yx-elite/notestack/next';
+import { withNotestack } from 'notestack/next';
 
 const withMDX = createMDX();
 

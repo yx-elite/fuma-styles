@@ -1,6 +1,6 @@
 # Changelog
 
-All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://semver.org); while in `0.x`, a breaking change bumps the minor.
+All notable changes to `notestack`. Versions follow [semver](https://semver.org); while in `0.x`, a breaking change bumps the minor.
 
 ## Unreleased
 
@@ -9,8 +9,8 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 ### Setup
 
 - **One config file.** `defineSiteConfig()` in `site.config.ts` sets the site's `name`, `author`, `tag`, `description`, `repo`, `branch`, `url`, `accent`, `bannerLink`, quick `links`, the landing page's `start` section and its languages.
-- **App files are a few lines each.** `NotesRoot` is the whole root layout, and `notesMetadata()` its metadata (`Page · Site` titles, the description, and `url` as the base for share images). `NotesLayout` and `NotesHomeLayout` are the docs and landing-page layouts. `NotesProvider`, `StaticSearchDialog`, `SearchButton` and `CopyButton` are there for sites that build their own.
-- **A static export for any file host.** `withNotestack()` (`@yx-elite/notestack/next`) sets `output: 'export'`, `trailingSlash` and unoptimised images, and lets phones and tablets on the home network load the dev server.
+- **App files are a few lines each.** `NotesRoot` is the whole root layout, and `notesMetadata()` its metadata (`Page · Site` titles, the description, and `url` as the base for share images). `NotesLayout` and `NotesHomeLayout` are the docs and landing-page layouts.
+- **A static export for any file host.** `withNotestack()` (`notestack/next`) sets `output: 'export'`, `trailingSlash` and unoptimised images, and lets phones and tablets on the home network load the dev server.
 
 ### Design
 
@@ -23,10 +23,10 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 
 ### Writing
 
-- **`getMDXComponents()`** (`@yx-elite/notestack/mdx`) gives notes every component without imports: Fumadocs' Tabs, Steps, Cards, Files, TypeTable and Accordions (`type="multiple"` works), plus `Callout` and `Glossary`.
-- **`Callout`** is a tinted box with its icon and title in a pill. It has five types, takes any [Lucide](https://lucide.dev/icons) `icon` by name, and takes a `color`: one of nine named colours tuned for both modes (`calloutColors`) or any CSS colour. `title={false}` drops the pill for a compact aside with the icon before the text.
+- **`getMDXComponents()`** (`notestack/mdx`) gives notes every component without imports: Fumadocs' Tabs, Steps, Cards, Files, TypeTable and Accordions (`type="multiple"` works), plus `Callout` and `Glossary`.
+- **`Callout`** is a tinted box with its icon and title in a pill. It has five types, takes any [Lucide](https://lucide.dev/icons) `icon` by name, and takes a `color`: one of nine named colours tuned for both modes or any CSS colour. `title={false}` drops the pill for a compact aside with the icon before the text.
 - **`Glossary`** shows `content/glossary.json` as a filterable A to Z list with a letter bar. Terms outside A to Z go under `#`, and every term has its own anchor.
-- Sidebar icons come from `icon:` frontmatter (`notesSourcePlugins`), and *Last updated* dates from git (`pageLastModified()`, `LastUpdated`). Under each page's previous and next buttons, the date sits on the left and a *Built with Notestack* link on the right.
+- Sidebar icons come from `icon:` frontmatter (`notesSourcePlugins`), and *Last updated* dates from git. Under each page's previous and next buttons, the date sits on the left and a *Built with Notestack* link on the right.
 
 ### Landing page
 
@@ -36,7 +36,7 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 
 ### Search, share images and AI copies
 
-`@yx-elite/notestack/routes`, server only:
+`notestack/routes`, server only:
 
 - `createNotesPage()`: the docs page, its metadata and its static params.
 - `searchRoute()`: a search index built at build time and searched in the browser, one per language.
@@ -46,12 +46,12 @@ The first release, `0.1.0`. Until it's published, this section describes what it
 ### Languages
 
 - **One language per site.** `language` and `text` in the config. Notestack's text ships in English and Simplified Chinese, and Fumadocs' text comes from `@fumadocs/language`.
-- **Several languages.** `languages` (the first is the default) and `translations`. URLs start with the language, the header shows a language switch, notes live in one folder per language, and an untranslated page shows the default language's version. `LanguageRedirect` and `RememberLanguage` send readers to the language they read last. Links written as `/docs/…` get the page's language added.
-- **Helpers:** `siteFor`, `notesLanguages`, `notesI18n`, `notesText`, `localizeHref`, `withoutLanguageFolder`, `fill`, `fillNodes`, `plural` and `formatDate`.
+- **Several languages.** `languages` (the first is the default) and `translations`. URLs start with the language, the header shows a language switch, notes live in one folder per language, and an untranslated page shows the default language's version. `LanguageRedirect` sends readers at `/` to the language they read last. Links written as `/docs/…` get the page's language added.
+- **Helpers:** `siteFor` (the config in one language), `defaultLanguageOf` and `notesLanguages` (for `loader()` in `lib/source.ts`).
 
 ### Package
 
-- Five entry points (`@yx-elite/notestack`, `/mdx`, `/source`, `/routes` and `/next`) and `theme.css`. The CSS ships as source, with `@source "../dist"` so Tailwind finds the components' classes.
+- Five entry points (`notestack`, `/mdx`, `/source`, `/routes` and `/next`) and `theme.css`, each exporting only what a site's files use. The CSS ships as source, with `@source "../dist"` so Tailwind finds the components' classes.
 - Fumadocs, Next.js and React are peer dependencies, so a site only ever has one copy of each.
 - The package ships `dist/`, `src/` (so *go to definition* opens the source) and its `LICENSE`. The build clears `dist/` first.
-- `AccentPicker`, for demo sites, lets visitors try accent colours (`accentPicker` on `NotesRoot`).
+- `accentPicker` on `NotesRoot`, for demo sites, lets visitors try accent colours.

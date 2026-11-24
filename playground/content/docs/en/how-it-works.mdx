@@ -10,7 +10,7 @@ Notestack is built so that a notes site holds almost no code. This page explains
 
 | Part | Where | What it is |
 | --- | --- | --- |
-| The theme | `packages/notestack/` | The npm package `@yx-elite/notestack`: all styles, layouts, components and helpers |
+| The theme | `packages/notestack/` | The npm package `notestack`: all styles, layouts, components and helpers |
 | The starter | `starter/` | A complete notes site with a small sample, the template for new sites |
 | The create command | `packages/create-notestack/` | `npm create notestack`: copies the starter into a new folder (planned) |
 | This site | `playground/` | The theme's docs, and the test site for every change |
@@ -35,12 +35,12 @@ The package has six entry points. Each is something a site imports:
 
 | Import | For | Holds |
 | --- | --- | --- |
-| `@yx-elite/notestack` | Layouts, `site.config.ts` | `defineSiteConfig`, `NotesRoot`, `NotesLayout`, `NotesHome`, components, language helpers |
-| `@yx-elite/notestack/routes` | Files in `app/` | The docs page and the search, share-image and llms.txt routes. Server only |
-| `@yx-elite/notestack/source` | `lib/source.ts` | Loader plugins (sidebar icons) and last-updated dates. Build time only |
-| `@yx-elite/notestack/mdx` | `createNotesPage`, the docs page route | `getMDXComponents()`: every component a note can use |
-| `@yx-elite/notestack/next` | `next.config.mjs` | `withNotestack()`: static export settings |
-| `@yx-elite/notestack/theme.css` | `app/global.css` | The whole design, as CSS |
+| `notestack` | Layouts, `site.config.ts` | `defineSiteConfig`, `NotesRoot`, `NotesLayout`, `NotesHome`, components, language helpers |
+| `notestack/routes` | Files in `app/` | The docs page and the search, share-image and llms.txt routes. Server only |
+| `notestack/source` | `lib/source.ts` | Loader plugins (sidebar icons). Build time only |
+| `notestack/mdx` | `createNotesPage`, the docs page route | `getMDXComponents()`: every component a note can use |
+| `notestack/next` | `next.config.mjs` | `withNotestack()`: static export settings |
+| `notestack/theme.css` | `app/global.css` | The whole design, as CSS |
 
 And its source folders:
 
