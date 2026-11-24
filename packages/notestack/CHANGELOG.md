@@ -28,6 +28,8 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 ### Changed
 
 - Landing page: "What's inside" is a still bento grid. Each section's first pages are listed as numbered links (two columns on wide cards), with no moving lists. More space between sections on wide screens; on phones the docs preview sits right under the hero. The glow behind the preview is a soft blurred light with no hard edges.
+- Landing page footer: the site's mark, description and repository, a column of the notes' sections and one of links (`links` from `site.config.ts` and GitHub), then a row with the copyright, the last update and *Back to top*. The site's name is drawn large and faded across the bottom. New text keys: `footerNotes`, `footerLinks` and `backToTop`.
+- Each note's title and the landing page's section titles use Instrument Serif, shipped with the theme (`@fontsource/instrument-serif`), with a serif fallback for Chinese. The site's name and all other text stay in Geist. Change it with `--ns-font-display`.
 - Callouts: the whole box is tinted in its colour with a coloured border; the title is a small uppercase label in that colour, followed by a fading rule.
 - Cards: a soft grey gradient, lifting slightly on hover.
 - Steps: numbers in accent-tinted rings on a line that fades out towards the last step.

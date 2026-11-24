@@ -49,6 +49,9 @@ export interface NotesText {
   byAuthor: string;
   builtWithFumadocs: string;
   footerNav: string;
+  footerNotes: string;
+  footerLinks: string;
+  backToTop: string;
 
   /* Landing page: "Get started" */
   getStarted: string;
@@ -120,6 +123,9 @@ export const en: NotesText = {
   byAuthor: 'by {author}',
   builtWithFumadocs: 'Built with Fumadocs',
   footerNav: 'Footer',
+  footerNotes: 'Notes',
+  footerLinks: 'Links',
+  backToTop: 'Back to top',
 
   getStarted: 'Get started',
   terminal: 'Terminal',
@@ -181,6 +187,9 @@ export const zhCN: NotesText = {
   byAuthor: '作者：{author}',
   builtWithFumadocs: '基于 Fumadocs 构建',
   footerNav: '页脚',
+  footerNotes: '笔记',
+  footerLinks: '链接',
+  backToTop: '回到顶部',
 
   getStarted: '快速开始',
   terminal: '终端',

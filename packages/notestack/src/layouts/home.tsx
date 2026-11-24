@@ -5,6 +5,7 @@ import type { CSSProperties, ReactNode } from 'react';
 import { CopyButton } from '../components/copy-button.js';
 import { DocsPreview } from './home-preview.js';
 import { HomeEffects } from './home-effects.js';
+import { HomeFooter } from './home-footer.js';
 import { SearchButton } from '../components/search-button.js';
 import { pageLastModified } from '../source/index.js';
 import { repoUrl, type SiteConfig, type StartSection } from '../config/site.js';
@@ -219,20 +220,7 @@ export function NotesHome({
         </div>
       </section>
 
-      <footer className="ns-home-footer">
-        <span>
-          {site.name}
-          {site.author && <> · {fill(text.byAuthor, { author: site.author })}</>}
-        </span>
-        <nav aria-label={text.footerNav}>
-          <a href={repoUrl(site)} target="_blank" rel="noreferrer">
-            GitHub
-          </a>
-          <a href="https://fumadocs.dev" target="_blank" rel="noreferrer">
-            {text.builtWithFumadocs}
-          </a>
-        </nav>
-      </footer>
+      <HomeFooter site={site} groups={groups} updated={updated} text={text} />
 
       <HomeEffects />
     </main>

@@ -9,7 +9,7 @@ export interface NotesPageData extends PageData {
   toc: TOCItemType[];
   /** `full: true` in frontmatter: the page uses the whole width, no "On this page" */
   full?: boolean;
-  /** The page as Markdown; 'processed' needs `postprocess.includeProcessedMarkdown` (createNotesSource sets it up) */
+  /** The page as Markdown; 'processed' needs `postprocess.includeProcessedMarkdown` (set in lib/source.ts) */
   getText: (type: 'raw' | 'processed') => Promise<string>;
 }
 

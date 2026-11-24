@@ -4,7 +4,7 @@ import type { NotesText } from '../i18n/text.js';
 export interface SiteConfig {
   /** Notes name, shown in the header and the sidebar banner, e.g. "AWS SAA-C03 Handbook" */
   name: string;
-  /** Shown after the name in the header: "by <author>" */
+  /** Shown in the landing page footer: "© 2026 <author>". Without it, the footer uses `name` */
   author?: string;
   /** Small badge next to the name in the banner, e.g. the exam code "SAA-C03" */
   tag?: string;

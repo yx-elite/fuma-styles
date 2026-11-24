@@ -78,7 +78,7 @@ export function createNotesPage<C extends NotesLoaderConfig>({
         full={page.data.full}
         {...notesPageProps({ toc: page.data.toc, lastModified: pageLastModified(page), site: local })}
       >
-        <DocsTitle>{page.data.title}</DocsTitle>
+        <DocsTitle className="ns-page-title">{page.data.title}</DocsTitle>
         <DocsDescription className="mb-0">{page.data.description}</DocsDescription>
         <div className="flex flex-row gap-2 items-center border-b pb-6">
           <MarkdownCopyButton markdownUrl={markdownUrl} />
