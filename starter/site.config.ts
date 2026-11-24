@@ -1,7 +1,8 @@
 import { defineSiteConfig } from '@yx-elite/notestack';
 
 // Your site's settings: the only code file you need to edit.
-// Every option is explained at https://github.com/yx-elite/notestack (Configuration).
+// Every option is explained in the Notestack docs:
+// https://github.com/yx-elite/notestack/blob/main/playground/content/docs/en/configuration.mdx
 export default defineSiteConfig({
   // Shown in the header, the sidebar banner and the browser tab
   name: 'My Notes',
