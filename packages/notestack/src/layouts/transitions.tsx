@@ -65,6 +65,9 @@ export function PageTransitions({
 
       const root = document.documentElement;
       root.dataset.nsTransition = to === 'docs' ? 'to-docs' : 'to-home';
+      // Scrolled down: the page being left moves out as part of the screen's snapshot
+      // instead of as its own (taller than the screen) element, which Safari draws from its top
+      if (window.scrollY > 0) root.dataset.nsScrolled = '';
 
       const transition = document.startViewTransition(
         () =>
@@ -76,6 +79,7 @@ export function PageTransitions({
       );
       transition.finished.finally(() => {
         delete root.dataset.nsTransition;
+        delete root.dataset.nsScrolled;
       });
     };
 

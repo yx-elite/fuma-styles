@@ -1118,6 +1118,17 @@ html[data-ns-transition] #nd-subnav button:has(kbd) { view-transition-name: ns-n
 html[data-ns-transition] #nd-subnav [data-theme-toggle] { view-transition-name: ns-nav-theme; }
 html[data-ns-transition] #nd-subnav a[href*='github.com'] { view-transition-name: ns-nav-github; }
 
+/*
+ * Leaving a page that is scrolled down (data-ns-scrolled): the landing page or
+ * the note is far taller than the screen, and Safari draws such an element's
+ * snapshot from its top, so the reader saw the top of the page flash by. Left
+ * unnamed, it is part of the screen's own snapshot (root), which every browser
+ * takes as seen, and that snapshot does its exit animation instead (below).
+ * Only the page being left: the new page arrives at the top, named as usual.
+ */
+html[data-ns-transition='to-docs'][data-ns-scrolled] .ns-home-root,
+html[data-ns-transition='to-home'][data-ns-scrolled] #nd-notebook-layout #nd-page { view-transition-name: none; }
+
 @media (prefers-reduced-motion: no-preference) {
   :root {
     --ns-ease: cubic-bezier(0.16, 1, 0.3, 1); /* soft ease-out */
@@ -1162,6 +1173,16 @@ html[data-ns-transition] #nd-subnav a[href*='github.com'] { view-transition-name
   ::view-transition-old(ns-sidebar):only-child { animation: ns-slide-out-left 0.3s var(--ns-ease-out) both; }
   ::view-transition-old(ns-toc):only-child { animation: ns-slide-out-right 0.28s var(--ns-ease-out) both; }
   ::view-transition-new(ns-home):only-child { animation: ns-flow-in-down 0.7s 0.24s var(--ns-ease) both; }
+
+  /* Scrolled down: the screen's snapshot leaves the way the page would have */
+  :root[data-ns-transition='to-docs'][data-ns-scrolled]::view-transition-old(root) {
+    display: block;
+    animation: ns-flow-out-up 0.28s var(--ns-ease-out) both;
+  }
+  :root[data-ns-transition='to-home'][data-ns-scrolled]::view-transition-old(root) {
+    display: block;
+    animation: ns-flow-out-down 0.28s var(--ns-ease-out) both;
+  }
 }
 
 @keyframes ns-flow-out-up { to { opacity: 0; transform: translateY(-2.5rem) scale(0.98); } }
