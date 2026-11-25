@@ -4,6 +4,12 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+Nothing yet.
+
+## 0.1.1 (2026-11-25)
+
+Changes to `create-notestack` only. `@yx-elite/notestack` is published at the same version with no changes, because `create-notestack` 0.1.1 installs `^0.1.1`.
+
 ### Added
 
 - `npm create notestack@latest .` sets up the site in the current folder, also when it is a fresh clone: `.git`, `.gitattributes`, `.gitignore`, `README.md`, `LICENSE`, `.DS_Store`, `.idea` and `.vscode` may already be there. Your `README.md` stays, the starter's lines are added to your `.gitignore`, and any other file stops the command before it writes anything. The next steps no longer print `cd .`.

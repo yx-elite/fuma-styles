@@ -1,4 +1,4 @@
-name: Fumadocs latest
+name: Fumadocs Latest
 
 # Daily at 01:00 UTC, and by hand from the Actions tab (Run workflow)
 on:
