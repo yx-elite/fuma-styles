@@ -134,7 +134,7 @@ Before calling a change done, everything that exists from this list must pass: t
 
 ## Versions and publishing
 
-- Semver. While in `0.x`, a breaking change bumps the minor.
+- Semver. While in `0.x`, a breaking change bumps the minor (`0.2.0` → `0.3.0`), and everything else, new features included, bumps the patch (`0.2.0` → `0.2.1`). Notes repos depend on `^0.2.0`, which `npm update` keeps inside `0.2.x`: a minor bump reaches them only when they install it on purpose. (0.2.0 itself was a minor bump for new features; no notes repo was on 0.1.x yet, so nobody missed it.)
 - Never bump the version, run `npm publish` or create tags unless the maintainer asks.
 - Every user-visible change gets a line in `packages/notestack/CHANGELOG.md` under *Unreleased*.
 - Since `0.1.0`, each release gets its own section (`## 0.2.0 (date)`), with *Added*, *Changed*, *Fixed* and *Migration* as needed. Lines collect under *Unreleased* until then.
