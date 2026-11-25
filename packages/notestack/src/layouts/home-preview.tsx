@@ -9,7 +9,7 @@ import { en, type NotesText } from '../i18n/text.js';
 import { fill } from '../i18n/index.js';
 
 const MAX_SIDEBAR_ROWS = 14;
-const width = (w: number) => ({ '--w': `${w}%` }) as CSSProperties;
+const width = (w: number) => ({ '--ns-w': `${w}%` }) as CSSProperties;
 
 /**
  * A live miniature of the docs for the landing page: header, sidebar with the

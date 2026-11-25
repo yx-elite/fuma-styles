@@ -4,7 +4,15 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
-Nothing yet.
+### Fixed
+
+- Light mode: the green tick after copying a command, and the last line of the "Get started" terminal, were hard to read on light cards (2.3:1 contrast). They now use a darker green, `--ns-success` (5.0:1). Dark mode is unchanged.
+- The accent picker's swatches now have a visible ring in dark mode.
+- The landing page footer's repository link now uses the code font even when a site sets no `--font-mono`.
+
+### Changed
+
+- `theme.css` drops rules for Fumadocs layouts the theme never renders and for marquee options nothing sets, and renames four internal variables to `--ns-i`, `--ns-j`, `--ns-n` and `--ns-w`. Sites need no change.
 
 ## 0.1.1 (2026-11-25)
 

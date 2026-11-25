@@ -140,7 +140,7 @@ export function NotesHome({
         )}
         <h1 className="ns-home-title" aria-label={site.name}>
           {words.map((word, i) => (
-            <span key={i} className="ns-home-word" style={vars({ '--i': i })} aria-hidden>
+            <span key={i} className="ns-home-word" style={vars({ '--ns-i': i })} aria-hidden>
               {word}
             </span>
           ))}
@@ -359,14 +359,14 @@ function SectionCard({
   const chips = (shown: number) => (
     <ul className="ns-tile-chips">
       {group.pages.slice(0, shown).map((page, i) => (
-        <li key={i} style={vars({ '--j': i })}>
+        <li key={i} style={vars({ '--ns-j': i })}>
           <Link href={page.url} className="ns-tile-chip">
             {page.icon}
             {page.name}
           </Link>
         </li>
       ))}
-      {count > shown && <li style={vars({ '--j': shown })}>{more(shown)}</li>}
+      {count > shown && <li style={vars({ '--ns-j': shown })}>{more(shown)}</li>}
     </ul>
   );
 
@@ -374,7 +374,7 @@ function SectionCard({
     <article
       className="ns-card ns-tile ns-reveal"
       data-style={tile.style}
-      style={vars({ '--i': index, '--ns-area': tile.area })}
+      style={vars({ '--ns-i': index, '--ns-area': tile.area })}
     >
       <span className="ns-tile-meta">
         {number}
@@ -417,7 +417,7 @@ function SectionCard({
       {tile.style === 'cluster' && (
         <ul className="ns-tile-cluster">
           {group.pages.slice(0, 5).map((page, i) => (
-            <li key={i} style={vars({ '--j': i })}>
+            <li key={i} style={vars({ '--ns-j': i })}>
               <Link href={page.url} title={typeof page.name === 'string' ? page.name : undefined}>
                 {badge(page, i)}
                 <span className="sr-only">{page.name}</span>
@@ -425,7 +425,7 @@ function SectionCard({
             </li>
           ))}
           {count > 5 && (
-            <li className="ns-tile-badge ns-tile-badge-more" style={vars({ '--j': 5 })}>
+            <li className="ns-tile-badge ns-tile-badge-more" style={vars({ '--ns-j': 5 })}>
               +{count - 5}
             </li>
           )}
@@ -436,7 +436,7 @@ function SectionCard({
         <>
           <ul className="ns-tile-stack">
             {group.pages.slice(0, 4).map((page, i) => (
-              <li key={i} style={vars({ '--j': i })}>
+              <li key={i} style={vars({ '--ns-j': i })}>
                 <Link href={page.url}>
                   {badge(page, i)}
                   <span>{page.name}</span>
@@ -504,7 +504,7 @@ function GetStarted({ section, text }: { section: StartSection; text: NotesText 
             </li>
           ))}
         </ol>
-        <div className="ns-terminal ns-reveal" style={vars({ '--i': 1 })}>
+        <div className="ns-terminal ns-reveal" style={vars({ '--ns-i': 1 })}>
           <div className="ns-terminal-bar">
             <span className="ns-preview-dots" aria-hidden>
               <i />
@@ -516,12 +516,12 @@ function GetStarted({ section, text }: { section: StartSection; text: NotesText 
           </div>
           <pre className="ns-terminal-body">
             {section.steps.map((step, i) => (
-              <code key={i} className="ns-terminal-line" style={vars({ '--i': i, '--n': step.command.length })}>
+              <code key={i} className="ns-terminal-line" style={vars({ '--ns-i': i, '--ns-n': step.command.length })}>
                 <span className="ns-terminal-prompt">$ </span>
                 <span className="ns-terminal-type">{step.command}</span>
               </code>
             ))}
-            <code className="ns-terminal-line ns-terminal-out" style={vars({ '--i': section.steps.length })}>
+            <code className="ns-terminal-line ns-terminal-out" style={vars({ '--ns-i': section.steps.length })}>
               <span className="ns-terminal-ok">✓</span> {section.done ?? text.terminalDone}
             </code>
           </pre>

@@ -56,11 +56,14 @@
   --ns-accent: hsl(217, 100%, 58%);
   --color-fd-primary: var(--ns-accent);
   --color-fd-primary-foreground: hsl(0, 0%, 100%);
+  /* "done" green (a copied command, the terminal's last line): dark enough to read on a light card */
+  --ns-success: #15803d;
 }
 
 .dark {
   --ns-accent: #a9ceff;
   --color-fd-primary-foreground: hsl(0, 0%, 9%);
+  --ns-success: #22c55e;
 }
 
 /*
@@ -133,7 +136,7 @@ html > body[data-scroll-locked] {
   --ns-grid-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='1024' height='1024'%3E%3Cdefs%3E%3Cpattern id='g' width='360' height='360' patternUnits='userSpaceOnUse' patternTransform='matrix(1.13247 -0.36397 -0.36397 1 0 0)'%3E%3Cg fill='white'%3E%3Crect x='60' y='0' width='60' height='60' fill-opacity='.04'/%3E%3Crect x='240' y='60' width='60' height='60' fill-opacity='.06'/%3E%3Crect x='120' y='120' width='60' height='60' fill-opacity='.03'/%3E%3Crect x='300' y='180' width='60' height='60' fill-opacity='.035'/%3E%3Crect x='0' y='240' width='60' height='60' fill-opacity='.05'/%3E%3Crect x='180' y='300' width='60' height='60' fill-opacity='.03'/%3E%3C/g%3E%3Cpath d='M0 0h1v360h-1zM60 0h1v360h-1zM120 0h1v360h-1zM180 0h1v360h-1zM240 0h1v360h-1zM300 0h1v360h-1zM0 0h360v1h-360zM0 60h360v1h-360zM0 120h360v1h-360zM0 180h360v1h-360zM0 240h360v1h-360zM0 300h360v1h-360z' fill='rgb(136,136,136)' fill-opacity='0.27'/%3E%3C/pattern%3E%3C/defs%3E%3Crect width='1024' height='1024' fill='url(%23g)'/%3E%3C/svg%3E");
 }
 
-:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout) {
+#nd-notebook-layout {
   position: relative;
   isolation: isolate;
   overflow-x: clip; /* the skewed grid must never cause sideways scrolling */
@@ -151,8 +154,8 @@ html > body[data-scroll-locked] {
   background-repeat: no-repeat;
 }
 
-:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before,
-:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
+#nd-notebook-layout::before,
+#nd-notebook-layout::after {
   content: '';
   top: 0;
   left: 50%;
@@ -164,7 +167,7 @@ html > body[data-scroll-locked] {
 }
 
 /* Fixed glow: stays at the top of the window while the page scrolls */
-:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::before {
+#nd-notebook-layout::before {
   position: fixed;
   border-radius: 9999px;
   background-color: color-mix(in oklab, var(--ns-accent) var(--ns-glow-fixed-strength), transparent);
@@ -172,7 +175,7 @@ html > body[data-scroll-locked] {
 }
 
 /* Skewed grid with a few filled cells */
-:is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout)::after {
+#nd-notebook-layout::after {
   position: absolute;
   background-image: var(--ns-grid-image); /* already skewed 20deg on both axes */
   background-size: 100% 100%;
@@ -191,12 +194,12 @@ html > body[data-scroll-locked] {
  * fixed glow and grid scaled down to the narrow screen.
  */
 @media (max-width: 767px) {
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root)) {
+  #nd-notebook-layout:not(:has(.ns-home-root)) {
     background-image: none;
   }
 
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root))::before,
-  :is(#nd-docs-layout, #nd-notebook-layout, #nd-home-layout):not(:has(.ns-home-root))::after {
+  #nd-notebook-layout:not(:has(.ns-home-root))::before,
+  #nd-notebook-layout:not(:has(.ns-home-root))::after {
     display: none;
   }
 
@@ -696,13 +699,13 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
  * through it; frosted (Fumadocs' 80% background) once the page scrolls.
  * Needs nav.transparentMode: 'top' in the layout options.
  */
-:is(#nd-subnav, #nd-nav) {
+#nd-subnav {
   z-index: 40; /* above the sticky sidebar (z-20), also during over-scroll bounce */
   backdrop-filter: blur(12px);
 }
 
 /* Once scrolled: a light tint, so the page stays visible (blurred) behind the header */
-:is(#nd-subnav, #nd-nav)[data-transparent='false'] {
+#nd-subnav[data-transparent='false'] {
   background-color: color-mix(in oklab, var(--color-fd-background) var(--ns-header-tint), transparent);
 }
 
@@ -711,7 +714,7 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
 }
 
 /* GitHub icon at the far right, after the theme switch */
-:is(#nd-subnav, #nd-nav) a[href*='github.com'] {
+#nd-subnav a[href*='github.com'] {
   order: 1;
 }
 
@@ -719,11 +722,11 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
  * Language and GitHub: plain icons with no button shape. The language button
  * sits after the theme switch, between it and GitHub.
  */
-:is(#nd-subnav, #nd-nav) div:has(> [data-theme-toggle]) > button {
+#nd-subnav div:has(> [data-theme-toggle]) > button {
   order: 1;
 }
 
-:is(#nd-subnav, #nd-nav) :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']) {
+#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']) {
   padding: 0.25rem;
   border: 0;
   border-radius: 0;
@@ -732,16 +735,16 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
   transition: color 0.2s;
 }
 
-:is(#nd-subnav, #nd-nav) :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']):hover {
+#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']):hover {
   background: none;
   color: var(--color-fd-foreground);
 }
 
-:is(#nd-subnav, #nd-nav) a[href*='github.com'] {
+#nd-subnav a[href*='github.com'] {
   margin-inline-start: 0.25rem;
 }
 
-:is(#nd-subnav, #nd-nav) a[href*='github.com'] svg {
+#nd-subnav a[href*='github.com'] svg {
   width: 1.375rem;
   height: 1.375rem;
 }
@@ -779,18 +782,18 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
 }
 
 /* Search box: the same rounding as the search dialog it opens (Fumadocs: 12px) */
-:is(#nd-subnav, #nd-nav) button:has(kbd) {
+#nd-subnav button:has(kbd) {
   border-radius: 0.75rem;
 }
 
 /* Search box and theme switch: see-through like the header */
-:is(#nd-subnav, #nd-nav) button:has(kbd),
-:is(#nd-subnav, #nd-nav) [data-theme-toggle] {
+#nd-subnav button:has(kbd),
+#nd-subnav [data-theme-toggle] {
   background-color: rgb(255 255 255 / 0.3);
 }
 
-.dark :is(#nd-subnav, #nd-nav) button:has(kbd),
-.dark :is(#nd-subnav, #nd-nav) [data-theme-toggle] {
+.dark #nd-subnav button:has(kbd),
+.dark #nd-subnav [data-theme-toggle] {
   background-color: rgb(0 0 0 / 0.3);
 }
 
@@ -1110,7 +1113,7 @@ a[class*='bg-fd-card']:has(> h3.not-prose):hover {
  * above the rest of the page during one, so a permanent name made the page and
  * its cards cover the open phone menu for a moment on every theme switch.
  */
-html[data-ns-transition] :is(#nd-subnav, #nd-nav) { view-transition-name: ns-header; }
+html[data-ns-transition] #nd-subnav { view-transition-name: ns-header; }
 html[data-ns-transition] #nd-notebook-layout #nd-sidebar { view-transition-name: ns-sidebar; }
 html[data-ns-transition] #nd-notebook-layout #nd-toc { view-transition-name: ns-toc; }
 html[data-ns-transition] #nd-notebook-layout #nd-page { view-transition-name: ns-page; }
@@ -1721,7 +1724,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 
 .ns-preview-line {
   display: block;
-  width: var(--w, 100%);
+  width: var(--ns-w, 100%);
   height: 0.6em;
   border-radius: 9999px;
   background: var(--ns-line);
@@ -1761,7 +1764,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-preview-code i {
-  width: var(--w);
+  width: var(--ns-w);
   height: 0.6em;
   border-radius: 9999px;
   background: var(--ns-line-strong);
@@ -2190,11 +2193,6 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   mask-image: linear-gradient(to right, transparent, black 12%, black 88%, transparent);
 }
 
-.ns-marquee[data-vertical] {
-  flex-direction: column;
-  mask-image: linear-gradient(to bottom, transparent, black 22%, black 78%, transparent);
-}
-
 .ns-marquee-group {
   display: flex;
   flex-shrink: 0;
@@ -2202,10 +2200,6 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   margin: 0;
   padding: 0;
   list-style: none;
-}
-
-.ns-marquee[data-vertical] .ns-marquee-group {
-  flex-direction: column;
 }
 
 /* Built with */
@@ -2379,7 +2373,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-terminal-ok {
-  color: #22c55e;
+  color: var(--ns-success);
 }
 
 .ns-copy {
@@ -2398,7 +2392,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-copy[data-copied='true'] {
-  color: #22c55e;
+  color: var(--ns-success);
 }
 
 .ns-copy svg {
@@ -2529,7 +2523,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   border: 1px solid var(--color-fd-border);
   border-radius: 999px;
   background: var(--ns-card-bg);
-  font-family: var(--font-mono), ui-monospace, monospace;
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.75rem;
 }
 
@@ -2765,7 +2759,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   aspect-ratio: 1;
   border-radius: 9999px;
   background: linear-gradient(135deg, var(--ns-swatch-light) 50%, var(--ns-swatch-dark) 50%);
-  box-shadow: inset 0 0 0 1px rgb(0 0 0 / 0.1);
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--color-fd-foreground) 15%, transparent);
   color: white;
   transition: transform 0.15s;
 }
@@ -3101,7 +3095,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   }
 
   .ns-home-hero > .ns-home-title { animation: none; }
-  .ns-home-word { animation: ns-rise 0.9s calc(0.06s + var(--i, 0) * 0.07s) var(--ns-ease, ease-out) both; }
+  .ns-home-word { animation: ns-rise 0.9s calc(0.06s + var(--ns-i, 0) * 0.07s) var(--ns-ease, ease-out) both; }
   .ns-home-hero > :nth-child(3) { animation-delay: 0.16s; }
   .ns-home-hero > :nth-child(4) { animation-delay: 0.24s; }
   .ns-home-hero > :nth-child(5) { animation-delay: 0.32s; }
@@ -3124,20 +3118,20 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
      Backwards fill only, so hover transforms still work afterwards. */
   .ns-reveal[data-reveal='hidden'] { opacity: 0; }
   .ns-reveal[data-reveal='shown'] {
-    animation: ns-rise 0.8s calc(var(--i, 0) * 0.08s) var(--ns-ease, ease-out) backwards;
+    animation: ns-rise 0.8s calc(var(--ns-i, 0) * 0.08s) var(--ns-ease, ease-out) backwards;
   }
 
   .ns-card:hover { transform: translateY(-2px); }
 
   /* Mosaic cards rise in a little slower and further apart than other sections, then
-     their contents follow, one item after another (--j, set in home.tsx).
+     their contents follow, one item after another (--ns-j, set in home.tsx).
      Opacity and transform only; a card's contents are in place about 2s after it starts. */
   .ns-tile[data-reveal='shown'] {
-    animation: ns-rise 1s calc(var(--i, 0) * 0.14s) var(--ns-ease, ease-out) backwards;
+    animation: ns-rise 1s calc(var(--ns-i, 0) * 0.14s) var(--ns-ease, ease-out) backwards;
   }
 
   .ns-tile[data-reveal='shown'] :is(.ns-tile-chips, .ns-tile-cluster, .ns-tile-stack) > li {
-    --ns-after: calc(var(--i, 0) * 0.14s + 0.55s + var(--j, 0) * 0.12s);
+    --ns-after: calc(var(--ns-i, 0) * 0.14s + 0.55s + var(--ns-j, 0) * 0.12s);
     animation: ns-pop 0.75s var(--ns-after) var(--ns-ease, ease-out) backwards;
   }
 
@@ -3154,7 +3148,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   }
 
   .ns-tile[data-reveal='shown'] .ns-tile-ghost {
-    animation: ns-drift 1.8s calc(var(--i, 0) * 0.14s + 0.3s) var(--ns-ease, ease-out) backwards;
+    animation: ns-drift 1.8s calc(var(--ns-i, 0) * 0.14s + 0.3s) var(--ns-ease, ease-out) backwards;
   }
 
   /* Preview border beams: one lap every 8 seconds */
@@ -3162,22 +3156,19 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 
   /* Marquees slide by one copy; pause under the mouse */
   .ns-marquee-group { animation: ns-marquee var(--ns-duration, 40s) linear infinite; }
-  .ns-marquee[data-vertical] .ns-marquee-group { animation-name: ns-marquee-up; }
-  .ns-marquee[data-reverse] .ns-marquee-group { animation-direction: reverse; }
   .ns-marquee:hover .ns-marquee-group { animation-play-state: paused; }
 
   /* Terminal types its commands once it scrolls into view */
   .ns-terminal[data-reveal='shown'] .ns-terminal-line {
-    animation: ns-appear 0.01s calc(0.5s + var(--i) * 1.15s) backwards;
+    animation: ns-appear 0.01s calc(0.5s + var(--ns-i) * 1.15s) backwards;
   }
   .ns-terminal[data-reveal='shown'] .ns-terminal-type {
-    animation: ns-type calc(var(--n) * 22ms) steps(var(--n), end) calc(0.5s + var(--i) * 1.15s) backwards;
+    animation: ns-type calc(var(--ns-n) * 22ms) steps(var(--ns-n), end) calc(0.5s + var(--ns-i) * 1.15s) backwards;
   }
 }
 
 @keyframes ns-spin { to { rotate: 1turn; } }
 @keyframes ns-marquee { to { transform: translateX(calc(-100% - var(--ns-gap))); } }
-@keyframes ns-marquee-up { to { transform: translateY(calc(-100% - var(--ns-gap))); } }
 @keyframes ns-appear { from { opacity: 0; } }
 @keyframes ns-type { from { clip-path: inset(0 100% 0 0); } }
 
@@ -3213,7 +3204,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 
 /* each icon starts under the first and slides out to its place: badge width minus the overlap */
 @keyframes ns-fan {
-  from { opacity: 0; transform: translateX(calc(var(--j, 0) * -1.875rem)); }
+  from { opacity: 0; transform: translateX(calc(var(--ns-j, 0) * -1.875rem)); }
 }
 
 @keyframes ns-slide-right {
