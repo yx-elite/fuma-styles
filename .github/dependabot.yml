@@ -28,3 +28,7 @@ updates:
       interval: "monthly"
     commit-message:
       prefix: "⬆️ deps"
+    groups:
+      actions:
+        patterns:
+          - "*"
