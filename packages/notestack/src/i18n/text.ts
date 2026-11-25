@@ -59,6 +59,19 @@ export interface NotesText {
   terminal: string;
   copyCommands: string;
   terminalDone: string;
+  /** The two tabs when `start.agent` is set */
+  startByHand: string;
+  startWithAgent: string;
+  agentWindow: string;
+  agentWorksWith: string;
+  copyInstructions: string;
+  agentDone: string;
+  agentCopyTitle: string;
+  agentCopyText: string;
+  agentPasteTitle: string;
+  agentPasteText: string;
+  agentCheckTitle: string;
+  agentCheckText: string;
   runTitle: string;
   runText: string;
   runCloneTitle: string;
@@ -139,6 +152,18 @@ export const en: NotesText = {
   terminal: 'Terminal',
   copyCommands: 'Copy the commands',
   terminalDone: 'Ready on http://localhost:3000',
+  startByHand: 'By hand',
+  startWithAgent: 'With your agent',
+  agentWindow: '~/my-notes',
+  agentWorksWith: 'Works with',
+  copyInstructions: 'Copy instructions',
+  agentDone: 'Done. Your site is ready.',
+  agentCopyTitle: 'Copy the instructions',
+  agentCopyText: 'One message that tells your agent what to build and where the guide is.',
+  agentPasteTitle: 'Paste them into your agent',
+  agentPasteText: 'Claude Code, Cursor, Codex or any agent that can run commands.',
+  agentCheckTitle: 'Check what it made',
+  agentCheckText: 'Open localhost:3000, then keep writing with it or by hand.',
   runTitle: 'Run the notes on your machine',
   runText: 'The notes are a plain Fumadocs site. Three commands and you can read them offline, or edit your own copy.',
   runCloneTitle: 'Clone the repo',
@@ -209,6 +234,18 @@ export const zhCN: NotesText = {
   terminal: '终端',
   copyCommands: '复制命令',
   terminalDone: '已在 http://localhost:3000 启动',
+  startByHand: '手动',
+  startWithAgent: '交给 AI 助手',
+  agentWindow: '~/my-notes',
+  agentWorksWith: '适用于',
+  copyInstructions: '复制指令',
+  agentDone: '完成，网站已经就绪。',
+  agentCopyTitle: '复制指令',
+  agentCopyText: '一条消息，告诉 AI 助手要做什么、写作指南在哪里。',
+  agentPasteTitle: '粘贴给你的 AI 助手',
+  agentPasteText: 'Claude Code、Cursor、Codex，或任何能运行命令的助手。',
+  agentCheckTitle: '检查结果',
+  agentCheckText: '打开 localhost:3000，然后继续让它写，或者自己写。',
   runTitle: '在本机运行这些笔记',
   runText: '这些笔记是一个普通的 Fumadocs 站点。只需三条命令，就能离线阅读，或编辑你自己的副本。',
   runCloneTitle: '克隆仓库',

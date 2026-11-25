@@ -1,16 +1,21 @@
 'use client';
 import { Check, Copy } from 'lucide-react';
-import { useEffect, useState } from 'react';
+import { type ReactNode, useEffect, useState } from 'react';
 
-/** Copies `text` to the clipboard and shows a tick for a moment. */
+/**
+ * Copies `text` to the clipboard and shows a tick for a moment.
+ * With `children`, a button with a label ("Copy instructions") instead of an icon on its own.
+ */
 export function CopyButton({
   text,
   label = 'Copy',
   copiedLabel = 'Copied',
+  children,
 }: {
   text: string;
   label?: string;
   copiedLabel?: string;
+  children?: ReactNode;
 }) {
   const [copied, setCopied] = useState(false);
 
@@ -23,8 +28,8 @@ export function CopyButton({
   return (
     <button
       type="button"
-      className="ns-copy"
-      aria-label={copied ? copiedLabel : label}
+      className={children ? 'ns-button ns-button-secondary ns-copy-text' : 'ns-copy'}
+      aria-label={children ? undefined : copied ? copiedLabel : label}
       data-copied={copied}
       onClick={() => {
         // The clipboard only works on https or localhost; elsewhere the button just does nothing
@@ -32,6 +37,7 @@ export function CopyButton({
       }}
     >
       {copied ? <Check /> : <Copy />}
+      {children && <span aria-live="polite">{copied ? copiedLabel : children}</span>}
     </button>
   );
 }

@@ -7,7 +7,7 @@
 // nobody, removing one does. test/exports.test.ts lists them, so a change here is deliberate.
 
 export { defineSiteConfig } from './config/site.js';
-export type { SiteConfig, SiteTranslation, StartSection } from './config/site.js';
+export type { AgentStart, SiteConfig, SiteTranslation, StartSection } from './config/site.js';
 
 export { NotesRoot, notesMetadata } from './layouts/root.js';
 export { NotesLayout } from './layouts/layout.js';

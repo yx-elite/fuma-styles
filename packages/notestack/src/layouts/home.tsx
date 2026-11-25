@@ -1,14 +1,15 @@
 import Link from 'fumadocs-core/link';
 import type * as PageTree from 'fumadocs-core/page-tree';
-import { ArrowRight } from 'lucide-react';
+import { ArrowRight, Check, Sparkles } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import { CopyButton } from '../components/copy-button.js';
 import { DocsPreview } from './home-preview.js';
 import { HomeEffects } from './home-effects.js';
 import { HomeFooter } from './home-footer.js';
+import { StartTabs } from './start-tabs.js';
 import { SearchButton } from '../components/search-button.js';
 import { pageLastModified } from '../source/last-modified.js';
-import { repoUrl, type SiteConfig, type StartSection } from '../config/site.js';
+import { repoUrl, type AgentStart, type SiteConfig, type StartSection } from '../config/site.js';
 import {
   fill,
   fillNodes,
@@ -22,6 +23,8 @@ import {
   type NotesText,
 } from '../i18n/index.js';
 import { NotesLogo } from './logo.js';
+import { lucideIcon } from '../icons.js';
+import { agents } from './agents.js';
 import { notestack, stackFor, type StackItem } from './stack.js';
 
 /** The parts of a Fumadocs `loader()` source the home page reads. */
@@ -485,48 +488,153 @@ function runLocally(site: SiteConfig, text: NotesText): StartSection {
 }
 
 function GetStarted({ section, text }: { section: StartSection; text: NotesText }) {
-  const all = section.steps.map((step) => step.command).join('\n');
-
   return (
     <section className="ns-home-section" aria-labelledby="ns-home-start">
       <SectionHead id="ns-home-start" eyebrow={text.getStarted} title={section.title}>
         {section.text}
       </SectionHead>
-      <div className="ns-start">
-        <ol className="ns-steps ns-reveal">
+      {section.agent ? (
+        <StartTabs labels={[text.startByHand, text.startWithAgent]}>
+          <ByHand section={section} text={text} />
+          <WithAgent agent={section.agent} text={text} />
+        </StartTabs>
+      ) : (
+        <ByHand section={section} text={text} />
+      )}
+    </section>
+  );
+}
+
+/** Numbered steps beside a terminal that types the commands */
+function ByHand({ section, text }: { section: StartSection; text: NotesText }) {
+  const all = section.steps.map((step) => step.command).join('\n');
+
+  return (
+    <div className="ns-start">
+      <ol className="ns-steps ns-reveal">
+        {section.steps.map((step, i) => (
+          <li key={i} className="ns-step">
+            <span className="ns-step-number">{i + 1}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div className="ns-terminal ns-reveal" style={vars({ '--ns-i': 1 })}>
+        <div className="ns-terminal-bar">
+          <span className="ns-preview-dots" aria-hidden>
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>{text.terminal}</span>
+          <CopyButton text={all} label={text.copyCommands} copiedLabel={text.copied} />
+        </div>
+        <pre className="ns-terminal-body">
           {section.steps.map((step, i) => (
-            <li key={i} className="ns-step">
-              <span className="ns-step-number">{i + 1}</span>
-              <div>
-                <h3>{step.title}</h3>
-                <p>{step.text}</p>
-              </div>
-            </li>
-          ))}
-        </ol>
-        <div className="ns-terminal ns-reveal" style={vars({ '--ns-i': 1 })}>
-          <div className="ns-terminal-bar">
-            <span className="ns-preview-dots" aria-hidden>
-              <i />
-              <i />
-              <i />
-            </span>
-            <span>{text.terminal}</span>
-            <CopyButton text={all} label={text.copyCommands} copiedLabel={text.copied} />
-          </div>
-          <pre className="ns-terminal-body">
-            {section.steps.map((step, i) => (
-              <code key={i} className="ns-terminal-line" style={vars({ '--ns-i': i, '--ns-n': step.command.length })}>
-                <span className="ns-terminal-prompt">$ </span>
-                <span className="ns-terminal-type">{step.command}</span>
-              </code>
-            ))}
-            <code className="ns-terminal-line ns-terminal-out" style={vars({ '--ns-i': section.steps.length })}>
-              <span className="ns-terminal-ok">✓</span> {section.done ?? text.terminalDone}
+            <code key={i} className="ns-terminal-line" style={vars({ '--ns-i': i, '--ns-n': step.command.length })}>
+              <span className="ns-terminal-prompt">$ </span>
+              <span className="ns-terminal-type">{step.command}</span>
             </code>
-          </pre>
+          ))}
+          <code className="ns-terminal-line ns-terminal-out" style={vars({ '--ns-i': section.steps.length })}>
+            <span className="ns-terminal-ok">✓</span> {section.done ?? text.terminalDone}
+          </code>
+        </pre>
+      </div>
+    </div>
+  );
+}
+
+/**
+ * The same layout for an AI agent: numbered steps beside a chat window, and the agents it
+ * works with. The prompt types in word by word, then each of the agent's steps spins and
+ * ticks off in turn. On wide screens the switch sits in the window's title bar (theme.css).
+ */
+function WithAgent({ agent, text }: { agent: AgentStart; text: NotesText }) {
+  const steps = [
+    { title: text.agentCopyTitle, text: text.agentCopyText },
+    { title: text.agentPasteTitle, text: text.agentPasteText },
+    { title: text.agentCheckTitle, text: text.agentCheckText },
+  ];
+  let word = 0;
+  const prompt = agent.prompt.split(/(\s+)/).map((part, i) =>
+    /^\s*$/.test(part) ? part : (
+      <span key={i} className="ns-agent-word" style={vars({ '--ns-i': word++ })}>
+        {part}
+      </span>
+    ),
+  );
+  return (
+    <div className="ns-start">
+      <ol className="ns-steps">
+        {steps.map((step, i) => (
+          <li key={i} className="ns-step">
+            <span className="ns-step-number">{i + 1}</span>
+            <div>
+              <h3>{step.title}</h3>
+              <p>{step.text}</p>
+              {i === 0 && (
+                <div className="ns-agent-copy">
+                  <CopyButton text={agent.prompt} label={text.copyInstructions} copiedLabel={text.copied}>
+                    {text.copyInstructions}
+                  </CopyButton>
+                </div>
+              )}
+            </div>
+          </li>
+        ))}
+      </ol>
+      <div className="ns-terminal ns-agent" style={vars({ '--ns-words': word })}>
+        <div className="ns-terminal-bar">
+          <span className="ns-preview-dots" aria-hidden>
+            <i />
+            <i />
+            <i />
+          </span>
+          <span>
+            <Sparkles className="ns-agent-mark" aria-hidden />
+            {text.agentWindow}
+          </span>
+          <CopyButton text={agent.prompt} label={text.copyInstructions} copiedLabel={text.copied} />
+        </div>
+        <div className="ns-agent-body">
+          <p className="ns-agent-prompt">{prompt}</p>
+          <ul className="ns-agent-steps">
+            {agent.steps.map((step, i) => (
+              <li key={i} style={vars({ '--ns-i': i })}>
+                <span className="ns-agent-spinner" aria-hidden />
+                <Check className="ns-agent-check" aria-hidden />
+                {step}
+              </li>
+            ))}
+            <li className="ns-agent-done" style={vars({ '--ns-i': agent.steps.length })}>
+              {agent.done ?? text.agentDone}
+            </li>
+          </ul>
         </div>
       </div>
-    </section>
+      <div className="ns-agent-works">
+        <span className="ns-agent-works-label">{text.agentWorksWith}</span>
+        <ul className="ns-agent-chips">
+          {agents.map((item, i) => (
+            <li key={item.name} style={vars({ '--ns-i': i })}>
+              <a className="ns-agent-chip" href={item.href} target="_blank" rel="noreferrer">
+                {item.path ? (
+                  <svg viewBox="0 0 24 24" aria-hidden>
+                    <path d={item.path} fill="currentColor" />
+                  </svg>
+                ) : (
+                  lucideIcon(item.icon)
+                )}
+                {item.name}
+              </a>
+            </li>
+          ))}
+        </ul>
+      </div>
+    </div>
   );
 }

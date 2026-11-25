@@ -135,6 +135,8 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
   <File name="tsconfig.json" />
   <File name="package.json" />
   <File name="README.md" />
+  <File name="AGENTS.md" />
+  <File name="CLAUDE.md" />
 </Files>
 
 | File | What it does | Edit it? |
@@ -148,6 +150,7 @@ Only the files that Next.js and Fumadocs need to exist in your app. Each one is 
 | `app/(home)/` | The landing page, built from your notes | No |
 | `app/docs/` | The notes layout and each note's page | No |
 | `app/api/search/` | The search index, built once and searched in the browser | No |
+| `AGENTS.md`, `CLAUDE.md` | Point AI agents (Claude Code, Cursor, Codex) to the theme's writing guide | No |
 | `app/og/docs/` | Share images: the picture a link to a note gets in chat apps | No |
 | `app/llms*/` | Plain-text copies of the notes for AI assistants, and *Copy Markdown* | No |
 | `lib/source.ts` | Reads the notes from `content/docs/` | No |
@@ -159,8 +162,8 @@ What search, share images and the plain-text copies do, and what each needs, is 
 ## Next steps
 
 <Cards>
-  <Card title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
-  <Card title="Pages and sidebar" href="/docs/pages" description="Pages, folders, frontmatter and the sidebar order." />
-  <Card title="Languages" href="/docs/languages" description="Publish your notes in more than one language." />
-  <Card title="Deployment" href="/docs/deployment" description="Put the site online, on the host of your choice." />
+  <Card icon="Settings" title="Configuration" href="/docs/configuration" description="Every option in site.config.ts." />
+  <Card icon="PanelLeft" title="Pages and sidebar" href="/docs/pages" description="Pages, folders, frontmatter and the sidebar order." />
+  <Card icon="Languages" title="Languages" href="/docs/languages" description="Publish your notes in more than one language." />
+  <Card icon="Globe" title="Deployment" href="/docs/deployment" description="Put the site online, on the host of your choice." />
 </Cards>

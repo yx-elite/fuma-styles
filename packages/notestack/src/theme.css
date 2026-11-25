@@ -541,10 +541,10 @@ html:not(.dark) :is(img[src*='.dark.'], span:has(img[src*='.dark.']):not(:has(im
 }
 
 /*
- * Cards (Fumadocs <Card>): a soft grey gradient from the top-left corner,
- * a little brighter on hover.
+ * Cards (Fumadocs <Card>, which getMDXComponents() gives the ns-doc-card class):
+ * a soft grey gradient from the top-left corner, a little brighter on hover.
  */
-.prose :is(a, div)[class*='bg-fd-card']:has(> h3.not-prose) {
+.ns-doc-card {
   border-color: color-mix(in oklab, var(--color-fd-foreground) 10%, transparent);
   border-radius: 0.875rem;
   background-color: var(--color-fd-card);
@@ -557,10 +557,47 @@ html:not(.dark) :is(img[src*='.dark.'], span:has(img[src*='.dark.']):not(:has(im
   transition: border-color 0.25s, background-color 0.25s, translate 0.25s;
 }
 
-a[class*='bg-fd-card']:has(> h3.not-prose):hover {
+a.ns-doc-card:hover {
   border-color: color-mix(in oklab, var(--color-fd-foreground) 22%, transparent);
   background-color: color-mix(in oklab, var(--color-fd-foreground) 4%, var(--color-fd-card));
   translate: 0 -2px;
+}
+
+/* A card's icon (<Card icon="Rocket">): an accent-tinted tile in the top-left corner.
+   Fumadocs draws its own grey box around the icon; the first rule clears it. */
+.ns-doc-card > div:has(> .ns-doc-card-icon) {
+  margin-bottom: 0.875rem;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+}
+
+.ns-doc-card-icon {
+  display: grid;
+  place-items: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 26%, transparent);
+  border-radius: 0.625rem;
+  background: linear-gradient(
+    145deg,
+    color-mix(in oklab, var(--ns-accent) 16%, transparent),
+    color-mix(in oklab, var(--ns-accent-2) 6%, transparent)
+  );
+  color: var(--ns-accent);
+  transition: background-color 0.25s, border-color 0.25s;
+}
+
+.ns-doc-card-icon > svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+a.ns-doc-card:hover .ns-doc-card-icon {
+  border-color: color-mix(in oklab, var(--ns-accent) 45%, transparent);
+  background-color: color-mix(in oklab, var(--ns-accent) 10%, transparent);
 }
 
 /*
@@ -2326,7 +2363,8 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-terminal-bar {
-  display: flex;
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
   align-items: center;
   gap: 1rem;
   height: 2.75rem;
@@ -2339,7 +2377,8 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 
 .ns-terminal-bar .ns-preview-dots { font-size: 0.875rem; }
 .ns-terminal-bar .ns-preview-dots i { background: color-mix(in oklab, var(--color-fd-foreground) 16%, transparent); }
-.ns-terminal-bar > span:nth-child(2) { flex: 1; text-align: center; }
+.ns-terminal-bar > span:nth-child(2) { text-align: center; }
+.ns-terminal-bar > .ns-copy { justify-self: end; }
 
 .ns-terminal-body {
   display: flex;
@@ -2373,6 +2412,237 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-terminal-ok {
+  color: var(--ns-success);
+}
+
+/* "Get started" with two tabs (start.agent): a pill switch above the steps.
+   The pill (.ns-start-pill) slides under the chosen tab; StartTabs sets its place. */
+.ns-start-tablist {
+  position: relative;
+  display: flex;
+  width: fit-content;
+  gap: 0.25rem;
+  margin: 0 auto 2.25rem;
+  padding: 0.25rem;
+  border: 1px solid var(--color-fd-border);
+  border-radius: 9999px;
+  background: var(--ns-card-bg);
+}
+
+.ns-start-pill {
+  position: absolute;
+  top: 0.25rem;
+  bottom: 0.25rem;
+  left: 0;
+  width: var(--ns-pill-w);
+  translate: var(--ns-pill-x) 0;
+  border-radius: 9999px;
+  background: linear-gradient(
+    120deg,
+    color-mix(in oklab, var(--ns-accent) 22%, var(--color-fd-background)),
+    color-mix(in oklab, var(--ns-accent-2) 16%, var(--color-fd-background))
+  );
+  box-shadow: inset 0 0 0 1px color-mix(in oklab, var(--ns-accent) 38%, transparent);
+  transition: translate 0.45s cubic-bezier(0.3, 1.25, 0.5, 1), width 0.45s cubic-bezier(0.3, 1.25, 0.5, 1);
+}
+
+.ns-start-tab {
+  position: relative;
+  padding: 0.4rem 1rem;
+  border-radius: 9999px;
+  color: var(--color-fd-muted-foreground);
+  font-size: 0.875rem;
+  font-weight: 500;
+  transition: color 0.3s;
+}
+
+.ns-start-tab:hover,
+.ns-start-tab[aria-selected='true'] {
+  color: var(--color-fd-foreground);
+}
+
+/* "With your agent": a chat window in the terminal's frame */
+.ns-agent-mark {
+  display: inline-block;
+  width: 0.875rem;
+  height: 0.875rem;
+  margin-right: 0.375rem;
+  vertical-align: -0.125rem;
+  color: var(--ns-accent);
+}
+
+/* "Works with": the agents, as small chips (layout decides where and how) */
+.ns-agent-works {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  min-width: 0;
+}
+
+.ns-agent-works-label {
+  color: var(--color-fd-muted-foreground);
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.ns-agent-chip {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.3rem 0.7rem 0.3rem 0.55rem;
+  border: 1px solid color-mix(in oklab, var(--color-fd-foreground) 10%, transparent);
+  border-radius: 9999px;
+  background: var(--ns-card-bg);
+  color: var(--color-fd-muted-foreground);
+  font-size: 0.75rem;
+  font-weight: 500;
+  white-space: nowrap;
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+}
+
+.ns-agent-chip:hover {
+  border-color: color-mix(in oklab, var(--ns-accent) 40%, transparent);
+  color: var(--color-fd-foreground);
+}
+
+.ns-agent-chip svg {
+  flex-shrink: 0;
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+/* One wrapping row */
+.ns-agent-chips {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+/* Every layout: the steps start at the top, next to the window, not centred down its height */
+.ns-start-tabs .ns-start { align-items: start; }
+.ns-start-tabs .ns-steps { padding-top: 1.25rem; }
+
+/* The switch sits in the window's title bar, like tabs of an app.
+   On wide screens the two panels' parts share one grid, so the switch can sit over the window. */
+@media (min-width: 900px) {
+  .ns-start-tabs {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1.25fr);
+    grid-template-rows: auto 1fr;
+    column-gap: 3.5rem;
+  }
+  .ns-start-tabs .ns-start-panel:not([hidden]),
+  .ns-start-tabs .ns-start {
+    display: contents;
+  }
+  .ns-start-tabs .ns-start-tablist {
+    z-index: 2;
+    grid-column: 2;
+    grid-row: 1;
+    align-self: start;
+    justify-self: center;
+    margin: 0.3rem 0 0;
+    padding: 0.1875rem;
+    background: var(--color-fd-background);
+  }
+  .ns-start-tabs .ns-start-pill { top: 0.1875rem; bottom: 0.1875rem; }
+  .ns-start-tabs .ns-start-tab { padding: 0.3rem 0.9rem; font-size: 0.8125rem; }
+  .ns-start-tabs .ns-terminal { grid-column: 2; grid-row: 1 / span 2; }
+  .ns-start-tabs .ns-terminal-bar > span:nth-child(2) { visibility: hidden; }
+  .ns-start-tabs .ns-steps { grid-column: 1; grid-row: 1; padding-top: 0.5rem; }
+  .ns-start-tabs .ns-agent-works { grid-column: 1; grid-row: 2; align-self: start; margin-top: 2.25rem; }
+}
+
+
+.ns-agent-body {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  padding: 1rem 1.5rem;
+}
+
+/* The window lines up with the left column, so it can be taller than its contents:
+   the message and the agent's work share the height, with even space around them */
+.ns-agent {
+  display: flex;
+  flex-direction: column;
+}
+
+.ns-agent .ns-agent-body {
+  flex: 1;
+  justify-content: space-evenly;
+}
+
+/* the reader's message, on the right like a chat */
+.ns-agent-prompt {
+  align-self: flex-end;
+  max-width: 90%;
+  margin: 0;
+  padding: 0.875rem 1.125rem;
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 25%, transparent);
+  border-radius: 1rem 1rem 0.25rem 1rem;
+  background: color-mix(in oklab, var(--ns-accent) 9%, transparent);
+  font-size: 0.9375rem;
+  line-height: 1.6;
+  white-space: pre-wrap;
+}
+
+/* the agent's work, one line per step */
+.ns-agent-steps {
+  display: flex;
+  flex-direction: column;
+  gap: 0.625rem;
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.875rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+.ns-agent-steps li {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+}
+
+.ns-agent-check {
+  flex-shrink: 0;
+  width: 1rem;
+  height: 1rem;
+  color: var(--ns-success);
+}
+
+/* without motion the steps show finished: no spinner */
+.ns-agent-spinner {
+  display: none;
+}
+
+.ns-agent-steps .ns-agent-done {
+  margin-top: 0.5rem;
+  font-size: 0.9375rem;
+  color: var(--color-fd-foreground);
+  font-family: var(--default-font-family, inherit);
+  font-weight: 500;
+}
+
+.ns-agent-copy {
+  margin-top: 0.875rem;
+}
+
+.ns-agent-copy .ns-button {
+  height: 2.25rem;
+  padding-inline: 0.875rem;
+  font-size: 0.8125rem;
+}
+
+.ns-copy-text[data-copied='true'] svg {
   color: var(--ns-success);
 }
 
@@ -3165,11 +3435,48 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   .ns-terminal[data-reveal='shown'] .ns-terminal-type {
     animation: ns-type calc(var(--ns-n) * 22ms) steps(var(--ns-n), end) calc(0.5s + var(--ns-i) * 1.15s) backwards;
   }
+
+  /* With your agent: the prompt types in word by word, then each step spins and ticks off.
+     A tab's panel is hidden until chosen, so this plays each time the tab opens. */
+  .ns-agent-word { animation: ns-appear 0.01s calc(0.2s + var(--ns-i) * 30ms) backwards; }
+  .ns-agent-steps li {
+    --ns-at: calc(0.6s + var(--ns-words) * 30ms + var(--ns-i) * 0.9s);
+    animation: ns-agent-in 0.3s var(--ns-at) backwards;
+  }
+  .ns-agent-spinner {
+    display: block;
+    flex-shrink: 0;
+    width: 1rem;
+    height: 1rem;
+    margin-right: -1.625rem; /* sits where the tick will be */
+    border: 2px solid color-mix(in oklab, var(--ns-accent) 25%, transparent);
+    border-top-color: var(--ns-accent);
+    border-radius: 9999px;
+    animation: ns-spin 0.7s linear infinite, ns-agent-out 0.01s calc(var(--ns-at) + 0.65s) forwards;
+  }
+  .ns-agent-check { animation: ns-appear 0.2s calc(var(--ns-at) + 0.65s) backwards; }
+
+  /* Switching tabs: the panel slides in from the side of the tab that was chosen */
+  .ns-start-tabs[data-switched] .ns-start-panel[data-from='left']:not([hidden]) { animation: ns-from-left 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+  .ns-start-tabs[data-switched] .ns-start-panel[data-from='right']:not([hidden]) { animation: ns-from-right 0.45s cubic-bezier(0.2, 0.8, 0.2, 1); }
+
+  /* The agents rise in one by one */
+  .ns-agent-chip {
+    animation: ns-agent-in 0.4s calc(0.2s + var(--ns-i) * 0.06s) backwards;
+  }
+  /* Wide screens: switching swaps the window's contents with a quick fade */
+  .ns-start-tabs[data-switched] .ns-start-panel:not([hidden]) :is(.ns-steps, .ns-terminal-body, .ns-agent-body, .ns-agent-works) {
+    animation: ns-appear 0.35s ease-out;
+  }
 }
 
 @keyframes ns-spin { to { rotate: 1turn; } }
 @keyframes ns-marquee { to { transform: translateX(calc(-100% - var(--ns-gap))); } }
 @keyframes ns-appear { from { opacity: 0; } }
+@keyframes ns-agent-in { from { opacity: 0; translate: 0 0.25rem; } }
+@keyframes ns-from-left { from { opacity: 0; translate: -1.5rem 0; } }
+@keyframes ns-from-right { from { opacity: 0; translate: 1.5rem 0; } }
+@keyframes ns-agent-out { to { opacity: 0; } }
 @keyframes ns-type { from { clip-path: inset(0 100% 0 0); } }
 
 /* Reduced motion: the strip of libraries stands still, wrapped and centred */

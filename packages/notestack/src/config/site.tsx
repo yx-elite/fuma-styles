@@ -70,6 +70,22 @@ export interface StartSection {
   steps: { title: string; text: string; command: string }[];
   /** Last terminal line, after the commands. Default: "Ready on http://localhost:3000" */
   done?: string;
+  /**
+   * A second tab, "With your agent": numbered steps beside a chat window that shows an
+   * AI agent at work, a button that copies `prompt`, and the agents it works with.
+   * Leave it out for the commands alone.
+   */
+  agent?: AgentStart;
+}
+
+/** The "With your agent" tab of "Get started" */
+export interface AgentStart {
+  /** The instructions a reader pastes into their agent: the chat's first message, and what the button copies */
+  prompt: string;
+  /** What the window shows the agent doing, one line each, ticked off in turn */
+  steps: string[];
+  /** The agent's last line. Default: "Done. Your site is ready." */
+  done?: string;
 }
 
 export function defineSiteConfig(config: SiteConfig): SiteConfig {

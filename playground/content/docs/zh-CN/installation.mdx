@@ -135,6 +135,8 @@ git commit -m "My notes"
   <File name="tsconfig.json" />
   <File name="package.json" />
   <File name="README.md" />
+  <File name="AGENTS.md" />
+  <File name="CLAUDE.md" />
 </Files>
 
 | 文件 | 作用 | 需要编辑吗？ |
@@ -148,6 +150,7 @@ git commit -m "My notes"
 | `app/(home)/` | 首页，由你的笔记生成 | 不需要 |
 | `app/docs/` | 笔记布局和每篇笔记的页面 | 不需要 |
 | `app/api/search/` | 搜索索引，构建时生成，在浏览器中搜索 | 不需要 |
+| `AGENTS.md`、`CLAUDE.md` | 让 AI 助手（Claude Code、Cursor、Codex）读取主题的写作指南 | 不需要 |
 | `app/og/docs/` | 分享图片：链接在聊天应用中显示的预览图 | 不需要 |
 | `app/llms*/` | 给 AI 助手的纯文本笔记，以及*复制 Markdown* | 不需要 |
 | `lib/source.ts` | 从 `content/docs/` 读取笔记 | 不需要 |
@@ -159,8 +162,8 @@ git commit -m "My notes"
 ## 下一步
 
 <Cards>
-  <Card title="配置" href="/docs/configuration" description="site.config.ts 中的每个选项。" />
-  <Card title="页面与侧边栏" href="/docs/pages" description="页面、文件夹、frontmatter 和侧边栏顺序。" />
-  <Card title="多语言" href="/docs/languages" description="用多种语言发布你的笔记。" />
-  <Card title="部署" href="/docs/deployment" description="把网站发布到你选择的托管服务。" />
+  <Card icon="Settings" title="配置" href="/docs/configuration" description="site.config.ts 中的每个选项。" />
+  <Card icon="PanelLeft" title="页面与侧边栏" href="/docs/pages" description="页面、文件夹、frontmatter 和侧边栏顺序。" />
+  <Card icon="Languages" title="多语言" href="/docs/languages" description="用多种语言发布你的笔记。" />
+  <Card icon="Globe" title="部署" href="/docs/deployment" description="把网站发布到你选择的托管服务。" />
 </Cards>

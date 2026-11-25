@@ -39,6 +39,29 @@ start: {
 
 Each step is shown in the list, and its command is typed into the terminal beside it. After the last command, the terminal shows *Ready on http://localhost:3000*. Set `done` in `start` to change that line.
 
+### With an AI agent
+
+Add `agent` to `start` for a second tab, *With your agent*. A switch in the terminal's title bar moves between the two. The agent tab shows three steps (copy, paste, check) beside a chat window: your instructions type in as the reader's message, then each of the agent's steps ticks off. A *Copy instructions* button copies `prompt`, and a *Works with* row links to the coding agents that can follow it, such as Claude Code, Codex and Cursor.
+
+```ts title="site.config.ts"
+start: {
+  // …title, text and steps as above
+  agent: {
+    prompt: 'Clone https://github.com/you/notes, run npm install, read node_modules/@yx-elite/notestack/WRITING.md, then add a note on subnets and run npm run build until it passes.',
+    steps: ['git clone …/notes', 'npm install', 'Read WRITING.md', 'Wrote subnets.mdx', 'npm run build'],
+    done: 'Done. Run npm run dev and open localhost:3000.',
+  },
+},
+```
+
+| Field | What it does |
+| --- | --- |
+| `prompt` | The instructions the button copies, and the chat's first message |
+| `steps` | The agent's work, one short line each, shown ticking off in turn |
+| `done` | The last line. Default: *Done. Your site is ready.* |
+
+Point the prompt at `WRITING.md`, the writing guide that ships with the theme, so the agent uses its components and style. Ask for `npm run build` rather than `npm run dev`: the build finishes and fails on a broken page, while the dev server never ends. On a site with `languages`, set `agent` in each language's `start` in `translations`.
+
 ## Sections
 
 The "What's inside" cards, and the *Notes* column of the footer, follow your [sidebar](/docs/pages#the-sidebar) (`content/docs/meta.json`). Rename or reorder it there and the landing page follows:

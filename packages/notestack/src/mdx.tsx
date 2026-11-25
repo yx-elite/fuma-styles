@@ -1,5 +1,6 @@
 import defaultMdxComponents from 'fumadocs-ui/mdx';
 import { Accordion, Accordions } from 'fumadocs-ui/components/accordion';
+import { Card as FumadocsCard } from 'fumadocs-ui/components/card';
 import { File, Files, Folder } from 'fumadocs-ui/components/files';
 import { ImageZoom } from 'fumadocs-ui/components/image-zoom';
 import { Step, Steps } from 'fumadocs-ui/components/steps';
@@ -9,6 +10,7 @@ import type { MDXComponents } from 'mdx/types';
 import type { ComponentProps, ComponentType } from 'react';
 import { Callout, type CalloutProps } from './components/callout.js';
 import { Glossary } from './components/glossary.js';
+import { lucideIcon } from './icons.js';
 import { hasLanguageRoutes, languageOf, localizeHref, notesText, type LanguageConfig } from './i18n/index.js';
 
 /**
@@ -37,6 +39,18 @@ export function getMDXComponents(
       <Accordions multiple={type === 'multiple' || undefined} {...props} />
     ),
     Callout: (props: CalloutProps) => <Callout text={text} {...props} />,
+    // `icon` also takes a Lucide name (icon="Rocket"), like Callout. The icon sits in a
+    // tile in the top-left corner; ns-doc-card and ns-doc-card-icon are what theme.css styles.
+    Card: ({ icon, className, ...props }: ComponentProps<typeof FumadocsCard>) => {
+      const shown = typeof icon === 'string' ? lucideIcon(icon) : icon;
+      return (
+        <FumadocsCard
+          icon={shown ? <span className="ns-doc-card-icon">{shown}</span> : undefined}
+          className={className ? `ns-doc-card ${className}` : 'ns-doc-card'}
+          {...props}
+        />
+      );
+    },
     File,
     Files,
     Folder,

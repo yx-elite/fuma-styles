@@ -4,6 +4,12 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+### Added
+
+- `<Card icon="Rocket">`: a card's `icon` takes a [Lucide](https://lucide.dev/icons) name, like `Callout`, and shows in an accent-tinted tile in the card's top-left corner. An element still works too.
+- "Get started" on the landing page can have a second tab, *With your agent*: set `agent` in `start` (`prompt`, `steps`, `done`). A switch in the terminal's title bar moves between the tabs; the agent tab shows copy, paste and check steps beside a chat window where the prompt types in and the agent's steps tick off, a *Copy instructions* button, and a *Works with* row linking to Claude Code, Codex, Cursor, Gemini CLI, Antigravity, Grok Build and OpenCode. New type `AgentStart`. English and Simplified Chinese text built in.
+- `WRITING.md`, a writing guide for AI agents, ships in the package: pages, the sidebar, every component and when to use it, images, the glossary, languages and the writing style. New sites from `create-notestack` get an `AGENTS.md` (and a `CLAUDE.md` that imports it) pointing to it. An existing site can copy those two files from the starter.
+
 ### Fixed
 
 - Light mode: the green tick after copying a command, and the last line of the "Get started" terminal, were hard to read on light cards (2.3:1 contrast). They now use a darker green, `--ns-success` (5.0:1). Dark mode is unchanged.
@@ -12,6 +18,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ### Changed
 
+- Cards get their own `ns-doc-card` class from `getMDXComponents()`, and `theme.css` styles that instead of matching Fumadocs' Tailwind class names, so a Fumadocs update can't silently drop the card style.
 - `theme.css` drops rules for Fumadocs layouts the theme never renders and for marquee options nothing sets, and renames four internal variables to `--ns-i`, `--ns-j`, `--ns-n` and `--ns-w`. Sites need no change.
 
 ## 0.1.1 (2026-11-25)

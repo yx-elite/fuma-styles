@@ -18,6 +18,19 @@ export default defineSiteConfig({
       { title: 'Create the site', text: 'Makes my-notes/ and installs @yx-elite/notestack.', command: 'npm create notestack@latest my-notes' },
       { title: 'Start writing', text: 'Open localhost:3000. Edit site.config.ts for your name, links and accent.', command: 'cd my-notes && npm run dev' },
     ],
+    // Prototype: the "With your agent" tab
+    agent: {
+      prompt:
+        'Make me a study-notes site with Notestack. Run `npm create notestack@latest my-notes`, then read node_modules/@yx-elite/notestack/WRITING.md before writing anything. Set the name and description in site.config.ts, replace the sample notes with notes on networking, and run `npm run build` until it passes.',
+      steps: [
+        'npm create notestack@latest my-notes',
+        'Read WRITING.md',
+        'Edited site.config.ts',
+        'Wrote 6 notes in content/docs/',
+        'npm run build',
+      ],
+      done: 'Done. Run npm run dev and open localhost:3000.',
+    },
   },
   // The theme's docs in two languages: notes in content/docs/en/ and content/docs/zh-CN/.
   // Pages not translated yet show in English.
@@ -33,6 +46,18 @@ export default defineSiteConfig({
           { title: '创建站点', text: '创建 my-notes/ 并安装 @yx-elite/notestack。', command: 'npm create notestack@latest my-notes' },
           { title: '开始写作', text: '打开 localhost:3000。在 site.config.ts 中修改名称、链接和强调色。', command: 'cd my-notes && npm run dev' },
         ],
+        agent: {
+          prompt:
+            '用 Notestack 帮我做一个学习笔记网站。运行 `npm create notestack@latest my-notes`，写任何内容之前先读 node_modules/@yx-elite/notestack/WRITING.md。在 site.config.ts 中设置名称和简介，把示例笔记换成网络方面的笔记，然后运行 `npm run build`，直到通过为止。',
+          steps: [
+            'npm create notestack@latest my-notes',
+            '已读 WRITING.md',
+            '已修改 site.config.ts',
+            '已在 content/docs/ 写了 6 篇笔记',
+            'npm run build',
+          ],
+          done: '完成。运行 npm run dev，打开 localhost:3000。',
+        },
       },
     },
   },
