@@ -27,4 +27,4 @@ npm run build
 
 All three must pass, as they do in CI. Check the change in light and dark mode, at phone width, and in Safari if it animates anything. Add a line to `packages/notestack/CHANGELOG.md` under *Unreleased* for anything a site would notice.
 
-The rules for the code are in [AGENTS.md](AGENTS.md); the most important is that logic goes in the package and the starter stays a few lines per file. The docs site has the same guide with more detail: [Contributing](https://github.com/yx-elite/notestack/blob/main/playground/content/docs/en/contributing.mdx), and what comes next is in [Roadmap](https://github.com/yx-elite/notestack/blob/main/playground/content/docs/en/roadmap.mdx).
+The rules for the code are in [AGENTS.md](AGENTS.md); the most important is that logic goes in the package and the starter stays a few lines per file. The docs site has the same guide with more detail: [Contributing](https://notestack.yxelite.dev/en/docs/contributing/), and what comes next is in [Roadmap](https://notestack.yxelite.dev/en/docs/roadmap/).

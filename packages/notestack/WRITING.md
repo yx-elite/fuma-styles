@@ -2,7 +2,7 @@
 
 This guide is for an AI agent (Claude Code, Cursor, Codex and others) that writes or edits notes in a site built with `@yx-elite/notestack`. It ships inside the package, so `npm update` keeps it in step with the theme. Read it before you write a note.
 
-A Notestack site is a [Fumadocs](https://fumadocs.dev) site with the Notestack theme on top. This guide covers what Notestack adds and how its sites are written. For anything it doesn't cover, read [fumadocs.dev/llms.txt](https://fumadocs.dev/llms.txt), an index of every Fumadocs docs page as Markdown, and open only the pages you need.
+A Notestack site is a [Fumadocs](https://fumadocs.dev) site with the Notestack theme on top. This guide covers what Notestack adds and how its sites are written. For anything it doesn't cover, read the Notestack docs' index, [notestack.yxelite.dev/llms.txt](https://notestack.yxelite.dev/llms.txt), then [fumadocs.dev/llms.txt](https://fumadocs.dev/llms.txt) for Fumadocs itself. Both list every docs page as Markdown: open only the pages you need.
 
 ## What you may change
 
@@ -190,4 +190,4 @@ On a site with `languages` in `site.config.ts`, notes live in one folder per lan
 - Links point to pages and headings that exist.
 - Run `npm run build`. It fails on a broken MDX tag or a missing image, and it must pass.
 
-More detail on every part is in the Notestack docs: <https://github.com/yx-elite/notestack/tree/main/playground/content/docs/en>.
+More detail on every part is in the Notestack docs: <https://notestack.yxelite.dev/en/docs/>. For an agent, [notestack.yxelite.dev/llms.txt](https://notestack.yxelite.dev/llms.txt) lists every page of them as Markdown: open only the pages you need.

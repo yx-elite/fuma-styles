@@ -266,6 +266,14 @@ Old files under `_next/static/` are not deleted, so a visitor with a page open f
 
 The trust policy doesn't match the run. Check the account ID, your username and repository name (spelling and capitals), and the branch. The workflow must run on `main`, and must not use a GitHub `environment:`, which changes the identity GitHub sends.
 
+If you wrote only one `sub` line, it may be in the wrong format. To see which format your repository uses, run:
+
+```bash
+gh api repos/your-name/my-notes/actions/oidc/customization/sub
+```
+
+If it shows `"use_immutable_subject": true`, GitHub sends `sub_claim_prefix` followed by `:ref:refs/heads/main`, such as `repo:your-name@123/my-notes@456:ref:refs/heads/main`. Keep both lines from the trust policy above, or use that exact value.
+
 </Accordion>
 <Accordion title='"Credentials could not be loaded" or no OIDC token'>
 

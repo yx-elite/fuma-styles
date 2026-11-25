@@ -31,7 +31,7 @@ npm run build   # the whole site as plain files in out/
 npm start       # look at out/ locally before you upload it
 ```
 
-Upload `out/` to any static host. The Notestack docs have a [step-by-step guide for each one](https://github.com/yx-elite/notestack/tree/main/playground/content/docs/en/deployment).
+Upload `out/` to any static host. The Notestack docs have a [step-by-step guide for each one](https://notestack.yxelite.dev/en/docs/deployment/).
 
 ## Update the theme
 

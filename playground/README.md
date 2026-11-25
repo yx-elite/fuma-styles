@@ -1,6 +1,6 @@
 # playground
 
-The docs site for `@yx-elite/notestack`. Once deployed, it is the theme's public reference: installation and setup guides, migration notes, and a showcase page for every element the theme styles.
+The docs site for `@yx-elite/notestack`, live at <https://notestack.yxelite.dev>. It is the theme's public reference: installation and setup guides, migration notes, and a showcase page for every element the theme styles.
 
 It is also where the theme is tested. It uses the package the same way a notes site does, through `@yx-elite/notestack` in `package.json` (npm workspaces link it to `packages/notestack/`).
 

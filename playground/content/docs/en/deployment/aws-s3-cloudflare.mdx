@@ -23,6 +23,8 @@ Visitor ──HTTPS──▶ Cloudflare ──HTTP──▶ S3 website endpoint 
 - A free [Cloudflare account](https://dash.cloudflare.com/sign-up).
 - A domain whose DNS is managed by Cloudflare. If you bought it elsewhere, [add it to Cloudflare](https://developers.cloudflare.com/fundamentals/manage-domains/add-site/) first; Cloudflare shows you how to change its nameservers.
 
+Before you start, set a spending alarm in AWS: **Billing and Cost Management** > **Budgets** > **Create budget**, the **Zero spend budget** template. It emails you the moment anything costs money. This setup normally costs nothing or a few cents a month.
+
 This guide uses `notes.example.com` as the site's address. Replace it with yours everywhere.
 
 ## Set it up
@@ -35,7 +37,16 @@ This guide uses `notes.example.com` as the site's address. Replace it with yours
 1. Open the [S3 console](https://console.aws.amazon.com/s3/) and select **Create bucket**.
 2. For **Bucket name**, enter your site's full address: `notes.example.com`. The name must match exactly, because S3 picks the bucket by the address the visitor asked for.
 3. Pick a **Region** close to you or your readers, such as `us-east-1`. Note it down.
-4. Leave the other settings as they are and select **Create bucket**.
+4. Set the rest of the page like this, then select **Create bucket**:
+
+| Setting | Choose | Why |
+| --- | --- | --- |
+| **Bucket type** | General purpose | The only kind that can host a website |
+| **Object Ownership** | ACLs disabled (recommended) | The bucket policy alone decides who can read |
+| **Block Public Access settings** | Clear **Block *all* public access**, and tick the box that acknowledges the bucket can become public | A website endpoint only serves files anyone can read. You can also do this later, in the step below |
+| **Bucket Versioning** | Disable | Every deploy rewrites the site and git keeps its history; versions would only add storage costs |
+| **Default encryption** | Leave **SSE-S3** | Free and automatic. Don't choose SSE-KMS: a website endpoint can't serve those files |
+| **Object Lock** (under **Advanced settings**) | Disable | It would stop deploys from deleting removed pages |
 
 </Step>
 <Step>
@@ -120,6 +131,19 @@ If this domain hosts nothing else, you can instead set the mode for the whole do
 ### Send everyone to HTTPS
 
 Go to **SSL/TLS** > **Edge Certificates** and turn on **Always Use HTTPS**. Visitors who type `http://` are then moved to `https://`.
+
+</Step>
+<Step>
+
+### Check it with one file
+
+Before the first deploy, make sure the address reaches the bucket:
+
+1. On your computer, create `index.html` containing `<h1>Hello from S3</h1>`.
+2. Upload it to the bucket (**Objects** > **Upload**).
+3. Open `https://notes.example.com`. You should see *Hello from S3*, with a padlock.
+
+The first deploy replaces this file. If you see an error instead, see [Common problems](#common-problems) below.
 
 </Step>
 <Step>
@@ -211,6 +235,11 @@ Most often the SSL mode isn't Flexible for this address, so Cloudflare tries HTT
 <Accordion title="S3 says NoSuchBucket">
 
 The bucket name doesn't match the address exactly. A bucket can't be renamed: create a new one named exactly like the address, and update the CNAME record and the workflow's `S3_BUCKET` variable.
+
+</Accordion>
+<Accordion title="S3 says NoSuchKey: index.html">
+
+The address, the bucket and the website endpoint all work: the bucket is just empty. Upload the test file from *Check it with one file*, or run the deploy.
 
 </Accordion>
 <Accordion title="403 Forbidden on every page">

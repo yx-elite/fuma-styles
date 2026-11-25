@@ -4,14 +4,14 @@
 
 A shared theme for **study-notes sites** built with [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**. The sites read the same way, and a fix made once reaches all of them.
 
-[How it works](#how-it-works) · [Layout](#repository-layout) · [Develop](#develop-locally) · [New notes site](#start-a-new-notes-site) · [Roadmap](#roadmap) · [Contributing](#contributing) · [License](#license)
+[Docs](https://notestack.yxelite.dev) · [How it works](#how-it-works) · [Layout](#repository-layout) · [Develop](#develop-locally) · [New notes site](#start-a-new-notes-site) · [Roadmap](#roadmap) · [Contributing](#contributing) · [License](#license)
 
 ## How it works
 
 Four parts, each with one job:
 
 - **Package** → `packages/notestack/`: the theme CSS, MDX components, layouts, search and config helpers. Published to npm.
-- **Docs site** → `playground/`: the theme's own docs, with setup guides and a showcase of every element. Used to test the package, and to be deployed as the theme's public website.
+- **Docs site** → `playground/`: the theme's own docs, with setup guides and a showcase of every element. Live at [notestack.yxelite.dev](https://notestack.yxelite.dev), and used to test the package.
 - **Starter** → `starter/`: the small shell that `npm create notestack` copies into a new site. Every file in it is a few lines that call the package.
 - **Create command** → `packages/create-notestack/`: `npm create notestack@latest my-notes` copies the starter into a new folder and installs it. Published to npm.
 
@@ -58,7 +58,7 @@ cd my-notes
 npm run dev
 ```
 
-Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export that any static host can serve (Cloudflare, GitHub Pages, Netlify, Vercel, S3); the docs site has a [guide for each](https://github.com/yx-elite/notestack/tree/main/playground/content/docs/en/deployment).
+Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a static export that any static host can serve (Cloudflare, GitHub Pages, Netlify, Vercel, S3); the docs site has a [guide for each](https://notestack.yxelite.dev/en/docs/deployment/).
 
 ## Roadmap
 
@@ -67,7 +67,7 @@ Then edit `site.config.ts` and write notes in `content/docs/`. Each site is a st
 3. **Package** → move the prototype code into `@yx-elite/notestack`. ✅
 4. **Languages** → one language per site, or several with a language switch. ✅
 5. **Starter and `npm create notestack`** → a new site in one command. Starter ✅, command ✅.
-6. **CI and first release** → checks on every push ✅, `0.1.0` on npm ✅, then the docs site deployed.
+6. **CI and first release** → checks on every push ✅, `0.1.0` on npm ✅, the docs site live at [notestack.yxelite.dev](https://notestack.yxelite.dev) ✅.
 7. **First real site** → the first notes site built on the published package.
 
 Later: more note components. Publishing an Obsidian vault as it is was tried and dropped; notes are Markdown files that Obsidian can still open.

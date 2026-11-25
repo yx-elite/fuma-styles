@@ -11,11 +11,11 @@ It has three parts, and each has one job:
 | Part | Path | Job | Published? |
 | --- | --- | --- | --- |
 | Package | `packages/notestack/` | All styling and all logic: theme CSS, MDX components, layouts, page factories, static search, config helpers | Yes, to npm |
-| Docs site | `playground/` | The theme's public docs: setup and migration guides, plus a showcase of every component and edge case. Also the test site for the package | Not on npm; to be deployed as a website |
+| Docs site | `playground/` | The theme's public docs: setup and migration guides, plus a showcase of every component and edge case. Also the test site for the package | Not on npm; deployed to https://notestack.yxelite.dev by `deploy-docs.yml` |
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.0, 2026-11-25), and the deploy workflow is planned. See `PRD.md`.
+Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.0, 2026-11-25), and the docs site is live at https://notestack.yxelite.dev; the reusable deploy workflow for notes repos is planned. See `PRD.md`.
 
 ## Fumadocs docs
 

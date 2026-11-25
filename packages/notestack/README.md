@@ -38,7 +38,7 @@ The only code file you edit is `site.config.ts`: the site's name, links, accent 
 | `@yx-elite/notestack/next` | `withNotestack()` for `next.config.mjs`: static export settings. No React |
 | `@yx-elite/notestack/theme.css` | The theme. Import it after Tailwind |
 
-Every export, what it does and which file uses it: [API reference](https://github.com/yx-elite/notestack/blob/main/playground/content/docs/en/api.mdx).
+Every export, what it does and which file uses it: [API reference](https://notestack.yxelite.dev/en/docs/api/).
 
 ## Requirements
 

@@ -7,6 +7,7 @@ export default defineSiteConfig({
   tag: 'playground',
   description: 'A Fumadocs theme for study notes. Write in Markdown, publish a site that reads beautifully.',
   repo: 'yx-elite/notestack',
+  url: 'https://notestack.yxelite.dev',
   branch: 'main',
   // Trying NativeWind's cyan
   accent: { light: '#0092b3', dark: '#3ad1ff' },
