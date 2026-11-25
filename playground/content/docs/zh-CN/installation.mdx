@@ -1,6 +1,6 @@
 ---
 title: 安装
-description: 用一条命令创建笔记网站。
+description: 用一条命令创建笔记网站，改成你自己的，并保存到 GitHub。
 icon: Download
 ---
 
@@ -25,6 +25,8 @@ npm create notestack@latest my-notes
 ```
 
 这会新建一个 `my-notes` 文件夹，里面是一个已经配置好主题的笔记网站，并安装好所需的一切。文件夹名称可以随意取。
+
+要在当前文件夹中创建网站（比如刚从 GitHub 克隆的仓库），把文件夹名称写成 `.`：`npm create notestack@latest .`。文件夹里可以已经有 `.git`、`README.md`、`LICENSE` 和 `.gitignore`。你的 `README.md` 会保留，网站的构建文件夹会加到你的 `.gitignore` 里。如果有其他文件，命令会停止，不会覆盖你的任何文件。
 
 </Step>
 <Step>
@@ -64,7 +66,9 @@ git add .
 git commit -m "My notes"
 ```
 
-然后在 GitHub 上新建一个空仓库，按照它的提示推送。发布网站见[部署](/docs/deployment)。
+然后在 GitHub 上新建一个空仓库，按照它的提示推送。Git 会保存每一次修改，任何电脑都能用 `git pull` 取得笔记。每个页面的*最后更新*日期也来自它最近一次提交，所以还没提交的页面不显示日期。
+
+把网站发布上线是另一个步骤，见[部署](/docs/deployment)。
 
 </Step>
 </Steps>
@@ -149,6 +153,8 @@ git commit -m "My notes"
 | `lib/source.ts` | 从 `content/docs/` 读取笔记 | 不需要 |
 | `next.config.mjs` | 静态导出设置，无需服务器即可托管 | 不需要 |
 | `postcss.config.mjs`、`tsconfig.json` | Tailwind CSS 和 TypeScript 设置 | 不需要 |
+
+搜索、分享图片和纯文本副本的作用，以及各自需要什么，见[内置功能](/docs/features)。
 
 ## 下一步
 

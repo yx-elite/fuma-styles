@@ -1,4 +1,4 @@
-# notestack
+# @yx-elite/notestack
 
 A [Fumadocs](https://fumadocs.dev) theme for study notes. It gives a notes site its layout, landing page, styles, components and static-export settings. Every site that uses it reads the same way, and gets fixes and new features through `npm update`.
 
@@ -53,7 +53,7 @@ A site made with `npm create notestack` has all of these.
 
 ## Versions
 
-The package follows [semver](https://semver.org). While it is `0.x`, a release that needs you to edit a file in your site bumps the minor version (`0.1` → `0.2`), and its entry in [CHANGELOG.md](./CHANGELOG.md) lists the exact edit under *Migration*.
+The package follows [semver](https://semver.org). While it is `0.x`, a release that needs you to edit a file in your site bumps the minor version (`0.1` → `0.2`), and its entry in [CHANGELOG.md](https://github.com/yx-elite/notestack/blob/main/packages/notestack/CHANGELOG.md) lists the exact edit under *Migration*.
 
 ## License
 

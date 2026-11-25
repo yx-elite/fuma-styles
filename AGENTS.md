@@ -50,24 +50,27 @@ notestack/
 ├── package.json              ← private npm workspaces root
 ├── AGENTS.md · CLAUDE.md · README.md · LICENSE
 ├── PRD.md                    ← local only, not committed
-├── .github/workflows/
-│   ├── ci.yml                ← on every push and pull request, Node 22 and 24: install, test, type-check, build, pack --dry-run
-│   └── deploy-s3.yml         ← (planned) reusable deploy workflow that notes repos call
-├── packages/create-notestack/ ← the `npm create notestack` command: index.js, and template/ copied from starter/ before each pack (git-ignored)
-├── packages/notestack/       ← notestack
+├── .github/
+│   ├── dependabot.yml        ← weekly npm pull requests (Fumadocs grouped, Next and React grouped), monthly GitHub Actions
+│   └── workflows/
+│       ├── ci.yml            ← on every push to main and every pull request, Node 22 and 24: install, test, type-check, build, pack --dry-run; plus a job that creates a site from both packed packages and builds it
+│       ├── fumadocs-latest.yml ← daily and by hand, Node 22 and 24: test, type-check and build with the newest Fumadocs 16.x
+│       └── deploy-s3.yml     ← (planned) reusable deploy workflow that notes repos call
+├── packages/create-notestack/ ← the `npm create notestack` command: index.js, test/ (node:test), and template/ copied from starter/ before each pack and each test run (git-ignored)
+├── packages/notestack/       ← @yx-elite/notestack
 │   ├── package.json · tsconfig.json · README.md · CHANGELOG.md
 │   └── src/
 │       ├── theme.css         ← tokens, fonts, styles for every component, @source for Tailwind
 │       ├── components/       ← Glossary and other MDX components
 │       ├── layouts/          ← root layout (NotesRoot), notes layout, home layout, landing page, banner, links
 │       ├── pages/            ← docs page props ("On this page", last updated)
-│       ├── routes/           ← docs page, search, share images, llms.txt; server only  (notestack/routes)
+│       ├── routes/           ← docs page, search, share images, llms.txt; server only  (@yx-elite/notestack/routes)
 │       ├── i18n/             ← languages: Notestack's text, Fumadocs' text, language helpers
-│       ├── source/           ← loader plugins, last-updated dates  (notestack/source)
+│       ├── source/           ← loader plugins, last-updated dates  (@yx-elite/notestack/source)
 │       ├── config/           ← SiteConfig, defineSiteConfig
-│       ├── mdx.tsx           ← getMDXComponents(): every component for MDX  (notestack/mdx)
-│       ├── next.ts           ← withNotestack(): Next.js config, no React  (notestack/next)
-│       └── index.ts          ← public exports  (notestack)
+│       ├── mdx.tsx           ← getMDXComponents(): every component for MDX  (@yx-elite/notestack/mdx)
+│       ├── next.ts           ← withNotestack(): Next.js config, no React  (@yx-elite/notestack/next)
+│       └── index.ts          ← public exports  (@yx-elite/notestack)
 ├── playground/               ← docs site; consumes the package via the workspace
 └── starter/                  ← thin shell for new notes repos (one language, clean URLs)
 ```
@@ -116,7 +119,7 @@ npm run dev                                   # playground at localhost:3000
 npm run dev:starter                           # starter at localhost:3001
 npm run build                                 # package, then static export of the playground and the starter
 npm run typecheck                             # package build, then type-check the playground and the starter
-npm test                                      # the package's unit tests (Vitest, packages/notestack/test/)
+npm test                                      # unit tests: the package (Vitest, packages/notestack/test/) and create-notestack (node:test)
 ```
 
 The playground reads the package's compiled `dist/`, so while developing keep `npm run dev -w @yx-elite/notestack` running next to `npm run dev`.
@@ -127,13 +130,15 @@ Before calling a change done, everything that exists from this list must pass: t
 
 **Unit tests** cover the package's plain functions (language helpers, URLs, config helpers, the landing page's sections): one file per area in `packages/notestack/test/`, outside `src/` so they are neither compiled into `dist/` nor published. Test what a caller sees (inputs and return values), with expected values taken from what the docs promise, not copied from the code's output. Components and CSS are checked in the playground, in light and dark mode, not with unit tests.
 
+`create-notestack` has its own tests in `packages/create-notestack/test/`, on Node's built-in test runner (the command has no dependencies, so it gets no Vitest). They copy `starter/` into `template/`, run `index.js` in scratch folders and check the files it leaves: names, the current folder, refusals, and that both packages share a version. CI's `create-site` job also packs both packages, runs the packed command and builds the new site.
+
 ## Versions and publishing
 
 - Semver. While in `0.x`, a breaking change bumps the minor.
 - Never bump the version, run `npm publish` or create tags unless the maintainer asks.
 - Every user-visible change gets a line in `packages/notestack/CHANGELOG.md` under *Unreleased*.
 - Since `0.1.0`, each release gets its own section (`## 0.2.0 (date)`), with *Added*, *Changed*, *Fixed* and *Migration* as needed. Lines collect under *Unreleased* until then.
-- `@yx-elite/notestack` and `create-notestack` always share a version number and are published together: `create-notestack` installs `@yx-elite/notestack` at `^` its own version.
+- `@yx-elite/notestack` and `create-notestack` always share a version number and are published together: `create-notestack` installs `@yx-elite/notestack` at `^` its own version. A test in `packages/create-notestack/test/` fails when the two versions differ.
 - The reusable deploy workflow is pinned by notes repos to a major tag (`@v1`). Changing its inputs is a breaking change.
 
 ## Commit messages

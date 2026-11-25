@@ -47,11 +47,12 @@ The first recompiles the package on every save. The second runs this site at [lo
 ### Check before you send it
 
 ```bash
+npm test
 npm run typecheck
 npm run build
 ```
 
-Both must pass. Check your change in light and dark mode, on a phone width, and in Safari if it animates anything.
+All three must pass, as they do in CI. Check your change in light and dark mode, on a phone width, and in Safari if it animates anything.
 
 </Step>
 </Steps>

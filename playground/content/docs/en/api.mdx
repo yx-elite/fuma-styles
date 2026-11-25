@@ -8,7 +8,7 @@ A site made with `npm create notestack` already imports everything it needs, so 
 
 The package has five import paths and a CSS file. Each name comes from one path only: `createNotesPage` is in `@yx-elite/notestack/routes`, not in `@yx-elite/notestack`. The *File* column names the file in a one-language site. On a site with `languages`, the pages and layouts move under `app/[lang]/` ([Languages](/docs/languages#update-the-layouts)). Your editor shows each prop and its type as you type.
 
-## notestack
+## @yx-elite/notestack
 
 Layouts, the landing page, components and the site config.
 
@@ -20,7 +20,7 @@ import type { SiteConfig } from '@yx-elite/notestack';
 | Export | What it does | File |
 | --- | --- | --- |
 | `defineSiteConfig(config)` | Checks your settings against `SiteConfig` and returns them unchanged. [Configuration](/docs/configuration) | `site.config.ts` |
-| `NotesRoot` | The whole root layout: `<html>`, `<body>`, the accent, search and the page transitions. Props: `site`, `className` for the font variables, `language` on a site with `languages` | `app/layout.tsx` |
+| `NotesRoot` | The whole root layout: `<html>`, `<body>`, the accent, search and the page transitions. Props: `site`, `className` for the font variables, `language` on a site with `languages`, and `accentPicker` to show a button that lets visitors try other accents (meant for demo sites) | `app/layout.tsx` |
 | `notesMetadata(site, language?)` | The root layout's metadata: *Page · Site* titles, the description, and `url` as the base for share images | `app/layout.tsx` |
 | `NotesLayout` | The docs layout: header, sidebar with the banner and quick links, phone and tablet menus. Props: `site`, `tree` (`source.getPageTree()`) | `app/docs/layout.tsx` |
 | `NotesHomeLayout` | The landing page's header. Props: `site`, `tree` | `app/(home)/layout.tsx` |
@@ -43,7 +43,7 @@ Types, for your own code:
 | `CalloutProps` | The props of `Callout` |
 | `GlossaryTerm` | One entry of `content/glossary.json`: `term`, `definition`, and an optional `href` and `label` |
 
-## notestack/routes
+## @yx-elite/notestack/routes
 
 The docs page and the routes that serve search, share images and the copies for AI assistants. Server only: import it from files in `app/`. Each helper returns what its route file exports. Keep `export const revalidate = false;` (and `dynamicParams`, where the starter has it) written out in each file: Next.js reads those lines without running the code.
 
@@ -64,7 +64,7 @@ export const GET = searchRoute(source);
 | `llmsFullRoute(source)` | `/llms-full.txt`, every page in one file | `app/llms-full.txt/route.ts` |
 | `llmsPageRoute(source)` | Each page as Markdown, for the *Copy Markdown* button. Returns `GET` and `generateStaticParams`. [Copies for AI assistants](/docs/features#copies-for-ai-assistants) | `app/llms.mdx/[...path]/route.ts` |
 
-## notestack/mdx
+## @yx-elite/notestack/mdx
 
 ```ts
 import { getMDXComponents } from '@yx-elite/notestack/mdx';
@@ -74,7 +74,7 @@ import { getMDXComponents } from '@yx-elite/notestack/mdx';
 | --- | --- |
 | `getMDXComponents(components?, { site })` | Every component a note can use, Fumadocs' and Notestack's, with yours on top. `createNotesPage` already calls it; you need it only to render MDX yourself |
 
-## notestack/source
+## @yx-elite/notestack/source
 
 ```ts title="lib/source.ts"
 import { notesSourcePlugins } from '@yx-elite/notestack/source';
@@ -84,7 +84,7 @@ import { notesSourcePlugins } from '@yx-elite/notestack/source';
 | --- | --- | --- |
 | `notesSourcePlugins` | Plugins for `loader()`: `icon:` in a page's frontmatter or a `meta.json` shows that [Lucide](https://lucide.dev/icons) icon in the sidebar. [Frontmatter](/docs/pages#frontmatter) | `lib/source.ts` |
 
-## notestack/next
+## @yx-elite/notestack/next
 
 ```js title="next.config.mjs"
 import { createMDX } from 'fumadocs-mdx/next';
@@ -99,7 +99,7 @@ export default createMDX()(withNotestack());
 
 This file runs in Node before Next.js starts, so it holds no React.
 
-## notestack/theme.css
+## @yx-elite/notestack/theme.css
 
 The whole design. Import it after Tailwind:
 
