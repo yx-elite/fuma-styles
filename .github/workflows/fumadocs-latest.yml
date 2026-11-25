@@ -1,0 +1,53 @@
+name: Fumadocs latest
+
+# Daily at 01:00 UTC, and by hand from the Actions tab (Run workflow)
+on:
+  schedule:
+    - cron: "0 1 * * *"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    # The same checks as CI, but with the newest Fumadocs 16.x instead of the pinned one,
+    # so a Fumadocs release that breaks the theme shows up before Dependabot's weekly pull request
+    name: Build with the newest Fumadocs 16 (Node ${{ matrix.node }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    strategy:
+      fail-fast: false
+      matrix:
+        node: [22, 24]
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v5
+        with:
+          fetch-depth: 0
+
+      - name: Set up Node.js ${{ matrix.node }}
+        uses: actions/setup-node@v5
+        with:
+          node-version: ${{ matrix.node }}
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Install the newest Fumadocs 16.x
+        run: npm install fumadocs-core@16 fumadocs-mdx@15 "fumadocs-ui@npm:@fumadocs/base-ui@16" -w playground -w starter
+
+      - name: Show the Fumadocs versions
+        run: npm ls fumadocs-core fumadocs-ui fumadocs-mdx
+
+      - name: Run the unit tests
+        run: npm test
+
+      - name: Type-check the package, playground, and starter
+        run: npm run typecheck
+
+      - name: Build the static sites
+        run: npm run build

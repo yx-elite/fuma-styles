@@ -1,0 +1,30 @@
+version: 2
+
+updates:
+  # Weekly pull requests for newer npm packages across every workspace.
+  # Packages that must move together come in one pull request.
+  - package-ecosystem: "npm"
+    directory: "/"
+    schedule:
+      interval: "weekly"
+    commit-message:
+      prefix: "⬆️ deps"
+    groups:
+      fumadocs:
+        patterns:
+          - "fumadocs-*"
+          - "@fumadocs/*"
+      next-and-react:
+        patterns:
+          - "next"
+          - "react"
+          - "react-dom"
+          - "@types/react*"
+
+  # Monthly pull requests for newer versions of the actions in .github/workflows/
+  - package-ecosystem: "github-actions"
+    directory: "/"
+    schedule:
+      interval: "monthly"
+    commit-message:
+      prefix: "⬆️ deps"
