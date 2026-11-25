@@ -1,6 +1,6 @@
 {
   "name": "create-notestack",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "Create a Notestack study-notes site: npm create notestack@latest my-notes",
   "keywords": [
     "notestack",
@@ -9,7 +9,7 @@
     "starter",
     "study-notes"
   ],
-  "homepage": "https://github.com/yx-elite/notestack#readme",
+  "homepage": "https://notestack.yxelite.dev",
   "bugs": {
     "url": "https://github.com/yx-elite/notestack/issues"
   },

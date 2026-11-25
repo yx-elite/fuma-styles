@@ -1,6 +1,6 @@
 {
   "name": "@yx-elite/notestack",
-  "version": "0.2.0",
+  "version": "0.2.1",
   "description": "A Fumadocs theme for study notes",
   "keywords": [
     "fumadocs",
@@ -12,7 +12,7 @@
     "study-notes",
     "static-site"
   ],
-  "homepage": "https://github.com/yx-elite/notestack#readme",
+  "homepage": "https://notestack.yxelite.dev",
   "bugs": {
     "url": "https://github.com/yx-elite/notestack/issues"
   },

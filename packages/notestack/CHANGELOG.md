@@ -6,6 +6,16 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 Nothing yet.
 
+## 0.2.1 (2026-11-25)
+
+The docs now live at [notestack.yxelite.dev](https://notestack.yxelite.dev). Nothing to change in existing sites.
+
+### Changed
+
+- `WRITING.md` sends agents to the live docs, and to their index for AI agents, [notestack.yxelite.dev/llms.txt](https://notestack.yxelite.dev/llms.txt), before Fumadocs' own.
+- New sites from `create-notestack`: the starter's README and `site.config.ts` link to the live docs pages instead of the Markdown files on GitHub.
+- Both packages' npm pages link to the docs site as their homepage.
+
 ## 0.2.0 (2026-11-25)
 
 New in the package: card icons, a *With your agent* tab for the landing page, and a writing guide for AI agents. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it all. To give an existing site's AI agent the guide too, copy `AGENTS.md` and `CLAUDE.md` from the starter into the site.
