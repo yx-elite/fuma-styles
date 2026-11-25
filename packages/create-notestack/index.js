@@ -7,7 +7,6 @@ import {
   existsSync,
   readdirSync,
   readFileSync,
-  renameSync,
   writeFileSync,
 } from "node:fs";
 import { basename, join, resolve } from "node:path";
@@ -28,27 +27,97 @@ if (!folder) {
 }
 
 const target = resolve(folder);
-const slug = basename(target)
-  .toLowerCase()
-  .replace(/[^a-z0-9._-]+/g, "-");
-const title = slug
-  .split(/[-_.]+/)
-  .filter(Boolean)
-  .map((word) => word[0].toUpperCase() + word.slice(1))
-  .join(" ");
+const base = basename(target).trim();
 
-// 2. Never write into a folder that already has files in it
-if (existsSync(target) && readdirSync(target).length > 0) {
+// The npm package name: lower case letters, digits, "-", "_" and ".", and it can't
+// start with "." or "_". A folder name with none of those ("笔记") gives "my-notes".
+const slug =
+  base
+    .normalize("NFD")
+    .replace(/[\u0300-\u036f]/g, "") // "café" → "cafe"
+    .toLowerCase()
+    .replace(/[^a-z0-9._-]+/g, "-")
+    .replace(/^[._-]+|[._-]+$/g, "") || "my-notes";
+
+// The site's name: "networking-notes" → "Networking Notes". A folder name with other
+// characters ("笔记", "Café Notes") is kept as it is.
+const title = /^[\x20-\x7e]+$/.test(base)
+  ? slug
+      .split(/[-_.]+/)
+      .filter(Boolean)
+      .map((word) => word[0].toUpperCase() + word.slice(1))
+      .join(" ")
+  : base;
+
+// 2. The folder may be new, empty, or a fresh clone: these files are fine to have.
+// Anything else stops here, so nothing of the reader's is overwritten.
+const harmless = new Set([
+  ".git",
+  ".gitattributes",
+  ".gitignore",
+  ".ds_store",
+  "thumbs.db",
+  ".idea",
+  ".vscode",
+  "license",
+  "license.md",
+  "license.txt",
+  "readme.md",
+]);
+const existing = existsSync(target) ? readdirSync(target) : [];
+const conflicts = existing.filter((name) => !harmless.has(name.toLowerCase()));
+if (conflicts.length > 0) {
   console.error(
-    `${folder} already exists and isn't empty. Choose another name.`,
+    `${folder} already has files that the new site could overwrite:\n${conflicts
+      .map((name) => `  ${name}`)
+      .join("\n")}\nMove them, or choose another folder.`,
+  );
+  process.exit(1);
+}
+const has = (name) => existing.some((entry) => entry.toLowerCase() === name);
+
+// 3. Check the template before copying anything, so a broken copy of this
+// command stops here instead of leaving a site with the wrong name
+const template = fileURLToPath(new URL("./template", import.meta.url));
+const siteName = "name: 'My Notes',";
+if (!readFileSync(join(template, "site.config.ts"), "utf8").includes(siteName)) {
+  console.error(
+    "This version of create-notestack can't set the site name. Please report it at https://github.com/yx-elite/notestack/issues",
   );
   process.exit(1);
 }
 
-// 3. Copy the starter, and give .gitignore its real name back
-const template = fileURLToPath(new URL("./template", import.meta.url));
-cpSync(template, target, { recursive: true });
-renameSync(join(target, "gitignore"), join(target, ".gitignore"));
+// Copy the starter. A README.md already in the folder is the reader's own, so it stays.
+const keepReadme = has("readme.md");
+cpSync(template, target, {
+  recursive: true,
+  filter: (source) =>
+    !(keepReadme && source === join(template, "README.md")) &&
+    source !== join(template, "gitignore"),
+});
+
+// .gitignore travels as "gitignore". With a .gitignore already in the folder,
+// add only the starter's lines it doesn't have yet ("/out/" and "out" count as the same).
+const ignoreLines = readFileSync(join(template, "gitignore"), "utf8");
+const ignorePath = join(target, ".gitignore");
+const mergeIgnore = has(".gitignore");
+if (mergeIgnore) {
+  const current = readFileSync(ignorePath, "utf8");
+  const key = (line) => line.trim().replace(/^\/|\/$/g, "");
+  const have = new Set(current.split(/\r?\n/).map(key));
+  const missing = ignoreLines
+    .split(/\r?\n/)
+    .map((line) => line.trim())
+    .filter((line) => line && !line.startsWith("#") && !have.has(key(line)));
+  if (missing.length > 0) {
+    writeFileSync(
+      ignorePath,
+      `${current}${current.endsWith("\n") || current === "" ? "" : "\n"}\n# Notestack\n${missing.join("\n")}\n`,
+    );
+  }
+} else {
+  writeFileSync(ignorePath, ignoreLines);
+}
 
 // 4. package.json: the site's own name, and the theme version that matches this command
 const own = JSON.parse(
@@ -60,17 +129,19 @@ pkg.name = slug;
 pkg.dependencies['@yx-elite/notestack'] = `^${own.version}`;
 writeFileSync(pkgPath, `${JSON.stringify(pkg, null, 2)}\n`);
 
-// 5. site.config.ts: the site's name, from the folder name ("my-notes" → "My Notes")
+// 5. site.config.ts: the site's name, from the folder name
 const configPath = join(target, "site.config.ts");
 writeFileSync(
   configPath,
   readFileSync(configPath, "utf8").replace(
-    "name: 'My Notes',",
-    `name: '${title}',`,
+    siteName,
+    () => `name: '${title.replace(/[\\']/g, "\\$&")}',`,
   ),
 );
 
 console.log(`\nCreated ${title} in ${target}`);
+if (keepReadme) console.log("Kept your README.md.");
+if (mergeIgnore) console.log("Added the site's build folders to your .gitignore.");
 
 // 6. Install the packages (skip with --no-install)
 if (install) {
@@ -86,10 +157,14 @@ if (install) {
   }
 }
 
-// 7. What to do next
+// 7. What to do next (no "cd" when the site is in the current folder)
+const steps = [
+  ...(target === process.cwd() ? [] : [`cd ${folder}`]),
+  ...(install ? [] : ["npm install"]),
+  "npm run dev",
+];
 console.log(`
 Next:
-  cd ${folder}${install ? "" : "\n  npm install"}
-  npm run dev
+${steps.map((step) => `  ${step}`).join("\n")}
 
 Then open http://localhost:3000, edit site.config.ts and write notes in content/docs/.`);

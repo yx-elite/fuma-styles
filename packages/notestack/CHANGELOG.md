@@ -4,7 +4,13 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
-Nothing yet.
+### Added
+
+- `npm create notestack@latest .` sets up the site in the current folder, also when it is a fresh clone: `.git`, `.gitattributes`, `.gitignore`, `README.md`, `LICENSE`, `.DS_Store`, `.idea` and `.vscode` may already be there. Your `README.md` stays, the starter's lines are added to your `.gitignore`, and any other file stops the command before it writes anything. The next steps no longer print `cd .`.
+
+### Fixed
+
+- `create-notestack`: a folder name with no Latin letters (`笔记`) gave an empty site name and the package name `-`, and a name starting with `.` or `_` gave a package name npm rejects. The package name now drops accents and leading or trailing `.`, `_` and `-`, and falls back to `my-notes`. A folder name in another script is kept as the site name. If the template can't take the site name, the command now stops before it copies anything.
 
 ## 0.1.0 (2026-11-25)
 

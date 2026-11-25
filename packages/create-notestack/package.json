@@ -34,6 +34,7 @@
   },
   "scripts": {
     "template": "node scripts/copy-starter.js",
-    "prepack": "npm run template"
+    "prepack": "npm run template",
+    "test": "node --test test/*.test.js"
   }
 }
