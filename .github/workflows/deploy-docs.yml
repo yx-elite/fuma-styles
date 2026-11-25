@@ -1,0 +1,79 @@
+name: Deploy Docs
+
+# Publishes the playground (the theme's docs) to https://notestack.yxelite.dev:
+# S3 website hosting behind Cloudflare. Runs when the docs or the package change on main,
+# and by hand from the Actions tab (Run workflow).
+on:
+  push:
+    branches: [main]
+    paths:
+      - "playground/**"
+      - "packages/notestack/**"
+      - "package-lock.json"
+      - ".github/workflows/deploy-docs.yml"
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # lets the workflow sign in to AWS with OIDC, no stored keys
+
+# Never run two deploys at once, and never cancel one halfway through an upload
+concurrency:
+  group: deploy-docs
+  cancel-in-progress: false
+
+jobs:
+  deploy:
+    name: Build and upload the docs
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+
+    steps:
+      - name: Check out the code
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # full git history, for each page's "Last updated" date
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "npm"
+
+      - name: Install dependencies
+        run: npm ci
+
+      # The playground imports the package from its compiled dist/, so build that first.
+      # The starter isn't deployed, so it isn't built here.
+      - name: Build the package
+        run: npm run build -w @yx-elite/notestack
+
+      - name: Build the docs site
+        run: npm run build -w playground
+
+      - name: Sign in to AWS
+        uses: aws-actions/configure-aws-credentials@v6
+        with:
+          role-to-assume: ${{ vars.AWS_ROLE_ARN }}
+          aws-region: ${{ vars.AWS_REGION }}
+
+      # Fingerprinted code and styles never change under the same name: cache them for a year
+      - name: Upload _next/static
+        run: >
+          aws s3 sync playground/out/_next/static "s3://${{ vars.S3_BUCKET }}/_next/static"
+          --cache-control "public, max-age=31536000, immutable"
+
+      # Pages and everything else: browsers and Cloudflare check for a newer version first.
+      # --delete removes files the new build no longer has, such as a deleted page.
+      - name: Upload the rest
+        run: >
+          aws s3 sync playground/out/ "s3://${{ vars.S3_BUCKET }}" --delete
+          --exclude "_next/static/*"
+          --cache-control "public, max-age=0, must-revalidate"
+
+      # The search index has no file extension, so give it its type by hand
+      - name: Mark the search index as JSON
+        run: >
+          aws s3 cp playground/out/api/search "s3://${{ vars.S3_BUCKET }}/api/search"
+          --content-type application/json
+          --cache-control "public, max-age=0, must-revalidate"

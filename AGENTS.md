@@ -54,6 +54,7 @@ notestack/
 │   ├── dependabot.yml        ← weekly npm pull requests (Fumadocs grouped, Next and React grouped), monthly GitHub Actions
 │   └── workflows/
 │       ├── ci.yml            ← on every push to main and every pull request, Node 22 and 24: install, test, type-check, build, pack --dry-run; plus a job that creates a site from both packed packages and builds it
+│       ├── deploy-docs.yml   ← on pushes to main that touch the playground or package, and by hand: builds the playground and syncs it to S3 (https://notestack.yxelite.dev), signing in to AWS with OIDC
 │       ├── fumadocs-latest.yml ← daily and by hand, Node 22 and 24: test, type-check and build with the newest Fumadocs 16.x
 │       └── deploy-s3.yml     ← (planned) reusable deploy workflow that notes repos call
 ├── packages/create-notestack/ ← the `npm create notestack` command: index.js, test/ (node:test), and template/ copied from starter/ before each pack and each test run (git-ignored)
