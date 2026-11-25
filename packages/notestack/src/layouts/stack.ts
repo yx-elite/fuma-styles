@@ -34,6 +34,10 @@ export const notesStack: StackItem[] = [
  * (its `repo` is the theme's) is built on Fumadocs directly, so it leaves itself out.
  */
 export function stackFor(site: SiteConfig): StackItem[] {
-  const own = repoUrl(site).toLowerCase() === notestackUrl;
-  return own ? notesStack.filter((item) => item !== notestack) : notesStack;
+  return isNotestackSite(site) ? notesStack.filter((item) => item !== notestack) : notesStack;
+}
+
+/** True on Notestack's own docs site: the site whose `repo` is the theme's */
+export function isNotestackSite(site: SiteConfig): boolean {
+  return repoUrl(site).toLowerCase() === notestackUrl;
 }

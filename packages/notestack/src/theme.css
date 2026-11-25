@@ -1434,6 +1434,34 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   background: color-mix(in oklab, var(--color-fd-accent) 60%, transparent);
 }
 
+/* "Star on GitHub" with the live count, on Notestack's own site */
+.ns-star-count {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3125rem;
+  margin-inline-start: 0.25rem;
+  padding-inline-start: 0.75rem;
+  border-inline-start: 1px solid var(--color-fd-border);
+  align-self: stretch;
+  color: var(--color-fd-muted-foreground);
+  font-variant-numeric: tabular-nums;
+  animation: ns-star-in 0.3s ease-out;
+}
+
+.ns-star-count svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.ns-star-button:hover .ns-star-count svg {
+  fill: currentColor;
+  color: #e3b341;
+}
+
+@keyframes ns-star-in {
+  from { opacity: 0; }
+}
+
 .ns-button-keys {
   display: inline-flex;
   gap: 0.25rem;

@@ -1,6 +1,6 @@
 # @yx-elite/notestack
 
-A [Fumadocs](https://fumadocs.dev) theme for study notes. It gives a notes site its layout, landing page, styles, components and static-export settings. Every site that uses it reads the same way, and gets fixes and new features through `npm update`.
+Study notes, published beautifully. Notestack is a theme for study-notes sites, built on [Fumadocs](https://fumadocs.dev). It gives a notes site its layout, landing page, styles, components and static-export settings. Every site that uses it reads the same way, and gets fixes and new features through `npm update`.
 
 ## What you get
 

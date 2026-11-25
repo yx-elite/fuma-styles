@@ -25,7 +25,8 @@ import {
 import { NotesLogo } from './logo.js';
 import { lucideIcon } from '../icons.js';
 import { agents } from './agents.js';
-import { notestack, stackFor, type StackItem } from './stack.js';
+import { isNotestackSite, notestack, stackFor, type StackItem } from './stack.js';
+import { StarButton } from './star-button.js';
 
 /** The parts of a Fumadocs `loader()` source the home page reads. */
 export interface HomeSource {
@@ -154,9 +155,13 @@ export function NotesHome({
             {text.startReading}
             <ArrowRight />
           </Link>
-          <a href={repoUrl(site)} className="ns-button ns-button-secondary" target="_blank" rel="noreferrer">
-            {text.viewOnGitHub}
-          </a>
+          {isNotestackSite(site) ? (
+            <StarButton repo={site.repo} label={text.starOnGitHub} language={language} />
+          ) : (
+            <a href={repoUrl(site)} className="ns-button ns-button-secondary" target="_blank" rel="noreferrer">
+              {text.viewOnGitHub}
+            </a>
+          )}
         </div>
         <p className="ns-home-stats">
           <span>{fillNodes(pluralForm(language, pageCount, text.pageCount), { n: <b data-ns-count={pageCount}>{pageCount}</b> })}</span>

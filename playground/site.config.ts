@@ -5,7 +5,7 @@ export default defineSiteConfig({
   name: 'Notestack',
   author: 'yx-elite',
   tag: 'playground',
-  description: 'A Fumadocs theme for study notes. Write in Markdown, publish a site that reads beautifully.',
+  description: 'Write your notes in Markdown. Publish a site that reads beautifully.',
   repo: 'yx-elite/notestack',
   url: 'https://notestack.yxelite.dev',
   branch: 'main',
@@ -39,7 +39,7 @@ export default defineSiteConfig({
   translations: {
     'zh-CN': {
       tag: '演示',
-      description: '为学习笔记打造的 Fumadocs 主题。用 Markdown 写作，发布一个读起来舒服的网站。',
+      description: '用 Markdown 写笔记，发布一个读起来舒服的网站。',
       start: {
         title: '把你的笔记变成这样的网站',
         text: '一条命令即可创建一个已经配置好主题的 Fumadocs 站点。你的笔记仍然是普通的 Markdown。',

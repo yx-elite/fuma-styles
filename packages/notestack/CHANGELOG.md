@@ -4,7 +4,13 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
-Nothing yet.
+### Added
+
+- Notestack's own docs site shows "Star on GitHub" with the repo's live star count in the landing page hero. Notes sites keep "View on GitHub"; nothing changes for them. New text key `starOnGitHub`.
+
+### Changed
+
+- The package description and README now read "Study notes, published beautifully. A theme for static notes sites, built on Fumadocs". Nothing changes in sites.
 
 ## 0.2.1 (2026-11-25)
 

@@ -18,6 +18,8 @@ export interface NotesText {
   /* Landing page: hero */
   startReading: string;
   viewOnGitHub: string;
+  /** Notestack's own docs site only, next to the star count */
+  starOnGitHub: string;
   /** `{n}` */
   pageCount: Plural;
   /** `{n}` */
@@ -124,6 +126,7 @@ export interface NotesText {
 export const en: NotesText = {
   startReading: 'Start reading',
   viewOnGitHub: 'View on GitHub',
+  starOnGitHub: 'Star on GitHub',
   pageCount: { one: '{n} page', other: '{n} pages' },
   sectionCount: { one: '{n} section', other: '{n} sections' },
   updated: 'Updated {date}',
@@ -206,6 +209,7 @@ export const en: NotesText = {
 export const zhCN: NotesText = {
   startReading: '开始阅读',
   viewOnGitHub: '在 GitHub 上查看',
+  starOnGitHub: '在 GitHub 上加星标',
   pageCount: { other: '{n} 页' },
   sectionCount: { other: '{n} 个章节' },
   updated: '更新于 {date}',
