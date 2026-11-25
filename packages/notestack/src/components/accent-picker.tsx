@@ -65,6 +65,11 @@ export function AccentPickerScript() {
   return <script dangerouslySetInnerHTML={{ __html: earlyScript }} />;
 }
 
+export type AccentPickerText = Pick<
+  NotesText,
+  'accent' | 'accentPanel' | 'accentOpen' | 'accentReset' | 'accentCustom' | 'accentNote'
+>;
+
 /**
  * A live accent picker for demo sites: a round button in the bottom-right
  * corner opens a small panel of ready-made accents plus a custom colour.
@@ -72,11 +77,6 @@ export function AccentPickerScript() {
  * kept in this browser only (localStorage); "Reset" goes back to the
  * site's own accent. Opt-in: notes sites leave it out.
  */
-export type AccentPickerText = Pick<
-  NotesText,
-  'accent' | 'accentPanel' | 'accentOpen' | 'accentReset' | 'accentCustom' | 'accentNote'
->;
-
 export function AccentPicker({
   swatches = accentSwatches,
   text = en,

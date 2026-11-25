@@ -5,10 +5,9 @@ import { PhoneSearchTrigger } from './phone-search.js';
 import { SidebarProvider, useSidebar } from 'fumadocs-ui/layouts/notebook/slots/sidebar';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
-import { NavTitle } from './nav-title.js';
+import { baseOptions } from './nav-title.js';
 import { Spotlight } from './spotlight.js';
-import { repoUrl, type SiteConfig } from '../config/site.js';
-import { localizeHref } from '../i18n/index.js';
+import type { SiteConfig } from '../config/site.js';
 
 // No sidebar, no mobile menu button and no collapse button on the home page
 const homeSidebarSlots = {
@@ -36,9 +35,7 @@ export function NotesHomeLayout({
   return (
     <DocsLayout
       tree={tree}
-      nav={{ title: <NavTitle site={site} />, url: localizeHref('/', site), transparentMode: 'top', mode: 'top' }}
-      themeSwitch={{ mode: 'light-dark-system' }}
-      githubUrl={repoUrl(site)}
+      {...baseOptions(site)}
       slots={{ sidebar: homeSidebarSlots, searchTrigger: { sm: PhoneSearchTrigger, full: FullSearchTrigger } }}
     >
       {/* One wrapper for any home content, so the page transition always works */}

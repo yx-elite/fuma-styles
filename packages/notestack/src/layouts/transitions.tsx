@@ -4,6 +4,9 @@ import { useEffect, useRef } from 'react';
 
 type Section = 'home' | 'docs';
 
+// One array for every render: a new [] each time would re-run the effect below on every page change
+const noLanguages: string[] = [];
+
 /**
  * Animated page change between the home page and the docs (both directions),
  * using the browser's View Transitions API. Catches every internal link click
@@ -13,7 +16,7 @@ type Section = 'home' | 'docs';
  */
 export function PageTransitions({
   docsPath = '/docs',
-  languages = [],
+  languages = noLanguages,
 }: {
   docsPath?: string;
   /** A site's `languages`: their URL prefix is ignored, so /en/docs/x and /zh-CN/docs/x are both docs */
