@@ -29,7 +29,7 @@ Fumadocs changes its APIs between versions, and they may differ from what you re
 - [Upgrading](https://fumadocs.dev/docs/next/upgrade.md)
 - [Every other page (llms.txt)](https://fumadocs.dev/llms.txt)
 
-This is the only AGENTS.md in the repo. `create-fumadocs-app` writes its own AGENTS.md into each new app; delete it and add anything useful here instead.
+This is the repo's AGENTS.md. `starter/AGENTS.md` (with `starter/CLAUDE.md` importing it) is the one each new notes site gets: it points agents to `packages/notestack/WRITING.md`, the writing guide that ships in the package. Keep it a few lines, like the rest of the starter; the guide holds the detail and changes with the package. `create-fumadocs-app` writes its own AGENTS.md into each new app; delete that one.
 
 ## The one rule that matters most
 

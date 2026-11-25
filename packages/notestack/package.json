@@ -36,6 +36,7 @@
   "files": [
     "dist",
     "src",
+    "WRITING.md",
     "LICENSE"
   ],
   "exports": {

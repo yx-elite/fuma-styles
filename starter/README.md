@@ -22,6 +22,8 @@ npm run dev     # the site at http://localhost:3000, updating as you save
 
 Everything else (`app/`, `lib/`, the config files) is a few lines that load the theme. You don't need to edit it.
 
+Writing with an AI agent (Claude Code, Cursor, Codex)? `AGENTS.md` points it to the theme's writing guide, so it uses the components and the style the theme expects.
+
 ## Publish
 
 ```bash
