@@ -7,9 +7,9 @@
   </picture>
 </a>
 
-[![CI](https://github.com/yx-elite/notestack/actions/workflows/ci.yml/badge.svg)](https://github.com/yx-elite/notestack/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@yx-elite/notestack?logo=npm&color=CB3837)](https://www.npmjs.com/package/@yx-elite/notestack) ![Fumadocs](https://img.shields.io/badge/Fumadocs-16-111111?logo=readthedocs&logoColor=white) ![Next.js](https://img.shields.io/badge/Next.js-16-000000?logo=nextdotjs&logoColor=white) ![Tailwind CSS](https://img.shields.io/badge/Tailwind_CSS-v4-06B6D4?logo=tailwindcss&logoColor=white) [![GitHub stars](https://img.shields.io/github/stars/yx-elite/notestack?style=flat&logo=github&color=e3b341)](https://github.com/yx-elite/notestack/stargazers)
-
 **Study notes, published beautifully.** Notestack is a theme for **study-notes sites**, built on [Fumadocs](https://fumadocs.dev). One npm package, `@yx-elite/notestack`, gives every notes site the same **layout, styles, components and search**. The sites read the same way, and a fix made once reaches all of them.
+
+[![CI](https://github.com/yx-elite/notestack/actions/workflows/ci.yml/badge.svg)](https://github.com/yx-elite/notestack/actions/workflows/ci.yml) [![npm](https://img.shields.io/npm/v/@yx-elite/notestack?logo=npm&color=CB3837)](https://www.npmjs.com/package/@yx-elite/notestack)
 
 [Docs](https://notestack.yxelite.dev) · [How it works](#how-it-works) · [Layout](#repository-layout) · [Develop](#develop-locally) · [New notes site](#start-a-new-notes-site) · [Roadmap](#roadmap) · [Contributing](#contributing) · [License](#license)
 
