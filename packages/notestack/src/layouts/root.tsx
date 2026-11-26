@@ -1,12 +1,27 @@
 import type { Metadata } from 'next';
 import type { ReactNode } from 'react';
-import { AccentPicker, AccentPickerScript } from '../components/accent-picker.js';
+import {
+  AccentPicker,
+  AccentPickerProvider,
+  AccentPickerScript,
+  type AccentPickerText,
+} from '../components/accent-picker.js';
 import { SiteStyle, type SiteConfig } from '../config/site.js';
 import { notesI18n } from '../i18n/fumadocs.js';
 import { hasLanguageRoutes, languageOf, notesText, siteFor } from '../i18n/index.js';
 import { RememberLanguage } from '../i18n/remember.js';
 import { NotesProvider } from './provider.js';
 import { PageTransitions } from './transitions.js';
+
+/** Only the picker's labels go to the browser, not every phrase of the site */
+const pickerText = ({ accent, accentPanel, accentOpen, accentReset, accentCustom, accentNote }: AccentPickerText) => ({
+  accent,
+  accentPanel,
+  accentOpen,
+  accentReset,
+  accentCustom,
+  accentNote,
+});
 
 /**
  * The whole root layout: <html> and <body>, the accent from the site config,
@@ -28,7 +43,7 @@ export function NotesRoot({
   language?: string;
   /** Classes for <html>, e.g. the font variables from next/font */
   className?: string;
-  /** Demo sites only: a button that lets visitors try other accents */
+  /** Demo sites only: a palette button next to the header's theme switch that lets visitors try other accents */
   accentPicker?: boolean;
   children: ReactNode;
 }) {
@@ -43,8 +58,15 @@ export function NotesRoot({
         <NotesProvider i18n={notesI18n(local)}>
           {hasLanguageRoutes(site) && <RememberLanguage language={lang} />}
           <PageTransitions languages={site.languages} />
-          {children}
-          {accentPicker && <AccentPicker text={notesText(local)} />}
+          {accentPicker ? (
+            <AccentPickerProvider text={pickerText(notesText(local))}>
+              {children}
+              {/* phones: the header has no theme switch, so the picker floats in the corner */}
+              <AccentPicker text={pickerText(notesText(local))} floating />
+            </AccentPickerProvider>
+          ) : (
+            children
+          )}
         </NotesProvider>
       </body>
     </html>

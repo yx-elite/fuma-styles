@@ -1,6 +1,16 @@
 'use client';
+import { ThemeSwitch } from 'fumadocs-ui/layouts/shared/slots/theme-switch';
 import { Check, Palette, RotateCcw } from 'lucide-react';
-import { type CSSProperties, useEffect, useRef, useState } from 'react';
+import {
+  type ComponentProps,
+  type CSSProperties,
+  type ReactNode,
+  createContext,
+  useContext,
+  useEffect,
+  useRef,
+  useState,
+} from 'react';
 import { en, type NotesText } from '../i18n/text.js';
 
 export interface AccentSwatch {
@@ -70,9 +80,34 @@ export type AccentPickerText = Pick<
   'accent' | 'accentPanel' | 'accentOpen' | 'accentReset' | 'accentCustom' | 'accentNote'
 >;
 
+/** Set by <NotesRoot accentPicker>: the picker's labels, or null when the site has no picker */
+const PickerContext = createContext<AccentPickerText | null>(null);
+
+/** Turns the picker on for everything inside, in the language of `text` */
+export function AccentPickerProvider({ text, children }: { text: AccentPickerText; children: ReactNode }) {
+  return <PickerContext.Provider value={text}>{children}</PickerContext.Provider>;
+}
+
 /**
- * A live accent picker for demo sites: a round button in the bottom-right
- * corner opens a small panel of ready-made accents plus a custom colour.
+ * The header's theme switch (Fumadocs' `slots.themeSwitch`): the light/dark/system
+ * switch, with the accent picker before it on demo sites. Fumadocs also puts it at the
+ * bottom of the phone menu; the picker is hidden there (theme.css), since phones have
+ * the floating one from <NotesRoot>.
+ */
+export function NotesThemeSwitch(props: ComponentProps<'div'>) {
+  const text = useContext(PickerContext);
+  return (
+    <>
+      {text && <AccentPicker text={text} />}
+      <ThemeSwitch mode="light-dark-system" {...props} />
+    </>
+  );
+}
+
+/**
+ * A live accent picker for demo sites: an icon in the header, next to the theme
+ * switch (a round button floating bottom-right on phones, where the header has no
+ * theme switch), opens a small panel of ready-made accents plus a custom colour.
  * The whole theme follows (glow, beam, logo, links, cards). The choice is
  * kept in this browser only (localStorage); "Reset" goes back to the
  * site's own accent. Opt-in: notes sites leave it out.
@@ -80,10 +115,13 @@ export type AccentPickerText = Pick<
 export function AccentPicker({
   swatches = accentSwatches,
   text = en,
+  floating = false,
 }: {
   swatches?: AccentSwatch[];
   /** Labels; pass notesText(site) for the site's language */
   text?: AccentPickerText;
+  /** Phones: a round button floating in the bottom-right corner, its panel above it */
+  floating?: boolean;
 }) {
   const [open, setOpen] = useState(false);
   const [picked, setPicked] = useState<Picked | null>(null);
@@ -118,7 +156,7 @@ export function AccentPicker({
     choose({ light: hex, dark: CSS.supports('color', 'oklch(from red l c h)') ? `oklch(from ${hex} max(l, 0.82) c h)` : hex });
 
   return (
-    <div ref={root} className="ns-picker" data-open={open}>
+    <div ref={root} className="ns-picker" data-open={open} data-floating={floating || undefined}>
       {open && (
         <div className="ns-picker-panel" role="dialog" aria-label={text.accentPanel}>
           <div className="ns-picker-head">

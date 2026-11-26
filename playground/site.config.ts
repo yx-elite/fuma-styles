@@ -5,7 +5,7 @@ export default defineSiteConfig({
   name: 'Notestack',
   author: 'yx-elite',
   tag: 'playground',
-  description: 'Write your notes in Markdown. Publish a site that reads beautifully.',
+  description: 'Write your notes in Markdown, with search, diagrams and dark mode built in. Publish a site that reads beautifully.',
   repo: 'yx-elite/notestack',
   url: 'https://notestack.yxelite.dev',
   branch: 'main',
@@ -39,7 +39,7 @@ export default defineSiteConfig({
   translations: {
     'zh-CN': {
       tag: '演示',
-      description: '用 Markdown 写笔记，发布一个读起来舒服的网站。',
+      description: '用 Markdown 写笔记，搜索、图表和深色模式都已内置，发布一个读起来舒服的网站。',
       start: {
         title: '把你的笔记变成这样的网站',
         text: '一条命令即可创建一个已经配置好主题的 Fumadocs 站点。你的笔记仍然是普通的 Markdown。',

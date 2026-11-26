@@ -722,8 +722,158 @@ a.ns-doc-card:hover .ns-doc-card-icon {
   margin-inline-start: auto;
 }
 
-/* Credit: "Built with Notestack", with the mark drawn in the text's colour
-   (the accent swapped for currentColor), so it dims and brightens with the link */
+/*
+ * Card under "On this page" (PageCard): an accent wash from the top-left corner, a
+ * thin accent border, and two outlined icons in the accent colour cut off at the right.
+ * Nothing here moves; the icons are small, so their rotation costs nothing in Safari.
+ */
+/* In "On this page": pinned to the bottom of the column, the outline above it scrolling
+   on its own when it is long */
+.ns-page-card-wrap[data-placement='toc'] {
+  margin-top: auto;
+  padding-top: 1.5rem;
+  padding-bottom: 0.75rem;
+}
+
+/* On a short screen the outline keeps the room */
+@media (max-height: 700px) {
+  .ns-page-card-wrap[data-placement='toc'] {
+    display: none;
+  }
+}
+
+/* At the end of the page, where "On this page" doesn't show it: below 1280px, on a
+   short screen, or on a page without headings */
+.ns-page-footer-card {
+  margin-top: 2rem;
+}
+
+@media (min-width: 1280px) and (min-height: 701px) {
+  .ns-page-footer-card[data-toc] {
+    display: none;
+  }
+}
+
+.ns-page-card {
+  position: relative;
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  padding: 1.125rem 1rem 1rem;
+  border: 1px solid color-mix(in oklab, var(--ns-accent) 30%, var(--color-fd-border));
+  border-radius: 1rem;
+  background:
+    linear-gradient(150deg, color-mix(in oklab, var(--ns-accent) 14%, transparent), transparent 60%),
+    var(--color-fd-card);
+}
+
+.ns-page-card-deco svg {
+  position: absolute;
+  color: var(--ns-accent);
+  opacity: 0.28;
+  pointer-events: none;
+  stroke-width: 1.5;
+}
+
+.ns-page-card-deco svg:first-child {
+  top: -1.5rem;
+  right: -1.75rem;
+  width: 6rem;
+  height: 6rem;
+  transform: rotate(16deg);
+}
+
+.ns-page-card-deco svg:last-child {
+  right: 0.75rem;
+  bottom: 3.25rem;
+  width: 2.25rem;
+  height: 2.25rem;
+  opacity: 0.22;
+  transform: rotate(-12deg);
+}
+
+.ns-page-card-label {
+  position: relative;
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.6875rem;
+  color: var(--ns-accent);
+}
+
+.ns-page-card-title {
+  position: relative;
+  margin: 0.375rem 0 0.375rem;
+  max-width: 80%;
+  font-size: 0.9375rem;
+  font-weight: 600;
+  line-height: 1.35;
+  color: var(--color-fd-foreground);
+}
+
+.ns-page-card-text {
+  position: relative;
+  margin: 0 0 0.875rem;
+  max-width: 85%;
+  font-size: 0.8125rem;
+  line-height: 1.6;
+  color: var(--color-fd-muted-foreground);
+}
+
+.ns-page-card-link {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--ns-accent);
+}
+
+.ns-page-card-link svg {
+  width: 0.875rem;
+  height: 0.875rem;
+  transition: transform 0.2s;
+}
+
+.ns-page-card-link:hover svg {
+  transform: translate(2px, -2px);
+}
+
+.ns-page-card-credit {
+  position: relative;
+  align-self: stretch;
+  margin-top: 0.875rem;
+  padding-top: 0.75rem;
+  border-top: 1px solid color-mix(in oklab, var(--ns-accent) 20%, var(--color-fd-border));
+  font-size: 0.75rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+.ns-page-card-agents {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.375rem;
+  margin: 0.875rem 0 0;
+  font-size: 0.75rem;
+  color: var(--color-fd-muted-foreground);
+}
+
+.ns-page-card-agents svg {
+  width: 0.875rem;
+  height: 0.875rem;
+}
+
+.ns-page-card-agents a {
+  color: var(--ns-accent);
+}
+
+.ns-page-card-agents a:hover {
+  text-decoration: underline;
+}
+
+/* Credit: "Built with Notestack", with the mark in the text's colour (as everywhere),
+   so it dims and brightens with the link */
 .ns-credit {
   /* Inline, not flex: its words then share the baseline of the text around them */
   transition: color 0.15s;
@@ -735,8 +885,6 @@ a.ns-doc-card:hover .ns-doc-card-icon {
 
 /* Two classes, so it beats `.ns-footer svg` on the landing page */
 .ns-credit .ns-credit-mark {
-  --ns-accent: currentColor;
-  --ns-accent-2: currentColor;
   display: inline-block;
   width: 1.25em;
   height: 1.25em;
@@ -769,14 +917,18 @@ a.ns-doc-card:hover .ns-doc-card-icon {
 }
 
 /*
- * Language and GitHub: plain icons with no button shape. The language button
- * sits after the theme switch, between it and GitHub.
+ * Accent picker (demo sites), language and GitHub: plain icons with no button shape,
+ * after the theme switch in that order.
  */
-#nd-subnav div:has(> [data-theme-toggle]) > button {
+#nd-subnav div:has(> [data-theme-toggle]) > .ns-picker {
   order: 1;
 }
 
-#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']) {
+#nd-subnav div:has(> [data-theme-toggle]) > button {
+  order: 2;
+}
+
+#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com'], .ns-picker-button) {
   padding: 0.25rem;
   border: 0;
   border-radius: 0;
@@ -785,9 +937,15 @@ a.ns-doc-card:hover .ns-doc-card-icon {
   transition: color 0.2s;
 }
 
-#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com']):hover {
+#nd-subnav :is(div:has(> [data-theme-toggle]) > button, a[href*='github.com'], .ns-picker-button):is(:hover, [aria-expanded='true']) {
   background: none;
   color: var(--color-fd-foreground);
+}
+
+/* Fumadocs colours the language icon itself (text-fd-muted-foreground), so it would
+   stay grey when its button brightens on hover: let it follow the button */
+#nd-subnav button > svg.lucide-languages {
+  color: inherit;
 }
 
 #nd-subnav a[href*='github.com'] {
@@ -799,8 +957,10 @@ a.ns-doc-card:hover .ns-doc-card-icon {
   height: 1.375rem;
 }
 
-/* Language menu: frosted glass with an accent wash, like the accent picker */
+/* Language menu: frosted glass with an accent wash, like the accent picker. It opens
+   just below the header's bottom edge, at the same height as the accent picker's panel. */
 [role='dialog']:has(> button[lang]) {
+  margin-top: 1.125rem;
   padding: 0.375rem;
   border-color: color-mix(in oklab, var(--color-fd-foreground) 12%, transparent);
   border-radius: 1rem;
@@ -973,6 +1133,32 @@ a.ns-doc-card:hover .ns-doc-card-icon {
 
 :is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] p:first-child {
   margin-top: 0;
+}
+
+/*
+ * Section titles inside a folder: a dot in the accent colour on the folder's tree
+ * line (Fumadocs draws it 10px in, 1px wide), and the title in full-strength text,
+ * so each group inside a long folder starts visibly. Top-level titles stay as above.
+ */
+:is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] > div div > p {
+  position: relative;
+  margin-top: 1.25rem;
+  font-size: 0.8125rem;
+  color: var(--color-fd-foreground);
+}
+
+:is(#nd-sidebar, #nd-sidebar-mobile) [class*='mask-['] > div div > p::before {
+  content: '';
+  position: absolute;
+  inset-inline-start: calc(0.625rem + 0.5px - 3.5px);
+  top: 50%;
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: var(--color-fd-primary);
+  /* a ring in the sidebar's colour cuts the tree line around the dot */
+  box-shadow: 0 0 0 3px var(--color-fd-background);
+  transform: translateY(-50%);
 }
 
 /*
@@ -1272,16 +1458,6 @@ html[data-ns-transition='to-home'][data-ns-scrolled] #nd-notebook-layout #nd-pag
   display: none;
 }
 
-/* the accent picker would sit on top of the menu's theme switch: hidden while the menu is open */
-.ns-picker {
-  transition: opacity 0.2s;
-}
-
-html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
-  opacity: 0;
-  pointer-events: none;
-}
-
 /* ── Home page ──────────────────────────────────────────────────────── */
 /*
  * Default landing page from <NotesHome />, top to bottom: hero, a live
@@ -1318,11 +1494,19 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1.25rem;
-  max-width: 48rem;
+  /* spacing from top to bottom: the pill close to the title, the actions set apart
+     from the text, the command or page counts a little below the buttons.
+     --ns-hero-space scales all of it (smaller on phones). */
+  --ns-hero-space: 1rem;
+  max-width: 58rem;
   padding-top: clamp(3.5rem, 9vh, 6.5rem);
   text-align: center;
 }
+
+.ns-home-hero > * + .ns-home-title { margin-top: var(--ns-hero-space); }
+.ns-home-hero > .ns-home-text { margin-top: calc(var(--ns-hero-space) * 1.25); }
+.ns-home-hero > .ns-home-actions { margin-top: calc(var(--ns-hero-space) * 2); }
+.ns-home-hero > :is(.ns-home-command, .ns-home-stats) { margin-top: calc(var(--ns-hero-space) * 1.25); }
 
 .ns-home-badge {
   display: inline-flex;
@@ -1335,6 +1519,72 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   color: var(--ns-accent);
   font-family: var(--default-mono-font-family, ui-monospace, monospace);
   font-size: 0.8125rem;
+}
+
+/* On Notestack's own site the badge is a link to the changelog */
+a.ns-home-badge {
+  transition: border-color 0.2s, background-color 0.2s;
+}
+
+a.ns-home-badge:hover {
+  border-color: color-mix(in oklab, var(--ns-accent) 65%, transparent);
+  background: color-mix(in oklab, var(--ns-accent) 16%, transparent);
+}
+
+/* Notestack's own site: the description's last word in an accent gradient, over
+   a soft marker stroke that sweeps in once the hero is up (Landing interactions) */
+.ns-home-accent {
+  position: relative;
+  white-space: nowrap;
+  font-weight: 600;
+  background: linear-gradient(100deg, var(--ns-accent), var(--ns-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+}
+
+.ns-home-accent::after {
+  content: '';
+  position: absolute;
+  inset-inline: -0.15em;
+  bottom: 0.02em;
+  z-index: -1;
+  height: 0.42em;
+  border-radius: 0.2em;
+  background: linear-gradient(100deg, color-mix(in oklab, var(--ns-accent) 26%, transparent), color-mix(in oklab, var(--ns-accent-2) 18%, transparent));
+  transform-origin: left center;
+}
+
+@keyframes ns-mark {
+  from { transform: scaleX(0); }
+}
+
+/* Notestack's own site: `$ npm create notestack@latest` with a copy button, under the
+   buttons where notes sites show their page count. A quiet line of text, not a box,
+   so the two buttons above lead. */
+.ns-home-command {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  max-width: 100%;
+}
+
+.ns-home-command code {
+  overflow: hidden;
+  font-family: var(--default-mono-font-family, ui-monospace, monospace);
+  font-size: 0.8125rem;
+  color: var(--color-fd-muted-foreground);
+  white-space: nowrap;
+  text-overflow: ellipsis;
+}
+
+.ns-home-command .ns-copy {
+  width: 1.75rem;
+  height: 1.75rem;
+}
+
+.ns-home-command code span {
+  color: var(--ns-accent);
 }
 
 .ns-home-badge-dot {
@@ -1367,10 +1617,15 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 .ns-home-text {
-  max-width: 36rem;
+  /* nearly the hero's full width, so a tagline's lines run long on wide screens */
+  max-width: 56rem;
   font-size: clamp(1rem, 2.2vw, 1.25rem);
   line-height: 1.6;
   color: var(--color-fd-muted-foreground);
+  /* full lines, but never one word alone on the last line */
+  text-wrap: pretty;
+  /* the accent's marker stroke sits behind the words, inside this box */
+  isolation: isolate;
 }
 
 .ns-home-actions {
@@ -1378,7 +1633,6 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.75rem;
-  margin-top: 0.5rem;
 }
 
 .ns-home-stats {
@@ -1448,6 +1702,33 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 /* "Star on GitHub" with the live count, on Notestack's own site */
+.ns-star-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+
+/* Phones, where the button runs full width: the count in a narrow cell against the
+   right edge, like GitHub's own Star | count, and the label centred on the whole
+   button (three columns, the outer two equal), level with "Start reading" above it */
+@media (max-width: 639px) {
+  .ns-star-button:has(.ns-star-count) {
+    display: grid;
+    grid-template-columns: 1fr auto 1fr;
+    padding-inline: 0;
+  }
+
+  .ns-star-button:has(.ns-star-count) .ns-star-label {
+    grid-column: 2;
+  }
+
+  .ns-star-button .ns-star-count {
+    grid-column: 3;
+    justify-self: end;
+    padding-inline: 1rem;
+  }
+}
+
 .ns-star-count {
   display: inline-flex;
   align-items: center;
@@ -2028,7 +2309,15 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   border-radius: inherit;
 }
 
+/* The lists sit above the title's link (the strips' fade mask would otherwise put them
+   under it); only their links take clicks, so the gaps between them still open the card */
+.ns-tile :is(.ns-tile-chips, .ns-tile-cluster, .ns-tile-stack) {
+  z-index: 2;
+  pointer-events: none;
+}
+
 .ns-tile :is(.ns-tile-chips, .ns-tile-cluster, .ns-tile-stack) a {
+  pointer-events: auto;
   position: relative;
   z-index: 3;
 }
@@ -2120,7 +2409,8 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   pointer-events: none;
 }
 
-.ns-tile > :not(.ns-tile-ghost) {
+/* Not the title: its link's ::after must reach the card's edges, so the whole card is clickable */
+.ns-tile > :not(.ns-tile-ghost, .ns-tile-title) {
   position: relative;
 }
 
@@ -2245,9 +2535,12 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
     gap: 1rem;
   }
 
+  /* Trimmed to the capitals and the baseline, so the name sits in the middle of the row
+     (the display font keeps room for descenders below) */
   .ns-tile[data-style='strip'] .ns-tile-title {
     font-size: 1.625rem;
     white-space: nowrap;
+    text-box: trim-both cap alphabetic;
   }
 
   .ns-tile[data-style='strip'] .ns-tile-chips {
@@ -2257,6 +2550,12 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
     margin: 0;
     overflow: hidden;
     mask-image: linear-gradient(to right, black 80%, transparent);
+  }
+
+  /* "See all in the docs" at the end of the mosaic's last, full-width strip */
+  .ns-tile[data-style='strip'] .ns-tile-start {
+    flex-shrink: 0;
+    white-space: nowrap;
   }
 }
 
@@ -2957,8 +3256,9 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 @media (max-width: 639px) {
   .ns-home { padding-inline: 1rem; }
   /* phones: the docs preview sits close to the hero, without the tall empty band above it */
-  .ns-home-hero { padding-top: 2.5rem; gap: 1rem; }
-  .ns-home-preview { margin-top: 0.75rem; padding-top: 1.75rem; mask-image: linear-gradient(to bottom, transparent, black 1.25rem, black 70%, transparent 98%); }
+  .ns-home-hero { padding-top: 2.5rem; --ns-hero-space: 0.75rem; }
+  /* shorter on phones, so the sections come sooner: the top of the docs, fading out */
+  .ns-home-preview { max-height: 17rem; overflow: hidden; margin-top: 0.75rem; padding-top: 1.75rem; mask-image: linear-gradient(to bottom, transparent, black 1.25rem, black 60%, transparent 96%); }
   .ns-home-actions > * { flex: 1 1 100%; justify-content: center; }
   .ns-home-cta .ns-home-actions { width: 100%; }
   .ns-button-keys { display: none; }
@@ -2969,24 +3269,56 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
 }
 
 /* ── Accent picker (demo sites only) ────────────────────────────────── */
-/* <AccentPicker />: round button bottom-right, panel of accents above it */
+/* <AccentPicker />: on tablets and wider, a plain icon in the header between the theme
+   switch and the language icon, styled with them (see "Accent picker, language and
+   GitHub" above), its panel opening just below the header like the language menu.
+   On phones (no theme switch in the header), a round button floating in the
+   bottom-right corner, the panel above it. */
 
 .ns-picker {
-  position: fixed;
-  right: 1.25rem;
-  bottom: 1.25rem;
-  z-index: 50;
+  position: relative;
   display: flex;
-  flex-direction: column;
-  align-items: flex-end;
-  gap: 0.75rem;
 }
 
 .ns-picker-button {
   display: grid;
   place-items: center;
+}
+
+.ns-picker-button svg {
+  width: 1.125rem;
+  height: 1.125rem;
+}
+
+/* the phone menu's footer also gets the theme switch; phones have the floating picker */
+#nd-sidebar-mobile .ns-picker {
+  display: none;
+}
+
+.ns-picker[data-floating] {
+  position: fixed;
+  right: 1.25rem;
+  bottom: 1.25rem;
+  z-index: 50;
+  transition: opacity 0.2s;
+}
+
+@media (min-width: 768px) {
+  .ns-picker[data-floating] {
+    display: none;
+  }
+}
+
+/* it would sit on top of the menu's theme switch: hidden while the menu is open */
+html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker[data-floating] {
+  opacity: 0;
+  pointer-events: none;
+}
+
+.ns-picker[data-floating] .ns-picker-button {
   width: 2.75rem;
   height: 2.75rem;
+  padding: 0;
   border-radius: 9999px;
   border: 1px solid color-mix(in oklab, var(--ns-accent) 35%, transparent);
   background:
@@ -3000,16 +3332,16 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   transition: transform 0.2s;
 }
 
-.ns-picker-button:hover {
+.ns-picker[data-floating] .ns-picker-button:hover {
   transform: rotate(-12deg) scale(1.05);
 }
 
-.ns-picker-button svg {
-  width: 1.125rem;
-  height: 1.125rem;
-}
-
 .ns-picker-panel {
+  position: absolute;
+  /* just below the header's bottom edge, level with the language menu */
+  top: calc(100% + 1.375rem);
+  right: 0;
+  z-index: 60;
   display: flex;
   flex-direction: column;
   gap: 0.875rem;
@@ -3018,13 +3350,23 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   /* frosted glass: the page shows through, blurred */
   border: 1px solid color-mix(in oklab, var(--color-fd-foreground) 12%, transparent);
   border-radius: 1.25rem;
+  /* nearly solid: inside the header's own frosted glass, a second blur can't see the page */
+  background:
+    linear-gradient(160deg, color-mix(in oklab, var(--ns-accent) 10%, transparent), transparent 55%),
+    color-mix(in oklab, var(--color-fd-popover) 94%, transparent);
+  box-shadow:
+    inset 0 1px 0 color-mix(in oklab, white 14%, transparent),
+    0 1.25rem 3rem -1rem rgb(0 0 0 / 0.45);
+}
+
+/* floating on phones: the panel opens above the button, frosted over the page */
+.ns-picker[data-floating] .ns-picker-panel {
+  top: auto;
+  bottom: calc(100% + 0.75rem);
   background:
     linear-gradient(160deg, color-mix(in oklab, var(--ns-accent) 10%, transparent), transparent 55%),
     color-mix(in oklab, var(--color-fd-popover) 55%, transparent);
   backdrop-filter: blur(24px) saturate(1.6);
-  box-shadow:
-    inset 0 1px 0 color-mix(in oklab, white 14%, transparent),
-    0 1.25rem 3rem -1rem rgb(0 0 0 / 0.45);
 }
 
 .ns-picker-head {
@@ -3411,6 +3753,7 @@ html:has(#nd-sidebar-mobile[data-state='open']) .ns-picker {
   .ns-home-hero > :nth-child(4) { animation-delay: 0.24s; }
   .ns-home-hero > :nth-child(5) { animation-delay: 0.32s; }
   .ns-home-preview { animation-duration: 1.2s; animation-delay: 0.4s; }
+  .ns-home-accent::after { animation: ns-mark 0.9s 0.85s var(--ns-ease, ease-out) both; }
 
   /* Badge text: a light sweeps across it now and then */
   .ns-shiny {

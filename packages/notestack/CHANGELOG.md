@@ -4,6 +4,27 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+### Added
+
+- A card at the bottom of *On this page* on every docs page. It says the notes are open source, links *Suggest an edit* to the page's file on GitHub (from `repo`, `branch` and `repoDir`), and ends with *Built with Notestack*. Under it, links to the site's `llms.txt` and `llms-full.txt` for AI agents. On screens 1280px and wider it sits in the bottom corner of *On this page*. On phones, tablets, short screens and pages without headings, it sits at the end of the page instead, above *Last updated*. New phrases in `NotesText`: `pageCardLabel`, `pageCardTitle`, `pageCardText`, `pageCardLink`, `pageCardStarLabel`, `pageCardStarTitle`, `pageCardStarText` and `forAgents`.
+
+### Changed
+
+- The Notestack logo is greyscale everywhere (header, docs preview, footer, *Built with*): black in light mode, white in dark mode, whatever the accent, and dimmed wherever the text around it is. It matches the black-and-white browser-tab icon. Before, it was drawn in the accent colour.
+- The landing page's tagline is wider (up to 56rem), so its lines run long on wide screens, and it never leaves one word alone on the last line. The hero's spacing has a rhythm: the pill close to the title, the buttons set apart from the text, and a little room between the buttons and the page counts (three-quarters of it on phones). On phones, the docs preview under the hero is shorter, so the sections come sooner.
+- Notestack's own landing page: the pill shows the theme's version ("v0.2.4 · Free and open source") and links to this changelog; the tagline's last word ("beautifully") is in an accent gradient over a soft marker stroke that sweeps in once the hero has appeared (still for reduced motion); and `npm create notestack@latest`, with a copy button, takes the place of the page counts, as a quiet line of muted text under the buttons. Notes sites keep their own tag and page counts. `withNotestack()` now passes the installed theme's version to the build as `NOTESTACK_VERSION`, next to any `env` the site sets.
+- On phones, the *Star on GitHub* button on Notestack's own site keeps its star count in a narrow cell against the right edge, like GitHub's own Star button, with the label centred on the whole button, level with *Start reading* above it. Before, the full-width button centred both together, so the divider sat off to one side.
+- The accent picker (`<NotesRoot accentPicker>`, for demo sites) is a palette icon in the header on tablets and wider, between the light/dark switch and the language icon, drawn and hovered like the language and GitHub icons. Its panel and the language menu both open just below the header. On phones it still floats in the bottom-right corner. Before, it floated there on every screen size.
+- The landing page's *What's inside* grid shows at most 6 section cards. When a site has more, one row under the grid says how many are left (for example "14 more sections"), links the next 4 by name and ends with "See all in the docs". Sites with 6 sections or fewer look the same as before. Two new phrases in `NotesText`: `moreSections` and `seeAllSections`.
+- Section titles inside a sidebar folder (`---Title---` in a folder's `meta.json`) are easier to spot: a dot in the accent colour sits on the folder's line, and the title is in full-strength text. Top-level section titles look the same as before.
+- Section names in the landing page's strips sit in the middle of the row. The display font left room for descenders below, so names without them looked high.
+
+### Fixed
+
+- The header's language icon brightens on hover, like the GitHub icon. Fumadocs colours the icon itself, so before it stayed grey while its button changed colour.
+- A sidebar heading over several folders (`---Notes---`, then one folder per topic) gives each folder its own section on the landing page and in the footer. Before, the first folder's pages showed under the heading's name (a "Notes" card that was really the first topic) and the other folders got their own cards. A heading with one folder right under it works as before.
+- Every landing page section card is clickable all over, as intended: before, only its title and page links were, so clicking an empty part of a card or *Start with …* did nothing.
+
 ## 0.2.3 (2026-11-26)
 
 Image captions read as part of the image. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in.

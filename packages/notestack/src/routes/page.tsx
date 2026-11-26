@@ -76,7 +76,12 @@ export function createNotesPage<C extends NotesLoaderConfig>({
     return (
       <DocsPage
         full={page.data.full}
-        {...notesPageProps({ toc: page.data.toc, lastModified: pageLastModified(page), site: local })}
+        {...notesPageProps({
+          toc: page.data.toc,
+          lastModified: pageLastModified(page),
+          site: local,
+          editUrl: githubUrl?.replace('/blob/', '/edit/'),
+        })}
       >
         <DocsTitle className="ns-page-title">{page.data.title}</DocsTitle>
         <DocsDescription className="mb-0">{page.data.description}</DocsDescription>

@@ -1,6 +1,7 @@
 import { DocsLayout } from 'fumadocs-ui/layouts/notebook';
 import { FullSearchTrigger } from 'fumadocs-ui/layouts/shared/slots/search-trigger';
 import { PhoneSearchTrigger } from './phone-search.js';
+import { NotesThemeSwitch } from '../components/accent-picker.js';
 import type * as PageTree from 'fumadocs-core/page-tree';
 import type { ReactNode } from 'react';
 import { lucideIcon } from '../icons.js';
@@ -31,7 +32,7 @@ export function NotesLayout({
       tree={tree}
       {...baseOptions(site)}
       // phones: the language switch sits in the header, before the search button
-      slots={{ searchTrigger: { sm: PhoneSearchTrigger, full: FullSearchTrigger } }}
+      slots={{ searchTrigger: { sm: PhoneSearchTrigger, full: FullSearchTrigger }, themeSwitch: NotesThemeSwitch }}
       sidebar={{
         collapsible: false,
         banner: (

@@ -39,6 +39,10 @@ export interface NotesText {
   firstSection: string;
   /** `{n}` pages not listed */
   andMore: string;
+  /** `{n}` sections after the mosaic's six cards */
+  moreSections: Plural;
+  /** Link after those sections' names, to the first page of the docs */
+  seeAllSections: string;
   /** `{page}` */
   startWith: string;
   builtWith: string;
@@ -51,6 +55,18 @@ export interface NotesText {
   byAuthor: string;
   /** `{name}`: Notestack, or Fumadocs on Notestack's own docs site */
   footerCredit: string;
+
+  /* Card under "On this page" on a notes site: the notes are open, "Suggest an edit" */
+  pageCardLabel: string;
+  pageCardTitle: string;
+  pageCardText: string;
+  pageCardLink: string;
+  /* The same card on Notestack's own docs site, with "Star on GitHub" */
+  pageCardStarLabel: string;
+  pageCardStarTitle: string;
+  pageCardStarText: string;
+  /** Under the card, before the links to llms.txt and llms-full.txt */
+  forAgents: string;
   footerNav: string;
   footerNotes: string;
   footerLinks: string;
@@ -138,6 +154,8 @@ export const en: NotesText = {
   contentsText: '{pages} in {sections}. Jump into any of them, or start from the first page.',
   firstSection: 'Start here',
   andMore: ' and {n} more',
+  moreSections: { one: '{n} more section', other: '{n} more sections' },
+  seeAllSections: 'See all in the docs',
   startWith: 'Start with {page}',
   builtWith: 'Built with',
 
@@ -146,6 +164,15 @@ export const en: NotesText = {
   searchButton: 'Search the notes',
   byAuthor: 'by {author}',
   footerCredit: 'Built with {name}',
+
+  pageCardLabel: 'Open notes',
+  pageCardTitle: 'Spotted a mistake?',
+  pageCardText: 'These notes are open source. Suggest a fix, or star the repo if they helped you.',
+  pageCardLink: 'Suggest an edit',
+  pageCardStarLabel: 'Free and open source',
+  pageCardStarTitle: 'Built in the open',
+  pageCardStarText: 'Notestack is made for people who learn in public. A star helps others find it.',
+  forAgents: 'For AI agents:',
   footerNav: 'Footer',
   footerNotes: 'Notes',
   footerLinks: 'Links',
@@ -221,6 +248,8 @@ export const zhCN: NotesText = {
   contentsText: '共 {sections}，{pages}。可以从任意章节开始，也可以从第一页读起。',
   firstSection: '从这里开始',
   andMore: '，以及另外 {n} 页',
+  moreSections: { other: '另外 {n} 个章节' },
+  seeAllSections: '在文档中查看全部',
   startWith: '从「{page}」开始',
   builtWith: '构建工具',
 
@@ -229,6 +258,15 @@ export const zhCN: NotesText = {
   searchButton: '搜索笔记',
   byAuthor: '作者：{author}',
   footerCredit: '基于 {name} 构建',
+
+  pageCardLabel: '开放笔记',
+  pageCardTitle: '发现错误了？',
+  pageCardText: '这些笔记是开源的。欢迎提出修改；如果对你有帮助，也可以给仓库加星标。',
+  pageCardLink: '建议修改',
+  pageCardStarLabel: '免费开源',
+  pageCardStarTitle: '公开构建',
+  pageCardStarText: 'Notestack 为公开学习的人而做。加一颗星标，能帮更多人找到它。',
+  forAgents: '供 AI 智能体使用：',
   footerNav: '页脚',
   footerNotes: '笔记',
   footerLinks: '链接',
