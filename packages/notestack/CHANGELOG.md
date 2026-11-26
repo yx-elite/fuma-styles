@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+## 0.2.2 (2026-11-26)
+
+A GitHub star button on Notestack's own docs site, and new wording for the package. Nothing to change in existing sites, and nothing looks different in them.
+
 ### Added
 
 - Notestack's own docs site shows "Star on GitHub" with the repo's live star count in the landing page hero. Notes sites keep "View on GitHub"; nothing changes for them. New text key `starOnGitHub`.
