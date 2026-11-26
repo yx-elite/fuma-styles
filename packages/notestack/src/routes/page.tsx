@@ -70,13 +70,21 @@ export function createNotesPage<C extends NotesLoaderConfig>({
     // The file this page comes from. A page not translated yet is the default language's file.
     const file = page.absolutePath ? relative(process.cwd(), page.absolutePath) : undefined;
     const folder = repoDir ? `${repoDir.replace(/\/+$/, '')}/` : '';
-    const githubUrl = file && `${repoUrl(site)}/blob/${site.branch ?? 'main'}/${folder}${encodeURI(file)}`;
+    // On GitHub: /blob/ shows the file, /edit/ opens it in the editor
+    const fileUrl = (mode: 'blob' | 'edit') =>
+      file && `${repoUrl(site)}/${mode}/${site.branch ?? 'main'}/${folder}${encodeURI(file)}`;
+    const githubUrl = fileUrl('blob');
     const markdownUrl = pageMarkdownUrl(page);
 
     return (
       <DocsPage
         full={page.data.full}
-        {...notesPageProps({ toc: page.data.toc, lastModified: pageLastModified(page), site: local })}
+        {...notesPageProps({
+          toc: page.data.toc,
+          lastModified: pageLastModified(page),
+          site: local,
+          editUrl: fileUrl('edit'),
+        })}
       >
         <DocsTitle className="ns-page-title">{page.data.title}</DocsTitle>
         <DocsDescription className="mb-0">{page.data.description}</DocsDescription>

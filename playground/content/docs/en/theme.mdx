@@ -6,7 +6,7 @@ icon: Palette
 
 ## Accent colour
 
-One colour drives the whole look: links, active items, the glow, the border light, the banner, the logo and the landing page. Set it in `site.config.ts`:
+One colour drives the whole look: links, active items, the glow, the border light, the banner and the landing page. Set it in `site.config.ts`:
 
 ```ts title="site.config.ts"
 accent: { light: '#7c3aed', dark: '#c4b5fd' },
@@ -60,6 +60,6 @@ Each note's title and the landing page's section titles use [Instrument Serif](h
 
 ## Logo and favicon
 
-The logo in the header and the footer is the Notestack mark, drawn in your accent colour. It can't be swapped for an image yet.
+The logo in the header and the footer is the Notestack mark, in greyscale: black in light mode and white in dark mode, whatever your accent, like the browser-tab icon. It can't be swapped for an image yet.
 
 The browser-tab icon is `app/icon.svg`. To use your own, replace that file with another SVG, or delete it and add `app/icon.png` (a square PNG, at least 64 by 64 pixels) or `app/favicon.ico`. Next.js picks up whichever is there.

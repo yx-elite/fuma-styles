@@ -51,8 +51,11 @@ export function StarButton({ repo, label, language }: { repo: string; label: str
 
   return (
     <a href={`https://github.com/${repo}`} className="ns-button ns-button-secondary ns-star-button" target="_blank" rel="noreferrer">
-      <GitHubMark />
-      {label}
+      {/* one box for mark and label, so on phones it centres in the space the count leaves */}
+      <span className="ns-star-label">
+        <GitHubMark />
+        {label}
+      </span>
       {count !== undefined && (
         <span className="ns-star-count">
           <Star aria-hidden />

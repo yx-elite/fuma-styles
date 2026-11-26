@@ -56,6 +56,60 @@ describe('groupPageTree (the landing page sections)', () => {
     ]);
   });
 
+  it('makes each folder its own section when a separator has several', () => {
+    const tree: PageTree.Root = {
+      name: 'Docs',
+      children: [
+        { type: 'separator', name: 'Start here' },
+        page('Welcome'),
+        { type: 'separator', name: 'Notes' },
+        { type: 'folder', name: 'Foundations', index: page('Foundations'), children: [page('Regions')] },
+        { type: 'folder', name: 'Identity', children: [page('Users'), page('Roles')] },
+        { type: 'folder', name: 'Compute', children: [page('EC2')] },
+      ],
+    };
+    expect(sections(tree)).toEqual([
+      ['Start here', ['/docs/welcome']],
+      ['Foundations', ['/docs/foundations', '/docs/regions']],
+      ['Identity', ['/docs/users', '/docs/roles']],
+      ['Compute', ['/docs/ec2']],
+    ]);
+  });
+
+  it("keeps a separator's loose pages under its name next to its folders", () => {
+    const tree: PageTree.Root = {
+      name: 'Docs',
+      children: [
+        { type: 'separator', name: 'Notes' },
+        page('Overview'),
+        { type: 'folder', name: 'Identity', children: [page('Users')] },
+        { type: 'folder', name: 'Compute', children: [page('EC2')] },
+      ],
+    };
+    expect(sections(tree)).toEqual([
+      ['Notes', ['/docs/overview']],
+      ['Identity', ['/docs/users']],
+      ['Compute', ['/docs/ec2']],
+    ]);
+  });
+
+  it("keeps the sidebar's order when loose pages sit between a separator's folders", () => {
+    const tree: PageTree.Root = {
+      name: 'Docs',
+      children: [
+        { type: 'separator', name: 'Notes' },
+        { type: 'folder', name: 'Identity', children: [page('Users')] },
+        page('Overview'),
+        { type: 'folder', name: 'Compute', children: [page('EC2')] },
+      ],
+    };
+    expect(sections(tree)).toEqual([
+      ['Identity', ['/docs/users']],
+      ['Notes', ['/docs/overview']],
+      ['Compute', ['/docs/ec2']],
+    ]);
+  });
+
   it('drops sections with no pages', () => {
     const tree: PageTree.Root = {
       name: 'Docs',

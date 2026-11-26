@@ -1,3 +1,4 @@
+import { readFileSync } from 'node:fs';
 import { describe, expect, it } from 'vitest';
 import { withNotestack } from '../src/next.js';
 
@@ -20,6 +21,12 @@ describe('withNotestack', () => {
     expect(config.output).toBe('export');
     expect(config.trailingSlash).toBe(true);
     expect(config.images?.unoptimized).toBe(true);
+  });
+
+  it("passes the theme's version to the build, next to the site's own env", () => {
+    const { version } = JSON.parse(readFileSync(new URL('../package.json', import.meta.url), 'utf8'));
+    const config = withNotestack({ env: { MY_KEY: 'x' } });
+    expect(config.env).toEqual({ MY_KEY: 'x', NOTESTACK_VERSION: version });
   });
 
   it('keeps the site image settings next to unoptimized', () => {
