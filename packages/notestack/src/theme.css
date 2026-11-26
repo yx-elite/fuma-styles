@@ -524,9 +524,22 @@ html > body[data-scroll-locked] {
   margin-inline: auto;
 }
 
-/* Image captions, centred under the image (code-block file names are figcaptions too: left alone) */
+/*
+ * Image captions: centred, close under the image, small, italic and muted, so they read
+ * as part of the image. The image drops its own margins inside a figure (the figure keeps
+ * its spacing to the text around it). Code-block file names are figcaptions too: left alone.
+ */
+.prose figure:has(img) img {
+  margin-block: 0;
+}
+
 .prose figure:has(img) > figcaption {
+  margin-top: 0.625rem;
   text-align: center;
+  font-size: 0.875rem;
+  line-height: 1.5;
+  font-style: italic;
+  color: var(--color-fd-muted-foreground);
 }
 
 /*

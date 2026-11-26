@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+### Changed
+
+- Image captions (`<figcaption>` under an image in a `<figure>`) sit close under the image, in smaller, italic, muted text, so they read as part of the image. Before, they were full-colour text 32px below it. Code-block file names are not affected.
+
 ## 0.2.2 (2026-11-26)
 
 A GitHub star button on Notestack's own docs site, and new wording for the package. Nothing to change in existing sites, and nothing looks different in them.
