@@ -15,7 +15,7 @@ It has three parts, and each has one job:
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.2, 2026-11-26), and the docs site is live at https://notestack.yxelite.dev; the reusable deploy workflow for notes repos is planned. See `PRD.md`.
+Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.3, 2026-11-26), and the docs site is live at https://notestack.yxelite.dev; the reusable deploy workflow for notes repos is planned. See `PRD.md`.
 
 ## Fumadocs docs
 

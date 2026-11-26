@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+## 0.2.3 (2026-11-26)
+
+Image captions read as part of the image. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in.
+
 ### Changed
 
 - Image captions (`<figcaption>` under an image in a `<figure>`) sit close under the image, in smaller, italic, muted text, so they read as part of the image. Before, they were full-colour text 32px below it. Code-block file names are not affected.
