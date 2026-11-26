@@ -1,0 +1,99 @@
+name: Release
+
+# Runs when a version tag is pushed: `git tag -m "0.2.4" v0.2.4 && git push origin v0.2.4`.
+# Checks the tag, both package versions and the CHANGELOG agree, runs the same checks as CI,
+# publishes both packages to npm with trusted publishing (OIDC, no token stored), then
+# creates the GitHub Release from that version's CHANGELOG section.
+on:
+  push:
+    tags: ["v*"]
+
+permissions:
+  contents: write # create the GitHub Release
+  id-token: write # sign in to npm with OIDC (trusted publishing)
+
+# Never two releases at once, and never cancel one halfway
+concurrency:
+  group: release
+  cancel-in-progress: false
+
+jobs:
+  release:
+    name: Publish ${{ github.ref_name }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+
+    steps:
+      - name: Check out the tagged commit
+        uses: actions/checkout@v7
+        with:
+          fetch-depth: 0 # last-updated dates in the build need the history
+
+      - name: Set up Node.js 24
+        uses: actions/setup-node@v7
+        with:
+          node-version: 24
+          cache: "npm"
+          registry-url: "https://registry.npmjs.org"
+
+      - name: Use an npm that supports trusted publishing (11.5.1 or newer)
+        run: npm install -g npm@latest
+
+      - name: Check the tag, both versions and the CHANGELOG agree
+        run: |
+          version="${GITHUB_REF_NAME#v}"
+          theme=$(node -p "require('./packages/notestack/package.json').version")
+          create=$(node -p "require('./packages/create-notestack/package.json').version")
+          echo "tag $version · @yx-elite/notestack $theme · create-notestack $create"
+          if [ "$theme" != "$version" ] || [ "$create" != "$version" ]; then
+            echo "::error::Tag v$version does not match the package versions ($theme, $create)"
+            exit 1
+          fi
+          if ! grep -q "^## $version " packages/notestack/CHANGELOG.md; then
+            echo "::error::CHANGELOG.md has no '## $version (date)' section"
+            exit 1
+          fi
+          echo "VERSION=$version" >> "$GITHUB_ENV"
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run the unit tests
+        run: npm test
+
+      - name: Type-check the package, playground, and starter
+        run: npm run typecheck
+
+      - name: Build the package and both sites
+        run: npm run build
+
+      # The theme first: create-notestack installs it at ^ its own version.
+      # Each publish is skipped when that version is already on npm, so a failed run can be re-run.
+      - name: Publish @yx-elite/notestack
+        run: |
+          if npm view "@yx-elite/notestack@$VERSION" version >/dev/null 2>&1; then
+            echo "@yx-elite/notestack@$VERSION is already on npm, skipping"
+          else
+            npm publish -w @yx-elite/notestack
+          fi
+
+      - name: Publish create-notestack
+        run: |
+          if npm view "create-notestack@$VERSION" version >/dev/null 2>&1; then
+            echo "create-notestack@$VERSION is already on npm, skipping"
+          else
+            npm publish -w create-notestack
+          fi
+
+      - name: Create the GitHub Release from the CHANGELOG
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          awk -v v="$VERSION" '$0 ~ "^## " v " " {f=1; next} /^## /{f=0} f' \
+            packages/notestack/CHANGELOG.md > "$RUNNER_TEMP/notes.md"
+          if gh release view "$GITHUB_REF_NAME" >/dev/null 2>&1; then
+            echo "Release $GITHUB_REF_NAME already exists, skipping"
+          else
+            gh release create "$GITHUB_REF_NAME" --title "$VERSION" \
+              --notes-file "$RUNNER_TEMP/notes.md" --verify-tag
+          fi

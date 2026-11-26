@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+## 0.2.4 (2026-11-27)
+
+A card under *On this page*, at most six section cards on the landing page, clearer sidebar groups, a greyscale logo and a refreshed hero. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in. From this version on, releases are published by GitHub Actions with npm provenance.
+
 ### Added
 
 - A card at the bottom of *On this page* on every docs page. It says the notes are open source, links *Suggest an edit* to the page's file on GitHub (from `repo`, `branch` and `repoDir`), and ends with *Built with Notestack*. Under it, links to the site's `llms.txt` and `llms-full.txt` for AI agents. On screens 1280px and wider it sits in the bottom corner of *On this page*. On phones, tablets, short screens and pages without headings, it sits at the end of the page instead, above *Last updated*. New phrases in `NotesText`: `pageCardLabel`, `pageCardTitle`, `pageCardText`, `pageCardLink`, `pageCardStarLabel`, `pageCardStarTitle`, `pageCardStarText` and `forAgents`.

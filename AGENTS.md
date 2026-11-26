@@ -15,7 +15,7 @@ It has three parts, and each has one job:
 | Starter | `starter/` | The thin shell a new notes repo is copied from | No (copied by `create-notestack`) |
 | Create command | `packages/create-notestack/` | `npm create notestack@latest my-notes`: copies `starter/` into a new folder and installs it | Yes, to npm |
 
-Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.3, 2026-11-26), and the docs site is live at https://notestack.yxelite.dev; the reusable deploy workflow for notes repos is planned. See `PRD.md`.
+Status: the package, `playground/`, `starter/`, `create-notestack` and CI (`.github/workflows/ci.yml`) exist; both packages are on npm (0.2.4, 2026-11-27, the first release published by `release.yml`), and the docs site is live at https://notestack.yxelite.dev; the reusable deploy workflow for notes repos is planned. See `PRD.md`.
 
 ## Fumadocs docs
 
@@ -56,6 +56,7 @@ notestack/
 │       ├── ci.yml            ← on every push to main and every pull request, Node 22 and 24: install, test, type-check, build, pack --dry-run; plus a job that creates a site from both packed packages and builds it
 │       ├── deploy-docs.yml   ← on pushes to main that touch the playground or package, and by hand: builds the playground and syncs it to S3 (https://notestack.yxelite.dev), signing in to AWS with OIDC
 │       ├── fumadocs-latest.yml ← daily and by hand, Node 22 and 24: test, type-check and build with the newest Fumadocs 16.x
+│       ├── release.yml       ← on a pushed v* tag: checks versions, tests, builds, publishes both packages to npm (trusted publishing) and creates the GitHub Release
 │       └── deploy-s3.yml     ← (planned) reusable deploy workflow that notes repos call
 ├── packages/create-notestack/ ← the `npm create notestack` command: index.js, test/ (node:test), and template/ copied from starter/ before each pack and each test run (git-ignored)
 ├── packages/notestack/       ← @yx-elite/notestack
@@ -141,6 +142,28 @@ Before calling a change done, everything that exists from this list must pass: t
 - Since `0.1.0`, each release gets its own section (`## 0.2.0 (date)`), with *Added*, *Changed*, *Fixed* and *Migration* as needed. Lines collect under *Unreleased* until then.
 - `@yx-elite/notestack` and `create-notestack` always share a version number and are published together: `create-notestack` installs `@yx-elite/notestack` at `^` its own version. A test in `packages/create-notestack/test/` fails when the two versions differ.
 - The reusable deploy workflow is pinned by notes repos to a major tag (`@v1`). Changing its inputs is a breaking change.
+- Releases are published by `.github/workflows/release.yml` when a `v*` tag is pushed, never by hand. It stops unless the tag, both package versions and a `## X.Y.Z (date)` CHANGELOG section agree, runs test, type-check and build, publishes `@yx-elite/notestack` then `create-notestack` with npm trusted publishing (no token; npmjs.com trusts `yx-elite/notestack` + `release.yml` for both packages), and creates the GitHub Release from that CHANGELOG section. A re-run skips what is already published.
+
+### Release checklist
+
+The maintainer runs these; an agent prepares the files when asked and gives the commands. Replace `0.2.5` with the new version.
+
+1. In `packages/notestack/CHANGELOG.md`, add `## 0.2.5 (YYYY-MM-DD)` under `## Unreleased` with a one-line summary, so the collected lines fall under it. Leave *Unreleased* empty.
+2. Bump both packages (also updates `package-lock.json`):
+
+   ```bash
+   npm version 0.2.5 -w @yx-elite/notestack -w create-notestack --no-git-tag-version
+   ```
+
+3. Check: `npm test && npm run typecheck && npm run build`.
+4. Commit and push: `git add -A && git commit -m "🔖 release: notestack and create-notestack 0.2.5" && git push`.
+5. Tag and push the tag (signed tags need `-m`), which starts the release:
+
+   ```bash
+   git tag -m "0.2.5" v0.2.5 && git push origin v0.2.5
+   ```
+
+6. Watch it: `gh run watch $(gh run list --workflow release.yml --limit 1 --json databaseId --jq '.[0].databaseId')`. If it fails before publishing, fix, delete the tag (`git push origin :refs/tags/v0.2.5 && git tag -d v0.2.5`) and tag again; if it fails after, fix and `gh run rerun --failed`.
 
 ## Commit messages
 
