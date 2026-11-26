@@ -93,6 +93,23 @@ describe('groupPageTree (the landing page sections)', () => {
     ]);
   });
 
+  it("keeps the sidebar's order when loose pages sit between a separator's folders", () => {
+    const tree: PageTree.Root = {
+      name: 'Docs',
+      children: [
+        { type: 'separator', name: 'Notes' },
+        { type: 'folder', name: 'Identity', children: [page('Users')] },
+        page('Overview'),
+        { type: 'folder', name: 'Compute', children: [page('EC2')] },
+      ],
+    };
+    expect(sections(tree)).toEqual([
+      ['Identity', ['/docs/users']],
+      ['Notes', ['/docs/overview']],
+      ['Compute', ['/docs/ec2']],
+    ]);
+  });
+
   it('drops sections with no pages', () => {
     const tree: PageTree.Root = {
       name: 'Docs',

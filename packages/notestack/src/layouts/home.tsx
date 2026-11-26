@@ -94,7 +94,13 @@ export function groupPageTree(
       icon: separator?.icon,
       pages: [],
     };
-    groups.push(own);
+    // The separator's own section takes its place where its first page is, so the
+    // sections keep the sidebar's order (folder A, loose page, folder B)
+    let placed = false;
+    const place = () => {
+      if (!placed) groups.push(own);
+      placed = true;
+    };
     const onlyFolder =
       separator !== undefined &&
       nodes.filter((node) => node.type === "folder").length === 1;
@@ -102,6 +108,7 @@ export function groupPageTree(
     for (const node of nodes) {
       if (node.type === "folder") {
         if (onlyFolder && own.pages.length === 0) {
+          place();
           own.icon ??= node.icon;
           collectPages([node], own.pages);
         } else {
@@ -114,6 +121,7 @@ export function groupPageTree(
           groups.push(group);
         }
       } else if (node.type === "page") {
+        place();
         own.pages.push(node);
       }
     }
@@ -267,7 +275,11 @@ export function NotesHome({
               <span aria-hidden>$ </span>
               {CREATE_COMMAND}
             </code>
-            <CopyButton text={CREATE_COMMAND} />
+            <CopyButton
+              text={CREATE_COMMAND}
+              label={text.copy}
+              copiedLabel={text.copied}
+            />
           </div>
         ) : (
         <p className="ns-home-stats">

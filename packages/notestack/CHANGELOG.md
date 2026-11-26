@@ -22,6 +22,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 ### Fixed
 
 - The header's language icon brightens on hover, like the GitHub icon. Fumadocs colours the icon itself, so before it stayed grey while its button changed colour.
+- A heading's own pages keep their place among its folders on the landing page (folder, pages, folder, as in the sidebar). The install command's copy button is translated. The page card's *Suggest an edit* link is built for GitHub's editor directly, so a repo with `blob` in its name links correctly. The header and floating accent pickers (demo sites) show the same chosen accent.
 - A sidebar heading over several folders (`---Notes---`, then one folder per topic) gives each folder its own section on the landing page and in the footer. Before, the first folder's pages showed under the heading's name (a "Notes" card that was really the first topic) and the other folders got their own cards. A heading with one folder right under it works as before.
 - Every landing page section card is clickable all over, as intended: before, only its title and page links were, so clicking an empty part of a card or *Start with …* did nothing.
 

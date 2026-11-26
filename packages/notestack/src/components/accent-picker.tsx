@@ -32,6 +32,8 @@ export const accentSwatches: AccentSwatch[] = [
 
 const KEY = 'ns-accent';
 const STYLE_ID = 'ns-accent-picked';
+/** Sent on window when either picker changes the accent */
+const CHANGE_EVENT = 'ns-accent-change';
 
 type Picked = { light: string; dark: string };
 
@@ -127,7 +129,14 @@ export function AccentPicker({
   const [picked, setPicked] = useState<Picked | null>(null);
   const root = useRef<HTMLDivElement>(null);
 
-  useEffect(() => setPicked(load()), []);
+  // The saved accent, then any change made in the other picker (header and floating
+  // one share the page), so both show the same tick and Reset state
+  useEffect(() => {
+    setPicked(load());
+    const onChange = (event: Event) => setPicked((event as CustomEvent<Picked | null>).detail);
+    window.addEventListener(CHANGE_EVENT, onChange);
+    return () => window.removeEventListener(CHANGE_EVENT, onChange);
+  }, []);
 
   useEffect(() => {
     if (!open) return;
@@ -146,9 +155,10 @@ export function AccentPicker({
   }, [open]);
 
   const choose = (next: Picked | null) => {
-    setPicked(next);
     apply(next);
     save(next);
+    // updates this picker and the other one
+    window.dispatchEvent(new CustomEvent(CHANGE_EVENT, { detail: next }));
   };
 
   // A custom colour is used as is in light mode; dark mode gets a lighter version of it
