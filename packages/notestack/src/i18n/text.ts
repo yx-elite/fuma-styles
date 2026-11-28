@@ -39,7 +39,7 @@ export interface NotesText {
   firstSection: string;
   /** `{n}` pages not listed */
   andMore: string;
-  /** `{n}` sections after the mosaic's six cards */
+  /** `{n}` sections after the mosaic's four cards, on a site with more than six */
   moreSections: Plural;
   /** Link after those sections' names, to the first page of the docs */
   seeAllSections: string;

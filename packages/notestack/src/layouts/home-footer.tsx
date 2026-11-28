@@ -1,4 +1,5 @@
 import Link from 'fumadocs-core/link';
+import { plainText } from '../config/marks.js';
 import { ArrowUp } from 'lucide-react';
 import type { CSSProperties } from 'react';
 import { repoUrl, type SiteConfig } from '../config/site.js';
@@ -32,14 +33,14 @@ export function HomeFooter({
   const year = (updated ?? new Date()).getUTCFullYear();
 
   return (
-    <footer className="ns-footer" style={{ '--ns-name-length': Math.max(site.name.length, 4) } as CSSProperties}>
+    <footer className="ns-footer" style={{ '--ns-name-length': Math.max(plainText(site.name).length, 4) } as CSSProperties}>
       <div className="ns-footer-main">
         <div className="ns-footer-brand">
           <Link href={localizeHref('/', site)} className="ns-footer-name">
             <NotesLogo className="ns-footer-logo" />
-            {site.name}
+            {plainText(site.name)}
           </Link>
-          <p>{site.description}</p>
+          <p>{plainText(site.description)}</p>
           <a href={repoUrl(site)} target="_blank" rel="noreferrer" className="ns-footer-repo">
             <GitHubMark />
             {site.repo}
@@ -83,7 +84,7 @@ export function HomeFooter({
 
       <div className="ns-footer-bottom">
         <span>
-          © {year} {site.author ?? site.name}
+          © {year} {site.author ?? plainText(site.name)}
           <span className="ns-footer-sep" aria-hidden>
             ·
           </span>
@@ -110,7 +111,7 @@ export function HomeFooter({
       </div>
 
       <div className="ns-footer-wordmark" aria-hidden>
-        {site.name}
+        {plainText(site.name)}
       </div>
     </footer>
   );

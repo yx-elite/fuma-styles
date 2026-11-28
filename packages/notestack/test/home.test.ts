@@ -1,6 +1,6 @@
 import type * as PageTree from 'fumadocs-core/page-tree';
 import { describe, expect, it } from 'vitest';
-import { groupPageTree } from '../src/layouts/home.js';
+import { groupPageTree, mosaicSections } from '../src/layouts/home.js';
 
 const page = (name: string): PageTree.Item => ({ type: 'page', name, url: `/docs/${name.toLowerCase()}` });
 
@@ -116,5 +116,27 @@ describe('groupPageTree (the landing page sections)', () => {
       children: [{ type: 'separator', name: 'Empty' }, { type: 'separator', name: 'Writing' }, page('Callouts')],
     };
     expect(sections(tree)).toEqual([['Writing', ['/docs/callouts']]]);
+  });
+});
+
+describe('mosaicSections (which sections get a card)', () => {
+  const count = (n: number) => {
+    const { shown, hidden } = mosaicSections(Array.from({ length: n }, (_, i) => i));
+    return [shown.length, hidden.length];
+  };
+
+  it('gives every section a card up to six', () => {
+    expect(count(1)).toEqual([1, 0]);
+    expect(count(6)).toEqual([6, 0]);
+  });
+
+  it('shows four cards and puts the rest in the "more sections" row from seven on', () => {
+    expect(count(7)).toEqual([4, 3]);
+    expect(count(20)).toEqual([4, 16]);
+  });
+
+  it('keeps the sidebar order across both', () => {
+    const { shown, hidden } = mosaicSections(['a', 'b', 'c', 'd', 'e', 'f', 'g']);
+    expect([...shown, ...hidden]).toEqual(['a', 'b', 'c', 'd', 'e', 'f', 'g']);
   });
 });

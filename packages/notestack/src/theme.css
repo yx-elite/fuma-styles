@@ -1358,6 +1358,9 @@ html[data-ns-transition] #nd-subnav a:has(.ns-nav-name) { view-transition-name: 
 html[data-ns-transition] #nd-subnav button:has(kbd) { view-transition-name: ns-nav-search; }
 html[data-ns-transition] #nd-subnav [data-theme-toggle] { view-transition-name: ns-nav-theme; }
 html[data-ns-transition] #nd-subnav a[href*='github.com'] { view-transition-name: ns-nav-github; }
+/* Matched by icon, since the label is translated; the phone copy is hidden on wider screens and must not share the name */
+html[data-ns-transition] #nd-subnav button:has(> .lucide-languages):not(.ns-phone-language) { view-transition-name: ns-nav-language; }
+html[data-ns-transition] #nd-subnav .ns-picker-button { view-transition-name: ns-nav-accent; }
 
 /*
  * Leaving a page that is scrolled down (data-ns-scrolled): the landing page or
@@ -1390,7 +1393,9 @@ html[data-ns-transition='to-home'][data-ns-scrolled] #nd-notebook-layout #nd-pag
   ::view-transition-group(ns-nav-title),
   ::view-transition-group(ns-nav-search),
   ::view-transition-group(ns-nav-theme),
-  ::view-transition-group(ns-nav-github) {
+  ::view-transition-group(ns-nav-github),
+  ::view-transition-group(ns-nav-language),
+  ::view-transition-group(ns-nav-accent) {
     animation-duration: 0.75s;
     animation-timing-function: var(--ns-ease-move);
   }
@@ -1531,7 +1536,7 @@ a.ns-home-badge:hover {
   background: color-mix(in oklab, var(--ns-accent) 16%, transparent);
 }
 
-/* Notestack's own site: the description's last word in an accent gradient, over
+/* Words marked `*…*` in `description`: an accent gradient, over
    a soft marker stroke that sweeps in once the hero is up (Landing interactions) */
 .ns-home-accent {
   position: relative;
@@ -1614,6 +1619,18 @@ a.ns-home-badge:hover {
 
 .ns-home-word:not(:last-child) {
   margin-inline-end: 0.25em;
+}
+
+/* One block per line of the title (`\n` in `name`) */
+.ns-home-line {
+  display: block;
+}
+
+/* A title word marked `*…*` in `name`: the accent gradient instead of the text colour */
+.ns-home-word.ns-home-word-accent {
+  background: linear-gradient(100deg, var(--ns-accent), var(--ns-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .ns-home-text {

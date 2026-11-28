@@ -1,7 +1,8 @@
 import Link from "fumadocs-core/link";
 import type * as PageTree from "fumadocs-core/page-tree";
 import { ArrowRight, Check, Sparkles } from "lucide-react";
-import type { CSSProperties, ReactNode } from "react";
+import { Fragment, type CSSProperties, type ReactNode } from "react";
+import { markedLines, plainText } from "../config/marks.js";
 import { CopyButton } from "../components/copy-button.js";
 import { DocsPreview } from "./home-preview.js";
 import { HomeEffects } from "./home-effects.js";
@@ -130,6 +131,16 @@ export function groupPageTree(
   return groups.filter((group) => group.pages.length > 0);
 }
 
+/**
+ * Which sections get a card in the mosaic. Up to six all do (feature, three tiles,
+ * one row of two strips). With more, the first four do and the rest share one
+ * "N more sections" row under them, so that row never stands for just one or two.
+ */
+export function mosaicSections<T>(groups: T[]): { shown: T[]; hidden: T[] } {
+  const cards = groups.length <= 6 ? groups.length : 4;
+  return { shown: groups.slice(0, cards), hidden: groups.slice(cards) };
+}
+
 function latestUpdate(source: HomeSource, language?: string): Date | undefined {
   let latest: number | undefined;
   for (const page of source.getPages(language)) {
@@ -147,24 +158,34 @@ const CREATE_COMMAND = "npm create notestack@latest";
 const changelogUrl = (site: SiteConfig) =>
   `${repoUrl(site)}/blob/main/packages/notestack/CHANGELOG.md`;
 
-/**
- * Notestack's own site: the description's last word highlighted
- * ("…reads *beautifully*."). Chinese, Japanese and Korean text, which has no spaces
- * between words, stays as it is.
- */
-function accentLastWord(description: string): ReactNode {
-  if (/[\p{Script=Han}\p{Script=Hiragana}\p{Script=Katakana}\p{Script=Hangul}]/u.test(description)) {
-    return description;
-  }
-  const match = /^(.*\s)(\S+?)([.!?…]?)$/.exec(description);
-  if (!match) return description;
-  return (
-    <>
-      {match[1]}
-      <span className="ns-home-accent">{match[2]}</span>
-      {match[3]}
-    </>
+/** The hero's title: one block per line (`\n` in `name`), each a list of words, accented or not */
+function titleLines(name: string) {
+  return markedLines(name).map((line) =>
+    line.flatMap((part) =>
+      part.text
+        .split(/\s+/)
+        .filter(Boolean)
+        .map((word) => ({ word, accent: part.accent })),
+    ),
   );
+}
+
+/** The hero's description: line breaks (`\n`) and accented words (`*text*`) */
+function heroText(description: string): ReactNode {
+  return markedLines(description).map((line, l) => (
+    <Fragment key={l}>
+      {l > 0 && <br />}
+      {line.map((part, i) =>
+        part.accent ? (
+          <span key={i} className="ns-home-accent">
+            {part.text}
+          </span>
+        ) : (
+          part.text
+        ),
+      )}
+    </Fragment>
+  ));
 }
 
 const vars = (values: Record<string, string | number>) =>
@@ -203,12 +224,10 @@ export function NotesHome({
     text.firstSection,
   );
   const pageCount = groups.reduce((sum, group) => sum + group.pages.length, 0);
-  // The mosaic shows the first sections as cards; the rest get one row under it
-  const shown = groups.slice(0, MOSAIC_MAX);
-  const hidden = groups.slice(MOSAIC_MAX);
+  const { shown, hidden } = mosaicSections(groups);
   const updated = latestUpdate(source, treeLanguage);
   const firstUrl = groups[0]?.pages[0]?.url ?? docsPath;
-  const words = site.name.split(/\s+/);
+  const lines = titleLines(site.name);
   const own = isNotestackSite(site);
   // Set by withNotestack() from the installed package (next.config.mjs)
   const version = process.env.NOTESTACK_VERSION;
@@ -233,19 +252,27 @@ export function NotesHome({
             </span>
           )
         )}
-        <h1 className="ns-home-title" aria-label={site.name}>
-          {words.map((word, i) => (
-            <span
-              key={i}
-              className="ns-home-word"
-              style={vars({ "--ns-i": i })}
-              aria-hidden
-            >
-              {word}
-            </span>
-          ))}
+        <h1 className="ns-home-title" aria-label={plainText(site.name)}>
+          {lines.map((line, l) => {
+            // words rise one after another across all lines
+            const before = lines.slice(0, l).reduce((sum, words) => sum + words.length, 0);
+            return (
+              <span key={l} className="ns-home-line">
+                {line.map(({ word, accent }, i) => (
+                  <span
+                    key={i}
+                    className={accent ? "ns-home-word ns-home-word-accent" : "ns-home-word"}
+                    style={vars({ "--ns-i": before + i })}
+                    aria-hidden
+                  >
+                    {word}
+                  </span>
+                ))}
+              </span>
+            );
+          })}
         </h1>
-        <p className="ns-home-text">{own ? accentLastWord(site.description) : site.description}</p>
+        <p className="ns-home-text">{heroText(site.description)}</p>
         <div className="ns-home-actions">
           <Link href={docsPath} className="ns-button ns-button-primary">
             {text.startReading}
@@ -475,11 +502,8 @@ function StackStrip({ items, label }: { items: StackItem[]; label: string }) {
   );
 }
 
-/** Section cards in the mosaic: the feature, three tiles beside it and one row of two strips */
-const MOSAIC_MAX = 6;
-
 /**
- * Last row of a full mosaic, a strip across the whole width: the numbers of the
+ * Last row of a mosaic with more than six sections, a strip across the whole width: the numbers of the
  * sections left, how many, the first few by name, and a link into the docs
  */
 function MoreSections({

@@ -2,13 +2,21 @@ import type { NotesText } from '../i18n/text.js';
 
 /** Everything that differs between notes sites. Lives in each repo's site.config.ts. */
 export interface SiteConfig {
-  /** Notes name, shown in the header and the sidebar banner, e.g. "Networking Notes" */
+  /**
+   * Notes name, shown in the header and the sidebar banner, e.g. "Networking Notes".
+   * For the landing page's big title only, `\n` breaks the line and `*text*` puts words
+   * in the accent colour ("AWS SAA-C03\nHandbook"); everywhere else they read as plain text.
+   */
   name: string;
   /** Shown in the landing page footer: "© 2026 <author>". Without it, the footer uses `name` */
   author?: string;
   /** Small badge next to the name in the banner, e.g. a course code "NET-101" */
   tag?: string;
-  /** One sentence about the subject: the same text as the GitHub repo description */
+  /**
+   * One sentence about the subject: the same text as the GitHub repo description.
+   * Under the landing page's title only, `\n` breaks the line and `*text*` highlights words
+   * ("…reads *beautifully*."); everywhere else (banner, footer, search engines) they are dropped.
+   */
   description: string;
   /**
    * The address the site is served from, e.g. "https://notes.example.com".

@@ -4,6 +4,19 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+### Added
+
+- Two marks for the landing page's title and the line under it, in `name` and `description` in `site.config.ts`: `\n` starts a new line (`'AWS SAA-C03\nHandbook'`), and `*text*` puts words in the accent colour, over a soft marker stroke in the description (`'…reads *beautifully*.'`). Everywhere else (header, sidebar banner, footer, browser tab, share images, search engines) the marks are left out. Sites without marks look the same as before.
+
+### Changed
+
+- Notestack's own site marks its highlighted word in its config (`*beautifully*`, `*读起来舒服*`) instead of the theme picking the last word for it.
+- The landing page's *What's inside* gives every section a card up to six, as before. With seven or more, it now shows four cards and lists the rest in the "N more sections" row, instead of six cards and a row that could stand for a single section.
+
+### Fixed
+
+- The header's language button and accent picker now glide to their new place with the other header icons when moving between the landing page and the docs. Before, they jumped there.
+
 ## 0.2.4 (2026-11-27)
 
 A card under *On this page*, at most six section cards on the landing page, clearer sidebar groups, a greyscale logo and a refreshed hero. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in. From this version on, releases are published by GitHub Actions with npm provenance.

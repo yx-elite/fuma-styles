@@ -29,12 +29,12 @@ export default defineSiteConfig({
 <TypeTable
   type={{
     name: {
-      description: 'The notes name. Shown in the header, the sidebar banner, the landing page, the footer and the browser tab (Page · Name).',
+      description: 'The notes name. Shown in the header, the sidebar banner, the landing page, the footer and the browser tab (Page · Name). On the landing page only, \\n breaks the line and *text* puts words in the accent colour.',
       type: 'string',
       required: true,
     },
     description: {
-      description: 'One sentence about the notes. Shown in the banner, under the landing page title and in the footer, and used as the description search engines show.',
+      description: 'One sentence about the notes. Shown in the banner, under the landing page title and in the footer, and used as the description search engines show. Under the landing page title only, \\n breaks the line and *text* highlights words.',
       type: 'string',
       required: true,
     },

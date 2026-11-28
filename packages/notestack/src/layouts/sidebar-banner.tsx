@@ -1,4 +1,5 @@
 import { BookOpen } from 'lucide-react';
+import { plainText } from '../config/marks.js';
 import { repoUrl, type SiteConfig } from '../config/site.js';
 import { notesText } from '../i18n/index.js';
 
@@ -11,10 +12,10 @@ export function SidebarBanner({ site }: { site: SiteConfig }) {
     <div className="ns-banner">
       <div className="ns-banner-dots" aria-hidden />
       <p className="ns-banner-title">
-        {site.name}
+        {plainText(site.name)}
         {site.tag && <span className="ns-banner-tag">{site.tag}</span>}
       </p>
-      <p className="ns-banner-text">{site.description}</p>
+      <p className="ns-banner-text">{plainText(site.description)}</p>
       <a
         className="ns-banner-link"
         href={link.href}
