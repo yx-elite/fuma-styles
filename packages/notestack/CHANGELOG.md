@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+### Fixed
+
+- The header's language button and accent picker now glide to their new place with the other header icons when moving between the landing page and the docs. Before, they jumped there.
+
 ## 0.2.4 (2026-11-27)
 
 A card under *On this page*, at most six section cards on the landing page, clearer sidebar groups, a greyscale logo and a refreshed hero. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in. From this version on, releases are published by GitHub Actions with npm provenance.
