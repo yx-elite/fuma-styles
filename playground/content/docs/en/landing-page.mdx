@@ -14,7 +14,7 @@ The landing page is built from your notes and `site.config.ts`, so a new site ha
 | Page count, section count, last update | Your notes, and their latest git commit |
 | Docs preview | A live miniature of the docs, drawn from the sidebar, in the current theme and accent |
 | Built with | Notestack, then the libraries every site runs on |
-| What's inside | A mosaic with one card for each of the first six sidebar sections, each showing the section a different way |
+| What's inside | A mosaic with one card for each sidebar section (up to six), each showing the section a different way |
 | Get started | `start` in the config |
 | Search | Opens the site search |
 | Footer | `name`, `description`, `repo` and `author`. Also the sections again, your `links`, and a *Built with Notestack* link |
@@ -100,7 +100,7 @@ The cards form a mosaic of different sizes. Each shows its section a different w
 
 A page without an `icon:` shows its number in place of an icon. With fewer than four sections, the mosaic uses fewer, larger cards. On a phone, the cards stack in sidebar order. Every card links to its section's first page.
 
-The mosaic shows six sections at most. With more, one row under it says how many are left ("14 more sections"), links the next four by name, and ends with *See all in the docs*, which opens the first page. The sidebar there lists every section.
+Up to six sections, every section gets a card. With seven or more, the first four get a card and one row under them takes the rest: it says how many are left ("16 more sections"), links the next four by name, and ends with *See all in the docs*, which opens the first page. The sidebar there lists every section.
 
 ## Your own landing page
 

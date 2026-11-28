@@ -131,6 +131,16 @@ export function groupPageTree(
   return groups.filter((group) => group.pages.length > 0);
 }
 
+/**
+ * Which sections get a card in the mosaic. Up to six all do (feature, three tiles,
+ * one row of two strips). With more, the first four do and the rest share one
+ * "N more sections" row under them, so that row never stands for just one or two.
+ */
+export function mosaicSections<T>(groups: T[]): { shown: T[]; hidden: T[] } {
+  const cards = groups.length <= 6 ? groups.length : 4;
+  return { shown: groups.slice(0, cards), hidden: groups.slice(cards) };
+}
+
 function latestUpdate(source: HomeSource, language?: string): Date | undefined {
   let latest: number | undefined;
   for (const page of source.getPages(language)) {
@@ -214,9 +224,7 @@ export function NotesHome({
     text.firstSection,
   );
   const pageCount = groups.reduce((sum, group) => sum + group.pages.length, 0);
-  // The mosaic shows the first sections as cards; the rest get one row under it
-  const shown = groups.slice(0, MOSAIC_MAX);
-  const hidden = groups.slice(MOSAIC_MAX);
+  const { shown, hidden } = mosaicSections(groups);
   const updated = latestUpdate(source, treeLanguage);
   const firstUrl = groups[0]?.pages[0]?.url ?? docsPath;
   const lines = titleLines(site.name);
@@ -494,11 +502,8 @@ function StackStrip({ items, label }: { items: StackItem[]; label: string }) {
   );
 }
 
-/** Section cards in the mosaic: the feature, three tiles beside it and one row of two strips */
-const MOSAIC_MAX = 6;
-
 /**
- * Last row of a full mosaic, a strip across the whole width: the numbers of the
+ * Last row of a mosaic with more than six sections, a strip across the whole width: the numbers of the
  * sections left, how many, the first few by name, and a link into the docs
  */
 function MoreSections({

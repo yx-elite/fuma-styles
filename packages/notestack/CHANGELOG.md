@@ -11,6 +11,7 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 ### Changed
 
 - Notestack's own site marks its highlighted word in its config (`*beautifully*`, `*读起来舒服*`) instead of the theme picking the last word for it.
+- The landing page's *What's inside* gives every section a card up to six, as before. With seven or more, it now shows four cards and lists the rest in the "N more sections" row, instead of six cards and a row that could stand for a single section.
 
 ### Fixed
 
