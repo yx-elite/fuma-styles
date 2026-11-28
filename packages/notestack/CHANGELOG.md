@@ -4,6 +4,10 @@ All notable changes to `@yx-elite/notestack`. Versions follow [semver](https://s
 
 ## Unreleased
 
+## 0.2.5 (2026-11-28)
+
+Line breaks and accent words in the landing page's title and description, four section cards when a site has seven or more sections, and header buttons that glide between the landing page and the docs. Nothing to change in existing sites: `npm update @yx-elite/notestack` brings it in.
+
 ### Added
 
 - Two marks for the landing page's title and the line under it, in `name` and `description` in `site.config.ts`: `\n` starts a new line (`'AWS SAA-C03\nHandbook'`), and `*text*` puts words in the accent colour, over a soft marker stroke in the description (`'…reads *beautifully*.'`). Everywhere else (header, sidebar banner, footer, browser tab, share images, search engines) the marks are left out. Sites without marks look the same as before.

@@ -1,6 +1,6 @@
 {
   "name": "create-notestack",
-  "version": "0.2.4",
+  "version": "0.2.5",
   "description": "Create a Notestack study-notes site: npm create notestack@latest my-notes",
   "keywords": [
     "notestack",
