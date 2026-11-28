@@ -1,4 +1,5 @@
 import type { Metadata } from 'next';
+import { plainText } from '../config/marks.js';
 import type { ReactNode } from 'react';
 import {
   AccentPicker,
@@ -83,7 +84,7 @@ export function notesMetadata(site: SiteConfig, language?: string): Metadata {
   const local = language ? siteFor(site, language) : site;
   return {
     ...(local.url && { metadataBase: new URL(local.url) }),
-    title: { default: local.name, template: `%s · ${local.name}` },
-    description: local.description,
+    title: { default: plainText(local.name), template: `%s · ${plainText(local.name)}` },
+    description: plainText(local.description),
   };
 }

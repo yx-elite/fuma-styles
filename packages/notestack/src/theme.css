@@ -1536,7 +1536,7 @@ a.ns-home-badge:hover {
   background: color-mix(in oklab, var(--ns-accent) 16%, transparent);
 }
 
-/* Notestack's own site: the description's last word in an accent gradient, over
+/* Words marked `*…*` in `description`: an accent gradient, over
    a soft marker stroke that sweeps in once the hero is up (Landing interactions) */
 .ns-home-accent {
   position: relative;
@@ -1619,6 +1619,18 @@ a.ns-home-badge:hover {
 
 .ns-home-word:not(:last-child) {
   margin-inline-end: 0.25em;
+}
+
+/* One block per line of the title (`\n` in `name`) */
+.ns-home-line {
+  display: block;
+}
+
+/* A title word marked `*…*` in `name`: the accent gradient instead of the text colour */
+.ns-home-word.ns-home-word-accent {
+  background: linear-gradient(100deg, var(--ns-accent), var(--ns-accent-2));
+  -webkit-background-clip: text;
+  background-clip: text;
 }
 
 .ns-home-text {

@@ -1,4 +1,5 @@
 import Link from 'fumadocs-core/link';
+import { plainText } from '../config/marks.js';
 import { Search } from 'lucide-react';
 import type { CSSProperties, ReactNode } from 'react';
 import type { HomeGroup } from './home.js';
@@ -40,7 +41,7 @@ export function DocsPreview({
   }
 
   return (
-    <Link href={href} className="ns-preview" aria-label={fill(text.openDocs, { name: site.name })}>
+    <Link href={href} className="ns-preview" aria-label={fill(text.openDocs, { name: plainText(site.name) })}>
       {/* a light that runs around the border (theme.css: .ns-preview-beam) */}
       <span className="ns-preview-beam" aria-hidden />
       <div className="ns-preview-screen" aria-hidden>
@@ -56,7 +57,7 @@ export function DocsPreview({
         <div className="ns-preview-header">
           <span className="ns-preview-brand">
             <NotesLogo className="ns-preview-mark" />
-            {site.name}
+            {plainText(site.name)}
           </span>
           <span className="ns-preview-search">
             <Search />
@@ -72,7 +73,7 @@ export function DocsPreview({
         <div className="ns-preview-body">
           <div className="ns-preview-sidebar">
             <div className="ns-preview-banner">
-              <b>{site.name}</b>
+              <b>{plainText(site.name)}</b>
               {site.tag && <small>{site.tag}</small>}
               <span className="ns-preview-line" style={width(90)} />
               <span className="ns-preview-line" style={width(60)} />
@@ -97,8 +98,8 @@ export function DocsPreview({
           </div>
 
           <div className="ns-preview-page">
-            <span className="ns-preview-title">{first?.name ?? site.name}</span>
-            <span className="ns-preview-desc">{first?.description ?? site.description}</span>
+            <span className="ns-preview-title">{first?.name ?? plainText(site.name)}</span>
+            <span className="ns-preview-desc">{first?.description ?? plainText(site.description)}</span>
             <span className="ns-preview-buttons">
               <i />
               <i />

@@ -1,4 +1,5 @@
 import type { DocsLayoutProps } from 'fumadocs-ui/layouts/notebook';
+import { plainText } from '../config/marks.js';
 import { NotesLogo } from './logo.js';
 import { repoUrl, type SiteConfig } from '../config/site.js';
 import { localizeHref } from '../i18n/index.js';
@@ -8,7 +9,7 @@ export function NavTitle({ site }: { site: SiteConfig }) {
   return (
     <>
       <NotesLogo className="ns-nav-mark" />
-      <span className="ns-nav-name">{site.name}</span>
+      <span className="ns-nav-name">{plainText(site.name)}</span>
     </>
   );
 }

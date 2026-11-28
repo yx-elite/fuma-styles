@@ -62,6 +62,22 @@ start: {
 
 Point the prompt at `WRITING.md`, the writing guide that ships with the theme, so the agent uses its components and style. Ask for `npm run build` rather than `npm run dev`: the build finishes and fails on a broken page, while the dev server never ends. On a site with `languages`, set `agent` in each language's `start` in `translations`.
 
+## Line breaks and highlights
+
+On the landing page, the title (`name`) and the line under it (`description`) take two marks:
+
+| Mark | Does | Example |
+| --- | --- | --- |
+| `\n` | Starts a new line | `name: 'AWS SAA-C03\nHandbook'` |
+| `*text*` | Puts the words in the accent colour; in the description, over a soft marker stroke | `description: 'Notes that read *beautifully*.'` |
+
+```ts title="site.config.ts"
+name: 'AWS SAA-C03\nHandbook',
+description: 'Study notes for the Solutions Architect – Associate *(SAA-C03)* exam, topic by topic.',
+```
+
+Everywhere else (the header, the sidebar banner, the footer, the browser tab, share images and what search engines show) the marks are left out: "AWS SAA-C03 Handbook". Write `\n` with a backslash; `/n` is just text. In `translations`, mark the words you want in each language, for example `'…发布一个*读起来舒服*的网站。'`.
+
 ## Sections
 
 The "What's inside" cards, and the *Notes* column of the footer, follow your [sidebar](/docs/pages#the-sidebar) (`content/docs/meta.json`). Rename or reorder it there and the landing page follows:

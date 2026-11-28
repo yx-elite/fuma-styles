@@ -1,4 +1,5 @@
 import type { LoaderOutput } from 'fumadocs-core/source';
+import { plainText } from '../config/marks.js';
 import { generateOGImage } from 'fumadocs-ui/og';
 import { notFound } from 'next/navigation';
 import type { SiteConfig } from '../config/site.js';
@@ -24,7 +25,7 @@ export function ogImageRoute<C extends NotesLoaderConfig>({ source, site }: { so
     return generateOGImage({
       title: page.data.title,
       description: page.data.description,
-      site: (lang ? siteFor(site, lang) : site).name,
+      site: plainText((lang ? siteFor(site, lang) : site).name),
     });
   }
 
